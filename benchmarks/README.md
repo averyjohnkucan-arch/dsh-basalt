@@ -1,0 +1,34 @@
+# Inference tuning protocol and source snapshot
+
+This directory preserves the actual Linux harness used to compare saved profiles with custom Basalt, custom NInfer and Strata. It is an audit snapshot, not a turnkey benchmark distribution. `source-manifest.json` gives exact source hashes. The sources retain the NVMe scratch paths and sibling engine/plugin checkout layout used for the runs. Configure those paths, exact artifacts, native libraries and fixture inputs for another machine. Never point the rotation scripts at original model weights.
+
+Tuning remains in progress until each family has a matching performance receipt, real-plugin GPU receipt, and final report. Source publication does not establish a completed tuned release. Small compatibility probes, restored-prefix screens and interrupted attempts are not final throughput evidence.
+
+## Final measurement convention
+
+- Low context: exactly 8,192 native-chat input tokens containing code.
+- High context: floor(80% of native context capacity), separately for text, conversation and original-story generation. This is 209,715 input tokens for the tested Qwen models and 838,860 for DeepSeek. This convention supersedes the earlier 10%/90% all-code diagnostics; the earlier measurements remain separate evidence.
+- Generate 8,192 tokens and time the final 4,096 for sustained decode. HTTP draft-batch timing boundaries can differ by up to seven tokens; actual token counts are retained.
+- Thinking off, temperature zero, seed 42 where supported. Tokenizer-native chat framing is used. Exact prompt length and token hash are recorded. Model-native tokenizers must be checked before sharing fixtures across artifacts.
+- Fresh worker and no restored prefix for qualified prefill. OS file cache is not globally dropped. Restored-prefix screens are explicitly diagnostic.
+- RTX PRO 5000 Blackwell Laptop GPU, 95 W power limit. CPU affinity and native arguments are retained in each result. Inference weights come only from the NVMe.
+
+The long preset maximizes the minimum sustained decode across the three genre medians. It then maximizes the minimum cold prefill among complete measured configurations within 5% of the best measured minimum decode. The limiting genre is repeated. Free continuations can differ across settings and change draft acceptance, so a finite workload range is not a universal throughput guarantee.
+
+A separate peak-code preset is retained when it uses different controls. Its context capacity stays fully configured; it receives its own high-context genre measurements. Diagnostic 2,048-output screens rank candidates; final low-code candidates receive repeated full 8,192-output measurements. The peak is the best measured sustained-code median, not an assertion that every possible configuration has been exhausted.
+
+## Evidence and profile labels
+
+The model and profile names use `... - pLOW/dLOW - pHIGH/dHIGH`. Each pair comes from the same actual measurement. The high pair comes from the slowest actual selected-settings genre/repeat, rather than combining the fastest prefill from one run with decode from another. The metadata retains the complete measured range, native configuration, binary and artifact fingerprints, and host-memory evidence.
+
+Performance qualification, actual DSH-adapter GPU serving, generated-code quality and source/binary publication are separate gates. A native timing receipt alone does not prove plugin functionality or answer quality. The main comparison has exactly three columns: model name, old settings speed, current Basalt speed. NInfer and Strata results stay in separate comparisons. Unsupported Basalt artifacts are labeled explicitly.
+
+The generated-function checks run the model's output unmodified inside Bubblewrap without home-directory or network access, with CPU and memory limits. A retained LRU-ordering failure means the small code suite is not wholly passing. Numerical kernel references and this small generated-code suite do not establish full BF16-reference model quality, vision support, or portability to untested architectures.
+
+## Memory isolation
+
+The original interrupted run shared the application's process group. Linux memory-pressure handling terminated that whole group. New workers have separate owned systemd scopes: MemoryHigh 96 GiB, MemoryMax 108 GiB, MemorySwapMax 1 GiB. A watchdog stops a worker when host available RAM falls below 12 GiB or memory-pressure avg10 exceeds 40% for six seconds. Cleanup stops the whole owned scope, including detached native descendants. The controller survives worker failure. These are host-specific limits; choose appropriate limits before running elsewhere.
+
+`native_bench.py --config CONFIG.json` and `http_bench.py --config CONFIG.json` run one explicit native command and preserve token timing, logs, memory telemetry and paired rates. `benchmark_prompts.py` accepts an exact token-ID prompt or a prefix/body/suffix fixture. The tuning controllers require the fixture manifest and baseline configurations in the scratch layout. `prepare_range_fixtures.py` documents the original tasks and framing. Source novels are public-domain Project Gutenberg texts; their URLs and hashes are in `evidence/prose-corpus-sources.json`. Neither model weights nor full prompt/token fixtures are bundled here.
+
+Derived model packs may be rotated only after the relevant performance and plugin checks complete, with reconstruction recipes retained. This avoids holding every duplicate conversion on the 2 TB NVMe at once. Original source weights are never deleted. A profile whose derived pack has been rotated is unavailable until that exact pack is reconstructed; retained rates do not imply the pack is currently installed.

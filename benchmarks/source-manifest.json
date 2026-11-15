@@ -1,0 +1,150 @@
+{
+  "scope": "Exact harness snapshot; scratch paths and sibling clone layout retained for audit. No weights, generated answers, credentials, or token-ID fixtures included.",
+  "files": [
+    {
+      "path": "harness/native_bench.py",
+      "sha256": "2d6813ca1811898da7afc57972481c0ef5bf71a59c5440a7da4c4c2739a410c2",
+      "bytes": 6609
+    },
+    {
+      "path": "harness/http_bench.py",
+      "sha256": "4733a3b64c3a0f4243e18d54951ecfb9d7be7c509d72ab3432a25150d014345f",
+      "bytes": 5316
+    },
+    {
+      "path": "harness/benchmark_prompts.py",
+      "sha256": "4430d8e250c230ee7dd98f7cde2ebbceb5734f142c60a1cd34e45a90d2899e93",
+      "bytes": 980
+    },
+    {
+      "path": "harness/benchmark_memory_guard.py",
+      "sha256": "2c5b109612e784416a30643c968c58f974a477c872f54fdbd37ea3818f4a73f7",
+      "bytes": 2823
+    },
+    {
+      "path": "harness/range_common.py",
+      "sha256": "6017b6863abb933ff71d78e12e1db0dd95a26f05953efc632bf4acf7bca2cdf0",
+      "bytes": 4239
+    },
+    {
+      "path": "harness/range_identity.py",
+      "sha256": "d230079af11990f62d7180cc33a828cc94ea3f9da6c0e2f543732b564b716bcf",
+      "bytes": 845
+    },
+    {
+      "path": "harness/range_tuner.py",
+      "sha256": "47a3b490b089994ddbf30b39efb1e72e91a11d7ca3d3a1fa3211c2f54eb97d71",
+      "bytes": 2967
+    },
+    {
+      "path": "harness/range_repeatability.py",
+      "sha256": "38a87f2e8b69e373d63178e4eb90dfc3e2af3e7b1a31d3ab03ea04fd26e08bc5",
+      "bytes": 5768
+    },
+    {
+      "path": "harness/range_low_peak.py",
+      "sha256": "5167b4e96d503f15ad2cc29eccc0c3565968a519adca4ca303de53a19e70848e",
+      "bytes": 5980
+    },
+    {
+      "path": "harness/range_joint_refine.py",
+      "sha256": "da2a1329c2f4d9a639863f095e73535a68477517a98b420970c1cb0151a2c4eb",
+      "bytes": 1540
+    },
+    {
+      "path": "harness/range_flash.py",
+      "sha256": "887cad21da515abf747a9a1da5b34e26b36377d866184d1d9f7cec3f66cb9b83",
+      "bytes": 4103
+    },
+    {
+      "path": "harness/range_strata.py",
+      "sha256": "d4162adf877c02738d5510feae482042a6a8df29f9e70a0264fd3cfa8502a35d",
+      "bytes": 1819
+    },
+    {
+      "path": "harness/range_ninfer.py",
+      "sha256": "1c105b4630c323f8aa990ea97c3f207d5710cf51749370d56b7645867e786af3",
+      "bytes": 1334
+    },
+    {
+      "path": "harness/range_27b_basalt.py",
+      "sha256": "d1bf07adb14f482662fdb0e007ca1b7ed4bfb5fc18c567ad97849eabe1d289ab",
+      "bytes": 1152
+    },
+    {
+      "path": "harness/range_deepseek.py",
+      "sha256": "38e2e86017e6f1672a7e8a737b36c3c806be132d3e220eedda91adc380d7ad5a",
+      "bytes": 5922
+    },
+    {
+      "path": "harness/mark_performance_qualified.py",
+      "sha256": "1fc5e495e6a1dbfb8dc30269d2c9d99434f37b1ea06c4d036a410883b48acaf5",
+      "bytes": 3298
+    },
+    {
+      "path": "harness/range_plugin_gpu_gate.py",
+      "sha256": "f74f9b9fa12051dcc495c7e5577c6dd2cc19aef529952f1daa57183569415dd0",
+      "bytes": 2466
+    },
+    {
+      "path": "harness/range_plugin_adapter_smoke.mjs",
+      "sha256": "f91458cb1bcd46cfad34b95cfb8c5d7c30aeaf76476595def23354a8ff2d4350",
+      "bytes": 2794
+    },
+    {
+      "path": "harness/profile_measurement_helpers.mjs",
+      "sha256": "62fafd7229841eebf4ae368b94ac1dec68faf631967279615989b289bf0257d8",
+      "bytes": 3071
+    },
+    {
+      "path": "harness/export_range_basalt.mjs",
+      "sha256": "e9d5aebcff60015c2ed17f6ec7e0c6df58e31820eef831d3edaa4654746e58c0",
+      "bytes": 4595
+    },
+    {
+      "path": "harness/export_range_ninfer.mjs",
+      "sha256": "7e674fa90dafe19e7bcb38619085877f427209da570b333d5e39516b9bf9e18e",
+      "bytes": 3480
+    },
+    {
+      "path": "harness/export_range_strata.mjs",
+      "sha256": "0ddd1f78b19c95edf8785b648c75968916e79e9ba831f55caf8d44dfa1db3e8e",
+      "bytes": 4869
+    },
+    {
+      "path": "harness/range_progress_report.py",
+      "sha256": "a0555c48ca4bf30b52c99624196cf1a10fc29f0c78bc6bceb0bc7ed47a2674bf",
+      "bytes": 6142
+    },
+    {
+      "path": "harness/range_progress_chart.py",
+      "sha256": "2d4ad806a0c318a62b4813ee49b23b349b23b20fc38143269c6685383a5433b6",
+      "bytes": 3454
+    },
+    {
+      "path": "harness/prepare_range_fixtures.py",
+      "sha256": "f1bf53adf936380cf8227b76769264a38f2bf04685e1dc9f33efc754d5d6c3ec",
+      "bytes": 7907
+    },
+    {
+      "path": "harness/quality_range_selected.py",
+      "sha256": "c387c3e82e236d8e3ba98ec940224b2f1bb92284cd2da9897781882b29141c5a",
+      "bytes": 1247
+    },
+    {
+      "path": "harness/code_function_eval.py",
+      "sha256": "47b94211a4d98e447977b5bf47bbf7d743ef56a1332bc54f2356b5a02d664807",
+      "bytes": 5228
+    },
+    {
+      "path": "harness/latest80_common.py",
+      "sha256": "55fd9232ccffc113403f1dbe21c808790752e0acd11ef98dab607f9d89d426e5",
+      "bytes": 3181
+    },
+    {
+      "path": "harness/tune80_common.py",
+      "sha256": "5a6544972cfba423b556e51c233b9cf1463c3b7e96150c92b9bbd496780e346c",
+      "bytes": 2691
+    }
+  ]
+}

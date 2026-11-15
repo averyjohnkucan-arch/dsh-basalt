@@ -1,0 +1,22 @@
+{
+  "cause": "systemd-oomd killed whole desktop app cgroup during old Strata startup",
+  "killed_at": "2026-11-15 13:09:51 America/Los_Angeles",
+  "recorded_cgroup_peak": "118.9G",
+  "source_weights_unchanged": true,
+  "owned_derived_clean_file_caches_advised_release": [
+    "/mnt/media/scratch/dsh-inference-tuning-20261115/packs/qwen-nvfp4-gptq.basalt",
+    "/mnt/media/scratch/dsh-inference-tuning-20261115/packs/qwen-nvfp4-q8-hybrid.basalt",
+    "/mnt/media/scratch/dsh-inference-tuning-20261115/packs/qwen27b-nvfp4full-experimental.basalt"
+  ],
+  "mitigation": "Separate per-worker memory scopes with high96GiB/max108GiB/swap1GiB and early global pressure/RAM floor watchdog; old-engine settings initially retained",
+  "time": 1794778522.9278843,
+  "recovery_controller_unit": "dsh-inference-range-20261115-recovery.service",
+  "recovery_controller_pid": 318779,
+  "recovery_probe_status": "ok",
+  "recovery_probe_minimum_host_available_gib": 43.32856369018555,
+  "recovery_probe_peak_worker_gib": 96.00559997558594,
+  "resumed_case": "range-flash-old-code",
+  "resumed_case_status": "ok",
+  "resumed_case_prefill_tok_s": 1966.8195241410767,
+  "resumed_case_late_decode_tok_s": 57.591088114853015
+}

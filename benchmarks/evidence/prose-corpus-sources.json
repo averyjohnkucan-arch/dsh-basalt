@@ -1,0 +1,16 @@
+[
+  {
+    "title": "war-and-peace",
+    "url": "https://raw.githubusercontent.com/GITenberg/War-and-Peace_2600/master/2600-0.txt",
+    "bytes": 3359542,
+    "sha256": "6cbcc5ca5e590fb9ace161a5b93e4ecf280d7118104be0d63b686c004cfa70ae",
+    "license": "Public-domain Project Gutenberg source; full source license retained in local corpus"
+  },
+  {
+    "title": "moby-dick",
+    "url": "https://raw.githubusercontent.com/GITenberg/Moby-Dick--Or-The-Whale_2701/master/2701-0.txt",
+    "bytes": 1276201,
+    "sha256": "baf9b04fcf6e0008f30eaaa6697277751448c1070b20175e0082f28cbb161fd3",
+    "license": "Public-domain Project Gutenberg source; full source license retained in local corpus"
+  }
+]
