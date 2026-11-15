@@ -1,14 +1,17 @@
 {
   "upstream": "https://github.com/jesdga95/basalt",
   "revision": "6809edfae74de8b49662e2e1afecdb6456670ac5",
+  "source_tree": "bafbcecaa699d53405c5152f70e66b4f4c7372cd",
   "patch": "patches/basalt-native-strata-support.patch",
-  "patch_sha256": "7aeba0dcec39cc747994d825ed6a6072550e035de63f610667935b5a83ffa307",
+  "patch_sha256": "af56a587f8a63a070e31ba56e5b3ef1d9dab420beea8079b5c51688bd2e54062",
   "required_features": [
     "fp8-ple",
-    "mixed-nvfp4-q8"
+    "mixed-nvfp4-q8",
+    "qwen35-bf16-projections",
+    "qwen35-nvfp4-dflash2"
   ],
-  "status": "preview: source builds and focused GPU parity passed; final long-context coding benchmarks and plugin GPU serving qualification pending",
+  "status": "Experimental source preview: focused parity/import/BF16 tests and real text+DFlash2 serving passed; new sustained workload range tuning in progress",
   "architecture": "120a",
   "cuda_build_version": "13.1.115",
-  "publish_scope": "Source preview only. Managed stock runtime remains separate; these tensor features require a custom build."
+  "publish_scope": "Source preview only; managed stock runtime remains separate. Required feature receipts guard custom packs."
 }

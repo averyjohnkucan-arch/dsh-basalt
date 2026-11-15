@@ -52,7 +52,7 @@ npm test
 
 Set `BASALT_SOURCE` to an upstream Basalt v0.4.0 checkout and `BASALT_PYTHON` to Python with its `requirements.txt` installed to run the native mock-server integration test. CI does this automatically. The integration starts Basalt's Python **mock** engine, checks authenticated model readiness, sends a DSH request and verifies owned-process cleanup. It never loads weights or creates a CUDA inference context.
 
-This release has CPU, mock-server, DSH adapter and UI build validation. **Real GPU inference has not been tested.** The initial preparation deliberately leaves ongoing inference in other providers untouched. No performance claims are made.
+The original managed release has CPU, mock-server, DSH adapter and UI build validation. The custom source preview below additionally has native GPU parity and serving checks; plugin-owned real GPU requests and sustained workload qualification are tracked separately. No final tuned-performance claim is made by the managed release.
 
 Engine preparation is also available without DSH:
 
@@ -75,5 +75,7 @@ packs require a custom Basalt build advertising `fp8-ple` and `mixed-nvfp4-q8`. 
 
 Saved profiles can include `engineOptions` with validated native options: `spec`, `pool-workers`, `resident-budget-gib`, `expert-profile` (absolute file path), and (for Flash-Next)
 `pool-affinity`, `prefill-cpu-share`, `prefill`, `kv-resident`; DeepSeek also accepts `draft-experts`. Values are passed to
-the native model entry in server configuration. Retired flags such as `pcie-frac` are rejected. Benchmark profiles and
+the native model entry in server configuration. Dense Qwen35 profiles also accept `kv-resident`, without Flash-specific CPU or prefill controls. Basalt rejects `pcie-frac`; Strata retains its separate native option. Benchmark profiles and
 runtime folders are kept separately from installed DSH state; importing them remains a separate operation.
+
+The experimental NInfer v3 dense import and its NVFP4 DFlash2 drafter require `qwen35-bf16-projections` and `qwen35-nvfp4-dflash2` as applicable. Its target attention projections remain BF16; Basalt dense KV remains INT8/FP16. See [custom source scope and build instructions](custom-engine/README.md).

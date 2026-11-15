@@ -71,12 +71,37 @@ test("tuned native options preserve values and reject flags belonging to another
     p.engineOptions = options;
     assert.throws(() => validateProfile(p), /native engine option/);
   }
+  p.engineOptions = {};
+  p.defaultEffort = "off";
+  assert.equal(validateProfile(p).defaultEffort, "off");
+  p.defaultEffort = "invented";
+  assert.throws(() => validateProfile(p), /default reasoning/);
   p.model.architecture = "deepseek41";
+  delete p.defaultEffort;
   p.kv = "fp8";
   p.engineOptions = { "draft-experts": 64, "pool-workers": 12, spec: 6 };
   assert.equal(validateProfile(p), p);
   p.engineOptions = { prefill: "auto" };
   assert.throws(() => validateProfile(p), /native engine option/);
+  p.model.architecture = "qwen35";
+  p.kv = "int8";
+  for (const resident of [0, 8192, 16384, 65536]) {
+    p.engineOptions = { "kv-resident": resident, spec: 8 };
+    assert.equal(
+      serverConfig(p, 18081, root).models[0]["kv-resident"],
+      resident,
+    );
+  }
+  for (const options of [
+    { "kv-resident": -1 },
+    { "kv-resident": 512 },
+    { "kv-resident": p.context + 1 },
+    { prefill: 2048 },
+    { "pool-workers": 14 },
+  ]) {
+    p.engineOptions = options;
+    assert.throws(() => validateProfile(p), /native engine option/);
+  }
 });
 test("rejects old packs, truncation, corrupted metadata, unknown architectures and invalid section offsets", async (t) => {
   const root = await temporary(t);
@@ -145,5 +170,8 @@ test("Qwen defaults to Medium, all models expose Off, and native effort payloads
     assert.equal(thinkingPayload(p).reasoning_effort, info.defaultEffort);
     assert.equal("messages" in thinkingPayload(p), false);
     assert.throws(() => thinkingPayload(p, "invented"), /Unsupported/);
+    p.defaultEffort = "off";
+    assert.equal(thinkingInfo(p).defaultEffort, "off");
+    assert.equal(thinkingPayload(p).enable_thinking, false);
   }
 });

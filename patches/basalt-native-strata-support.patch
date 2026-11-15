@@ -1,7 +1,16 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 53ef2d7..ee3fca7 100644
+index 53ef2d7..7504b35 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
+@@ -203,7 +203,7 @@ if(BASALT_MODEL_QWEN35)
+ # only model, so the stack is built with it
+ add_library(dense STATIC src/dense/model.cpp src/dense/forward.cpp src/dense/session.cpp src/dense/prompt_line.cpp)
+ target_include_directories(dense PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include PRIVATE ${_gpu_include_directories})
+-target_link_libraries(dense PUBLIC model kernels window_gemm mmq prefill_fp4 prefill_fp8 core warnings ${_gpu_runtime_target})
++target_link_libraries(dense PUBLIC model kernels window_gemm mmq prefill_fp4 prefill_fp8 prefill_bf16 core warnings ${_gpu_runtime_target})
+ add_library(model_qwen35 STATIC src/models/qwen35/adapter.cpp)
+ target_include_directories(model_qwen35 PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src PRIVATE ${_gpu_include_directories})
+ target_link_libraries(model_qwen35 PUBLIC model tokenizer dense core ${_gpu_runtime_target})
 @@ -1468,17 +1468,19 @@ target_link_libraries(kernels_cpu PUBLIC Threads::Threads platform)
  add_library(ggml_quants STATIC src/kernels/cpu/ggml/ggml_quants.c)
  target_include_directories(ggml_quants PUBLIC include PRIVATE src/kernels/cpu/ggml)
@@ -35,7 +44,26 @@ index 53ef2d7..ee3fca7 100644
  # the i-quant rows also use BMI2 (pdep/pext for the sign masks; cpu_avx512_ok requires it). MSVC compiles the
  # intrinsics without a switch.
  if(MSVC)
-@@ -1720,6 +1723,7 @@ if(BUILD_TESTING)
+@@ -1554,6 +1557,18 @@ target_compile_options(model_qwen4exp_moe_fused PRIVATE $<$<COMPILE_LANGUAGE:CUD
+ target_link_libraries(model_qwen4exp_moe_fused PUBLIC mmq ${_gpu_runtime_target})
+ target_link_libraries(model_qwen4exp_prefill PUBLIC model_qwen4exp_moe_fused)
+ endif()
++add_library(prefill_bf16 STATIC src/prefill/bf16_gemm.cpp)
++target_include_directories(prefill_bf16 PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include PRIVATE ${_gpu_include_directories})
++target_link_libraries(prefill_bf16 PUBLIC ${_gpu_runtime_target} ${_gpu_blas_target})
++if(BUILD_TESTING)
++  add_executable(bf16_gemm_test tests/kernels/bf16_gemm_test.cpp)
++  target_link_libraries(bf16_gemm_test PRIVATE prefill_bf16 ${_gpu_runtime_target})
++  basalt_gpu_test(NAME bf16_gemm_test COMMAND bf16_gemm_test)
++  set_tests_properties(bf16_gemm_test PROPERTIES SKIP_RETURN_CODE 77 TIMEOUT 300)
++endif()
++if(BASALT_MODEL_QWEN4EXP)
++  target_link_libraries(model_qwen4exp_prefill PUBLIC prefill_bf16)
++endif()
+ # a prompt chunk's products against FP8 E4M3 weights on the FP8 tensor cores (W8A8)
+ add_library(prefill_fp8 STATIC src/prefill/fp8_gemm.cu)
+ set_target_properties(prefill_fp8 PROPERTIES CUDA_ARCHITECTURES 120a-real)   # the block-scaled mma
+@@ -1720,6 +1735,7 @@ if(BUILD_TESTING)
    basalt_gpu_test(NAME native_expert_parity_q5_1_min COMMAND native_expert_parity --q5_1-min)
    # the AVX-512 Q8_K activation quantizer bit for bit against ggml's reference
    basalt_cpu_test(NAME native_expert_parity_q8k_quant COMMAND native_expert_parity --q8k-quant)
@@ -43,7 +71,7 @@ index 53ef2d7..ee3fca7 100644
    # the BF16 token embedding gathered and dequantized bit for bit
    basalt_gpu_test(NAME native_expert_parity_bf16_embd COMMAND native_expert_parity --bf16-embd)
    # the Q6_K token embedding dequantized against ggml's reference
-@@ -1729,12 +1733,17 @@ if(BUILD_TESTING)
+@@ -1729,12 +1745,17 @@ if(BUILD_TESTING)
    # NVFP4 on the CPU tier: AVX2/AVX-512 dots vs plain C, the expert with its tail scales vs a double reference
    basalt_gpu_test(NAME native_expert_parity_nvfp4 COMMAND native_expert_parity --synthetic nvfp4/nvfp4 nvfp4/nvfp4)
    set_tests_properties(native_expert_parity_nvfp4 PROPERTIES TIMEOUT 120)
@@ -62,7 +90,7 @@ index 53ef2d7..ee3fca7 100644
    # reader, every element against an independent field-by-field decode (host, synthetic, no model)
    add_executable(ple_bf16_parity tests/kernels/ple_bf16_parity.cpp)
 diff --git a/docs/model-file.md b/docs/model-file.md
-index 971c6eb..1e5d8c2 100644
+index 971c6eb..8f4eec0 100644
 --- a/docs/model-file.md
 +++ b/docs/model-file.md
 @@ -69,6 +69,26 @@ python3 tools/convert/convert.py --sections-from Qwen3.8-FN-UD-Q4_K_XL.basalt --
@@ -92,6 +120,39 @@ index 971c6eb..1e5d8c2 100644
  ## Qwen3.8-27B pack
  
  The published pack comes from QUASAR's quantization-aware NVFP4 checkpoint
+@@ -111,6 +131,32 @@ python3 tools/convert/convert.py --checkpoint nvidia --drafter dflash2 --out Qwe
+   `<name>.scale`; its GDN and attention projections are FP8 and keep their E4M3 codes as `F8_E4M3` with each matrix's FP32
+   `weight_scale` as `<name>.scale`. Everything else as above. About 22 GiB with the drafter.
+ 
++### Experimental NInfer v3 dense artifact import
++
++The custom converter also accepts a single-file v3 `qwen3_5_text` NInfer artifact:
++
++```sh
++python3 tools/convert/convert.py --ninfer model.ninfer --out model.basalt
++```
++
++This route accepts the explicit BF16, NVFP4 and Q8G32 layouts it validates; it does not infer unsupported codecs.
++Target NVFP4 code/scale planes and reciprocal global divisors are preserved. The Q8G32 output head is losslessly
++repacked as Q8_0. BF16 attention projections remain BF16, using a shared cuBLAS product with FP32 accumulation.
++The embedding is materialized as its represented BF16 lookup values. GDN channel permutations and norm offsets
++follow the target GGUF representation. Source tensors are never modified.
++
++An included DFlash2 component is imported automatically. Its NVFP4 projection weights remain NVFP4, including
++the feature projection split along target-layer columns. The small proposal selector tables are materialized
++as BF16 represented values for Basalt's selector; this is a proposal-only precision change, not a change to target
++weights. The source mask token, layer list and window size are retained. Vision and source MTP components are not
++imported by this route. Packs advertise `qwen35-bf16-projections` and, when applicable, `qwen35-nvfp4-dflash2` as
++required engine features. They require this custom runtime. The current Basalt dense path uses INT8 or FP16 KV,
++so an NVFP4 source artifact does not imply NVFP4 attention-cache storage in Basalt.
++
++Focused tests cover import mappings, exact codes/scales, head pairing, BF16 products and a real DFlash2 serving
++smoke on Linux SM120. These checks do not establish BF16-reference perplexity, vision support or sustained
++throughput. Compare complete workload receipts before choosing a profile.
++
+ ### `NVFP4_PLANES` (tensor type 45)
+ 
+ An NVFP4 matrix of `rows` x `K` (rows a multiple of 128, K of 64) as two planes in one tensor, 36 bytes per 64 values like
 diff --git a/include/basalt/ggml/ggml.h b/include/basalt/ggml/ggml.h
 index 61263d8..eacb99e 100644
 --- a/include/basalt/ggml/ggml.h
@@ -104,6 +165,177 @@ index 61263d8..eacb99e 100644
  
  // NVFP4 row . Q8_0 row in plain C: the reference for the SIMD vec_dot (ggml_quants.c).
  void ggml_vec_dot_nvfp4_q8_0_ref(int n, float* GGML_RESTRICT s, const void* GGML_RESTRICT x, const void* GGML_RESTRICT y);
+diff --git a/include/basalt/prefill/bf16_gemm.hpp b/include/basalt/prefill/bf16_gemm.hpp
+new file mode 100644
+index 0000000..0661814
+--- /dev/null
++++ b/include/basalt/prefill/bf16_gemm.hpp
+@@ -0,0 +1,24 @@
++#pragma once
++#include <cstddef>
++#include <cstdint>
++#include <string>
++#include <cuda_runtime.h>
++
++namespace basalt::prefill::bf16 {
++// Row-major W[N,K] and X[T,K], column-major Y[N,T], FP32 accumulation.
++void product(void* handle, const uint16_t* x, const uint16_t* w, float* y,
++             int64_t T, int64_t N, int64_t K, int64_t ldy, float beta = 0.0f);
++class Context {
++public:
++    Context() = default;
++    ~Context();
++    Context(const Context&) = delete;
++    Context& operator=(const Context&) = delete;
++    bool init(std::string& err);
++    void run(const uint16_t* x, const uint16_t* w, float* y,
++             int64_t T, int64_t N, int64_t K, cudaStream_t stream);
++private:
++    void* handle_ = nullptr;
++    void* workspace_ = nullptr;
++};
++}
+diff --git a/src/dense/forward.cpp b/src/dense/forward.cpp
+index f23ac36..a04aa9e 100644
+--- a/src/dense/forward.cpp
++++ b/src/dense/forward.cpp
+@@ -34,7 +34,7 @@ namespace wg = kernels::wgemm;
+ // window's rows (up to kBatch) and which applies the tensor scale; others (the drafters' Q8_0) on MMQ with the tile of
+ // kNarrow or kBatch rows whatever the window's rows (activations quantized for the whole tile, the bounds {0, T} saying
+ // which rows are written), the scale applied after.  The window gemm's activations go to m.ws.xq, MMQ's to m.ws.x8.
+-bool on_wg(int type) { return type == kTypeF8 || type == kTypeNvfp4Planes || type == kTypeQ8P; }
++bool on_wg(int type) { return type == kTypeBf16 || type == kTypeF8 || type == kTypeNvfp4Planes || type == kTypeQ8P; }
+ // the scale the step after a prompt chunk product applies: an NVFP4 matrix's on MMQ (its product leaves it out), none after
+ // F8 and NVFP4 planes (their products apply it)
+ const float* post_scale(const Linear& l) { return l.type == kTypeF8 || l.type == kTypeNvfp4Planes ? nullptr : l.scale; }
+@@ -106,7 +106,7 @@ void mmq_run(Model& m, const Linear& l, const void* xq, float* y, int T, cudaStr
+ }
+ wg::Call wcall(const Linear& l, wg::Epilogue epi = wg::Epilogue::Store) {
+     wg::Call c;
+-    c.fmt = l.type == kTypeF8 ? wg::Format::F8 : l.type == kTypeQ8P ? wg::Format::Q8 : wg::Format::Nvfp4;
++    c.fmt = l.type == kTypeBf16 ? wg::Format::Bf16 : l.type == kTypeF8 ? wg::Format::F8 : l.type == kTypeQ8P ? wg::Format::Q8 : wg::Format::Nvfp4;
+     c.K = l.cols;
+     c.epi = epi;
+     return c;
+@@ -190,6 +190,11 @@ void prod_swiglu(Model& m, const Linear& gate, const Linear& up, const float* x,
+ // the tensor scale applied
+ void gemm(Model& m, const Linear& l, float* y, int T, cudaStream_t s) {
+     const void* xq = m.cs.xq;
++    if (l.type == kTypeBf16) {
++        m.bf16->run(static_cast<const uint16_t*>(xq), static_cast<const uint16_t*>(l.w),
++                     y, T, l.rows, l.cols, s);
++        return;
++    }
+     if (l.type == kTypeF8) {
+         prefill::fp8::gemm((const uint8_t*) l.w, l.rows, l.cols, l.scale, xq, T, y, l.rows, prefill::fp8::Epilogue::Store, s);
+         return;
+@@ -219,7 +224,8 @@ void gemm(Model& m, const Linear& l, float* y, int T, cudaStream_t s) {
+ // planes W4A4, E2M1 with a UE4M3 scale per 16 values against a per-row FP32 scale, in cs.a4 and cs.gs
+ void chunk_act(Model& m, const float* x, int type, int64_t cols, int T, cudaStream_t s) {
+     ChunkScratch& b = m.cs;
+-    if (type == kTypeF8) prefill::fp8::quantize(x, T, cols, cols, b.xq, s);
++    if (type == kTypeBf16) kernels::to_bf16(x, static_cast<uint16_t*>(b.xq), int64_t(T) * cols, s);
++    else if (type == kTypeF8) prefill::fp8::quantize(x, T, cols, cols, b.xq, s);
+     else if (type == kTypeNvfp4Planes) prefill::fp4_dense::quantize(x, T, cols, cols, b.a4, b.gs, s);
+     else prefill::mmq::quantize(x, nullptr, b.xq, type, cols, cols, T, s);
+ }
+diff --git a/src/dense/internal.hpp b/src/dense/internal.hpp
+index 4560fe9..f7de371 100644
+--- a/src/dense/internal.hpp
++++ b/src/dense/internal.hpp
+@@ -4,6 +4,7 @@
+ #include "basalt/dense/model.hpp"
+ #include "basalt/kernels/window_gemm.hpp"
+ #include "basalt/prefill/moe_mmq.hpp"
++#include "basalt/prefill/bf16_gemm.hpp"
+ 
+ #include <cuda_runtime.h>
+ 
+@@ -27,6 +28,7 @@ constexpr int kDraftQ = 20;       // candidates a block drafter's position keeps
+ constexpr int64_t kDraftVocab = 131072;   // vocabulary rows the block drafter's head scores (a multiple of 128)
+ constexpr int kChunk = 4096;      // tokens a prompt chunk reads at once
+ constexpr int kAttnSplits = 3;    // key splits the prompt attention may use: the most its plan picks for a full chunk
++constexpr int kTypeBf16 = 30;
+ constexpr int kTypeF8 = 44;       // F8_E4M3 projections (Linear::type)
+ constexpr int kTypeQ8P = 108;     // Q8_0 in planes (window_gemm Format::Q8), made at load for the decode window
+ constexpr int kTypeNvfp4Planes = 45;   // NVFP4_PLANES matrices (Linear::type, nvfp4_planes.hpp)
+@@ -125,6 +127,8 @@ public:
+     cudaStream_t stage_side = nullptr;
+     cudaEvent_t stage_free = nullptr, stage_ready = nullptr;
+     std::unique_ptr<prefill::mmq::Context> mmq;
++    std::unique_ptr<prefill::bf16::Context> bf16;
++    int64_t bf16_cols = 0;
+     std::vector<int> gdn_index, attn_index;      // per layer: its index among the GDN or attention layers (-1)
+     // the batch windows' graphs, one per composition (the sessions in the window and their rows), the least recently used out
+     using BatchKey = std::vector<std::pair<const SessionState*, int>>;
+diff --git a/src/dense/model.cpp b/src/dense/model.cpp
+index 74320cc..631b030 100644
+--- a/src/dense/model.cpp
++++ b/src/dense/model.cpp
+@@ -137,12 +137,12 @@ size_t window_bytes(const Geometry& g, const BlockDrafter& bd, int64_t max_conte
+     return f * 4 + 2 * act_slot(g) + q8_slot(g) + (wp + wt + 1) * 4 + W * 4 * 6 + 76 * 256;
+ }
+ 
+-size_t chunk_bytes(const Geometry& g) {
++size_t chunk_bytes(const Geometry& g, size_t bf16_cols = 0) {
+     const size_t T = kChunk, H = (size_t) g.n_embd, AQ = (size_t) g.n_head * g.head_dim, C = (size_t) g.conv_channels();
+     const size_t VD = (size_t) g.value_width(), HV = (size_t) g.gdn_v_heads;
+     const size_t widest = std::max<size_t>({H, (size_t) g.n_ff, VD, AQ});
+     const size_t keep = 6 * T * H * 4 + H * 4 +
+-                        std::max(prefill::mmq::q8_bytes(T, (int64_t) widest), prefill::fp8::act_bytes(T, (int64_t) widest)) +
++                        std::max({2 * T * bf16_cols, prefill::mmq::q8_bytes(T, (int64_t) widest), prefill::fp8::act_bytes(T, (int64_t) widest)}) +
+                         prefill::fp4_dense::act_bytes((int64_t) T, (int64_t) widest) + 2 * T * 4 + 5 * 256;
+     const size_t gdn = g.gdn_layers() ? (2 * T * C + 3 * T * VD + 4 * T * HV) * 4 + kernels::gdn_work_bytes(T) : 0;
+     const size_t attn = g.attn_layers() ? T * (2 * AQ + 2 * (size_t) g.n_kv * g.head_dim + 3 * AQ) * 4 +
+@@ -219,6 +219,7 @@ bool decode_drafter(Model& m, std::string& err) {
+         if (kernels::nvfp4p::fits(D.k.rows, D.k.cols) && kernels::nvfp4p::fits(D.v.rows, D.v.cols)) {
+             // k and v as NVFP4 copies (prompt chunks read their blocks), so q, k and v stay one call
+             for (Linear* l : {&D.k, &D.v}) {
++                if (l->type == kTypeNvfp4Planes || l->type == kTypeBf16 || l->type == kTypeF8) continue;
+                 void* p = nullptr;
+                 void* sc = nullptr;
+                 if (!q8(*l) || cudaMalloc(&p, kernels::nvfp4p::bytes(l->rows, l->cols)) != cudaSuccess ||
+@@ -378,6 +379,10 @@ bool Model::ready_products(std::string& err) {
+         for (const Linear* l : {&Lp->qkv, &Lp->z, &Lp->out, &Lp->q, &Lp->k, &Lp->v, &Lp->o, &Lp->gate, &Lp->up, &Lp->down})
+             if (l->w) ls.push_back(l);
+     for (const Linear* l : ls) {
++        if (l->type == kTypeBf16) {
++            bf16_cols = std::max(bf16_cols, l->cols);
++            continue;
++        }
+         if (l->type == kTypeF8 || l->type == kTypeNvfp4Planes) continue;   // the window gemm's, not MMQ's
+         if (!prefill::mmq::fits(l->type, l->rows)) {
+             err = o.arch + ": the products have no tile for a " + std::to_string(l->rows) + "-row matrix";
+@@ -385,13 +390,19 @@ bool Model::ready_products(std::string& err) {
+         }
+         prefill::mmq::load(l->type, l->rows);
+     }
++    if (bf16_cols) {
++        bf16 = std::make_unique<prefill::bf16::Context>();
++        if (!bf16->init(err)) return false;
++    }
+     return true;
+ }
+ 
+ bool Model::ensure_chunk(std::string& err) {
+     if (chunk_ready) return true;
+     const Geometry& gg = g;
+-    if (!pre_arena.reserve(chunk_bytes(gg))) {
++    const size_t bf16_bytes = size_t(kChunk) * size_t(bf16_cols) * 2;
++    // Reserve extra only for a model that actually contains BF16 projections.
++    if (!pre_arena.reserve(chunk_bytes(gg, size_t(bf16_cols)))) {
+         err = o.arch + ": out of device memory for the prompt workspaces";
+         return false;
+     }
+@@ -402,7 +413,7 @@ bool Model::ensure_chunk(std::string& err) {
+     b.x = pre_arena.take<float>(T * H);
+     b.xn = pre_arena.take<float>(T * H);
+     b.tmp = pre_arena.take<float>(T * H);
+-    b.xq = pre_arena.take_bytes(std::max(prefill::mmq::q8_bytes(T, (int64_t) widest), prefill::fp8::act_bytes(T, (int64_t) widest)));
++    b.xq = pre_arena.take_bytes(std::max({bf16_bytes, prefill::mmq::q8_bytes(T, (int64_t) widest), prefill::fp8::act_bytes(T, (int64_t) widest)}));
+     b.tok = pre_arena.take<int32_t>(T);
+     b.pos = pre_arena.take<int32_t>(3 * T);
+     b.iota = pre_arena.take<int32_t>(T);
 diff --git a/src/kernels/cpu/ggml/ggml_cpu_dispatch.cpp b/src/kernels/cpu/ggml/ggml_cpu_dispatch.cpp
 index aa85695..b0c5f58 100644
 --- a/src/kernels/cpu/ggml/ggml_cpu_dispatch.cpp
@@ -252,6 +484,26 @@ index 878fd10..fe85e89 100644
      // the second card's link: half the bus's misses, rounded down, when the bus has as many as the CPU
      CHECK(peer_bus_count(1, 0) == 0);
      CHECK(peer_bus_count(2, 0) == 0);
+diff --git a/src/models/qwen35/meta.hpp b/src/models/qwen35/meta.hpp
+index f31c7d4..8f0df13 100644
+--- a/src/models/qwen35/meta.hpp
++++ b/src/models/qwen35/meta.hpp
+@@ -18,11 +18,13 @@ inline std::string linear_type_error(const std::string& base, uint32_t type, int
+     if (type == kTypeNvfp4)
+         return "qwen35: " + base + ".weight is NVFP4 in ggml blocks, from a pack older than NVFP4_PLANES: re-convert the "
+                "pack (tools/convert/convert.py --checkpoint, docs/model-file.md)";
+-    if (type != kTypeQ8_0 && type != kTypeNvfp4Planes && type != kTypeF8)
+-        return "qwen35: " + base + ".weight is " + ggml_type_name(type) + "; the dense kernels read Q8_0, NVFP4_PLANES and F8_E4M3";
++    if (type != kTypeQ8_0 && type != kTypeNvfp4Planes && type != kTypeF8 && type != kTypeBf16)
++        return "qwen35: " + base + ".weight is " + ggml_type_name(type) + "; the dense kernels read BF16, Q8_0, NVFP4_PLANES and F8_E4M3";
+     if (type == kTypeNvfp4Planes && !kernels::nvfp4p::fits(rows, cols))
+         return "qwen35: " + base + ".weight: NVFP4_PLANES of " + std::to_string(rows) + " x " + std::to_string(cols) +
+                " (planes need rows in 128s and 64-value groups)";
++    if (type == kTypeBf16 && (rows % 128 != 0 || cols % 256 != 0))
++        return "qwen35: " + base + ".weight: BF16 requires rows in 128s and columns in 256s";
+     if (type == kTypeF8 && cols % 256 != 0)
+         return "qwen35: " + base + ".weight: F8_E4M3 rows of " + std::to_string(cols) + " values (the kernels read multiples of 256)";
+     return {};
 diff --git a/src/models/qwen4exp/kernels/ngram.cpp b/src/models/qwen4exp/kernels/ngram.cpp
 index b38f018..bc4bac1 100644
 --- a/src/models/qwen4exp/kernels/ngram.cpp
@@ -310,6 +562,88 @@ index b38f018..bc4bac1 100644
                : impl_->fmt == PleFormat::BF16 ? PLE_ROW_BYTES_BF16 : PLE_ROW_BYTES;
      // PleReader's row_bytes is a runtime parameter: every format's rows go through the same generic path
      // (ple_reader_test --selftest covers straddling, caching, in-flight tickets, keep-alive).
+diff --git a/src/models/qwen4exp/prefill/gemm.cu b/src/models/qwen4exp/prefill/gemm.cu
+index ffd860f..bca7ad8 100644
+--- a/src/models/qwen4exp/prefill/gemm.cu
++++ b/src/models/qwen4exp/prefill/gemm.cu
+@@ -1,5 +1,6 @@
+ // src/models/qwen4exp/prefill/gemm.cu - see include/basalt/models/qwen4exp/prefill/gemm.hpp.
+ #include "basalt/models/qwen4exp/prefill/gemm.hpp"
++#include "basalt/prefill/bf16_gemm.hpp"
+ #include "basalt/kernels/dequant_bf16.hpp"
+ #include "basalt/models/qwen4exp/kernels/hc_fused.hpp"
+ 
+@@ -124,12 +125,7 @@ void Gemm::bf16(const uint16_t* X, const uint16_t* W, float* Y, int64_t T, int64
+                 float beta) {
+     if (T <= 0 || N <= 0) return;
+     if (ldy <= 0) ldy = N;
+-    const float alpha = 1.0f;
+-    // Column-major view: Y^T[N, T] = W[N, K] (stored K x N col-major, transposed) . X^T[K, T].
+-    ck(cublasGemmEx((cublasHandle_t) handle_, CUBLAS_OP_T, CUBLAS_OP_N, (int) N, (int) T, (int) K, &alpha, W,
+-                    CUDA_R_16BF, (int) K, X, CUDA_R_16BF, (int) K, &beta, Y, CUDA_R_32F, (int) ldy,
+-                    CUBLAS_COMPUTE_32F, CUBLAS_GEMM_DEFAULT),
+-       "cublasGemmEx");
++    bf16::product(handle_, X, W, Y, T, N, K, ldy, beta);
+ }
+ 
+ void Gemm::bf16_w(const uint16_t* X, const uint16_t* W, float* Y, int64_t T, int64_t N, int64_t K, int64_t ldy) {
+diff --git a/src/prefill/bf16_gemm.cpp b/src/prefill/bf16_gemm.cpp
+new file mode 100644
+index 0000000..1c653a7
+--- /dev/null
++++ b/src/prefill/bf16_gemm.cpp
+@@ -0,0 +1,51 @@
++#include "basalt/prefill/bf16_gemm.hpp"
++#include <cublas_v2.h>
++#include <limits>
++#include <stdexcept>
++
++namespace basalt::prefill::bf16 {
++namespace {
++constexpr size_t kWorkspace = 32u << 20;
++void check(cublasStatus_t status, const char* call) {
++    if (status != CUBLAS_STATUS_SUCCESS)
++        throw std::runtime_error(std::string("BF16 product: ") + call + ": cuBLAS " + std::to_string(int(status)));
++}
++}
++void product(void* handle, const uint16_t* x, const uint16_t* w, float* y,
++             int64_t T, int64_t N, int64_t K, int64_t ldy, float beta) {
++    if (T <= 0 || N <= 0 || K <= 0 || ldy < N ||
++        T > std::numeric_limits<int>::max() || N > std::numeric_limits<int>::max() ||
++        K > std::numeric_limits<int>::max() || ldy > std::numeric_limits<int>::max())
++        throw std::invalid_argument("BF16 product: invalid matrix geometry");
++    const float alpha = 1.0f;
++    check(cublasGemmEx(static_cast<cublasHandle_t>(handle), CUBLAS_OP_T, CUBLAS_OP_N,
++        int(N), int(T), int(K), &alpha, w, CUDA_R_16BF, int(K), x, CUDA_R_16BF, int(K),
++        &beta, y, CUDA_R_32F, int(ldy), CUBLAS_COMPUTE_32F, CUBLAS_GEMM_DEFAULT), "cublasGemmEx");
++}
++Context::~Context() {
++    if (handle_) cublasDestroy(static_cast<cublasHandle_t>(handle_));
++    if (workspace_) cudaFree(workspace_);
++}
++bool Context::init(std::string& err) {
++    cublasHandle_t handle = nullptr;
++    const auto status = cublasCreate(&handle);
++    if (status != CUBLAS_STATUS_SUCCESS) {
++        err = "BF16 product: cublasCreate: " + std::to_string(int(status));
++        return false;
++    }
++    handle_ = handle;
++    const auto allocated = cudaMalloc(&workspace_, kWorkspace);
++    if (allocated != cudaSuccess) {
++        err = std::string("BF16 product: workspace: ") + cudaGetErrorString(allocated);
++        return false;
++    }
++    return true;
++}
++void Context::run(const uint16_t* x, const uint16_t* w, float* y,
++                   int64_t T, int64_t N, int64_t K, cudaStream_t stream) {
++    const auto h = static_cast<cublasHandle_t>(handle_);
++    check(cublasSetStream(h, stream), "cublasSetStream");
++    check(cublasSetWorkspace(h, workspace_, kWorkspace), "cublasSetWorkspace");
++    product(handle_, x, w, y, T, N, K, N);
++}
++}
 diff --git a/tests/cuda/prefill_mmq_nvfp4_test.cpp b/tests/cuda/prefill_mmq_nvfp4_test.cpp
 index a942910..9107e8c 100644
 --- a/tests/cuda/prefill_mmq_nvfp4_test.cpp
@@ -461,6 +795,64 @@ index a942910..9107e8c 100644
          cudaStreamDestroy(s);
          return rc;
      } catch (const std::exception& ex) {
+diff --git a/tests/kernels/bf16_gemm_test.cpp b/tests/kernels/bf16_gemm_test.cpp
+new file mode 100644
+index 0000000..475972f
+--- /dev/null
++++ b/tests/kernels/bf16_gemm_test.cpp
+@@ -0,0 +1,52 @@
++#include "basalt/prefill/bf16_gemm.hpp"
++#include <cuda_runtime.h>
++#include <algorithm>
++#include <cmath>
++#include <cstdint>
++#include <cstdio>
++#include <cstring>
++#include <stdexcept>
++#include <utility>
++#include <vector>
++
++namespace {
++uint32_t mix(uint32_t v) {
++    v ^= v >> 16; v *= 0x7feb352d; v ^= v >> 15; v *= 0x846ca68b; return v ^ (v >> 16);
++}
++uint16_t bits(float x) { uint32_t u; std::memcpy(&u,&x,4); return uint16_t((u+0x7fff+((u>>16)&1))>>16); }
++float value(uint16_t b) { uint32_t u=uint32_t(b)<<16; float x; std::memcpy(&x,&u,4); return x; }
++void check(cudaError_t e) { if(e!=cudaSuccess) throw std::runtime_error(cudaGetErrorString(e)); }
++}
++int main() {
++    int devices=0;
++    if(cudaGetDeviceCount(&devices)!=cudaSuccess || devices==0) return 77;
++    try {
++        basalt::prefill::bf16::Context context;
++        std::string error;
++        if(!context.init(error)) throw std::runtime_error(error);
++        double max_abs=0, max_scaled=0;
++        for(const auto shape : {std::pair<int,int>{128,256}, {12288,5120}, {5120,6144}}) {
++            const int N=shape.first,K=shape.second;
++            std::vector<uint16_t> w(size_t(N)*K), x(size_t(4096)*K);
++            for(size_t i=0;i<w.size();++i) w[i]=bits((int(mix(uint32_t(i)+17)%511)-255)/512.0f);
++            for(size_t i=0;i<x.size();++i) x[i]=bits((int(mix(uint32_t(i)+97)%511)-255)/128.0f);
++            uint16_t *dw=nullptr,*dx=nullptr;float*dy=nullptr;
++            check(cudaMalloc(&dw,w.size()*2));check(cudaMalloc(&dx,x.size()*2));check(cudaMalloc(&dy,size_t(4096)*N*4));
++            check(cudaMemcpy(dw,w.data(),w.size()*2,cudaMemcpyHostToDevice));check(cudaMemcpy(dx,x.data(),x.size()*2,cudaMemcpyHostToDevice));
++            for(int T : {1,4,7,16,17,33,4096}) {
++                context.run(dx,dw,dy,T,N,K,nullptr);check(cudaDeviceSynchronize());
++                for(int t : {0,T/2,T-1}) for(int n : {0,1,N/3,N/2,N-1}) {
++                    double reference=0,mass=0;
++                    for(int k=0;k<K;++k){double p=double(value(w[size_t(n)*K+k]))*value(x[size_t(t)*K+k]);reference+=p;mass+=std::abs(p);}
++                    float got;check(cudaMemcpy(&got,dy+size_t(t)*N+n,4,cudaMemcpyDeviceToHost));
++                    const double abs=std::abs(double(got)-reference),scaled=abs/std::max(1.0,mass);
++                    max_abs=std::max(max_abs,abs);max_scaled=std::max(max_scaled,scaled);
++                    if(!std::isfinite(got)||scaled>2e-6) throw std::runtime_error("BF16 product differs from FP64 oracle");
++                }
++            }
++            cudaFree(dw);cudaFree(dx);cudaFree(dy);
++        }
++        std::printf("OK BF16 product real attention shapes T=1,4,7,16,17,33,4096 max_abs=%.9g max_error_over_sum_abs=%.9g\n",max_abs,max_scaled);
++        return 0;
++    } catch(const std::exception& e) { std::fprintf(stdout,"FAIL %s\n",e.what());return 1; }
++}
 diff --git a/tests/kernels/native_expert_parity.cpp b/tests/kernels/native_expert_parity.cpp
 index 75a2507..325d47b 100644
 --- a/tests/kernels/native_expert_parity.cpp
@@ -699,6 +1091,36 @@ index 75a2507..325d47b 100644
          }
      } else {
          const basalt::GgufModel model(basalt::gguf_split_paths(argv[1]));
+diff --git a/tests/kernels/window_gemm_parity.cpp b/tests/kernels/window_gemm_parity.cpp
+index 02c73d6..5e9c9f0 100644
+--- a/tests/kernels/window_gemm_parity.cpp
++++ b/tests/kernels/window_gemm_parity.cpp
+@@ -112,7 +112,9 @@ const Shape kShapes[] = {{wg::Format::F8, 10240, 5120, "F8 GDN qkv 10240x5120"},
+                          {wg::Format::F8, 5120, 6144, "F8 out 5120x6144"},       {wg::Format::F8, 12288, 5120, "F8 attn q 12288x5120"},
+                          {wg::Format::F8, 1024, 5120, "F8 attn k 1024x5120"},    {wg::Format::Nvfp4, 17408, 5120, "FP4 gate 17408x5120"},
+                          {wg::Format::Nvfp4, 5120, 17408, "FP4 down 5120x17408"},
+-                         {wg::Format::Bf16, 256, 5120, "BF16 selector 256x5120"}};
++                         {wg::Format::Bf16, 256, 5120, "BF16 selector 256x5120"},
++                         {wg::Format::Bf16, 12288, 5120, "BF16 attention query-gate 12288x5120"},
++                         {wg::Format::Bf16, 5120, 6144, "BF16 attention output 5120x6144"}};
+ 
+ wg::Workspace ws;
+ void need(const wg::Call& c) {
+diff --git a/tests/models/qwen35/linear_types_test.cpp b/tests/models/qwen35/linear_types_test.cpp
+index bdf3465..5ea3dd8 100644
+--- a/tests/models/qwen35/linear_types_test.cpp
++++ b/tests/models/qwen35/linear_types_test.cpp
+@@ -21,6 +21,10 @@ int main() {
+     check(linear_type_error(w, kTypeNvfp4Planes, 17408, 5120).empty(), "NVFP4_PLANES of 128-row blocks runs");
+     check(linear_type_error(w, kTypeF8, 6144, 5120).empty(), "F8_E4M3 with 256-value rows runs");
+ 
++    check(linear_type_error(w, kTypeBf16, 12288, 5120).empty(), "BF16 attention projections run");
++    check(has(linear_type_error(w, kTypeBf16, 127, 5120), "128s"), "unaligned BF16 rows are refused");
++    check(has(linear_type_error(w, kTypeBf16, 128, 5000), "256s"), "unaligned BF16 columns are refused");
++
+     const std::string old = linear_type_error(w, kTypeNvfp4, 17408, 5120);
+     check(has(old, "blk.0.ffn_gate.weight") && has(old, "older than NVFP4_PLANES") && has(old, "re-convert"),
+           "an old pack's ggml-block NVFP4 matrix is told to re-convert, by name");
 diff --git a/tests/ngram/ple_fp8_test.cpp b/tests/ngram/ple_fp8_test.cpp
 new file mode 100644
 index 0000000..9be6cd6
@@ -768,7 +1190,7 @@ index 0000000..9be6cd6
 +    return failures ? 1 : 0;
 +}
 diff --git a/tools/convert/convert.py b/tools/convert/convert.py
-index db98da5..df0e219 100644
+index db98da5..fb2c2ab 100644
 --- a/tools/convert/convert.py
 +++ b/tools/convert/convert.py
 @@ -358,7 +358,7 @@ def convert(a) -> None:
@@ -824,10 +1246,25 @@ index db98da5..df0e219 100644
      ap.add_argument("--mmproj", help="vision projector GGUF (required unless --no-vision)")
      ap.add_argument("--dspark", metavar="FILE", help="deepseek41: the DSpark drafter GGUF, stored whole as dspark/gguf")
      ap.add_argument("--into", metavar="PACK.basalt", help="with --dspark: add it to this pack, whose other sections stay as they are")
-@@ -796,6 +808,13 @@ def main():
+@@ -782,6 +794,7 @@ def main():
+     ap.add_argument("--checkpoint", metavar="DIR",
+                     help="an NVFP4 safetensors checkpoint: with --sections-from, the language model is read from it; "
+                          "with --requant-dense-q6k, the BF16 projections")
++    ap.add_argument("--ninfer", metavar="FILE", help="import the text component of a single-file NInfer v3 dense Qwen3.5 artifact")
+     ap.add_argument("--dense-q8-0", action="store_true",
+                     help="with --checkpoint and --sections-from: Q8_0 projections instead of Q6_K")
+     ap.add_argument("--stream-shards", action="store_true",
+@@ -796,6 +809,20 @@ def main():
      ap.add_argument("--dry-run", action="store_true",
                      help="with --gguf: print every section's offset and size and write nothing")
      a = ap.parse_args()
++    if a.ninfer:
++        if not a.out or any((a.gguf, a.checkpoint, a.sections_from, a.strata_pack, a.into, a.dspark,
++                            a.requant_dense_q6k, a.mmproj, a.mtp_source, a.drafter, a.head, a.dry_run)):
++            ap.error("--ninfer takes --out, --name and --force only")
++        import ninfer_qwen35
++        ninfer_qwen35.convert(a)
++        return
 +    if a.engram_gguf and (not a.gguf or a.strata_pack or a.sections_from or a.checkpoint or a.into or a.requant_dense_q6k):
 +        ap.error("--engram-gguf goes with DeepSeek --gguf shards only")
 +    if a.strata_pack:
@@ -957,6 +1394,391 @@ index 1a3b679..2350475 100644
              if native:
                  self.rows.append([name, "0", "0", "0", "0", "0", "0", str(ne0), str(ne1), "8", "0", "32"] + ["0"] * 7)
                  continue
+diff --git a/tools/convert/ninfer_qwen35.py b/tools/convert/ninfer_qwen35.py
+new file mode 100644
+index 0000000..0846d2a
+--- /dev/null
++++ b/tools/convert/ninfer_qwen35.py
+@@ -0,0 +1,379 @@
++"""Import the text component of a single-file NInfer v3 dense Qwen3.5 artifact.
++
++NVFP4 weights keep their E2M1 codes, UE4M3 scales and tensor multiplier; Q8_G32_FP16
++heads are repacked without rounding. BF16 projections stay BF16. The embedding is
++materialized as the BF16 values the source embedding Op returns. DFlash2 projections also keep their stored format; its selector is materialized as
++BF16 for the proposal-only selector. Vision and MTP are excluded. This converter does not change or copy source artifacts in place.
++"""
++from __future__ import annotations
++
++import json
++import math
++import pathlib
++import struct
++import tempfile
++from types import SimpleNamespace
++
++import numpy as np
++
++import checkpoint as C
++import checkpoint_qwen35 as Q
++import model_sections as S
++from model_file import ModelWriter, Stream, TENSOR_ALIGN
++import tokenizer
++
++HEADER = struct.Struct('<8sQ16s')
++TYPE = {'F32': 0, 'BF16': 30, 'Q8_0': 8, 'NVFP4_PLANES': 45}
++
++
++def bf16_values(bits):
++    return (np.asarray(bits, dtype=np.uint32) << 16).view(np.float32)
++
++
++def bf16_bits(values):
++    bits = np.asarray(values, dtype='<f4').view(np.uint32)
++    return ((bits + 0x7fff + ((bits >> 16) & 1)) >> 16).astype('<u2')
++
++
++def unpack_scales(raw, rows, cols):
++    if rows % 128 or cols % 64:
++        raise ValueError('NVFP4 requires 128-row and 64-column tiles')
++    # Tile axes: row block, column block, row%32, row//32%4, group%4.
++    return np.frombuffer(raw, np.uint8).reshape(rows//128, cols//64, 32, 4, 4).transpose(0, 3, 2, 1, 4).reshape(rows, cols//16).copy()
++
++
++def pack_scales(values):
++    rows, groups = values.shape
++    return values.reshape(rows//128, 4, 32, groups//4, 4).transpose(0, 3, 2, 1, 4).copy().tobytes()
++
++
++def matrix_values(matrix):
++    if matrix['format'] == 'BF16':
++        return bf16_values(matrix['bits'])
++    codes = matrix['codes']
++    unpacked = np.empty((codes.shape[0], codes.shape[1]*2),np.uint8)
++    unpacked[:,0::2],unpacked[:,1::2] = codes & 15,codes >> 4
++    return (Q.E2M1.astype(np.float32)[unpacked] *
++            np.repeat(S.fp8_e4m3_table()[matrix['scales']].astype(np.float32),16,axis=1) *
++            matrix['multiplier'])
++
++
++class Source:
++    def __init__(self, path):
++        self.path = pathlib.Path(path)
++        self.file = self.path.open('rb')
++        try:
++            magic, size, _ = HEADER.unpack(self.file.read(HEADER.size))
++            if magic != b'NINFER\0\3':
++                raise ValueError('expected NInfer v3')
++            self.directory = json.loads(self.file.read(size))
++            self.start = (HEADER.size + size + 4095) // 4096 * 4096
++            files = self.directory['files']
++            if len(files) != 1:
++                raise ValueError('this importer requires a single-file v3 artifact')
++            if self.path.stat().st_size != self.start + files[0]['payload_bytes']:
++                raise ValueError('artifact payload length mismatch')
++            self.objects = {o['id']: o for o in self.directory['objects']}
++            self.bindings = self.directory['bindings']
++            self.text = self.directory['components']['text']['config']
++            if self.text.get('model_type') != 'qwen3_5_text' or self.text.get('num_experts', 0):
++                raise ValueError('only the dense Qwen3.5 text architecture is supported')
++            geometry = tuple(self.text[k] for k in ('linear_num_key_heads', 'linear_num_value_heads', 'linear_key_head_dim', 'linear_value_head_dim'))
++            if geometry != (16, 48, 128, 128):
++                raise ValueError('unsupported GDN head order')
++        except BaseException:
++            self.file.close()
++            raise
++
++    def close(self):
++        self.file.close()
++
++    def read(self, obj, begin=0, length=None):
++        length = obj['bytes'] - begin if length is None else length
++        if begin < 0 or length < 0 or begin + length > obj['bytes']:
++            raise ValueError('object range out of bounds')
++        self.file.seek(self.start + obj['offset'] + begin)
++        data = self.file.read(length)
++        if len(data) != length:
++            raise ValueError('short object read')
++        return data
++
++    def binding(self, role):
++        binding = self.bindings[role]
++        parts = binding.get('parts') or [{'object': binding['object']}]
++        if len(parts) != 1:
++            raise ValueError(f'{role}: concatenated source bindings are unsupported')
++        part = parts[0]
++        obj = self.objects[part['object']]
++        begin, end = part.get('range', (0, math.prod(obj['shape'])))
++        if not 0 <= begin < end <= math.prod(obj['shape']):
++            raise ValueError(f'{role}: invalid logical binding range')
++        return obj, begin, end
++
++    def shape(self, role):
++        obj, begin, end = self.binding(role)
++        shape = obj['shape']
++        if len(shape) == 2:
++            if begin % shape[1] or end % shape[1]:
++                raise ValueError(f'{role}: partial matrix rows')
++            return ((end-begin)//shape[1], shape[1])
++        if begin or end != math.prod(shape):
++            raise ValueError(f'{role}: partial non-matrix binding')
++        return tuple(shape)
++
++    def raw_float(self, role):
++        obj, begin, end = self.binding(role)
++        fmt = obj['format']
++        if obj['layout'] != 'contiguous_le_v1' or fmt not in ('bf16', 'fp32'):
++            raise ValueError(f'{role}: expected contiguous BF16 or FP32')
++        size = 2 if fmt == 'bf16' else 4
++        values = np.frombuffer(self.read(obj, begin*size, (end-begin)*size), '<u2' if size == 2 else '<f4')
++        return (bf16_values(values) if size == 2 else values).reshape(self.shape(role))
++
++    def matrix(self, role):
++        obj, begin, end = self.binding(role)
++        rows, cols = self.shape(role)
++        if obj['format'] == 'bf16':
++            if obj['layout'] != 'contiguous_le_v1':
++                raise ValueError('unsupported BF16 layout')
++            bits = np.frombuffer(self.read(obj, begin*2, (end-begin)*2), '<u2').reshape(rows, cols).copy()
++            return {'format': 'BF16', 'bits': bits}
++        if obj['format'] != 'nvfp4' or obj['layout'] != 'block_scale_k16_m128x4_v1':
++            raise ValueError(f'{role}: matrix format {obj["format"]} unsupported')
++        n, k = obj['shape']
++        code_bytes = n*k//2
++        scale_offset = (code_bytes+255)//256*256
++        scales = unpack_scales(self.read(obj, scale_offset, n*k//16), n, k)
++        codes = np.frombuffer(self.read(obj, begin//2, (end-begin)//2), np.uint8).reshape(rows, cols//2).copy()
++        divisor = struct.unpack('<f', self.read(obj, scale_offset+n*k//16, 4))[0]
++        if not math.isfinite(divisor) or divisor <= 0:
++            raise ValueError('invalid NVFP4 divisor')
++        return {'format': 'NVFP4_PLANES', 'codes': codes, 'scales': scales[begin//k:end//k], 'multiplier': np.float32(1)/np.float32(divisor)}
++
++    def q8_chunks(self, role, embedding=False):
++        obj, begin, end = self.binding(role)
++        n, k = obj['shape']
++        if begin or end != n*k or obj['format'] != 'q8_g32_fp16' or obj['layout'] != 'row_split_k128_v1' or k % 128:
++            raise ValueError(f'{role}: expected whole Q8-G32 row-split matrix')
++        scale_offset = (n*k + 255)//256*256
++        for row in range(0, n, 1024):
++            count = min(1024, n-row)
++            codes = np.frombuffer(self.read(obj, row*k, count*k), np.int8).reshape(count, k//32, 32)
++            scales = np.frombuffer(self.read(obj, scale_offset+row*k//16, count*k//16), '<f2').reshape(count, k//32)
++            if embedding:
++                yield bf16_bits(codes.astype(np.float32)*scales.astype(np.float32)[..., None]).tobytes()
++            else:
++                blocks = np.empty((count, k//32, 34), np.uint8)
++                blocks[..., :2] = scales.copy().view(np.uint8).reshape(count, k//32, 2)
++                blocks[..., 2:] = codes.view(np.uint8)
++                yield blocks.tobytes()
++
++
++def transform_matrix(matrix, how):
++    if how == 'id':
++        return matrix
++    cols = matrix['bits'].shape[1] if matrix['format'] == 'BF16' else matrix['codes'].shape[1]*2
++    rows = matrix['bits'].shape[0] if matrix['format'] == 'BF16' else matrix['codes'].shape[0]
++    if how in ('vrows', 'zrows'):
++        indices = S.gdn_index(rows, S.GDN_QK_ROWS if how == 'vrows' else 0)
++        for key in ('bits', 'codes', 'scales'):
++            if key in matrix:
++                matrix[key] = matrix[key][indices].copy()
++    elif how == 'vcols':
++        indices = S.gdn_index(cols, 0)
++        if matrix['format'] == 'BF16':
++            matrix['bits'] = matrix['bits'][:, indices].copy()
++        else:
++            # The permutation moves 128-wide heads: packed pairs and groups stay whole.
++            matrix['codes'] = matrix['codes'][:, indices[::2]//2].copy()
++            matrix['scales'] = matrix['scales'][:, indices[::16]//16].copy()
++    else:
++        raise ValueError(f'unsupported matrix transform {how}')
++    return matrix
++
++
++class Plan:
++    def __init__(self, source):
++        self.source = source
++        self.specs = []
++        self.add('token_embd.weight', ('text/token_embedding',), 'embedding')
++        self.add('output.weight', ('text/output_head',), 'q8')
++        self.add('output_norm.weight', ('text/final_norm',), 'norm')
++        for layer, kind in enumerate(source.text['layer_types']):
++            p, g = f'text/layers/{layer}/', f'blk.{layer}.'
++            for role, name in [('input_norm', 'attn_norm.weight'), ('post_attention_norm', 'post_attention_norm.weight')]:
++                self.add(g+name, (p+role,), 'norm')
++            for role in ('gate', 'up', 'down'):
++                self.add(g+f'ffn_{role}.weight', (p+'mlp/'+role,), 'id')
++            if kind == 'linear_attention':
++                rules = [('attn_qkv.weight', ('query', 'key', 'value'), 'vrows'),
++                         ('attn_gate.weight', ('z',), 'zrows'), ('ssm_out.weight', ('output',), 'vcols'),
++                         ('ssm_alpha.weight', ('a_projection',), 'heads_bf16'),
++                         ('ssm_beta.weight', ('b_projection',), 'heads_bf16'),
++                         ('ssm_a', ('a_log',), 'negexp'), ('ssm_dt.bias', ('dt_bias',), 'heads'),
++                         ('ssm_conv1d.weight', ('convolution',), 'conv'), ('ssm_norm.weight', ('norm',), 'float')]
++                for name, roles, how in rules:
++                    self.add(g+name, tuple(p+'gdn/'+role for role in roles), how)
++            elif kind == 'full_attention':
++                for name, roles, how in [('attn_q.weight', ('query', 'gate'), 'qgate'),
++                    ('attn_k.weight', ('key',), 'id'), ('attn_v.weight', ('value',), 'id'),
++                    ('attn_output.weight', ('output',), 'id'), ('attn_q_norm.weight', ('query_norm',), 'norm'),
++                    ('attn_k_norm.weight', ('key_norm',), 'norm')]:
++                    self.add(g+name, tuple(p+'attention/'+role for role in roles), how)
++            else:
++                raise ValueError(f'unknown layer kind {kind}')
++        if 'dflash2'in source.directory['components']:
++            self.add_drafter()
++
++    def add_drafter(self):
++        config=self.source.directory['components']['dflash2']['config']
++        if config.get('architectures')!=['DFlash2DraftModel'] or set(config['layer_types'])!={'sliding_attention'}:
++            raise ValueError('unsupported DFlash2 architecture')
++        dc=config['dflash_config'];hidden=self.source.text['hidden_size']
++        for j,_ in enumerate(dc['target_layer_ids']):
++            self.add(f'dflash.fc.{j}.weight',('dflash2/feature_projection',),f'feature:{j}:{hidden}')
++        for name,role in [('hidden_norm.weight','context_norm'),('norm.weight','final_norm')]:
++            self.add('dflash.'+name,('dflash2/'+role,),'float')
++        for name,role in [('hidden.weight','hidden_projection'),('pred','predecessor_codebook'),('succ','successor_codebook')]:
++            self.add('dflash.selector.'+name,('dflash2/candidate_selector/'+role,),'draft_bf16')
++        rules=[('attn_norm.weight','input_norm','float'),('post_attention_norm.weight','post_attention_norm','float'),
++               ('attn_q.weight','attention/query','id'),('attn_k.weight','attention/key','id'),
++               ('attn_v.weight','attention/value','id'),('attn_output.weight','attention/output','id'),
++               ('attn_q_norm.weight','attention/query_norm','float'),('attn_k_norm.weight','attention/key_norm','float'),
++               ('ffn_gate.weight','mlp/gate','id'),('ffn_up.weight','mlp/up','id'),('ffn_down.weight','mlp/down','id'),
++               ('attn_conv.base','attention_conv/base_kernel','float'),('attn_conv.weight','attention_conv/kernel_projection','id'),
++               ('ffn_conv.base','mlp_conv/base_kernel','float'),('ffn_conv.weight','mlp_conv/kernel_projection','id')]
++        for layer in range(config['num_hidden_layers']):
++            for name,role,how in rules:
++                self.add(f'dflash.blk.{layer}.'+name,(f'dflash2/layers/{layer}/'+role,),how)
++
++    def drafter_kv(self):
++        if 'dflash2'not in self.source.directory['components']:return {}
++        c=self.source.directory['components']['dflash2']['config'];dc=c['dflash_config'];a='qwen35.dflash.'
++        return {a+'block_count':c['num_hidden_layers'],a+'block_size':8,a+'mask_token_id':dc['mask_token_id'],
++                a+'target_layers':dc['target_layer_ids'],a+'conv_kernel':dc['conv_kernel_size'],a+'conv_group':dc['conv_group_size'],
++                a+'selector_rank':dc['selector_rank'],a+'selector_top_k':dc['selector_top_k'],a+'sliding_window':c['sliding_window'],
++                a+'attention.head_count':c['num_attention_heads'],a+'attention.head_count_kv':c['num_key_value_heads'],
++                a+'attention.key_length':c['head_dim'],a+'feed_forward_length':c['intermediate_size'],
++                a+'rope.freq_base':float(c['rope_parameters']['rope_theta']),a+'attention.layer_norm_rms_epsilon':float(c['rms_norm_eps'])}
++
++    def add(self, name, roles, how):
++        shape = self.source.shape(roles[0])
++        if len(roles)>1:
++            shape = (sum(self.source.shape(role)[0] for role in roles), shape[1])
++        obj = self.source.binding(roles[0])[0]
++        form = {'embedding': 'BF16', 'q8': 'Q8_0', 'heads_bf16': 'BF16', 'draft_bf16':'BF16'}.get(how)
++        if form is None:
++            form = 'F32' if how in ('norm', 'float', 'heads', 'negexp', 'conv') else {'bf16':'BF16','nvfp4':'NVFP4_PLANES'}[obj['format']]
++        if how.startswith('feature:'):
++            shape=(shape[0],int(how.split(':')[2]))
++        if how == 'conv':
++            shape = tuple(reversed(shape))
++        elements = math.prod(shape)
++        size = {'BF16':elements*2,'F32':elements*4,'Q8_0':elements//32*34,'NVFP4_PLANES':elements//16*9}[form]
++        self.specs.append(dict(name=name, roles=roles, how=how, shape=list(reversed(shape)), form=form, size=size))
++
++    def chunks(self, spec):
++        roles, how = spec['roles'], spec['how']
++        if how in ('embedding', 'q8'):
++            yield from self.source.q8_chunks(roles[0], how == 'embedding')
++            return
++        if how in ('norm', 'float', 'heads', 'heads_bf16', 'negexp', 'conv'):
++            values = self.source.raw_float(roles[0])
++            if how == 'norm': values = values + np.float32(1)
++            elif how in ('heads', 'heads_bf16', 'negexp'): values = values[S.gdn_block_source()]
++            if how == 'negexp': values = -np.exp(values)
++            elif how == 'conv': values = values.T[S.gdn_index(values.shape[1], S.GDN_QK_ROWS)]
++            yield bf16_bits(values).tobytes() if how == 'heads_bf16' else values.astype('<f4').tobytes()
++            return
++        matrices = [self.source.matrix(role) for role in roles]
++        matrix = matrices[0]
++        if len(matrices)>1:
++            if any(m['format'] != matrix['format'] for m in matrices):
++                raise ValueError('mixed source formats in one matrix')
++            for key in ('bits', 'codes', 'scales'):
++                if key in matrix: matrix[key] = np.concatenate([m[key] for m in matrices])
++            if matrix['format'] == 'NVFP4_PLANES' and any(m['multiplier'] != matrix['multiplier'] for m in matrices):
++                raise ValueError('different tensor scales in one matrix')
++        if how=='draft_bf16':
++            yield bf16_bits(matrix_values(matrix)).tobytes()
++            return
++        if how.startswith('feature:'):
++            _,index,width=how.split(':');start=int(index)*int(width);end=start+int(width)
++            if matrix['format']=='BF16':matrix['bits']=matrix['bits'][:,start:end].copy()
++            else:
++                matrix['codes']=matrix['codes'][:,start//2:end//2].copy()
++                matrix['scales']=matrix['scales'][:,start//16:end//16].copy()
++        elif how == 'qgate':
++            # Source [all query heads, all gate heads]; target [query, gate] per head.
++            n, k = self.source.shape(roles[0]); d = self.source.text['head_dim']
++            for key in ('bits', 'codes', 'scales'):
++                if key in matrix:
++                    width = matrix[key].shape[1]
++                    matrix[key] = matrix[key].reshape(2,n//d,d,width).transpose(1,0,2,3).reshape(2*n,width).copy()
++        else:
++            transform_matrix(matrix, how)
++        if matrix['format'] == 'BF16':
++            yield matrix['bits'].astype('<u2').tobytes()
++        else:
++            yield matrix['codes'].tobytes()
++            yield pack_scales(matrix['scales'])
++
++    def multiplier(self, spec):
++        obj, _, _ = self.source.binding(spec['roles'][0]);n,k = obj['shape']
++        at = ((n*k//2+255)//256*256)+n*k//16
++        divisor = struct.unpack('<f',self.source.read(obj,at,4))[0]
++        if divisor<=0 or not math.isfinite(divisor):raise ValueError('invalid NVFP4 divisor')
++        return struct.pack('<f',np.float32(1)/np.float32(divisor))
++
++
++def convert(args):
++    out = pathlib.Path(args.out)
++    if out.resolve() == pathlib.Path(args.ninfer).resolve():
++        raise ValueError('output must differ from the source artifact')
++    if out.exists() and not args.force:
++        raise ValueError(f'{out} exists')
++    source = Source(args.ninfer)
++    partial = out.with_suffix(out.suffix+'.partial')
++    writer = None
++    try:
++        plan = Plan(source)
++        with tempfile.TemporaryDirectory(dir=out.parent) as tmp:
++            directory = pathlib.Path(tmp)
++            for name in ('tokenizer.json','tokenizer_config.json','generation_config.json','chat_template.jinja'):
++                obj = source.objects.get('frontend/'+name)
++                if obj: (directory/name).write_bytes(source.read(obj))
++            interval = source.text['layer_types'].index('full_attention')+1
++            tc = dict(source.text, attn_output_gate=True, full_attention_interval=interval, mtp_num_hidden_layers=0)
++            added = {t['content']:t['id'] for t in json.loads((directory/'tokenizer.json').read_text()).get('added_tokens',[])}
++            config = dict(image_token_id=added['<|image_pad|>'], video_token_id=added['<|video_pad|>'], vision_start_token_id=added['<|vision_start|>'])
++            ck = SimpleNamespace(dir=directory,text=tc,config=config)
++            kv = Q.model_kv(ck,args.name or source.directory.get('metadata',{}).get('name','Qwen3.5'))
++            kv.update(plan.drafter_kv())
++            tokenizer.extract_metadata(kv,directory)
++            writer = ModelWriter(str(partial))
++            for path in sorted((directory/'tokenizer').iterdir()):
++                if path.is_file():writer.add_file('tokenizer/'+path.name,str(path))
++            specs, parts = [], []
++            for spec in plan.specs:
++                specs.append(spec)
++                parts.append(Stream(spec['size'],plan.chunks(spec)))
++                if spec['form'] == 'NVFP4_PLANES':
++                    specs.append(dict(name=spec['name'].removesuffix('.weight')+'.scale',form='F32',shape=[1],size=4))
++                    parts.append(plan.multiplier(spec))
++            offsets = writer.add_parts('gguf',parts,TENSOR_ALIGN)
++            tensors = {s['name']:dict(type=s['form'],type_id=TYPE[s['form']],shape=s['shape'],bytes=s['size'],offset=off) for s,off in zip(specs,offsets)}
++            meta = dict(format='basalt',version=2,arch='qwen35',name=kv['general.name'],gguf_kv=kv,tensors=tensors,
++                converter=dict(tool='tools/convert/convert.py --ninfer'),sources=[dict(path=source.path.name,size=source.path.stat().st_size)],
++                mtp=dict(layers=0),conversions=dict(source='NInfer v3 text',weights='NVFP4 and BF16 preserved, Q8 head losslessly repacked',embedding='Q8 values rounded once to semantic BF16',excluded_components=['vision','mtp'],draft_selector='NVFP4 represented values rounded to BF16 for Basalt proposal selection; target weights unchanged'))
++            meta['required_engine_features']=['qwen35-bf16-projections']
++            if plan.drafter_kv():meta['required_engine_features'].append('qwen35-nvfp4-dflash2')
++            if plan.drafter_kv():meta['dflash']=dict(source='NInfer v3 DFlash2',block_size=8,selector='BF16 materialized from represented NVFP4 values; proposal only')
++            writer.add_bytes('meta',json.dumps(meta,separators=(',',':'),ensure_ascii=False).encode())
++            writer.close();writer=None
++            partial.replace(out)
++            print(f'Imported {len(tensors)} tensors to {out} ({out.stat().st_size/2**30:.3f} GiB)',flush=True)
++    finally:
++        source.close()
++        if writer is not None:writer.f.close()
++        partial.unlink(missing_ok=True)
 diff --git a/tools/convert/strata_pack.py b/tools/convert/strata_pack.py
 new file mode 100644
 index 0000000..0b330be
@@ -1152,6 +1974,148 @@ index 0000000..b0a4ae4
 +
 +
 +if __name__ == "__main__":
++    unittest.main()
+diff --git a/tools/convert/test_ninfer_qwen35.py b/tools/convert/test_ninfer_qwen35.py
+new file mode 100644
+index 0000000..54a818a
+--- /dev/null
++++ b/tools/convert/test_ninfer_qwen35.py
+@@ -0,0 +1,136 @@
++"""Exact import semantics: packed values, binding slices and GDN head pairing."""
++import json
++import pathlib
++import struct
++import tempfile
++import unittest
++
++import numpy as np
++import ninfer_qwen35 as N
++
++
++class ImportTests(unittest.TestCase):
++    def source(self, objects, bindings):
++        temporary = tempfile.TemporaryDirectory()
++        self.addCleanup(temporary.cleanup)
++        path = pathlib.Path(temporary.name)/'fixture.ninfer'
++        payload, entries = bytearray(), []
++        for name, shape, form, layout, raw in objects:
++            padding = (-len(payload)) % 256
++            payload.extend(bytes(padding))
++            entries.append(dict(id=name,shape=shape,format=form,layout=layout,offset=len(payload),bytes=len(raw),kind='tensor'))
++            payload.extend(raw)
++        text = dict(model_type='qwen3_5_text',linear_num_key_heads=16,linear_num_value_heads=48,
++                    linear_key_head_dim=128,linear_value_head_dim=128)
++        directory = dict(objects=entries,bindings=bindings,components=dict(text=dict(config=text)),files=[dict(path=None,payload_bytes=len(payload))])
++        data = json.dumps(directory).encode()
++        framed = N.HEADER.pack(b'NINFER\0\3',len(data),bytes(16))+data
++        path.write_bytes(framed+bytes((-len(framed))%4096)+payload)
++        source = N.Source(path)
++        self.addCleanup(source.close)
++        return source
++
++    def test_bf16_rounding_matches_even_at_halfway(self):
++        bits = np.array([0x3f800000,0x3f808000,0x3f818000,0xbf808000,0xbf818000],dtype=np.uint32)
++        np.testing.assert_array_equal(N.bf16_bits(bits.view(np.float32)),[0x3f80,0x3f80,0x3f82,0xbf80,0xbf82])
++
++    def test_q8_repack_preserves_every_code_and_scale_and_embedding_cast(self):
++        rows, cols = 128, 256
++        codes = (np.arange(rows*cols,dtype=np.uint32)*13+97).astype(np.uint8).view(np.int8).reshape(rows,cols//32,32)
++        scales = ((np.arange(rows*cols//32)%37+1)/128).astype('<f2').reshape(rows,cols//32)
++        raw = codes.tobytes()+scales.tobytes()
++        source = self.source([('table',[rows,cols],'q8_g32_fp16','row_split_k128_v1',raw)],{'table':dict(object='table')})
++        repacked = np.frombuffer(b''.join(source.q8_chunks('table')),np.uint8).reshape(rows,cols//32,34)
++        np.testing.assert_array_equal(repacked[...,2:].view(np.int8),codes)
++        np.testing.assert_array_equal(repacked[...,:2].copy().view('<f2').reshape(scales.shape),scales)
++        expected = codes.astype(np.float64)*scales.astype(np.float64)[...,None]
++        got = np.frombuffer(b''.join(source.q8_chunks('table',True)),'<u2').reshape(expected.shape)
++        # Values are exactly represented in FP32 before the semantic BF16 output cast.
++        expected_bits = N.bf16_bits(expected.astype(np.float32))
++        np.testing.assert_array_equal(got,expected_bits)
++
++    def test_bf16_binding_slice_does_not_requantize(self):
++        values = (np.arange(512*256,dtype=np.uint32)*31).astype('<u2').reshape(512,256)
++        source = self.source([('parent',[512,256],'bf16','contiguous_le_v1',values.tobytes())],
++                             {'slice':dict(parts=[dict(object='parent',range=[128*256,384*256])])})
++        np.testing.assert_array_equal(source.matrix('slice')['bits'],values[128:384])
++        self.assertEqual(source.shape('slice'),(256,256))
++
++    def test_nvfp4_payload_and_swizzled_scales_are_exact(self):
++        rows, cols = 256, 256
++        codes = (np.arange(rows*cols//2,dtype=np.uint32)*17+5).astype(np.uint8).reshape(rows,cols//2)
++        scales = (np.arange(rows*cols//16,dtype=np.uint32)*11%127).astype(np.uint8).reshape(rows,cols//16)
++        # Independent writer of the published m128x4 scale coordinates.
++        stored = bytearray(rows*cols//16)
++        for row in range(rows):
++            for group in range(cols//16):
++                tile = (row//128)*(cols//64)+group//4
++                stored[tile*512+(row%32)*16+((row//32)%4)*4+group%4] = scales[row,group]
++        raw = codes.tobytes()+stored+struct.pack('<f',13)
++        source = self.source([('w',[rows,cols],'nvfp4','block_scale_k16_m128x4_v1',raw)],{'w':dict(object='w')})
++        matrix = source.matrix('w')
++        np.testing.assert_array_equal(matrix['codes'],codes)
++        np.testing.assert_array_equal(matrix['scales'],scales)
++        self.assertEqual(N.pack_scales(matrix['scales']),stored)
++        self.assertEqual(matrix['multiplier'],np.float32(1)/np.float32(13))
++
++    def test_gdn_reorder_preserves_query_key_and_value_pairing(self):
++        rows, cols = 10240, 256
++        codes = np.broadcast_to(np.arange(rows,dtype=np.uint32)[:,None]%256,(rows,cols//2)).astype(np.uint8).copy()
++        scales = np.broadcast_to(np.arange(rows,dtype=np.uint32)[:,None]%127,(rows,cols//16)).astype(np.uint8).copy()
++        matrix = dict(format='NVFP4_PLANES',codes=codes.copy(),scales=scales.copy(),multiplier=np.float32(1))
++        N.transform_matrix(matrix,'vrows')
++        np.testing.assert_array_equal(matrix['codes'][:4096],codes[:4096])
++        for value_head in range(48):
++            key_head = value_head%16
++            repetition = value_head//16
++            source_head = key_head*3+repetition
++            for offset in (0,17,127):
++                target_row=4096+value_head*128+offset
++                source_row=4096+source_head*128+offset
++                np.testing.assert_array_equal(matrix['codes'][target_row],codes[source_row])
++                np.testing.assert_array_equal(matrix['scales'][target_row],scales[source_row])
++        # Output columns reverse precisely that permutation, moving complete code pairs and groups.
++        c=np.arange(128*6144//2,dtype=np.uint32).astype(np.uint8).reshape(128,3072)
++        sc=np.arange(128*384,dtype=np.uint32).astype(np.uint8).reshape(128,384)
++        out=dict(format='NVFP4_PLANES',codes=c.copy(),scales=sc.copy(),multiplier=np.float32(1))
++        N.transform_matrix(out,'vcols')
++        for value_head in range(48):
++            original=(value_head%16)*3+value_head//16
++            np.testing.assert_array_equal(out['codes'][:,value_head*64:(value_head+1)*64],c[:,original*64:(original+1)*64])
++            np.testing.assert_array_equal(out['scales'][:,value_head*8:(value_head+1)*8],sc[:,original*8:(original+1)*8])
++
++    def test_partial_matrix_rows_are_refused(self):
++        source = self.source([('w',[128,256],'bf16','contiguous_le_v1',bytes(128*256*2))],
++                             {'bad':dict(parts=[dict(object='w',range=[1,257])])})
++        with self.assertRaisesRegex(ValueError,'partial matrix rows'):
++            source.shape('bad')
++
++    def test_draft_selector_materialization_and_feature_column_slices(self):
++        rows, cols = 128, 512
++        codes = (np.arange(rows*cols//2,dtype=np.uint32)*13+7).astype(np.uint8).reshape(rows,cols//2)
++        scales = (np.arange(rows*cols//16,dtype=np.uint32)%40+30).astype(np.uint8).reshape(rows,cols//16)
++        raw = codes.tobytes()+N.pack_scales(scales)+struct.pack('<f',13)
++        source = self.source([('w',[rows,cols],'nvfp4','block_scale_k16_m128x4_v1',raw)],{'w':dict(object='w')})
++        plan = N.Plan.__new__(N.Plan)
++        plan.source, plan.specs = source, []
++        plan.add('selector',('w',),'draft_bf16')
++        got = np.frombuffer(b''.join(plan.chunks(plan.specs[0])),'<u2').reshape(rows,cols)
++        magnitudes = (0,.5,1,1.5,2,3,4,6)
++        for row in (0,31,32,127):
++            for col in (0,1,15,16,255,256,511):
++                byte = int(codes[row,col//2])
++                code = (byte >> (4*(col%2))) & 15
++                scale = int(scales[row,col//16])
++                exponent, mantissa = scale>>3,scale&7
++                decoded_scale = (mantissa/8*2**-6 if exponent==0 else (1+mantissa/8)*2**(exponent-7))
++                expected = (-1 if code&8 else 1)*magnitudes[code&7]*decoded_scale/13
++                self.assertEqual(got[row,col],N.bf16_bits(np.float32(expected)))
++        plan.add('feature',('w',),'feature:1:256')
++        packed = b''.join(plan.chunks(plan.specs[-1]))
++        np.testing.assert_array_equal(np.frombuffer(packed[:rows*128],np.uint8).reshape(rows,128),codes[:,128:])
++        np.testing.assert_array_equal(N.unpack_scales(packed[rows*128:],rows,256),scales[:,16:])
++
++
++if __name__ == '__main__':
 +    unittest.main()
 diff --git a/tools/convert/test_strata_pack.py b/tools/convert/test_strata_pack.py
 new file mode 100644
