@@ -1,0 +1,94 @@
+.basalt-card {
+  border: 1px solid var(--border-color, #5555);
+  border-radius: 12px;
+  padding: 18px;
+  margin-block: 16px;
+  color: inherit;
+}
+.basalt-card h3 {
+  margin: 0 0 8px;
+}
+.basalt-card small {
+  font-size: 12px;
+  opacity: 0.7;
+  font-weight: normal;
+}
+.basalt-card details {
+  border-top: 1px solid #8884;
+  margin-top: 14px;
+  padding-top: 12px;
+}
+.basalt-card summary {
+  cursor: pointer;
+  padding: 4px 0;
+}
+.basalt-card fieldset {
+  border: 0;
+  padding: 12px 0;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: end;
+}
+.basalt-card .basalt-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+.basalt-card label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 160px;
+  font-size: 13px;
+}
+.basalt-card input,
+.basalt-card select {
+  box-sizing: border-box;
+  color: inherit;
+  background: transparent;
+  border: 1px solid #8886;
+  border-radius: 6px;
+  padding: 8px;
+  width: 100%;
+}
+.basalt-card select option {
+  color: #ddd;
+  background: #262626;
+}
+.basalt-card button {
+  border: 1px solid #8886;
+  border-radius: 6px;
+  padding: 8px 12px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.basalt-card button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.basalt-card [role="alert"] {
+  color: #ed8e85;
+}
+.basalt-card .basalt-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  grid-column: 1 / -1;
+}
+.basalt-card .basalt-checkbox {
+  flex-direction: row;
+  align-items: center;
+}
+.basalt-card .basalt-checkbox input {
+  width: auto;
+}
+.basalt-card pre,
+.basalt-card .basalt-path {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 12px;
+  max-height: 240px;
+  overflow: auto;
+}

@@ -1,0 +1,39 @@
+name: Verify Basalt provider
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/checkout@v4
+        with:
+          repository: jesdga95/basalt
+          ref: v0.4.0
+          path: upstream
+          persist-credentials: false
+      - run: "python -m pip install --only-binary=:all: -r upstream/requirements.txt"
+      - run: npm ci
+      - run: npm run build && git diff --exit-code -- client.js
+      - run: npm run check
+      - run: npm test
+        env:
+          BASALT_SOURCE: ${{ github.workspace }}/upstream
+          BASALT_PYTHON: python
+          OPENBLAS_NUM_THREADS: "1"
+      - run: npm pack --ignore-scripts
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dsh-basalt-package
+          path: dsh-basalt-*.tgz

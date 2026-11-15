@@ -1,0 +1,9 @@
+{
+  "version": "0.4.0",
+  "source": "https://github.com/jesdga95/basalt",
+  "url": "https://github.com/jesdga95/basalt/releases/download/v0.4.0/basalt-v0.4.0-linux-x64.tar.gz",
+  "sha256": "372206464e3d586406244b9745e1753cd2bc82006eb7a50e311d220c8b7f00c1",
+  "platform": "linux-x64",
+  "cuda": "13",
+  "computeCapability": "12.0"
+}
