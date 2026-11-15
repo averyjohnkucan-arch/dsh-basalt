@@ -32,6 +32,52 @@ test("native v2 header + metadata inspection handles every supported architectur
     assert.equal(cfg.server.host, "127.0.0.1");
   }
 });
+
+test("tuned native options preserve values and reject flags belonging to another model or service", async (t) => {
+  const root = await temporary(t);
+  const model = await inspectModel(
+    await modelFile(join(root, "tuned.basalt"), "qwen4exp", {
+      requiredEngineFeatures: ["mixed-nvfp4-q8", "fp8-ple"],
+    }),
+  );
+  assert.deepEqual(model.requiredEngineFeatures, ["mixed-nvfp4-q8", "fp8-ple"]);
+  const p = newProfile(model);
+  p.engineOptions = {
+    spec: 8,
+    "pool-workers": 14,
+    "pool-affinity": "auto",
+    "resident-budget-gib": 96,
+    "expert-profile": join(root, "ranking.prof"),
+    "kv-resident": 65536,
+    "prefill-cpu-share": 0.6,
+  };
+  const entry = serverConfig(p, 18081, root).models[0];
+  for (const [key, value] of Object.entries(p.engineOptions))
+    assert.equal(entry[key], value);
+  for (const options of [
+    { model: "/tmp/other" },
+    { host: "0.0.0.0" },
+    { "prefill-cpu-share": NaN },
+    { spec: 17 },
+    { spec: 9 },
+    { "kv-resident": 999999 },
+    { "kv-resident": 1024 },
+    { "pcie-frac": 0.25 },
+    { "resident-budget-gib": 0 },
+    { "resident-budget-gib": Infinity },
+    { "expert-profile": "relative.prof" },
+    { "expert-profile": "/bad\0profile" },
+  ]) {
+    p.engineOptions = options;
+    assert.throws(() => validateProfile(p), /native engine option/);
+  }
+  p.model.architecture = "deepseek41";
+  p.kv = "fp8";
+  p.engineOptions = { "draft-experts": 64, "pool-workers": 12, spec: 6 };
+  assert.equal(validateProfile(p), p);
+  p.engineOptions = { prefill: "auto" };
+  assert.throws(() => validateProfile(p), /native engine option/);
+});
 test("rejects old packs, truncation, corrupted metadata, unknown architectures and invalid section offsets", async (t) => {
   const root = await temporary(t);
   await assert.rejects(

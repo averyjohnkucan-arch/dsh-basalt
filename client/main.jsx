@@ -22,6 +22,13 @@ const gib = (bytes) => (bytes / 2 ** 30).toFixed(1) + " GiB";
 function Profile({ profile, architectures, busy, act }) {
   const [p, set] = useState(profile);
   const edit = (key, value) => set((old) => ({ ...old, [key]: value }));
+  const editEngine = (key, value) =>
+    set((old) => {
+      const engineOptions = { ...old.engineOptions };
+      if (value === "") delete engineOptions[key];
+      else engineOptions[key] = Number(value);
+      return { ...old, engineOptions };
+    });
   useEffect(() => set(profile), [profile.id]);
   return (
     <details className="basalt-model">
@@ -119,6 +126,40 @@ function Profile({ profile, architectures, busy, act }) {
               0 keeps native thinking uncapped by an answer reserve.
             </small>
           </label>
+          <label>
+            Speculation window
+            <select
+              value={p.engineOptions?.spec ?? ""}
+              onChange={(e) => editEngine("spec", e.target.value)}
+            >
+              <option value="">Automatic</option>
+              {[
+                0,
+                2,
+                4,
+                6,
+                8,
+                ...(p.model.architecture === "qwen35" ? [12, 16] : []),
+              ].map((value) => (
+                <option key={value} value={value}>
+                  {value === 0 ? "Off" : value}
+                </option>
+              ))}
+            </select>
+          </label>
+          {p.model.architecture !== "qwen35" && (
+            <label>
+              CPU workers
+              <input
+                type="number"
+                min="1"
+                max="256"
+                value={p.engineOptions?.["pool-workers"] ?? ""}
+                placeholder="Automatic"
+                onChange={(e) => editEngine("pool-workers", e.target.value)}
+              />
+            </label>
+          )}
           <label className="basalt-checkbox">
             <input
               type="checkbox"

@@ -66,3 +66,14 @@ The runtime folder must be new. The installer refuses an existing destination. S
 ## License
 
 MIT. DSH integration utilities adapted from `dsh-strata` retain its license. Basalt and its bundled upstream code have their own MIT and third-party notices. NVIDIA runtime wheels retain NVIDIA's licenses. Model licenses remain those of their respective model cards.
+
+## Custom mixed-tensor runtime
+
+The scratch development branch accepts `required_engine_features` from pack metadata and checks them against
+`features` in the selected runtime's `dsh-engine.json` before starting CUDA. Native Strata FP8 PLE and mixed NVFP4/Q8
+packs require a custom Basalt build advertising `fp8-ple` and `mixed-nvfp4-q8`. Managed stock v0.4.0 does not provide them.
+
+Saved profiles can include `engineOptions` with validated native options: `spec`, `pool-workers`, `resident-budget-gib`, `expert-profile` (absolute file path), and (for Flash-Next)
+`pool-affinity`, `prefill-cpu-share`, `prefill`, `kv-resident`; DeepSeek also accepts `draft-experts`. Values are passed to
+the native model entry in server configuration. Retired flags such as `pcie-frac` are rejected. Benchmark profiles and
+runtime folders are kept separately from installed DSH state; importing them remains a separate operation.

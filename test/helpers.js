@@ -11,7 +11,7 @@ export async function temporary(t) {
 export async function modelFile(
   path,
   arch = "qwen4exp",
-  { version = 2, vision = false } = {},
+  { version = 2, vision = false, requiredEngineFeatures = [] } = {},
 ) {
   const entries = [
     [
@@ -20,6 +20,7 @@ export async function modelFile(
         JSON.stringify({
           name: "Test " + arch,
           gguf_kv: { "general.architecture": arch },
+          required_engine_features: requiredEngineFeatures,
         }),
       ),
     ],
