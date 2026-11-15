@@ -28,8 +28,8 @@
     },
     {
       "path": "harness/prepare_benchmark_publication.py",
-      "sha256": "125bde886c07cc687ea0fa0bce95feb2039821c41118b5d9a910590f85e5f5fb",
-      "bytes": 2503
+      "sha256": "e44f7bb9e0511865d2844f602e165e15014d99594baa484b4b4e870138e4d489",
+      "bytes": 2546
     },
     {
       "path": "harness/native_bench.py",
@@ -118,8 +118,8 @@
     },
     {
       "path": "harness/range_plugin_adapter_smoke.mjs",
-      "sha256": "8657c208d521ceddfcfd3796e030b44164523073fb86ac6f8df2496d82f42230",
-      "bytes": 6280
+      "sha256": "cd35b48303a9429511d37b1f72e1fa08e973cc7604a91916b43b460e2717b332",
+      "bytes": 6533
     },
     {
       "path": "harness/profile_measurement_helpers.mjs",

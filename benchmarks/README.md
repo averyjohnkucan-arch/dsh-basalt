@@ -35,6 +35,8 @@ The same executable, model, native arguments and exact 209,715-token prompt meas
 
 Final old/new comparisons are rerun together in the fresh `performance-powerd-20261115` cohort. Historical results remain available but cannot enter the new selection: environment identity participates in configuration identity, case paths and repeatability plans are distinct, and power preconditions are checked before and after new runs. Telemetry now records the enforced/default limit as well as the firmware profile. A 95 W requested/default value must never be described as a fixed enforced limit or constant draw.
 
+With Dynamic Boost active, this driver can report the requested-power field as `N/A`. The plugin validation receipt preserves that as `null` and checks the available 95 W default, 110 W hardware maximum and current enforced reading. It does not invent a requested-power measurement when the driver omits it.
+
 For this session the recovery used `sudo systemctl restart nvidia-powerd`, then `sudo powerprofilesctl set balanced` and `sudo powerprofilesctl set performance`. No driver replacement, reboot, manual overclock or clock locking was applied. This repaired the current session; a persistent fix for the daemon's boot-time crash is not established. [NVIDIA's Dynamic Boost documentation](https://download.nvidia.com/XFree86/Linux-x86_64/580.173.02/README/dynamicboost.html) describes the daemon's CPU/GPU power-budget role.
 
 ## Memory isolation

@@ -10,7 +10,7 @@ for name in files:
  (harness/name).write_bytes(data);manifest.append(dict(path='harness/'+name,sha256=hashlib.sha256(data).hexdigest(),bytes=len(data)))
 (dest/'source-manifest.json').write_text(json.dumps(dict(scope='Exact harness snapshot; scratch paths and sibling clone layout retained for audit. No weights, generated answers, credentials, or token-ID fixtures included.',files=manifest),indent=2)+'\n')
 receipts=dest/'evidence';receipts.mkdir(exist_ok=True)
-for name in ['prose-corpus-sources.json','ninfer-saved-profile-fidelity.json','ninfer-native-framing-identity.json','oom-recovery.json','benchmark-memory-isolation-test.json','benchmark-memory-guard-fault-test.json','recovery-memory-headroom-audit.json','power-profile-before.json','power-profile-after.json','power-policy-matched-comparison.json','deepseek-source-artifact-fidelity.json','deepseek-latest-frozen-token-identity.json']:
+for name in ['prose-corpus-sources.json','ninfer-saved-profile-fidelity.json','ninfer-native-framing-identity.json','oom-recovery.json','benchmark-memory-isolation-test.json','benchmark-memory-guard-fault-test.json','benchmark-power-reading-parser-test.json','recovery-memory-headroom-audit.json','power-profile-before.json','power-profile-after.json','power-policy-matched-comparison.json','deepseek-source-artifact-fidelity.json','deepseek-latest-frozen-token-identity.json']:
  source=O/name
  if source.exists():shutil.copy2(source,receipts/name)
 status=O/'performance-qualified'

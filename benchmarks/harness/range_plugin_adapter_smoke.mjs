@@ -40,10 +40,10 @@ async function verifyNativeCommand(profile){
  const gpuProcess=gpuProcesses.split('\n').find(line=>Number(line.split(',')[0])===actual.pid);
  if(!gpuProcess)throw Error('Selected native engine PID is not present in the GPU process list');
  const {stdout:power}=await execFileAsync('nvidia-smi',['--id=0','-q','-d','POWER'],{timeout:10000});
- const reading=label=>{const match=power.match(new RegExp(label+'\\s*:\\s*([0-9.]+) W'));if(!match)throw Error('Missing GPU power reading: '+label);return Number(match[1]);};
- const requested=reading('Requested Power Limit'),enforced=reading('Current Power Limit'),defaultLimit=reading('Default Power Limit');
- if(requested!==95||defaultLimit!==95)throw Error('GPU requested/default power policy changed from the qualified setup');
- return {status:'ok',pid:actual.pid,executable:expectedExe,args,checkedControls:checked,cgroup:ownCgroup,gpuProcess:gpuProcess.trim(),requestedPowerLimitW:requested,observedEnforcedPowerLimitW:enforced,defaultPowerLimitW:defaultLimit};
+ const reading=(label,optional=false)=>{const line=power.split(String.fromCharCode(10)).find(x=>x.trim().startsWith(label));const value=line?Number(line.slice(line.indexOf(':')+1).trim().split(' ')[0]):NaN;if(!Number.isFinite(value)){if(optional)return null;throw Error('Missing GPU power reading: '+label);}return value;};
+ const requested=reading('Requested Power Limit',true),enforced=reading('Current Power Limit'),defaultLimit=reading('Default Power Limit');
+ const maximum=reading('Max Power Limit');if(defaultLimit!==95||maximum!==110||enforced<=0||enforced>maximum+.5)throw Error('GPU default/maximum power policy changed from the qualified setup');
+ return {status:'ok',pid:actual.pid,executable:expectedExe,args,checkedControls:checked,cgroup:ownCgroup,gpuProcess:gpuProcess.trim(),requestedPowerLimitW:requested,observedEnforcedPowerLimitW:enforced,defaultPowerLimitW:defaultLimit,maximumPowerLimitW:maximum};
 }
 if(engine==='ninfer'){
  const {Runtime}=await import('./dsh-ninfer/lib/runtime.js');
