@@ -1,4 +1,4 @@
-import {readFile,open} from 'node:fs/promises';
+import {readFile,open,readdir} from 'node:fs/promises';
 import {join} from 'node:path';
 import {createHash} from 'node:crypto';
 export async function performanceQualified(root,key,selections){
@@ -17,7 +17,7 @@ export function nativeSignature(c){
  const omitted=new Set(['--draft-log','--conversation-cache-dir','--conversation-cache-disk-mib','--conversation-cache-mib','--prompt-cache','--eos','--eos-ids','--stop-eos']);
  while(i<a.length){const flag=a[i++];if(!flag.startsWith('--')){position.push(flag);continue;}let value=true;if(i<a.length&&!a[i].startsWith('--'))value=a[i++];if(!omitted.has(flag))flags[flag]=value;}
  if(flags['--expert-profile']&&c.expert_profile_source)flags['--expert-profile']=c.expert_profile_source;
- return JSON.stringify([a.slice(0,4),position,Object.entries(flags).sort(([a],[b])=>a.localeCompare(b)),c.artifact_header_sha256,c.engine_binary_sha256]);
+ const identity=[a.slice(0,4),position,Object.entries(flags).sort(([a],[b])=>a.localeCompare(b)),c.artifact_header_sha256,c.engine_binary_sha256];if(c.benchmark_environment_id)identity.push(c.benchmark_environment_id);return JSON.stringify(identity);
 }
 export async function memoryEvidence(root,metrics){
  const cases=[metrics.low,...metrics.high.cases];const records=[];
@@ -34,4 +34,17 @@ export async function memoryEvidence(root,metrics){
 export async function verifyPack(c){
  const a=c.command,at=a.indexOf('--model');if(at<0)return;
  const f=await open(a[at+1],'r');try{const b=Buffer.alloc(65536);const {bytesRead}=await f.read(b,0,b.length,0);if(bytesRead!==b.length||createHash('sha256').update(b).digest('hex')!==c.artifact_header_sha256||(await f.stat()).size!==c.artifact_bytes)throw Error('Measured pack identity changed; rebuild its own measurements before exporting');}finally{await f.close();}
+}
+export async function codeFunctionalEvidence(root,config){
+ const expected=nativeSignature(config),tasks=new Map();
+ for(const name of (await readdir(join(root,'outputs'))).filter(n=>n.startsWith('code-functional-')&&n.endsWith('.json')).sort()){
+  const rows=JSON.parse(await readFile(join(root,'outputs',name),'utf8'));
+  for(const row of rows){
+   if(!['merge_intervals','lru_trace','verify_draft'].includes(row.function))continue;
+   let result;try{result=JSON.parse(await readFile(join(root,'bench',row.case,'result.json'),'utf8'));}catch(error){if(error.code==='ENOENT')continue;throw error;}
+   if(nativeSignature(result.config)!==expected)continue;
+   tasks.set(row.function,{function:row.function,passed:row.passed===true,status:row.status,case:row.case,receipt:name});
+  }
+ }
+ const tests=[...tasks.values()];return {status:tests.length===3?'tested':'pending',scope:'Three independently checked generated Python functions in a restricted sandbox; does not establish whole-model BF16-reference quality',passed:tests.filter(x=>x.passed).length,total:tests.length,tests};
 }

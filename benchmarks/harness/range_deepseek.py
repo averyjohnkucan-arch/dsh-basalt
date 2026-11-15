@@ -7,8 +7,10 @@ if not artifact.exists():
  # Rotation is irreversible for our derived copies: require completed native and
  # actual-plugin evidence before freeing packs needed by the earlier matrix.
  for key in ['flash_basalt','hybrid_basalt','27b_basalt','27b_ninfer','flash_strata','hybrid_strata','gyro_strata','flash_fp16_basalt','hybrid_fp16_basalt','flash_fp16_strata','hybrid_fp16_strata','huihui_nvfp4_ninfer','huihui_int8_ninfer','huihui_fp8_ninfer']:
-  assert read(O/'performance-qualified'/(key+'.json'))['performance_qualified']
-  assert read(O/'performance-qualified'/(key+'-plugin-gpu.json'))['status']=='ok'
+  native=read(O/'performance-qualified'/(key+'.json'));plugin=read(O/'performance-qualified'/(key+'-plugin-gpu.json'))
+  assert native['performance_qualified']and plugin['status']=='ok'
+  environment=current_environment()
+  if environment:assert native['benchmark_environment_id']==plugin['benchmark_environment_id']==environment['id']
  receipt=read(O/'deepseek-pack-regeneration.json');command=receipt['command'];command[1]=str(W/'basalt-latest/tools/convert/convert.py')
  # Retain a complete reconstruction recipe before freeing any owned conversion.
  hybrid=read(O/'hybrid-pack-regeneration.json');hybrid['command'][1]=str(W/'basalt-latest/tools/convert/convert.py')

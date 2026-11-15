@@ -6,7 +6,10 @@ if family!='qwen'or key.startswith('gyro')or'fp16'in key:raise SystemExit(0)
 state=read(O/'range-selections.json');selection=state[key+'_long'];base=read(R/'bench'/selection['selected']/'result.json')['config'];ident=config_id(base)
 row=next(x for x in selection['candidates']if x['identity']==ident);genre=row['worst_genre']
 variants=[('reserve256',{'--vram-reserve-mib':256}),('reserve256-workers14',{'--vram-reserve-mib':256,'--pool-workers':14}),('reserve256-resident96k',{'--vram-reserve-mib':256,'--kv-resident':98304})]
-plan=O/(key+'-repeatability-plan.json');data=read(plan);known={config_id(read(R/'bench'/x['case']/'result.json')['config'])for x in data['selection']['candidates']}
+if key.endswith('_basalt'):
+ # This control affects prefill expert placement; verify sustained decode too.
+ variants += [(f'prefill-cpu-share-{share}',{'--prefill-cpu-share':share})for share in [0,.3,1]]
+plan=repeatability_plan(key);data=read(plan);known={config_id(read(R/'bench'/x['case']/'result.json')['config'])for x in data['selection']['candidates']}
 added=[]
 for label,changes in variants:
  c=changed(base,changes);candidate=config_id(c)

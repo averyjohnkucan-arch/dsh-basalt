@@ -11,6 +11,7 @@ if cfg.get('expert_profile_source'):
  cfg['input_profile_sha256']=hashlib.file_digest(target.open('rb'),'sha256').hexdigest()
  cfg['command']=list(cfg['command']);cfg['command'][cfg['command'].index('--expert-profile')+1]=str(target)
 from benchmark_memory_guard import MemoryGuard
+from benchmark_environment import power_snapshot
 guard=MemoryGuard(cfg,root)
 q=queue.Queue();stop=threading.Event();telemetry=[]
 def monitor():
@@ -18,8 +19,10 @@ def monitor():
   entry={'time':time.monotonic()};telemetry.append(entry)
   try:entry['host_memory']=guard.sample(proc)
   except Exception as e:entry['host_memory_error']=str(e)
+  try:entry['power_policy']=power_snapshot()
+  except Exception as e:entry['power_policy_error']=str(e)
   try:
-   entry['gpu']=subprocess.check_output(['nvidia-smi','--query-gpu=timestamp,power.draw,temperature.gpu,clocks.current.graphics,memory.used,utilization.gpu','--format=csv,noheader,nounits'],text=True,timeout=5).strip()
+   entry['gpu']=subprocess.check_output(['nvidia-smi','--query-gpu=timestamp,power.draw,temperature.gpu,clocks.current.graphics,memory.used,utilization.gpu,enforced.power.limit,power.default_limit','--format=csv,noheader,nounits'],text=True,timeout=5).strip()
    entry['ac']={p.parent.name:p.read_text().strip()for p in Path('/sys/class/power_supply').glob('*/online')}
   except Exception as e:entry['gpu_error']=str(e)
   stop.wait(1)
@@ -87,6 +90,7 @@ finally:
   if windows:
    elapsed=[sum(w[3:6]) for w in windows];total=sum(elapsed)
    result['draft_windows']={'count':len(windows),'mean_width':statistics.mean(w[0] for w in windows),'mean_accepted':statistics.mean(w[1] for w in windows),'mean_ms':statistics.mean(elapsed),'passes_per_s':len(windows)*1000/total if total else None,'draft_ms':sum(w[3] for w in windows),'verify_ms':sum(w[4] for w in windows),'post_ms':sum(w[5] for w in windows)}
+ result['gpu_telemetry_fields']=['timestamp','power.draw','temperature.gpu','clocks.current.graphics','memory.used','utilization.gpu','enforced.power.limit','power.default_limit']
  (root/'result.json').write_text(json.dumps(result,indent=2)+'\n');(root/'telemetry.json').write_text(json.dumps(telemetry))
  (root/'tokens.json').write_text(json.dumps(tokens if 'tokens'in locals()else []))
  print(json.dumps(result),flush=True)

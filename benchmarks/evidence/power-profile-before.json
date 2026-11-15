@@ -1,0 +1,11 @@
+{
+  "time_unix": 1794783741.4728622,
+  "nvidia_power": "\n==============NVSMI LOG==============\n\nTimestamp                                              : Sun Nov 15 15:02:21 2026\nDriver Version                                         : 595.99.02\nCUDA Version                                           : 13.2\n\nAttached GPUs                                          : 1\nGPU 00000000:01:00.0\n    GPU Power Readings\n        Average Power Draw                             : 54.70 W\n        Instantaneous Power Draw                       : 56.66 W\n        Current Power Limit                            : 55.00 W\n        Requested Power Limit                          : 95.00 W\n        Default Power Limit                            : 95.00 W\n        Min Power Limit                                : 5.00 W\n        Max Power Limit                                : 110.00 W\n    Power Samples\n        Duration                                       : Not Found\n        Number of Samples                              : Not Found\n        Max                                            : Not Found\n        Min                                            : Not Found\n        Avg                                            : Not Found\n    GPU Memory Power Readings \n        Average Power Draw                             : N/A\n        Instantaneous Power Draw                       : N/A\n    Module Power Readings\n        Average Power Draw                             : N/A\n        Instantaneous Power Draw                       : N/A\n        Current Power Limit                            : N/A\n        Requested Power Limit                          : N/A\n        Default Power Limit                            : N/A\n        Min Power Limit                                : N/A\n        Max Power Limit                                : N/A\n    EDPp Multiplier                                    : N/A\n\n",
+  "desktop_profile": "performance",
+  "firmware_profile": "balanced",
+  "cpu_epp": "performance",
+  "lapmode": "0",
+  "ac_online": "1",
+  "nvidia_powerd_state": "failed",
+  "note": "Before any power-policy change. GPU requested/default95W, dynamic enforced cap55W under active inference; desktop performance vs firmware balanced mismatch. Matching driver branch power daemon crashed at boot."
+}

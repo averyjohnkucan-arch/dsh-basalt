@@ -1,6 +1,6 @@
 """Serial post-performance plugin smoke, inside its own RAM-limited process scope."""
 from pathlib import Path
-import json,os,subprocess,sys,time
+import json,os,subprocess,sys,time,copy
 from benchmark_memory_guard import MemoryGuard
 R=Path('/mnt/media/scratch/dsh-inference-tuning-20261115');W=R/'work';O=R/'outputs'
 key=sys.argv[1];engine=key.rsplit('_',1)[1]
@@ -12,12 +12,17 @@ data=json.loads((O/f'dsh-{engine}-range-state/profiles.json').read_text());profi
 profiles=[p for p in profiles if p['id'].startswith('scratch-range-'+key.replace('_','-')+'-')]
 assert profiles,'No performance-qualified profiles exported'
 receipts=[]
+def same_launch_profile(a,b):
+ if not a:return False
+ a=copy.deepcopy(a);b=copy.deepcopy(b)
+ for profile in [a,b]:profile.get('verification8192',{}).pop('codeFunctionalEvidence',None)
+ return a==b
 for p in profiles:
  out=R/'validation/range-plugin-gpu'/p['id'];out.mkdir(parents=True,exist_ok=True)
  result=out/'adapter-result.json'
  if result.exists():
   previous=json.loads(result.read_text())
-  if previous.get('status')=='ok'and previous.get('savedVerification')==p.get('verification8192'):
+  if previous.get('status')=='ok'and previous.get('nativeCommandEvidence',{}).get('status')=='ok'and same_launch_profile(previous.get('savedProfile'),p):
    receipts.append(dict(profile=p['id'],status='ok',reused_qualified_receipt=True));continue
  guard=MemoryGuard({},out);telemetry=[]
  with(out/'worker.log').open('a')as log:
@@ -35,5 +40,5 @@ for p in profiles:
    (out/'host-memory.json').write_text(json.dumps(dict(policy=guard.policy,reason=guard.reason,samples=telemetry),indent=2))
   assert status==0 and not guard.reason,f'Plugin GPU smoke failed: {p["id"]}; see {out}'
  receipt=json.loads(result.read_text());assert receipt['status']=='ok';receipts.append(dict(profile=p['id'],status='ok',receipt=str(result)))
-(O/'performance-qualified'/(key+'-plugin-gpu.json')).write_text(json.dumps(dict(model_key=key,status='ok',receipts=receipts),indent=2))
+(O/'performance-qualified'/(key+'-plugin-gpu.json')).write_text(json.dumps(dict(model_key=key,status='ok',benchmark_environment_id=marker.get('benchmark_environment_id','legacy'),receipts=receipts),indent=2))
 print('PLUGIN GPU EVIDENCE GATE PASSED',key,flush=True)

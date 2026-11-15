@@ -1,10 +1,13 @@
 """Fresh, exact native-chat prompts and separately qualified decode screens."""
 from latest80_common import R,W,O,read,opt,latest,digest
 import copy,json,pathlib,subprocess,sys,time,shutil
+from benchmark_environment import current_environment,case_name,repeatability_plan,ensure_environment
 WORKLOADS=read(O/'range-workloads.json')
 
 def run(config,name,family,workload,n=8192,cache=None,reuse=False,role='qualified'):
- c=copy.deepcopy(config);name='range-'+name;out=R/'bench'/name
+ c=copy.deepcopy(config);name=case_name(name);out=R/'bench'/name
+ environment=current_environment()
+ if environment:c['benchmark_environment_id']=environment['id']
  fixture=next(x for x in WORKLOADS['cases']if x['family']==family and x['workload']==workload)
  c.update(output=str(out),prompt_file=fixture['prompt_file'],depth=fixture['depth'],generate=n,timed_tail=n//2,allow_reused=reuse,require_reuse_min=fixture['depth']-32 if reuse else 0,
           workload=workload,measurement_role=role,engine_binary_sha256=digest(c['command'][3]),gpu_power_limit_w=95,framing='native-tokenizer-chat-template; thinking off')
@@ -25,12 +28,14 @@ def run(config,name,family,workload,n=8192,cache=None,reuse=False,role='qualifie
    if path.exists():shutil.copy2(path,archive/'input-config.json')
  path.write_text(json.dumps(c,indent=2))
  if not same or not result.exists()or read(result).get('status')!='ok':
+  ensure_environment()
   if cache and not reuse:
    folder=R/'checkpoints'/('range-'+cache)
    assert folder.parent==R/'checkpoints'and folder.name.startswith('range-')
    if folder.exists():shutil.rmtree(folder)
   print(time.strftime('%H:%M:%S'),'START',name,flush=True)
   with(W/(name+'.progress')).open('w')as log:subprocess.run([sys.executable,str(W/('http_bench.py'if c.get('protocol')=='http'else'native_bench.py')),'--config',str(path)],stdout=log,stderr=subprocess.STDOUT)
+  ensure_environment()
  value=read(result);print(time.strftime('%H:%M:%S'),'END',name,value.get('status'),value.get('prefill_tok_s'),value.get('tail_decode_tok_s'),value.get('error'),flush=True)
  return value
 

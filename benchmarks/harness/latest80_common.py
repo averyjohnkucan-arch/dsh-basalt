@@ -1,5 +1,6 @@
 from tune80_common import read,opt,choose
 import json,pathlib,subprocess,sys,time,copy,os,hashlib,functools
+from benchmark_environment import current_environment
 R=pathlib.Path('/mnt/media/scratch/dsh-inference-tuning-20261115');W=R/'work';O=R/'outputs'
 PREFIX='latest-code-'
 @functools.lru_cache(None)
@@ -14,7 +15,7 @@ def latest(c,engine):
  elif engine=='strata':
   binary=R/'runtimes/strata-engine-0.1.59/strata';a[3]=str(binary);c['env']={**c.get('env',{}),'LD_LIBRARY_PATH':str(binary.parent)}
  elif engine=='ninfer':
-  a[3]=str(R/'build/ninfer-latest/apps/ninfer-serve');opt(c,'--device-profile-path',W/'ninfer-device-profile-latest-custom.json');opt(c,'--output-head-residency',None)
+  a[3]=str(R/'build/ninfer-latest/apps/ninfer-serve');opt(c,'--device-profile-path',W/('ninfer-device-profile-latest-custom-performance.json'if current_environment()else'ninfer-device-profile-latest-custom.json'));opt(c,'--output-head-residency',None)
  else:raise ValueError(engine)
  c['engine_channel']='latest-custom'if engine!='strata'else'latest-official-0.1.59'
  return c

@@ -2,7 +2,7 @@
 from range_common import *
 import statistics,hashlib
 key,family=sys.argv[1:3];GENRES=['text','chat','story']
-state=read(O/'range-selections.json');plan=O/(key+'-repeatability-plan.json')
+state=read(O/'range-selections.json');plan=repeatability_plan(key)
 if plan.exists():original=read(plan)
 else:
  original=dict(selection=state[key+'_long'],metrics=state[key+'_long_metrics']);plan.write_text(json.dumps(original,indent=2))
@@ -26,7 +26,7 @@ for path in(R/'bench').glob('range-*/result.json'):
 # Normalize the first pre-OOM sweep to the same isolated RAM policy as all later runs.
 reference=read(R/'bench'/original['selection']['selected']/'result.json')['config']['workload']
 for ident,group in groups.items():
- required=GENRES if len(original_coverage.get(ident,set()))==3 else [reference]
+ required=GENRES if len(original_coverage.get(ident,set()))==3 else ([reference]if not any(group['results'].values())else [])
  for genre in required:
   if not group['results'][genre]:
    r=run(group['config'],key+'-memory-check-'+ident+'-'+genre,family,genre)

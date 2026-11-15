@@ -1,10 +1,50 @@
-import {readFile,writeFile,mkdir} from 'node:fs/promises';
+import {readFile,writeFile,mkdir,realpath} from 'node:fs/promises';
 import {join} from 'node:path';
+import {execFile} from 'node:child_process';
+import {promisify} from 'node:util';
+const execFileAsync=promisify(execFile);
 const root='/mnt/media/scratch/dsh-inference-tuning-20261115';
 const [engine,id,destination]=process.argv.slice(2);
 if(!['basalt','ninfer','strata'].includes(engine)||!id?.startsWith('scratch-range-')||!destination?.startsWith(root+'/validation/'))throw Error('Explicit scratch profile and output required');
 const state=join(root,'outputs',`dsh-${engine}-range-state`),ctx={get:()=>undefined};
 let service,adapter;
+function nativeOptions(args){
+ const flags={};
+ for(let i=0;i<args.length;i++)if(args[i].startsWith('--'))flags[args[i]]=i+1<args.length&&!args[i+1].startsWith('--')?args[++i]:true;
+ return flags;
+}
+async function verifyNativeCommand(profile){
+ const selected=JSON.parse(await readFile(join(root,'work',profile.verification8192.sourceConfig+'.json'),'utf8'));
+ const expectedExe=await realpath(selected.command[3]);
+ const ownCgroup=(await readFile('/proc/self/cgroup','utf8')).trim().split('\n').find(x=>x.startsWith('0::')).slice(3);
+ if(!ownCgroup.endsWith('.scope'))throw Error('GPU validation requires an explicitly owned systemd scope');
+ const pids=(await readFile('/sys/fs/cgroup'+ownCgroup+'/cgroup.procs','utf8')).trim().split(/\s+/),matches=[];
+ for(const pid of pids){
+  try{if(await realpath('/proc/'+pid+'/exe')!==expectedExe)continue;
+   const args=(await readFile('/proc/'+pid+'/cmdline','utf8')).split('\0').filter(Boolean);matches.push({pid:Number(pid),args});
+  }catch(error){if(error.code!=='ENOENT')throw error;}
+ }
+ if(matches.length!==1)throw Error('Expected exactly one selected native engine in the owned validation scope');
+ const actual=matches[0],expected=nativeOptions(selected.command.slice(4)),observed=nativeOptions(actual.args.slice(1));
+ const transport=new Set(['--serve','--eos','--eos-ids','--stop-eos','--draft-log','--conversation-cache-dir','--conversation-cache-disk-mib','--conversation-cache-mib','--prompt-cache','--host','--port','--model-id','--api-key']);
+ const checked={};
+ for(const [flag,value]of Object.entries(expected)){
+  if(transport.has(flag))continue;
+  if(observed[flag]!==value)throw Error(`Plugin native control mismatch for ${flag}: expected ${value}, observed ${observed[flag]}`);
+  checked[flag]=value;
+ }
+ if(engine==='ninfer'&&actual.args[1]!==selected.command[4])throw Error('Plugin launched a different NInfer model artifact');
+ if(observed['--max-context']!==String(profile.context))throw Error('Plugin native context differs from exported capacity');
+ const args=[...actual.args];if(args.includes('--api-key'))args[args.indexOf('--api-key')+1]='REDACTED';
+ const {stdout:gpuProcesses}=await execFileAsync('nvidia-smi',['--query-compute-apps=pid,gpu_uuid,used_gpu_memory','--format=csv,noheader,nounits'],{timeout:10000});
+ const gpuProcess=gpuProcesses.split('\n').find(line=>Number(line.split(',')[0])===actual.pid);
+ if(!gpuProcess)throw Error('Selected native engine PID is not present in the GPU process list');
+ const {stdout:power}=await execFileAsync('nvidia-smi',['--id=0','-q','-d','POWER'],{timeout:10000});
+ const reading=label=>{const match=power.match(new RegExp(label+'\\s*:\\s*([0-9.]+) W'));if(!match)throw Error('Missing GPU power reading: '+label);return Number(match[1]);};
+ const requested=reading('Requested Power Limit'),enforced=reading('Current Power Limit'),defaultLimit=reading('Default Power Limit');
+ if(requested!==95||defaultLimit!==95)throw Error('GPU requested/default power policy changed from the qualified setup');
+ return {status:'ok',pid:actual.pid,executable:expectedExe,args,checkedControls:checked,cgroup:ownCgroup,gpuProcess:gpuProcess.trim(),requestedPowerLimitW:requested,observedEnforcedPowerLimitW:enforced,defaultPowerLimitW:defaultLimit};
+}
 if(engine==='ninfer'){
  const {Runtime}=await import('./dsh-ninfer/lib/runtime.js');
  const {LocalAdapter}=await import('./dsh-ninfer/lib/adapter.js');
@@ -20,12 +60,14 @@ try{
  await service.init();
  const profile=service.profiles.find(p=>p.id===id);if(!profile)throw Error('Qualified exported profile missing');
  record.profileName=profile.name;record.savedContext=profile.context;record.savedVerification=profile.verification8192;
+ record.savedProfile=profile;
  const signal=AbortSignal.timeout(540000),call=await adapter.prepareCall(engine,id,signal),chunks=[];
  for await(const chunk of call.stream({provider:engine,model:id,system:'Answer arithmetic briefly.',messages:[{role:'user',content:[{type:'text',text:'Calculate 2+2. Reply only with the single digit.'}]}],maxTokens:32,reasoningEffort:'off',signal}))chunks.push(chunk);
  record.chunks=chunks;record.text=chunks.filter(c=>c.type==='text-delta').map(c=>c.text).join('');
  record.arithmeticSanity=/^\s*4[.!]?\s*$/.test(record.text);
  record.finish=chunks.findLast(c=>c.type==='finish');
  if(!record.arithmeticSanity||!record.finish)throw Error('Arithmetic sanity or finish event missing');
+ record.nativeCommandEvidence=await verifyNativeCommand(profile);
  record.status='ok';
 }catch(error){record.error=error.stack||error.message;}
 finally{

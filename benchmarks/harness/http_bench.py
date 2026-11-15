@@ -3,13 +3,16 @@ import argparse,json,pathlib,subprocess,time,os,signal,urllib.request,hashlib,re
 p=argparse.ArgumentParser();p.add_argument('--config',required=True);a=p.parse_args();cfg=json.loads(pathlib.Path(a.config).read_text());out=pathlib.Path(cfg['output']);out.mkdir(parents=True,exist_ok=True)
 base='http://127.0.0.1:'+str(cfg.get('port',18301));start=time.monotonic();result={'config':cfg,'status':'failed','started_unix':time.time()};events=[];telemetry=[];stop=threading.Event()
 from benchmark_memory_guard import MemoryGuard
+from benchmark_environment import power_snapshot
 guard=MemoryGuard(cfg,out)
 def monitor():
  while not stop.is_set():
   entry={'time':time.monotonic()};telemetry.append(entry)
   try:entry['host_memory']=guard.sample(proc)
   except Exception as e:entry['host_memory_error']=str(e)
-  try:entry['gpu']=subprocess.check_output(['nvidia-smi','--query-gpu=timestamp,power.draw,temperature.gpu,clocks.current.graphics,memory.used,utilization.gpu','--format=csv,noheader,nounits'],text=True,timeout=5).strip()
+  try:entry['power_policy']=power_snapshot()
+  except Exception as e:entry['power_policy_error']=str(e)
+  try:entry['gpu']=subprocess.check_output(['nvidia-smi','--query-gpu=timestamp,power.draw,temperature.gpu,clocks.current.graphics,memory.used,utilization.gpu,enforced.power.limit,power.default_limit','--format=csv,noheader,nounits'],text=True,timeout=5).strip()
   except Exception as e:entry['gpu_error']=str(e)
   entry['ac']={p.parent.name:p.read_text().strip()for p in pathlib.Path('/sys/class/power_supply').glob('*/online')}
   stop.wait(1)
@@ -61,5 +64,6 @@ finally:
   try:proc.wait(timeout=30)
   except subprocess.TimeoutExpired:os.killpg(proc.pid,signal.SIGKILL);proc.wait()
  stop.set();thread.join(timeout=6);log.close();result['total_s']=time.monotonic()-start
+ result['gpu_telemetry_fields']=['timestamp','power.draw','temperature.gpu','clocks.current.graphics','memory.used','utilization.gpu','enforced.power.limit','power.default_limit']
  (out/'result.json').write_text(json.dumps(result,indent=2));(out/'telemetry.json').write_text(json.dumps(telemetry));(out/'arrival_events.json').write_text(json.dumps(events));print(json.dumps(result),flush=True)
 if result['status']!='ok':raise SystemExit(1)

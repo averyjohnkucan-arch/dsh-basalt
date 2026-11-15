@@ -1,4 +1,4 @@
-import {nativeSignature,memoryEvidence,verifyPack,performanceQualified} from './profile_measurement_helpers.mjs';
+import {nativeSignature,memoryEvidence,verifyPack,performanceQualified,codeFunctionalEvidence} from './profile_measurement_helpers.mjs';
 import {readFile,writeFile,mkdir} from 'node:fs/promises';
 import {join,dirname} from 'node:path';
 import {execFileSync} from 'node:child_process';
@@ -22,8 +22,9 @@ for(const [key,label]of [['flash_strata','Qwen3.8 Flash Next NVFP4 GPTQ INT8'],[
  const args=[];for(let i=4;i<a.length;i++){if(a[i]==='--serve'||a[i]==='--stop-eos')continue;if(['--eos','--eos-ids','--draft-log','--conversation-cache-dir','--conversation-cache-disk-mib','--conversation-cache-mib','--prompt-cache'].includes(a[i])){i++;continue;}args.push(a[i]);}
  let kv=option('kv')||'engine';if(kv==='int8')kv='Q8/Q8';if(kv==='fp16')kv='FP16/FP16';
  Object.assign(p,{id,name,context:Number(option('max-context')),kv,gpu:0,cpuSet:'0-21',mtp:option('mtp')||'',vision:'off',extraArgs:[],environment:c.env||{},applyPreset:false,portableTuning:{},runtime:{controlDir:control,python,executable:a[3],tqp:false},config:{exe:a[3],cwd:control,arch:deepseek?'deepseek41':'qwen4exp',model_name:id,host:'127.0.0.1',port:18500+profiles.length,gpu:0,tokenizer:join(option('pack'),'tokenizer'),open_browser:false,lib_dirs:[dirname(a[3])],env:c.env||{},args}});p.model.name=name;
- p.verification8192={protocol:'8192 generated; final 4096 timed',referenceProtocol:'8192-token code input; floor(80% native context) text/chat/story input; native chat template; thinking off',pairedQualified:true,answerQualityTested:false,qualityQualification:'See separate small generated-function receipts; no BF16-reference perplexity qualification',namePairMeaning:'First pair: low code; second pair: paired P/D of slowest high-context genre',metrics,selection,engineBinarySha256:c.engine_binary_sha256,gpuPowerLimitW:95,kvCache:p.kv,sourceConfig:selection.selected};
+ p.verification8192={protocol:'8192 generated; final 4096 timed',referenceProtocol:'8192-token code input; floor(80% native context) text/chat/story input; native chat template; thinking off',pairedQualified:true,answerQualityTested:false,qualityQualification:'See separate small generated-function receipts; no BF16-reference perplexity qualification',namePairMeaning:'First pair: low code; second pair: paired P/D of slowest high-context genre',metrics,selection,engineBinarySha256:c.engine_binary_sha256,gpuPowerLimitW:95,gpuPowerLimitMeaning:"Requested/default; actual enforced limit is dynamic and may be lower under load",kvCache:p.kv,benchmarkEnvironmentId:c.benchmark_environment_id||'legacy',sourceConfig:selection.selected};
  p.verification8192.hostMemoryEvidence=await memoryEvidence(root,metrics);
+ p.verification8192.codeFunctionalEvidence=await codeFunctionalEvidence(root,c);
  const validated=validateProfile(p);runConfig(validated);profiles.push(validated);seenConfigurations.add(signature);
 }
 await writeFile(join(out,'profiles.json'),JSON.stringify(profiles,null,2)+'\n');await writeFile(join(out,'settings.json'),JSON.stringify({controlDir:control,python,executable:join(root,'runtimes/strata-engine-0.1.59/strata'),helper:join(root,'work/dsh-strata/vendor/gguf-py')},null,2)+'\n');console.log(profiles.map(p=>({id:p.id,name:p.name})));

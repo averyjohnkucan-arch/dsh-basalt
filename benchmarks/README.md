@@ -11,7 +11,7 @@ Tuning remains in progress until each family has a matching performance receipt,
 - Generate 8,192 tokens and time the final 4,096 for sustained decode. HTTP draft-batch timing boundaries can differ by up to seven tokens; actual token counts are retained.
 - Thinking off, temperature zero, seed 42 where supported. Tokenizer-native chat framing is used. Exact prompt length and token hash are recorded. Model-native tokenizers must be checked before sharing fixtures across artifacts.
 - Fresh worker and no restored prefix for qualified prefill. OS file cache is not globally dropped. Restored-prefix screens are explicitly diagnostic.
-- RTX PRO 5000 Blackwell Laptop GPU, 95 W power limit. CPU affinity and native arguments are retained in each result. Inference weights come only from the NVMe.
+- RTX PRO 5000 Blackwell Laptop GPU, 95 W requested/default power. The enforced limit varies under load (55 W was observed); it is not a fixed 95 W draw or enforced limit. CPU affinity and native arguments are retained in each result. Inference weights come only from the NVMe.
 
 The long preset maximizes the minimum sustained decode across the three genre medians. It then maximizes the minimum cold prefill among complete measured configurations within 5% of the best measured minimum decode. The limiting genre is repeated. Free continuations can differ across settings and change draft acceptance, so a finite workload range is not a universal throughput guarantee.
 
@@ -24,6 +24,18 @@ The model and profile names use `... - pLOW/dLOW - pHIGH/dHIGH`. Each pair comes
 Performance qualification, actual DSH-adapter GPU serving, generated-code quality and source/binary publication are separate gates. A native timing receipt alone does not prove plugin functionality or answer quality. The main comparison has exactly three columns: model name, old settings speed, current Basalt speed. NInfer and Strata results stay in separate comparisons. Unsupported Basalt artifacts are labeled explicitly.
 
 The generated-function checks run the model's output unmodified inside Bubblewrap without home-directory or network access, with CPU and memory limits. A retained LRU-ordering failure means the small code suite is not wholly passing. Numerical kernel references and this small generated-code suite do not establish full BF16-reference model quality, vision support, or portability to untested architectures.
+
+`audit_range_outputs.py` separately inspects the actual selected continuations offline, verifies their token hashes, and records exact repeated long paragraphs and duplicate 16-token windows. Repetitive free continuations remain in the measured performance range. A high throughput observation can include repetitive output; it must not be presented as a guarantee of good conversational or story quality. These diagnostics are separate from the generated-function checks.
+
+## Power-policy recovery and benchmark cohorts
+
+The laptop initially reported desktop `performance` while its actual firmware profile was `balanced`; the matching installed `nvidia-powerd` service had crashed at boot. A running long-context test showed a 55 W enforced GPU limit despite a 95 W requested/default limit. With no inference worker active, restarting that service and reapplying the existing performance selection restored firmware `performance`. The subsequent full matched experiment observed a dynamic enforced limit of 95–110 W.
+
+The same executable, model, native arguments and exact 209,715-token prompt measured prefill 1,562 → 3,091 tokens/s and sustained late decode 54.0 → 71.8 tokens/s. Both generated 8,192 tokens and timed the final 4,096. Continuations differed, and the daemon/profile changes were applied together; this is one observed experiment, not a universal hardware-only or engine-only speedup. `evidence/power-policy-matched-comparison.json` retains the exact paired values and qualification.
+
+Final old/new comparisons are rerun together in the fresh `performance-powerd-20261115` cohort. Historical results remain available but cannot enter the new selection: environment identity participates in configuration identity, case paths and repeatability plans are distinct, and power preconditions are checked before and after new runs. Telemetry now records the enforced/default limit as well as the firmware profile. A 95 W requested/default value must never be described as a fixed enforced limit or constant draw.
+
+For this session the recovery used `sudo systemctl restart nvidia-powerd`, then `sudo powerprofilesctl set balanced` and `sudo powerprofilesctl set performance`. No driver replacement, reboot, manual overclock or clock locking was applied. This repaired the current session; a persistent fix for the daemon's boot-time crash is not established. [NVIDIA's Dynamic Boost documentation](https://download.nvidia.com/XFree86/Linux-x86_64/580.173.02/README/dynamicboost.html) describes the daemon's CPU/GPU power-budget role.
 
 ## Memory isolation
 

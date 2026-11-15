@@ -26,8 +26,11 @@ if short_metrics:assert check_metrics(short_metrics,short)==short_id
 else:assert long_id==short_id
 folder=O/'performance-qualified';folder.mkdir(exist_ok=True)
 record=dict(model_key=key,performance_qualified=True,qualified_at_unix=time.time(),scope='Native throughput and paired metric labels only; separate generated-code, plugin GPU and final-publication gates remain',long_selection=long['selected'],short_selection=short['selected'],long_identity=long_id,short_identity=short_id,long_metrics=long_metrics,short_metrics=short_metrics,peak_long_minimum_median_decode=peak,selected_long_minimum_median_decode=chosen['decode'],decode_floor=.95*peak,peak_code_median_decode=short['selected_median_decode'])
+record['benchmark_environment_id']=read(long['selected'])['config'].get('benchmark_environment_id','legacy')
 (folder/(key+'.json')).write_text(json.dumps(record,indent=2));print('PERFORMANCE EVIDENCE GATE PASSED',key,flush=True)
 
 subprocess.run([sys.executable,str(R/'work/range_progress_report.py')],check=True)
 if key=='flash_basalt':subprocess.run(['taskset','-c','22',str(R/'tools/build-env/bin/python'),str(R/'work/range_progress_chart.py')],check=True)
 subprocess.run([sys.executable,str(R/'work/range_plugin_gpu_gate.py'),key],check=True)
+family='deepseek'if key.startswith('deepseek')else'qwen27b'if key.startswith(('27b','huihui'))else'qwen'
+subprocess.run(['taskset','-c','22',str(R/'tools/build-env/bin/python'),str(R/'work/audit_range_outputs.py'),key,family],check=True)

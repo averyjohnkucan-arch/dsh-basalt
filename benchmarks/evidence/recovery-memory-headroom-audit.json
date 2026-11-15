@@ -1,0 +1,27 @@
+{
+  "status": "ok",
+  "conclusion": "Inspected Basalt recovery cases did not reach MemoryHigh or record any high/max/OOM events; keep proven policy unchanged. Old Strata text reached MemoryHigh with 87 events, no max/OOM events and ample host headroom.",
+  "cases": [
+    {
+      "case": "range-flash-old-text",
+      "minimum_host_available_gib": 43.06260681152344,
+      "peak_scope_gib": 96.00048065185547,
+      "maximum_host_psi": 1.54,
+      "final_scope_events": "low 0\nhigh 87\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\nsock_throttled 0"
+    },
+    {
+      "case": "range-flash_basalt-memory-check-0011b16c9e49-text",
+      "minimum_host_available_gib": 48.561370849609375,
+      "peak_scope_gib": 67.04106140136719,
+      "maximum_host_psi": 0.0,
+      "final_scope_events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\nsock_throttled 0"
+    },
+    {
+      "case": "range-flash_basalt-memory-check-3d7ff38d1afa-chat",
+      "minimum_host_available_gib": 47.06723403930664,
+      "peak_scope_gib": 66.23905181884766,
+      "maximum_host_psi": 0.0,
+      "final_scope_events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\nsock_throttled 0"
+    }
+  ]
+}

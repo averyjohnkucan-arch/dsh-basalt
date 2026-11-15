@@ -1,0 +1,40 @@
+{
+  "status": "ok",
+  "created_unix": 1794784610.3058338,
+  "before_case": "range-flash_basalt-range-check-1102ad848cd8-text",
+  "after_case": "power-policy-performance-check",
+  "same_native_command_except_log_path": true,
+  "same_exact_prompt": true,
+  "prompt_tokens": 209715,
+  "generated_tokens": 8192,
+  "identical_output_tokens": false,
+  "before": {
+    "prefill": 1561.9600190669128,
+    "decode": 53.99374929650373,
+    "gpu": {
+      "median_draw_w": 54.72,
+      "maximum_draw_w": 56.24,
+      "enforced_limit_range_w": [
+        55.0,
+        55.0
+      ],
+      "median_enforced_limit_w": 55.0
+    }
+  },
+  "after": {
+    "prefill": 3090.6663247576053,
+    "decode": 71.84825411826895,
+    "gpu": {
+      "median_draw_w": 101.365,
+      "maximum_draw_w": 110.57,
+      "enforced_limit_range_w": [
+        95.0,
+        110.0
+      ],
+      "median_enforced_limit_w": 105.91
+    }
+  },
+  "prefill_gain_percent": 97.8710265966932,
+  "decode_gain_percent": 33.06772553192812,
+  "qualification": "One full matched power-policy experiment. Firmware profile and power daemon repaired together, not separated factorially; free continuation identity is explicitly recorded. Final old/new tuning must use a fresh common performance cohort; no hardware-only universal gain claimed."
+}

@@ -18,8 +18,8 @@ for item in prior.get('candidates',[]):
   r=read(R/'bench'/case/'result.json')
   if r['status']=='ok':add(r['config'])
 # Reuse the broad compatible/native/graphs/head screens already run for NInfer.
-prefixes=['range-'+key,'range-'+key.replace('_','-')]
-if key.endswith('_basalt'):prefixes.append('range-'+key[:-7]+'-basalt')
+prefixes=[case_name(key),case_name(key.replace('_','-'))]
+if key.endswith('_basalt'):prefixes.append(case_name(key[:-7]+'-basalt'))
 screens=[]
 for path in(R/'bench').glob('range-*/result.json'):
  if '-low-screen-'not in path.parent.name or not any(path.parent.name.startswith(p+'-')for p in prefixes):continue
