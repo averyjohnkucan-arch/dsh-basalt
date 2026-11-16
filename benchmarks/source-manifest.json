@@ -58,8 +58,8 @@
     },
     {
       "path": "harness/prepare_benchmark_publication.py",
-      "sha256": "f415d3a85c8b4849cf08ef20232b4bbf9d3f4167bf8e723da25c215b128ddc27",
-      "bytes": 3494
+      "sha256": "0d42f64792fb8f717e67d43956e900bffb4ff685bba2d0767e3e5d2883d61fe9",
+      "bytes": 3615
     },
     {
       "path": "harness/native_bench.py",

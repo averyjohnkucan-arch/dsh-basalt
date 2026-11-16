@@ -1,8 +1,8 @@
 {
-  "at": "2026-11-15T19:45:53.044330-08:00",
+  "at": "2026-11-15T19:50:45.915034-08:00",
   "status": "passed",
-  "prepared_from_base_commit": "9fceb0623d222c5c725deb7c700472d25c6930e8",
-  "manifest_sha256": "aa32a26f0dfb4b247bd5f3208811736073b0b704f77cf283eec772b445101424",
+  "prepared_from_base_commit": "97891b924719b80a80040be4f0d27e8bcb9b033f",
+  "manifest_sha256": "b4fcb60b05ac0211b9665b8c78e5213456cdf9e633571bbd22a413a1f13b7b65",
   "scope": "Static local imports and literal script references; sibling engine/plugin references verified in documented checkout layout. Dynamic imports, fixtures, weights and external package reconstruction excluded.",
   "source_count": 42,
   "checks": [

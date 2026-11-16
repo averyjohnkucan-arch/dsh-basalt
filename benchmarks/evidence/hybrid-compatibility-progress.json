@@ -1,0 +1,51 @@
+{
+  "status": "compatibility-probes-completed",
+  "scope": "Cold209715-token text prefill and2048 generated; last1024 timed. Preliminary compatibility/memory-fit results, not8192-token qualified profiles or isolated engine-only comparison. Engine controls/resident budgets differ. Final matrix is running.",
+  "rows": [
+    {
+      "engine": "basalt",
+      "case": "range-perf-hybrid-basalt-budget-fit-92-high104",
+      "prefill_tok_s": 2190.182376820191,
+      "tail_decode_tok_s": 37.02830477225358,
+      "generate": 2048,
+      "timed_tail": 1024,
+      "prompt_tokens": 209715,
+      "resident_budget_gib": 92,
+      "minimum_host_available_gib": 12.996559143066406,
+      "peak_worker_gib": 104.00875473022461,
+      "maximum_pressure_avg10": 53.89,
+      "engine_binary_sha256": "a2bb78bc53910cb738395d5582ab048c1ffc3aa7a0bd95838fcd31e4bf5ebeb0",
+      "memory_policy_id": "hybrid-high104-max108"
+    },
+    {
+      "engine": "old-strata",
+      "case": "range-perf-hybrid-old-strata-budget-fit-96-high104",
+      "prefill_tok_s": 1637.2983776525145,
+      "tail_decode_tok_s": 31.03903005711319,
+      "generate": 2048,
+      "timed_tail": 1024,
+      "prompt_tokens": 209715,
+      "resident_budget_gib": 96,
+      "minimum_host_available_gib": 12.53597640991211,
+      "peak_worker_gib": 104.0010757446289,
+      "maximum_pressure_avg10": 15.43,
+      "engine_binary_sha256": "cee93d26f710d3685ccf3541a95054dc193e63b239650a9d7122b4b938ad9193",
+      "memory_policy_id": "hybrid-high104-max108"
+    },
+    {
+      "engine": "strata",
+      "case": "range-perf-hybrid-strata-budget-fit-84-high104",
+      "prefill_tok_s": 1479.5554454963565,
+      "tail_decode_tok_s": 22.92578714051719,
+      "generate": 2048,
+      "timed_tail": 1024,
+      "prompt_tokens": 209715,
+      "resident_budget_gib": 84,
+      "minimum_host_available_gib": 21.53424072265625,
+      "peak_worker_gib": 104.00382232666016,
+      "maximum_pressure_avg10": 49.16,
+      "engine_binary_sha256": "0ba914b28df1c8e09c0b5209c2ca6040c75fb650a7408ff3d9ef3ad159a13eb9",
+      "memory_policy_id": "hybrid-high104-max108"
+    }
+  ]
+}
