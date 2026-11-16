@@ -8,8 +8,8 @@
     },
     {
       "path": "harness/test_soft_pressure_refinement.py",
-      "sha256": "82750e3d2a9982ace5a29295e1ce75e91c1fef350ef44cdb638304f3b6b162ae",
-      "bytes": 2981
+      "sha256": "64f4f0c1f63ca0637b951178f853f6701b9188df9ac90acf302de12fcb3f6a4d",
+      "bytes": 6203
     },
     {
       "path": "harness/test_confirmation_diversity.py",
@@ -168,8 +168,8 @@
     },
     {
       "path": "harness/range_joint_refine.py",
-      "sha256": "5135f3ce46d5507511f59eeafc9b5c4b72b33028c66f27230b4e7e02695b5711",
-      "bytes": 4533
+      "sha256": "7e57979a447faf224213afa3a7389dc9037d508dcbcdb6fda206ce619fc41831",
+      "bytes": 6485
     },
     {
       "path": "harness/range_flash.py",

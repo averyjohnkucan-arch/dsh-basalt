@@ -21,3 +21,45 @@ for kind in ['host-reserve','no-pressure','no-soft-events','hard-limit','wrong-e
  assert trial(r,t,c)is None;checks[kind]='refused'
 record=dict(status='passed',scope='Actual pure refinement gate; only demonstrated full-run soft-limit pressure with host reserve intact and no hard/OOM events permits104→106GiB. Native arguments,108GiB hard max,12GiB reserve, swap cap and pressure watchdog are unchanged. GPU experiment remains queued; no speed claim.',source_sha256=hashlib.sha256(source.read_bytes()).hexdigest(),positive_trial_memory_policy=new['host_memory_policy'],negative_cases=checks)
 (R/'outputs/hybrid-soft-pressure-refinement-test.json').write_text(json.dumps(record,indent=2)+'\n');print('Guarded soft-pressure refinement checks passed')
+
+# Exercise the actual follow-up plan without importing/executing its GPU driver.
+from range_tuner import changed
+from range_identity import config_id
+module=ast.parse(source.read_text());helper=next(n for n in module.body if isinstance(n,ast.FunctionDef)and n.name=='policy_prefill_variants')
+ns=dict(changed=changed);exec(compile(ast.Module(body=[helper],type_ignores=[]),str(source),'exec'),ns)
+variants=ns['policy_prefill_variants']
+assert variants(c)==[]
+controls=variants(new);assert len(controls)==9
+for _,candidate in controls:
+ assert candidate['host_memory_policy']==new['host_memory_policy']
+ assert candidate['benchmark_memory_policy_id']==new['benchmark_memory_policy_id']
+assert new['command']==c['command']
+# Real post-selection loop: two winner/peak aliases are deduplicated; existing
+# controls are skipped, failures stay excluded, full successful trials enter plan.
+from types import SimpleNamespace
+from pathlib import Path
+parent_id=config_id(new);existing=controls[0][1];existing_id=config_id(existing)
+assert existing_id!=parent_id
+state=dict(selected='parent',peak_decode_identity=parent_id,candidates=[dict(identity=parent_id,worst_genre='chat')])
+data=dict(selection=dict(candidates=[dict(case='parent'),dict(case='existing')]))
+results={'parent':dict(config=new),'existing':dict(config=existing)}
+class Plan:
+ def __init__(self):self.writes=[]
+ def write_text(self,text):self.writes.append(json.loads(text))
+plan=Plan();attempts=[];calls=[];saved=[]
+def fake_read(path):
+ if path is plan:return copy.deepcopy(data)
+ if str(path).endswith('range-selections.json'):return dict(hybrid_basalt_long=copy.deepcopy(state))
+ return copy.deepcopy(results[Path(path).parent.name])
+def fake_run(config,tag,family,genre):
+ attempts.append((copy.deepcopy(config),tag,family,genre))
+ return dict(status='failed')if len(attempts)==1 else dict(status='ok',prefill_tok_s=10,tail_decode_tok_s=20,case=tag)
+block=source.read_text().split("current=read(O/'range-selections.json')[key+'_long'];data=read(plan)",1)[1]
+block="current=read(O/'range-selections.json')[key+'_long'];data=read(plan)"+block
+scope=dict(ns,read=fake_read,O=Path('/fixture/output'),R=Path('/fixture'),W=Path('/fixture/work'),key='hybrid_basalt',family='qwen',plan=plan,config_id=config_id,run=fake_run,name=lambda r:r['case'],json=json,subprocess=SimpleNamespace(run=lambda *a,**k:calls.append((a,k))),sys=SimpleNamespace(executable='python'),save=lambda *a:saved.append(a),state={},added=[])
+exec(compile(block,str(source),'exec'),scope)
+assert len(attempts)==8 and all(x[3]=='chat'for x in attempts)
+assert len(plan.writes)==7 and len(plan.writes[-1]['selection']['candidates'])==9
+assert len(calls)==1 and calls[0][0][0][-2:]==['hybrid_basalt','qwen'] and calls[0][1]['check']
+record.update(policy_prefill_refit=dict(status='passed',variants=9,non106_policy_skipped=True,actual_driver_attempts=8,existing_controls_skipped=1,failed_trials_excluded=1,successful_trials_added=7,full_genre_repeatability_invocations=1),source_sha256=hashlib.sha256(source.read_bytes()).hexdigest())
+(R/'outputs/hybrid-soft-pressure-refinement-test.json').write_text(json.dumps(record,indent=2)+'\n');print('Policy-prefill follow-up actual driver checks passed')

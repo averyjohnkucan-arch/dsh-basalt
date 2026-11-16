@@ -18,6 +18,14 @@ def soft_pressure_variant(result,telemetry,base):
  trial=copy.deepcopy(c);trial['host_memory_policy']['memory_high_gib']=106;trial['benchmark_memory_policy_id']='hybrid-high106-max108'
  return trial
 
+def policy_prefill_variants(base):
+ """Recheck prefill/cache tradeoffs on an actually selected106GiB policy."""
+ if base.get('benchmark_memory_policy_id')!='hybrid-high106-max108':return []
+ variants=[('prefill32k',{'--prefill':'auto:32768'}),('prefill4k',{'--prefill':'4096'})]
+ variants += [(f'prefill-share-{share}',{'--prefill-cpu-share':share})for share in [0,.3,1]]
+ variants += [(f'adapt-swaps-{count}',{'--adapt-swaps':count})for count in [0,16,32,96]]
+ return [(label,changed(base,changes))for label,changes in variants]
+
 key,family=sys.argv[1:3]
 if family!='qwen'or key.startswith('gyro'):raise SystemExit(0)
 state=read(O/'range-selections.json');selection=state[key+'_long'];base=read(R/'bench'/selection['selected']/'result.json')['config'];ident=config_id(base)
@@ -54,4 +62,23 @@ for label,c in configured:
  if r['status']!='ok':continue
  item=dict(case=name(r),prefill=r['prefill_tok_s'],decode=r['tail_decode_tok_s'],source='joint reserve/CPU/KV or explicitly guarded soft-limit refinement',refinement=label);data['selection']['candidates'].append(item);known.add(candidate);added.append(item);plan.write_text(json.dumps(data,indent=2))
 if added:subprocess.run([sys.executable,str(W/'range_repeatability.py'),key,family],check=True)
-save(key+'_joint_refinements',state.get(key+'_joint_refinements',[])+added);print('JOINT REFINEMENT COMPLETE',key,flush=True)
+# A higher soft policy can make formerly failing prefill batches viable. Refit
+# against its measured winner/peak, then use the same all-genre95% selection gate.
+current=read(O/'range-selections.json')[key+'_long'];data=read(plan)
+known={config_id(read(R/'bench'/x['case']/'result.json')['config'])for x in data['selection']['candidates']}
+selected_id=config_id(read(R/'bench'/current['selected']/'result.json')['config'])
+targets={selected_id,current['peak_decode_identity']};post_added=[]
+for item in list(data['selection']['candidates']):
+ parent=read(R/'bench'/item['case']/'result.json')['config'];parent_id=config_id(parent)
+ if parent_id not in targets:continue
+ targets.remove(parent_id)
+ limiting=next(row['worst_genre']for row in current['candidates']if row['identity']==parent_id)
+ for label,c in policy_prefill_variants(parent):
+  candidate=config_id(c)
+  if candidate in known:continue
+  r=run(c,key+'-policy-prefill-'+candidate+'-'+limiting,family,limiting)
+  if r['status']!='ok':continue
+  extra=dict(case=name(r),prefill=r['prefill_tok_s'],decode=r['tail_decode_tok_s'],source='prefill/cache refit after measured106GiB policy selection',refinement=label)
+  data['selection']['candidates'].append(extra);known.add(candidate);post_added.append(extra);plan.write_text(json.dumps(data,indent=2))
+if post_added:subprocess.run([sys.executable,str(W/'range_repeatability.py'),key,family],check=True)
+save(key+'_joint_refinements',state.get(key+'_joint_refinements',[])+added+post_added);print('JOINT REFINEMENT COMPLETE',key,flush=True)
