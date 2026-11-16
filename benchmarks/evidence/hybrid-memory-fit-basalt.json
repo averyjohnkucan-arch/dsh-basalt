@@ -1,0 +1,44 @@
+{
+  "engine": "basalt",
+  "status": "complete",
+  "scope": "64 generated tokens after a fresh 80%-full text prefix; memory compatibility only, not a final throughput claim. Existing guard and original source weights are unchanged.",
+  "probes": [
+    {
+      "budget_gib": 80,
+      "status": "ok",
+      "case": "range-perf-hybrid-basalt-budget-fit-80",
+      "error": null,
+      "engine_binary_sha256": "a2bb78bc53910cb738395d5582ab048c1ffc3aa7a0bd95838fcd31e4bf5ebeb0"
+    },
+    {
+      "budget_gib": 84,
+      "status": "failed",
+      "case": "range-perf-hybrid-basalt-budget-fit-84",
+      "error": "RAM safety stop: available=21.9GiB, memory-pressure avg10=48.2%",
+      "engine_binary_sha256": "a2bb78bc53910cb738395d5582ab048c1ffc3aa7a0bd95838fcd31e4bf5ebeb0"
+    },
+    {
+      "budget_gib": 82,
+      "status": "failed",
+      "case": "range-perf-hybrid-basalt-budget-fit-82",
+      "error": "RAM safety stop: available=23.5GiB, memory-pressure avg10=51.3%",
+      "engine_binary_sha256": "a2bb78bc53910cb738395d5582ab048c1ffc3aa7a0bd95838fcd31e4bf5ebeb0"
+    },
+    {
+      "budget_gib": 81,
+      "status": "ok",
+      "case": "range-perf-hybrid-basalt-budget-fit-81",
+      "error": null,
+      "engine_binary_sha256": "a2bb78bc53910cb738395d5582ab048c1ffc3aa7a0bd95838fcd31e4bf5ebeb0"
+    }
+  ],
+  "safe_budgets_gib": [
+    80,
+    81
+  ],
+  "selected_budget_gib": 81,
+  "refined_from_budget_bounds": [
+    80,
+    84
+  ]
+}

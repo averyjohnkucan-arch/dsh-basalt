@@ -2,6 +2,16 @@
   "scope": "Exact harness snapshot; scratch paths and sibling clone layout retained for audit. No weights, generated answers, credentials, or token-ID fixtures included.",
   "files": [
     {
+      "path": "harness/refresh_range_metrics.py",
+      "sha256": "ce5dd0d9918ed24994ac7f00b69b7c14a9cfdb340678bc39bb85ee0b9d18885a",
+      "bytes": 2690
+    },
+    {
+      "path": "harness/fit_hybrid_memory.py",
+      "sha256": "e779e0ce05cef020a079d2798dd74097adfb4d38ef1b788015d3d01a67843e4d",
+      "bytes": 2625
+    },
+    {
       "path": "harness/benchmark_resume_validity_test.py",
       "sha256": "085a9e78f4fa62c7bd76a27560c62810eb03a8ecc5185ace2cf840fe3b159594",
       "bytes": 7312
@@ -23,13 +33,13 @@
     },
     {
       "path": "harness/performance_range_pipeline.py",
-      "sha256": "82caabeefa75aed24dd6b063482832ddd56e5238d04e9bd5a5a696ce3007b587",
-      "bytes": 1551
+      "sha256": "d39bd79937642d022235a0bd754c25a2f627c7d427b9d9343b080b4f5155eece",
+      "bytes": 1874
     },
     {
       "path": "harness/range_queue.py",
-      "sha256": "029dc7f2adf8658d8bd5e51f7531a719437e74b837ae2ebc441f5982b79d4c98",
-      "bytes": 2817
+      "sha256": "08e7902b59763a928884dac23eaaa8ee4090f5f19ddf9cf9de1f56a9cd0f9e79",
+      "bytes": 5397
     },
     {
       "path": "harness/continue_after_range_queue.py",
@@ -38,8 +48,8 @@
     },
     {
       "path": "harness/prepare_benchmark_publication.py",
-      "sha256": "06792b01b7ddf13aff50e193271133bae80f22d8200505ccef508886064aa620",
-      "bytes": 3077
+      "sha256": "ab036a8a501ebf7f70ae59eda8dc925c2ccd7ce34ed270d3b170a1089a41d1eb",
+      "bytes": 3278
     },
     {
       "path": "harness/native_bench.py",
@@ -93,8 +103,8 @@
     },
     {
       "path": "harness/range_flash.py",
-      "sha256": "df9a571d334ede530d1e8b1803dfa88b909bb5fff28409dd196c3b303b72d487",
-      "bytes": 4341
+      "sha256": "c1248fb6e6392db3fcb763b0e8c33c7bcc9e80b29cd4d04c72ce159c20f723be",
+      "bytes": 4858
     },
     {
       "path": "harness/range_strata.py",
@@ -118,8 +128,8 @@
     },
     {
       "path": "harness/mark_performance_qualified.py",
-      "sha256": "270d67967c7925f0862d84eae394e26e6c4e0f17a1a510b0f184d1c6ae365ae9",
-      "bytes": 5639
+      "sha256": "6f7ec6eefd4122e6f394ab4e3ec6bb50bb1b8ff06a322a84dadd9707b3336148",
+      "bytes": 5726
     },
     {
       "path": "harness/range_plugin_gpu_gate.py",

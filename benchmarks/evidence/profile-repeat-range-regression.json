@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "scope": "Actual same-controls repeat is included in the separate peak-code profile range and paired high name; selection and engine controls unchanged.",
+  "old_high_case_count": 3,
+  "new_high_case_count": 4,
+  "old_minimum_decode": 65.8775198880941,
+  "new_minimum_decode": 64.48677216055776,
+  "new_paired_high_prefill": 3237.7416167479773,
+  "worst_case": "range-perf-flash_basalt-range-repeat-b880f20a9748-chat",
+  "long_metrics_unchanged": true,
+  "engine_selections_unchanged": true
+}

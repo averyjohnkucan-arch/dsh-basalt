@@ -1,9 +1,14 @@
 from range_common import *
 model=sys.argv[1]if len(sys.argv)>1 else'flash'
+memory_fit=None
 base=latest(read(W/'quiet-flash-int8-basalt-90.json'),'basalt');opt(base,'--pool-workers',21)
 old=read(W/'quiet-flash-int8-old-90.json')
 if model.startswith('hybrid'):
  opt(base,'--model',R/'packs/qwen-nvfp4-q8-hybrid.basalt');opt(base,'--resident-budget-gib',96)
+ fit_path=O/'hybrid-memory-fit-basalt.json'
+ if fit_path.exists():
+  memory_fit=read(fit_path);assert memory_fit['status']=='complete','Hybrid fit must finish before tuning resumes'
+  opt(base,'--resident-budget-gib',memory_fit['selected_budget_gib'])
  opt(old,'--pack','/mnt/media/AI/Models/Scratch models/Maximilian228/Qwen3.8-Flash-Next-NVFP4-Q8-Mix-Strata/pack');opt(old,'--resident-budget-gib',96);opt(old,'--vram-reserve-mib',1200)
 if model.endswith('fp16'):
  parent=model.removesuffix('_fp16')+'_basalt_long'
@@ -17,6 +22,9 @@ for workload in['text','chat','story']:
 worst=min(initial,key=lambda x:x['tail_decode_tok_s']);workload=worst['config']['workload'];save(model+'_screen_workload',workload)
 screens=[]
 variants=[('base-controls',{}),('spec6',{'--spec':6}),('spec4',{'--spec':4}),('workers14',{'--pool-workers':14}),('workers8',{'--pool-workers':8}),('resident131k',{'--kv-resident':131072})]
+if memory_fit:
+ current_budget=float(base['command'][base['command'].index('--resident-budget-gib')+1])
+ variants.extend((f'ram-budget-{budget}',{'--resident-budget-gib':budget})for budget in memory_fit['safe_budgets_gib']if budget!=current_budget)
 if base['command'][base['command'].index('--spec')+1]!='8':variants.append(('spec8',{'--spec':8}))
 if base['command'][base['command'].index('--pool-workers')+1]!='21':variants.append(('workers21',{'--pool-workers':21}))
 for tag,changes in variants:

@@ -2,7 +2,9 @@
 from pathlib import Path
 import json,statistics,sys,time,subprocess
 from range_identity import config_id
-R=Path('/mnt/media/scratch/dsh-inference-tuning-20261115');O=R/'outputs';B=R/'bench';key=sys.argv[1];s=json.loads((O/'range-selections.json').read_text());long=s[key+'_long'];short=s[key+'_short']
+R=Path('/mnt/media/scratch/dsh-inference-tuning-20261115');O=R/'outputs';B=R/'bench';key=sys.argv[1]
+subprocess.run([sys.executable,str(R/'work/refresh_range_metrics.py'),key],check=True)
+s=json.loads((O/'range-selections.json').read_text());long=s[key+'_long'];short=s[key+'_short']
 def read(case):return json.loads((B/case/'result.json').read_text())
 def check_metrics(metrics,selection):
  ident=config_id(read(selection['selected'])['config']);assert {x['workload']for x in metrics['high']['cases']}=={'text','chat','story'}

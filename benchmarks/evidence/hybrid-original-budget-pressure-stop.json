@@ -1,0 +1,20 @@
+{
+  "status": "failed",
+  "error": "RAM safety stop: available=68.3GiB, memory-pressure avg10=60.8%",
+  "policy": {
+    "isolation": "separate systemd user scope",
+    "memory_high_gib": 96,
+    "memory_max_gib": 108,
+    "swap_max_gib": 1,
+    "minimum_host_available_gib": 12,
+    "pressure_avg10_limit": 40,
+    "pressure_grace_s": 6
+  },
+  "minimum_host_available_gib": 16.866317749023438,
+  "peak_scope_gib": 98.11658477783203,
+  "max_pressure": 64.91,
+  "last_scope_events": "low 0\nhigh 65504\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\nsock_throttled 0",
+  "budget_gib": 96,
+  "source_case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/range-perf-hybrid-basalt-base-text",
+  "scope": "Startup pressure guard stop; not a GPU OOM and not a claim that host available RAM was exhausted."
+}
