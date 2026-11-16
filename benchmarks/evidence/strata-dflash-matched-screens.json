@@ -1,0 +1,82 @@
+{
+  "status": "matched-screen-evidence",
+  "scope": "Same native-chat input SHA, engine,209715 input tokens,2048 generated/final1024 timed. Screens are not final8192-output qualification or code-function quality proof.",
+  "prompt_sha256": "726c24a280a169b405f1e77982f7d3cd56733cdc50c0082669e1ab944f2e6f95",
+  "engine_binary_sha256": "0ba914b28df1c8e09c0b5209c2ca6040c75fb650a7408ff3d9ef3ad159a13eb9",
+  "rows": [
+    {
+      "case": "range-perf-flash_strata-screen-mtp6",
+      "prefill_tok_s": 2309.3618820668908,
+      "tail_decode_tok_s": 47.6038952088958,
+      "drafts_accepted": 1002,
+      "drafts_offered": 1532,
+      "accepted_fraction": 0.6540469973890339,
+      "configured_spec": "6",
+      "draft_cap": null,
+      "draft_confidence": null,
+      "pcie_fraction": "0.25"
+    },
+    {
+      "case": "range-perf-flash_strata-screen-pcie75",
+      "prefill_tok_s": 2295.91669166413,
+      "tail_decode_tok_s": 53.42627023092739,
+      "drafts_accepted": 1038,
+      "drafts_offered": 1688,
+      "accepted_fraction": 0.6149289099526066,
+      "configured_spec": "8",
+      "draft_cap": null,
+      "draft_confidence": null,
+      "pcie_fraction": "0.75"
+    },
+    {
+      "case": "range-perf-flash_strata-screen-dflash-k7",
+      "prefill_tok_s": 2291.9596984927916,
+      "tail_decode_tok_s": 34.20041369186432,
+      "drafts_accepted": 1078,
+      "drafts_offered": 1707,
+      "accepted_fraction": 0.6315172817809022,
+      "configured_spec": "8",
+      "draft_cap": "8",
+      "draft_confidence": "0.55",
+      "pcie_fraction": "0.25"
+    },
+    {
+      "case": "range-perf-flash_strata-screen-dflash-cap6",
+      "prefill_tok_s": 2316.2920771246895,
+      "tail_decode_tok_s": 33.59728997392466,
+      "drafts_accepted": 1085,
+      "drafts_offered": 1624,
+      "accepted_fraction": 0.6681034482758621,
+      "configured_spec": "8",
+      "draft_cap": "6",
+      "draft_confidence": "0.55",
+      "pcie_fraction": "0.25"
+    },
+    {
+      "case": "range-perf-flash_strata-screen-dflash-cap8-conf75",
+      "prefill_tok_s": 2312.292644524492,
+      "tail_decode_tok_s": 37.49053972774038,
+      "drafts_accepted": 924,
+      "drafts_offered": 1155,
+      "accepted_fraction": 0.8,
+      "configured_spec": "8",
+      "draft_cap": "8",
+      "draft_confidence": "0.75",
+      "pcie_fraction": "0.25"
+    }
+  ],
+  "counter_semantics_source": "Strata Control serve/server.py::_parse_done: DONE[6]=drafts_accepted,DONE[7]=drafts_offered",
+  "next_trials": "Bounded cap6/8 confidence0.1,cap4 confidence0.9,and best observed K7 confidence0.75 full-output confirmation in long refinement; independent low-code trials too",
+  "updated_unix": 1794842596.910864,
+  "full_confirmation_example": {
+    "case": "range-perf-flash_strata-confirm-pcie75",
+    "configuration_identity": "8826d641e341",
+    "screen_generated": 2048,
+    "screen_timed_tail": 1024,
+    "screen_decode": 53.42627023092739,
+    "full_generated": 8192,
+    "full_timed_tail": 4096,
+    "full_decode": 47.86436606940592,
+    "interpretation": "Short-screen rate does not qualify a full late-decode label; no attribution to a single cause"
+  }
+}

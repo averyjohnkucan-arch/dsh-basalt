@@ -1,6 +1,6 @@
 {
   "status": "passed",
-  "updated_unix": 1794841060.7511497,
+  "updated_unix": 1794842643.4245934,
   "scope": "Actual five-model Strata planner executed with tune replaced by capture-only spy; every base/candidate checked against installed native binary flags; all DeepSeek tune calls explicitly cold. No GPU processes launched.",
   "source_sha256": "17c33c904bb8be5ebcd9b7e0bbb91c8880208dd812522853f1f947546df48596",
   "models": [
@@ -39,5 +39,12 @@
       "native_flag_vocabulary": "passed",
       "native_iq_minimum_window": 2
     }
+  ],
+  "joint_trials": [
+    "native-mtp2",
+    "DFlash cap6 confidence0.1",
+    "DFlash cap8 confidence0.1",
+    "DFlash cap4 confidence0.9",
+    "DFlash cap8 confidence0.75 full-output"
   ]
 }

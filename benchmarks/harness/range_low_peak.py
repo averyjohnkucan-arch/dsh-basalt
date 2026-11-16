@@ -40,7 +40,8 @@ if not key.endswith('_ninfer'):
     mtp=copy.deepcopy(base)
     for flag in ['--draft','--draft-model','--draft-fallback','--draft-cap','--draft-conf']:opt(mtp,flag,None)
     for spec in [2,6]:add(changed(mtp,{'--kv-resident':20480,'--spec':spec}))
-    add(changed(base,{'--kv-resident':20480,'--draft':'dflash2','--draft-model':R/'packs/flash-dflash2.pack','--draft-fallback':'none','--spec':8,'--draft-cap':8,'--draft-conf':.55}))
+    for cap,conf in [(8,.55),(8,.75),(6,.1),(8,.1),(4,.9)]:
+     add(changed(base,{'--kv-resident':20480,'--draft':'dflash2','--draft-model':R/'packs/flash-dflash2.pack','--draft-fallback':'none','--spec':8,'--draft-cap':cap,'--draft-conf':conf}))
  elif family=='qwen27b':
   for spec in ([2,4,6,8]if key.endswith('_strata')else[4,6,8]):add(changed(base,{'--kv-resident':20480,'--spec':spec}))
  elif family=='deepseek':

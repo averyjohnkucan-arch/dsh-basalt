@@ -1,11 +1,29 @@
 {
-  "at": "2026-11-16T07:01:45.383043-08:00",
+  "at": "2026-11-16T07:25:50.842315-08:00",
   "status": "passed",
-  "prepared_from_base_commit": "f7e2f56579731ab40ff8165a5893a7f377b97282",
-  "manifest_sha256": "cfbc1eb226808e63aabba7f4a81bc4e89fdff36f72ea1339bec0d00837d35776",
-  "source_count": 68,
+  "prepared_from_base_commit": "468d552a688bc7c7c5f6a16a0fb60b958c072595",
+  "manifest_sha256": "b4c020c2439a02c997624cd57eeba5188e17381bc08339f08c8cac398e174f26",
+  "source_count": 69,
   "scope": "Python AST local imports and existing flat literal py/mjs/txt/cpp/hpp sibling references checked against the exact source manifest. External engine/plugin clone layout remains required; dynamic references, packages, weights and fixtures excluded.",
   "checks": [
+    {
+      "source": "test_ninfer_planner.py",
+      "dependency": "range_tuner.py",
+      "kind": "local import",
+      "passed": true
+    },
+    {
+      "source": "test_ninfer_planner.py",
+      "dependency": "range_ninfer.py",
+      "kind": "existing literal sibling",
+      "passed": true
+    },
+    {
+      "source": "test_ninfer_planner.py",
+      "dependency": "range_ninfer.py",
+      "kind": "existing literal sibling",
+      "passed": true
+    },
     {
       "source": "test_strata_cold_screens.py",
       "dependency": "range_tuner.py",
@@ -411,6 +429,12 @@
     {
       "source": "continue_after_range_queue.py",
       "dependency": "range_deepseek_xs.py",
+      "kind": "existing literal sibling",
+      "passed": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "test_ninfer_planner.py",
       "kind": "existing literal sibling",
       "passed": true
     },

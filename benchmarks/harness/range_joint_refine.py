@@ -55,6 +55,11 @@ if key.endswith('_strata'):
  mtp2=changed(base,{'--spec':2})
  for flag in ['--draft','--draft-model','--draft-fallback','--draft-cap','--draft-conf']:opt(mtp2,flag,None)
  configured.append(('native-mtp2',mtp2))
+ for cap in [6,8]:
+  df2=changed(base,{'--draft':'dflash2','--draft-model':R/'packs/flash-dflash2.pack','--draft-fallback':'none','--spec':8,'--draft-cap':cap,'--draft-conf':.1})
+  configured.append((f'dflash-cap{cap}-conf10',df2))
+ configured.append(('dflash-cap4-conf90',changed(base,{'--draft':'dflash2','--draft-model':R/'packs/flash-dflash2.pack','--draft-fallback':'none','--spec':8,'--draft-cap':4,'--draft-conf':.9})))
+ configured.append(('dflash-k7-conf75-full',changed(base,{'--draft':'dflash2','--draft-model':R/'packs/flash-dflash2.pack','--draft-fallback':'none','--spec':8,'--draft-cap':8,'--draft-conf':.75})))
 if key.startswith('hybrid')and key.endswith('_basalt'):
  failed_case=case_name(key.removesuffix('_basalt')+'-basalt-confirm-workers14');folder=R/'bench'/failed_case
  failed=read_case_mapping(folder/'result.json');telemetry_path=folder/'telemetry.json'

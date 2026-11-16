@@ -1,0 +1,45 @@
+{
+  "status": "passed",
+  "updated_unix": 1794842596.8799744,
+  "scope": "Actual NInfer planner with measurement calls replaced by capture-only spy. Base/candidate flag vocabulary checked against both compiled binaries; option-value/model inference support remains a runtime gate.",
+  "source_sha256": "7619158fec7fe9e3248f0365358c864b6504e0ff90c31cf5d0ec42192609bd1f",
+  "binaries_sha256": {
+    "/mnt/media/scratch/dsh-inference-tuning-20261115/build/ninfer-latest/apps/ninfer-serve": "5875555b6b00fa28b194284a99e9cc8d4af55ba7afdeffa430f1d7c3669d1851",
+    "/mnt/media/scratch/dsh-inference-tuning-20261115/build/ninfer-latest-native/apps/ninfer-serve": "c0778296bca33c1303bf1fbcd3ef9c8d27c306d50c4c8ab5af4a8addbb9002b5"
+  },
+  "variants": [
+    {
+      "variant": "nvfp4full",
+      "candidates": 12,
+      "executables": [
+        "/mnt/media/scratch/dsh-inference-tuning-20261115/build/ninfer-latest-native/apps/ninfer-serve",
+        "/mnt/media/scratch/dsh-inference-tuning-20261115/build/ninfer-latest/apps/ninfer-serve"
+      ]
+    },
+    {
+      "variant": "nvfp4",
+      "candidates": 12,
+      "executables": [
+        "/mnt/media/scratch/dsh-inference-tuning-20261115/build/ninfer-latest-native/apps/ninfer-serve",
+        "/mnt/media/scratch/dsh-inference-tuning-20261115/build/ninfer-latest/apps/ninfer-serve"
+      ]
+    },
+    {
+      "variant": "int8",
+      "candidates": 12,
+      "executables": [
+        "/mnt/media/scratch/dsh-inference-tuning-20261115/build/ninfer-latest-native/apps/ninfer-serve",
+        "/mnt/media/scratch/dsh-inference-tuning-20261115/build/ninfer-latest/apps/ninfer-serve"
+      ]
+    },
+    {
+      "variant": "fp8",
+      "candidates": 12,
+      "executables": [
+        "/mnt/media/scratch/dsh-inference-tuning-20261115/build/ninfer-latest-native/apps/ninfer-serve",
+        "/mnt/media/scratch/dsh-inference-tuning-20261115/build/ninfer-latest/apps/ninfer-serve"
+      ]
+    }
+  ],
+  "gpu_workers_started": 0
+}

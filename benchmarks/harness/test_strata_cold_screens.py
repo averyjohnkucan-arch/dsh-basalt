@@ -18,13 +18,17 @@ joint=ast.parse((W/'range_joint_refine.py').read_text())
 node=next(n for n in joint.body if isinstance(n,ast.If) and ast.unparse(n.test)=="key.endswith('_strata')")
 ns=dict(range_tuner.__dict__);ns.update(key='flash_strata',base=range_tuner.changed(c,{'--draft':'dflash2','--draft-model':'/fixture','--draft-cap':8,'--draft-conf':.55}),configured=[])
 exec(compile(ast.Module(body=[node],type_ignores=[]),'actual-joint-plan','exec'),ns)
-assert len(ns['configured'])==1
+assert len(ns['configured'])==5
 _,mtp2=ns['configured'][0];assert mtp2['command'][mtp2['command'].index('--spec')+1]=='2'
 assert not any(x in mtp2['command']for x in ['--draft','--draft-model','--draft-cap','--draft-conf'])
+for _,trial in ns['configured'][1:]:
+ a=trial['command'];assert a[a.index('--draft')+1]=='dflash2'and a[a.index('--draft-fallback')+1]=='none'
+ assert (int(a[a.index('--draft-cap')+1]),a[a.index('--draft-conf')+1])in[(6,'0.1'),(8,'0.1'),(4,'0.9'),(8,'0.75')]
+ check_engine_flags(a[4:],flags,'low-confidence-DFlash')
 for name in ['range_deepseek.py','range_deepseek_xs.py']:
  tree=ast.parse((W/name).read_text())
  for node in ast.walk(tree):
   if isinstance(node,ast.Call) and isinstance(node.func,ast.Name) and node.func.id=='tune':
    assert any(k.arg=='cache' and isinstance(k.value,ast.Constant) and k.value.value is False for k in node.keywords),name
-record=dict(status='passed',updated_unix=time.time(),scope='Actual five-model Strata planner executed with tune replaced by capture-only spy; every base/candidate checked against installed native binary flags; all DeepSeek tune calls explicitly cold. No GPU processes launched.',source_sha256=hashlib.sha256(source.read_bytes()).hexdigest(),models=records)
+record=dict(status='passed',updated_unix=time.time(),scope='Actual five-model Strata planner executed with tune replaced by capture-only spy; every base/candidate checked against installed native binary flags; all DeepSeek tune calls explicitly cold. No GPU processes launched.',source_sha256=hashlib.sha256(source.read_bytes()).hexdigest(),models=records,joint_trials=['native-mtp2','DFlash cap6 confidence0.1','DFlash cap8 confidence0.1','DFlash cap4 confidence0.9','DFlash cap8 confidence0.75 full-output'])
 (R/'outputs/strata-cold-screen-validation.json').write_text(json.dumps(record,indent=2)+'\n');print(json.dumps(record,indent=2))
