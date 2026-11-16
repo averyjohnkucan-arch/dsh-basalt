@@ -56,5 +56,13 @@
       }
     }
   ],
-  "judgment": "Verification dominates measured window time. Continue planned CPU-share, expert-placement and speculative-width tests. Post-stage time alone bounds the gain available from eliminating that stage to only a few percent; cache adaptation can also alter verification cost, so this does not rule out all adaptation changes."
+  "judgment": "Verification dominates measured window time. Continue planned CPU-share, expert-placement and speculative-width tests. Post-stage time alone bounds the gain available from eliminating that stage to only a few percent; cache adaptation can also alter verification cost, so this does not rule out all adaptation changes.",
+  "timing_field_semantics": {
+    "scope": "Host-clock native W-line intervals, not isolated CUDA kernel costs. Historical JSON field names retained.",
+    "draft_ms": "round0\u2192tw0: before-window setup; NOT isolated MTP/drafter computation",
+    "verify_ms": "tw0\u2192tw1: run/verify window elapsed interval",
+    "post_ms": "tw1\u2192tw3: post-verification commit and next-draft interval, including overlap; cannot isolate drafter cost",
+    "source_file": "src/models/qwen4exp/serve/qfn_decode.cpp",
+    "source_sha256": "910b586ca70970c0e7a7a9be9c66bfb571690c8c4563c78a8aa34810b48aa089"
+  }
 }

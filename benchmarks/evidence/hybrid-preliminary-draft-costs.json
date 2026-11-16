@@ -1,0 +1,83 @@
+{
+  "scope": "Optional full-continuation valid draft windows only, not final4096 timing partition. Free outputs differ; acceptance is workload-sensitive. No isolated knob causality or final maximum claim.",
+  "rows": [
+    {
+      "case": "range-perf-hybrid-basalt-low-confirm-spec8",
+      "tail_decode": 35.95033877676457,
+      "whole_generation_diagnostics": {
+        "count": 1831,
+        "mean_width": 5.075368651010377,
+        "mean_accepted": 3.4773347897323865,
+        "mean_ms": 128.03108083014746,
+        "passes_per_s": 7.810603437197026,
+        "draft_ms": 4.547,
+        "verify_ms": 223285.068,
+        "post_ms": 11135.294
+      }
+    },
+    {
+      "case": "range-perf-hybrid-basalt-low-confirm-spec6",
+      "tail_decode": 34.51765630132054,
+      "whole_generation_diagnostics": {
+        "count": 2093,
+        "mean_width": 4.364548494983278,
+        "mean_accepted": 2.9149546106067845,
+        "mean_ms": 115.85635785953177,
+        "passes_per_s": 8.631377841278546,
+        "draft_ms": 5.617,
+        "verify_ms": 231602.119,
+        "post_ms": 10879.621
+      }
+    },
+    {
+      "case": "range-perf-hybrid-basalt-confirm-resident131k",
+      "tail_decode": 36.35427937437292,
+      "whole_generation_diagnostics": {
+        "count": 3272,
+        "mean_width": 2.9358190709046457,
+        "mean_accepted": 1.5070293398533008,
+        "mean_ms": 72.66354248166259,
+        "passes_per_s": 13.762059567249429,
+        "draft_ms": 12.191,
+        "verify_ms": 216156.597,
+        "post_ms": 21586.323
+      }
+    },
+    {
+      "case": "range-perf-hybrid-basalt-final-text",
+      "tail_decode": 48.55351292432234,
+      "whole_generation_diagnostics": {
+        "count": 3038,
+        "mean_width": 3.1026991441737986,
+        "mean_accepted": 1.6991441737985518,
+        "mean_ms": 64.17155859117841,
+        "passes_per_s": 15.583227553669998,
+        "draft_ms": 13.194,
+        "verify_ms": 180361.174,
+        "post_ms": 14578.827
+      }
+    },
+    {
+      "case": "range-perf-hybrid-basalt-final-story",
+      "tail_decode": 37.97404778940219,
+      "whole_generation_diagnostics": {
+        "count": 3938,
+        "mean_width": 2.4713052310817676,
+        "mean_accepted": 1.0817673946165567,
+        "mean_ms": 59.783473590655156,
+        "passes_per_s": 16.727030731722348,
+        "draft_ms": 20.933,
+        "verify_ms": 214973.339,
+        "post_ms": 20433.047
+      }
+    }
+  ],
+  "timing_field_semantics": {
+    "scope": "Host-clock native W-line intervals, not isolated CUDA kernel costs. Historical JSON field names retained.",
+    "draft_ms": "round0\u2192tw0: before-window setup; NOT isolated MTP/drafter computation",
+    "verify_ms": "tw0\u2192tw1: run/verify window elapsed interval",
+    "post_ms": "tw1\u2192tw3: post-verification commit and next-draft interval, including overlap; cannot isolate drafter cost",
+    "source_file": "src/models/qwen4exp/serve/qfn_decode.cpp",
+    "source_sha256": "910b586ca70970c0e7a7a9be9c66bfb571690c8c4563c78a8aa34810b48aa089"
+  }
+}

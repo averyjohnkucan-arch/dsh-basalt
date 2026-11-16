@@ -1,8 +1,8 @@
 {
   "at": "2026-11-15T21:54:42.961115-08:00",
   "status": "passed",
-  "prepared_from_base_commit": "474e963a38e6fdc5c44e3110b379a24be03bd2d1",
-  "manifest_sha256": "ae4fdb3737730eb69968b38ffcb43eb66cc57ddb2b3f0831f1f2ae835ba11a06",
+  "prepared_from_base_commit": "f50ff4134022f8943232352076d1a5a2efa9bf89",
+  "manifest_sha256": "01b559cc44759391110909bf06c75de2198fd7ff410da5ada98d643594d9682d",
   "scope": "Current Python AST local imports and existing literal file references, plus every earlier dependency path revalidated; documented sibling checkout layout. Dynamic imports, model fixtures, weights and external package reconstruction excluded.",
   "source_count": 55,
   "prior_dependency_paths_revalidated": 159,

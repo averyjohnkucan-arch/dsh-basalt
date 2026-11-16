@@ -43,6 +43,13 @@
     {
       "workload": "209K chat",
       "measurements": {
+        "Saved Strata": {
+          "case": "range-perf-hybrid-old-chat",
+          "prefill": 1637.2408570502887,
+          "decode": 31.66029134752738,
+          "prompt_sha256": "726c24a280a169b405f1e77982f7d3cd56733cdc50c0082669e1ab944f2e6f95",
+          "result_sha256": "35cc21dac554f8509d47ec5cbd822192121d104c6aad60b7ccba9dbe7d77710d"
+        },
         "Basalt candidate": {
           "case": "range-perf-hybrid-basalt-confirm-resident131k",
           "prefill": 2132.817100369479,
@@ -55,6 +62,13 @@
     {
       "workload": "209K story",
       "measurements": {
+        "Saved Strata": {
+          "case": "range-perf-hybrid-old-story",
+          "prefill": 1636.3351211831334,
+          "decode": 35.9252891052125,
+          "prompt_sha256": "1f733598f0bb8a2f81e1ee86df9f1a622c3b4149446280729821aad32375b984",
+          "result_sha256": "f84c230bc836eecf8cb55d6a49c1a96dea1ea1c41e5e902d611d36bd676c807f"
+        },
         "Basalt candidate": {
           "case": "range-perf-hybrid-basalt-final-story",
           "prefill": 2107.413101805794,
@@ -65,5 +79,5 @@
       }
     }
   ],
-  "png_sha256": "a5ccc92eaa1ec692f018e71c70de122f54132cf830dbd133a566a970daa10416"
+  "png_sha256": "a7001a12160506fcfae5c9925de33821bdb423242cc2119ab95789d71eccf701"
 }
