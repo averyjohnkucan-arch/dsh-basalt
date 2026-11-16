@@ -2,6 +2,7 @@
 from pathlib import Path
 import json,statistics,csv
 from benchmark_environment import current_environment,case_name
+from range_identity import config_id
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -10,8 +11,16 @@ marker=O/'performance-qualified/flash_basalt.json';q=json.loads(marker.read_text
 selections=json.loads((O/'range-selections.json').read_text());environment=current_environment()
 if q and (q['long_selection']!=selections.get('flash_basalt_long',{}).get('selected')or q['short_selection']!=selections.get('flash_basalt_short',{}).get('selected')):q=None
 if q and environment and q.get('benchmark_environment_id')!=environment['id']:q=None
-new_label='Qualified Basalt long preset'if q else('Basalt performance cohort (provisional)'if environment else'Basalt recovery reference (provisional)')
+new_label='Qualified Basalt long preset'if q else('Basalt selected controls (provisional)'if environment else'Basalt recovery reference (provisional)')
 comparison_groups=['Saved Strata settings',new_label]+([]if q or environment else['Basalt 128K KV / 32K prefill (candidate)'])
+challenger={};challenger_label='Zero CPU share (challenger)'
+audit=O/'flash-zero-share-output-audit.json'
+if environment and not q and audit.exists():
+ trials=[json.loads((B/item['case']/'result.json').read_text())for item in json.loads(audit.read_text())['cases']]
+ selected=selections.get('flash_basalt_long',{}).get('selected')
+ selected_id=config_id(json.loads((B/selected/'result.json').read_text())['config'])if selected else None
+ if len(trials)==3 and {x['config']['workload']for x in trials}=={'text','chat','story'}and len({config_id(x['config'])for x in trials})==1 and config_id(trials[0]['config'])!=selected_id and all(x['status']=='ok'and x['generated']==8192 and x['config'].get('host_memory_policy')and x.get('cold_prefill_qualified',True)and x['config'].get('benchmark_environment_id')==environment['id']for x in trials):
+  challenger={x['config']['workload']:Path(x['config']['output']).name for x in trials};comparison_groups.append(challenger_label)
 for genre in ['text','chat','story']:
  old_cases=[x['case']for x in selections.get('flash_old_metrics',{}).get('high',{}).get('cases',[])if x['workload']==genre]if environment else['range-flash-old-'+genre]
  groups=[('Saved Strata settings',old_cases)]
@@ -20,6 +29,7 @@ for genre in ['text','chat','story']:
   metrics=selections.get('flash_basalt_long_metrics',{})
   new=[x['case']for x in metrics.get('high',{}).get('cases',[])if x['workload']==genre]or[case_name('flash-basalt-base-'+genre)]
  groups.append((new_label,new))
+ if challenger:groups.append((challenger_label,[challenger[genre]]))
  if not q and not environment:groups.append((comparison_groups[2],['range-flash_basalt-memory-check-3d7ff38d1afa-'+genre]))
  for group,cases in groups:
   samples=[]

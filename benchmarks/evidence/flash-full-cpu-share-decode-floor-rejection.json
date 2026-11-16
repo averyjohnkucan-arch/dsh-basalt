@@ -1,0 +1,62 @@
+{
+  "at": "2026-11-15T17:40:59.569432-08:00",
+  "scope": "Current completed candidate versus current peak worst-case preset; not final preset qualification",
+  "status": "correctly rejected for prefill tradeoff",
+  "candidate": {
+    "identity": "c2b7d0b7dddd",
+    "decode": 63.88459297689708,
+    "prefill": 3228.520405806919,
+    "genres": {
+      "text": {
+        "decode": 67.26231665645953,
+        "prefill": 3228.520405806919
+      },
+      "chat": {
+        "decode": 63.88459297689708,
+        "prefill": 3236.1827810972295
+      },
+      "story": {
+        "decode": 64.30711434766185,
+        "prefill": 3231.3758482332714
+      }
+    }
+  },
+  "cases": [
+    "range-perf-flash_basalt-range-check-c2b7d0b7dddd-text",
+    "range-perf-flash_basalt-range-check-c2b7d0b7dddd-chat",
+    "range-perf-flash_basalt-joint-c2b7d0b7dddd-story"
+  ],
+  "reference_identity": "93fa8edb055c",
+  "reference_genre_medians": {
+    "text": {
+      "prefill": 3214.7127352995276,
+      "decode": 66.26403189313031,
+      "samples": 1,
+      "cases": [
+        "range-perf-flash-basalt-final-text"
+      ]
+    },
+    "chat": {
+      "prefill": 3259.511279247242,
+      "decode": 68.50096333723353,
+      "samples": 1,
+      "cases": [
+        "range-perf-flash-basalt-confirm-workers14"
+      ]
+    },
+    "story": {
+      "prefill": 3229.974881126414,
+      "decode": 65.28390071076302,
+      "samples": 2,
+      "cases": [
+        "range-perf-flash-basalt-final-story",
+        "range-perf-flash_basalt-range-repeat-93fa8edb055c-story"
+      ]
+    }
+  },
+  "global_minimum_floor_would_accept": true,
+  "per_genre_floor_accepts": false,
+  "chat_decode_loss_percent": 6.7391320288589736,
+  "chat_decode_floor_tok_s": 65.07591517037184,
+  "why": "The minimum-only floor would hide a >5% chat regression while accepting a small prefill gain."
+}
