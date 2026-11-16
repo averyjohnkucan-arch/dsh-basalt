@@ -1,0 +1,620 @@
+{
+  "model_key": "flash_basalt",
+  "performance_qualified": true,
+  "qualified_at_unix": 1794796440.7506568,
+  "scope": "Native throughput and paired metric labels only; separate generated-code, plugin GPU and final-publication gates remain",
+  "long_selection": "range-perf-flash_basalt-range-repeat-35b46ec69f83-story",
+  "short_selection": "range-perf-flash_basalt-peak-code-confirm-b880f20a9748-1",
+  "long_identity": "35b46ec69f83",
+  "short_identity": "b880f20a9748",
+  "long_metrics": {
+    "low": {
+      "case": "range-perf-flash_basalt-repeat-final-code-35b46ec69f83",
+      "prefill": 3013.6482360298714,
+      "decode": 55.581398643556824
+    },
+    "low_cases": [
+      {
+        "case": "range-perf-flash_basalt-repeat-final-code-35b46ec69f83",
+        "prefill": 3013.6482360298714,
+        "decode": 55.581398643556824
+      }
+    ],
+    "high": {
+      "cases": [
+        {
+          "case": "range-perf-flash_basalt-range-check-35b46ec69f83-text",
+          "workload": "text",
+          "prefill": 3243.0990489445603,
+          "decode": 68.74248037832974
+        },
+        {
+          "case": "range-perf-flash_basalt-range-check-35b46ec69f83-chat",
+          "workload": "chat",
+          "prefill": 3226.4094339187227,
+          "decode": 71.58039230973564
+        },
+        {
+          "case": "range-perf-flash_basalt-joint-35b46ec69f83-story",
+          "workload": "story",
+          "prefill": 3229.7932895332615,
+          "decode": 63.88976514129115
+        },
+        {
+          "case": "range-perf-flash_basalt-range-repeat-35b46ec69f83-story",
+          "workload": "story",
+          "prefill": 3227.755169887521,
+          "decode": 63.16252146036355
+        }
+      ],
+      "worst_case": "range-perf-flash_basalt-range-repeat-35b46ec69f83-story",
+      "best_case": "range-perf-flash_basalt-range-check-35b46ec69f83-chat",
+      "prefill_range": [
+        3226.4094339187227,
+        3243.0990489445603
+      ],
+      "decode_range": [
+        63.16252146036355,
+        71.58039230973564
+      ]
+    },
+    "repeatability": {
+      "objective": "First maximize the minimum genre-median long decode. Then maximize minimum cold prefill while retaining >=95% of EACH genre median from that peak-decode preset. Repeat absolute limiting genres and, when controls differ, the limiting relative genre for both presets.",
+      "selected": "range-perf-flash_basalt-range-repeat-35b46ec69f83-story",
+      "peak_decode_tok_s": 65.28390071076302,
+      "decode_floor_tok_s": 62.01970567522487,
+      "peak_decode_identity": "93fa8edb055c",
+      "genre_decode_floor_tok_s": {
+        "text": 62.95083029847379,
+        "chat": 65.07591517037184,
+        "story": 62.01970567522487
+      },
+      "candidates": [
+        {
+          "identity": "48fa9a75d6b6",
+          "complete": true,
+          "prefill": 3092.717370626153,
+          "decode": 64.42417527396165,
+          "worst_genre": "story",
+          "genres": {
+            "text": {
+              "prefill": 3092.717370626153,
+              "decode": 78.9787810971519,
+              "samples": 1,
+              "cases": [
+                "range-perf-flash-basalt-base-text"
+              ]
+            },
+            "chat": {
+              "prefill": 3242.0175249857257,
+              "decode": 69.94315485968076,
+              "samples": 2,
+              "cases": [
+                "range-perf-flash-basalt-base-chat",
+                "range-perf-flash_basalt-range-repeat-48fa9a75d6b6-chat"
+              ]
+            },
+            "story": {
+              "prefill": 3241.4596290931945,
+              "decode": 64.42417527396165,
+              "samples": 2,
+              "cases": [
+                "range-perf-flash-basalt-base-story",
+                "range-perf-flash_basalt-range-repeat-48fa9a75d6b6-story"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "93fa8edb055c",
+          "complete": true,
+          "prefill": 3214.7127352995276,
+          "decode": 65.28390071076302,
+          "worst_genre": "story",
+          "genres": {
+            "text": {
+              "prefill": 3214.7127352995276,
+              "decode": 66.26403189313031,
+              "samples": 1,
+              "cases": [
+                "range-perf-flash-basalt-final-text"
+              ]
+            },
+            "chat": {
+              "prefill": 3259.511279247242,
+              "decode": 68.50096333723353,
+              "samples": 1,
+              "cases": [
+                "range-perf-flash-basalt-confirm-workers14"
+              ]
+            },
+            "story": {
+              "prefill": 3229.974881126414,
+              "decode": 65.28390071076302,
+              "samples": 2,
+              "cases": [
+                "range-perf-flash-basalt-final-story",
+                "range-perf-flash_basalt-range-repeat-93fa8edb055c-story"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "c0eb8789b4d1",
+          "complete": true,
+          "prefill": 3207.4251078901134,
+          "decode": 64.2485896889148,
+          "worst_genre": "chat",
+          "genres": {
+            "text": {
+              "prefill": 3233.528225433419,
+              "decode": 68.84435283218474,
+              "samples": 1,
+              "cases": [
+                "range-perf-flash_basalt-range-check-c0eb8789b4d1-text"
+              ]
+            },
+            "chat": {
+              "prefill": 3207.4251078901134,
+              "decode": 64.2485896889148,
+              "samples": 2,
+              "cases": [
+                "range-perf-flash-basalt-confirm-spec4",
+                "range-perf-flash_basalt-range-repeat-c0eb8789b4d1-chat"
+              ]
+            },
+            "story": {
+              "prefill": 3232.551328688575,
+              "decode": 68.1401431471493,
+              "samples": 1,
+              "cases": [
+                "range-perf-flash_basalt-range-check-c0eb8789b4d1-story"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "877450f4900e",
+          "complete": false,
+          "prefill": 3222.6810112071207,
+          "decode": 48.64090149481228,
+          "worst_genre": "chat",
+          "genres": {
+            "chat": {
+              "prefill": 3222.6810112071207,
+              "decode": 48.64090149481228,
+              "samples": 1,
+              "cases": [
+                "range-perf-flash-basalt-confirm-spec0"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "15d0219d565d",
+          "complete": false,
+          "prefill": 3212.206430386494,
+          "decode": 65.08273979133229,
+          "worst_genre": "text",
+          "genres": {
+            "text": {
+              "prefill": 3216.729478135627,
+              "decode": 65.08273979133229,
+              "samples": 1,
+              "cases": [
+                "range-perf-flash_basalt-range-check-15d0219d565d-text"
+              ]
+            },
+            "chat": {
+              "prefill": 3212.206430386494,
+              "decode": 70.51652020897203,
+              "samples": 1,
+              "cases": [
+                "range-perf-flash-basalt-prefill-32k"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "f89d3d211c4b",
+          "complete": false,
+          "prefill": 1837.9801018047199,
+          "decode": 58.230611853035114,
+          "worst_genre": "chat",
+          "genres": {
+            "chat": {
+              "prefill": 1837.9801018047199,
+              "decode": 58.230611853035114,
+              "samples": 1,
+              "cases": [
+                "range-perf-flash-basalt-prefill-4k"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "ab4521534bd7",
+          "complete": false,
+          "prefill": 3219.3416863415728,
+          "decode": 64.30569397344203,
+          "worst_genre": "story",
+          "genres": {
+            "text": {
+              "prefill": 3219.3416863415728,
+              "decode": 65.1119352542969,
+              "samples": 1,
+              "cases": [
+                "range-perf-flash_basalt-range-check-ab4521534bd7-text"
+              ]
+            },
+            "story": {
+              "prefill": 3234.385988722872,
+              "decode": 64.30569397344203,
+              "samples": 1,
+              "cases": [
+                "range-perf-flash_basalt-joint-ab4521534bd7-story"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "35b46ec69f83",
+          "complete": true,
+          "prefill": 3226.4094339187227,
+          "decode": 63.52614330082735,
+          "worst_genre": "story",
+          "genres": {
+            "text": {
+              "prefill": 3243.0990489445603,
+              "decode": 68.74248037832974,
+              "samples": 1,
+              "cases": [
+                "range-perf-flash_basalt-range-check-35b46ec69f83-text"
+              ]
+            },
+            "chat": {
+              "prefill": 3226.4094339187227,
+              "decode": 71.58039230973564,
+              "samples": 1,
+              "cases": [
+                "range-perf-flash_basalt-range-check-35b46ec69f83-chat"
+              ]
+            },
+            "story": {
+              "prefill": 3228.7742297103914,
+              "decode": 63.52614330082735,
+              "samples": 2,
+              "cases": [
+                "range-perf-flash_basalt-joint-35b46ec69f83-story",
+                "range-perf-flash_basalt-range-repeat-35b46ec69f83-story"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "26b17faede3c",
+          "complete": true,
+          "prefill": 3224.0385073631032,
+          "decode": 64.94745368574253,
+          "worst_genre": "story",
+          "genres": {
+            "text": {
+              "prefill": 3224.0385073631032,
+              "decode": 70.1504144324384,
+              "samples": 1,
+              "cases": [
+                "range-perf-flash_basalt-range-check-26b17faede3c-text"
+              ]
+            },
+            "chat": {
+              "prefill": 3242.773091701909,
+              "decode": 78.99508450790434,
+              "samples": 1,
+              "cases": [
+                "range-perf-flash_basalt-range-check-26b17faede3c-chat"
+              ]
+            },
+            "story": {
+              "prefill": 3237.146883716479,
+              "decode": 64.94745368574253,
+              "samples": 1,
+              "cases": [
+                "range-perf-flash_basalt-joint-26b17faede3c-story"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "9f177cefcba5",
+          "complete": false,
+          "prefill": 3224.5143970343356,
+          "decode": 62.46616861340715,
+          "worst_genre": "story",
+          "genres": {
+            "story": {
+              "prefill": 3224.5143970343356,
+              "decode": 62.46616861340715,
+              "samples": 1,
+              "cases": [
+                "range-perf-flash_basalt-joint-9f177cefcba5-story"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "c2b7d0b7dddd",
+          "complete": true,
+          "prefill": 3228.520405806919,
+          "decode": 63.88459297689708,
+          "worst_genre": "chat",
+          "genres": {
+            "text": {
+              "prefill": 3228.520405806919,
+              "decode": 67.26231665645953,
+              "samples": 1,
+              "cases": [
+                "range-perf-flash_basalt-range-check-c2b7d0b7dddd-text"
+              ]
+            },
+            "chat": {
+              "prefill": 3236.1827810972295,
+              "decode": 63.88459297689708,
+              "samples": 1,
+              "cases": [
+                "range-perf-flash_basalt-range-check-c2b7d0b7dddd-chat"
+              ]
+            },
+            "story": {
+              "prefill": 3231.3758482332714,
+              "decode": 64.30711434766185,
+              "samples": 1,
+              "cases": [
+                "range-perf-flash_basalt-joint-c2b7d0b7dddd-story"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "5ba1de1ff8dc",
+          "complete": false,
+          "prefill": 3226.0421586016255,
+          "decode": 63.341314492052014,
+          "worst_genre": "story",
+          "genres": {
+            "text": {
+              "prefill": 3226.0421586016255,
+              "decode": 69.4715818930175,
+              "samples": 1,
+              "cases": [
+                "range-perf-flash_basalt-range-check-5ba1de1ff8dc-text"
+              ]
+            },
+            "story": {
+              "prefill": 3237.146883716479,
+              "decode": 63.341314492052014,
+              "samples": 1,
+              "cases": [
+                "range-perf-flash_basalt-joint-5ba1de1ff8dc-story"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "b880f20a9748",
+          "complete": true,
+          "prefill": 3223.2209001011315,
+          "decode": 65.18214602432593,
+          "worst_genre": "chat",
+          "genres": {
+            "text": {
+              "prefill": 3256.7525806015788,
+              "decode": 71.03436429150244,
+              "samples": 1,
+              "cases": [
+                "range-perf-flash_basalt-peak-code-profile-b880f20a9748-text"
+              ]
+            },
+            "chat": {
+              "prefill": 3240.1470488283157,
+              "decode": 65.18214602432593,
+              "samples": 2,
+              "cases": [
+                "range-perf-flash_basalt-peak-code-profile-b880f20a9748-chat",
+                "range-perf-flash_basalt-range-repeat-b880f20a9748-chat"
+              ]
+            },
+            "story": {
+              "prefill": 3223.2209001011315,
+              "decode": 75.5027539128477,
+              "samples": 1,
+              "cases": [
+                "range-perf-flash_basalt-peak-code-profile-b880f20a9748-story"
+              ]
+            }
+          }
+        }
+      ],
+      "original_selection": {
+        "objective": "Maximize cold prefill subject to sustained late decode >=95% of the fastest qualified 8192-output result on the same workload",
+        "peak_decode_tok_s": 70.51652020897203,
+        "decode_floor_tok_s": 66.99069419852341,
+        "selected": "range-perf-flash-basalt-confirm-workers14",
+        "candidates": [
+          {
+            "case": "range-perf-flash-basalt-base-chat",
+            "prefill": 3246.5783326134715,
+            "decode": 65.54048955185235
+          },
+          {
+            "case": "range-perf-flash-basalt-confirm-workers14",
+            "prefill": 3259.511279247242,
+            "decode": 68.50096333723353
+          },
+          {
+            "case": "range-perf-flash-basalt-confirm-spec4",
+            "prefill": 3219.16872487363,
+            "decode": 65.44627468414359
+          },
+          {
+            "case": "range-perf-flash-basalt-confirm-spec0",
+            "prefill": 3222.6810112071207,
+            "decode": 48.64090149481228
+          },
+          {
+            "case": "range-perf-flash-basalt-prefill-32k",
+            "prefill": 3212.206430386494,
+            "decode": 70.51652020897203
+          },
+          {
+            "case": "range-perf-flash-basalt-prefill-4k",
+            "prefill": 1837.9801018047199,
+            "decode": 58.230611853035114
+          },
+          {
+            "case": "range-perf-flash_basalt-joint-ab4521534bd7-story",
+            "prefill": 3234.385988722872,
+            "decode": 64.30569397344203,
+            "source": "joint reserve/CPU/KV refinement"
+          },
+          {
+            "case": "range-perf-flash_basalt-joint-35b46ec69f83-story",
+            "prefill": 3229.7932895332615,
+            "decode": 63.88976514129115,
+            "source": "joint reserve/CPU/KV refinement"
+          },
+          {
+            "case": "range-perf-flash_basalt-joint-26b17faede3c-story",
+            "prefill": 3237.146883716479,
+            "decode": 64.94745368574253,
+            "source": "joint reserve/CPU/KV refinement"
+          },
+          {
+            "case": "range-perf-flash_basalt-joint-9f177cefcba5-story",
+            "prefill": 3224.5143970343356,
+            "decode": 62.46616861340715,
+            "source": "joint reserve/CPU/KV refinement"
+          },
+          {
+            "case": "range-perf-flash_basalt-joint-c2b7d0b7dddd-story",
+            "prefill": 3231.3758482332714,
+            "decode": 64.30711434766185,
+            "source": "joint reserve/CPU/KV refinement"
+          },
+          {
+            "case": "range-perf-flash_basalt-joint-5ba1de1ff8dc-story",
+            "prefill": 3237.146883716479,
+            "decode": 63.341314492052014,
+            "source": "joint reserve/CPU/KV refinement"
+          },
+          {
+            "case": "range-perf-flash_basalt-peak-code-confirm-b880f20a9748-1",
+            "prefill": 3011.986175454077,
+            "decode": 57.24594671466771,
+            "source": "qualified peak-code preset with its own high-context genre matrix"
+          }
+        ]
+      },
+      "free_generation_variation": "Continuations can change draft acceptance. Final name uses the slowest actual paired measurement across all selected-setting genres and repeats; selection floors use per-genre medians. Cold process/prefix does not imply globally dropped OS file cache."
+    }
+  },
+  "short_metrics": {
+    "low": {
+      "case": "range-perf-flash_basalt-peak-code-confirm-b880f20a9748-1",
+      "prefill": 3011.986175454077,
+      "decode": 57.24594671466771
+    },
+    "low_cases": [
+      {
+        "case": "range-perf-flash_basalt-peak-code-confirm-b880f20a9748-0",
+        "prefill": 3070.8100611013233,
+        "decode": 57.71492311362352
+      },
+      {
+        "case": "range-perf-flash_basalt-peak-code-confirm-b880f20a9748-1",
+        "prefill": 3011.986175454077,
+        "decode": 57.24594671466771
+      }
+    ],
+    "high": {
+      "cases": [
+        {
+          "case": "range-perf-flash_basalt-peak-code-profile-b880f20a9748-text",
+          "workload": "text",
+          "prefill": 3256.7525806015788,
+          "decode": 71.03436429150244
+        },
+        {
+          "case": "range-perf-flash_basalt-peak-code-profile-b880f20a9748-chat",
+          "workload": "chat",
+          "prefill": 3242.5524809086537,
+          "decode": 65.8775198880941
+        },
+        {
+          "case": "range-perf-flash_basalt-range-repeat-b880f20a9748-chat",
+          "workload": "chat",
+          "prefill": 3237.7416167479773,
+          "decode": 64.48677216055776
+        },
+        {
+          "case": "range-perf-flash_basalt-peak-code-profile-b880f20a9748-story",
+          "workload": "story",
+          "prefill": 3223.2209001011315,
+          "decode": 75.5027539128477
+        }
+      ],
+      "worst_case": "range-perf-flash_basalt-range-repeat-b880f20a9748-chat",
+      "best_case": "range-perf-flash_basalt-peak-code-profile-b880f20a9748-story",
+      "prefill_range": [
+        3223.2209001011315,
+        3256.7525806015788
+      ],
+      "decode_range": [
+        64.48677216055776,
+        75.5027539128477
+      ]
+    },
+    "peak_code_selection": {
+      "objective": "Maximize confirmed median sustained code decode at 8192 input tokens, with full model context still configured; prefill reported without sacrificing peak-code decode",
+      "selected": "range-perf-flash_basalt-peak-code-confirm-b880f20a9748-1",
+      "selected_median_decode": 57.48043491414562,
+      "candidates": [
+        {
+          "identity": "93fa8edb055c",
+          "median_decode": 55.92024152527111,
+          "cases": [
+            "range-perf-flash-basalt-low-confirm-spec8",
+            "range-perf-flash_basalt-repeat-final-code-93fa8edb055c",
+            "range-perf-flash-basalt-long-profile-code"
+          ]
+        },
+        {
+          "identity": "2623182bbb21",
+          "median_decode": 56.16883359265831,
+          "cases": [
+            "range-perf-flash-basalt-low-confirm-spec6",
+            "range-perf-flash_basalt-peak-code-confirm-2623182bbb21-1"
+          ]
+        },
+        {
+          "identity": "b880f20a9748",
+          "median_decode": 57.48043491414562,
+          "cases": [
+            "range-perf-flash_basalt-peak-code-confirm-b880f20a9748-0",
+            "range-perf-flash_basalt-peak-code-confirm-b880f20a9748-1"
+          ]
+        }
+      ],
+      "screened_candidates": 8
+    }
+  },
+  "peak_long_minimum_median_decode": 65.28390071076302,
+  "selected_long_minimum_median_decode": 63.52614330082735,
+  "decode_floor": 62.01970567522487,
+  "peak_code_median_decode": 57.48043491414562,
+  "benchmark_environment_id": "performance-powerd-20261115",
+  "genre_decode_floor_tok_s": {
+    "text": 62.95083029847379,
+    "chat": 65.07591517037184,
+    "story": 62.01970567522487
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "status": "ok",
+  "scope": "Saved Basalt ranking exactly equals user Strata STRP ranking after removing its four-byte format magic; differs from the shipped Basalt ranking. Explicit profile inputs are copied per native benchmark; source snapshots remain unchanged.",
+  "strata_sha256": "8f59b4aa8873209dff11c11e37bcda9529a1335b724a1afeea37bf6388975baf",
+  "converted_basalt_sha256": "cd4f488c45c6936eb2e2f33b164553398f2201da352b4f4c8ffd66c12bcdf2df",
+  "shipped_basalt_sha256": "c31d790ae2274ad370e5181e680dd6b65c404bf393a3f6d7d8d5f05afd1feb50",
+  "bytes": 196628
+}

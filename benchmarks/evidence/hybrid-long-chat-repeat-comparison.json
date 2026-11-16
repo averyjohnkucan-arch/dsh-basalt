@@ -1,0 +1,28 @@
+{
+  "status": "measured",
+  "scope": "Same long-chat controls, native input and full8192/final4096 protocol; repeated long-context qualifier remains active until its selected-code run completes. No final maximum claim.",
+  "rows": [
+    {
+      "case": "range-perf-hybrid-basalt-confirm-resident131k",
+      "identity": "f2339c84acb2",
+      "prefill": 2132.817100369479,
+      "decode": 36.35427937437292,
+      "token_sha256": "81c25d09a9df0539741610241f5d88460f7f0c217157eec94bf4502b5fa12c1a",
+      "result_sha256": "803e5cbc623d2f06a44bb31e10f926e605026afd864faa6342ca8a0b7ba0850b",
+      "prompt_sha256": "726c24a280a169b405f1e77982f7d3cd56733cdc50c0082669e1ab944f2e6f95"
+    },
+    {
+      "case": "range-perf-hybrid_basalt-range-repeat-f2339c84acb2-chat",
+      "identity": "f2339c84acb2",
+      "prefill": 2130.3774978337124,
+      "decode": 35.72010828846764,
+      "token_sha256": "6415341fb19b8d4c69b66217b50c3c29ae83ab1eebe6fc90eee2524315b36235",
+      "result_sha256": "6c0f9e7b3dccaa35e34a1932e01b8ee811acaf1ddb941db70281bc5e83106c44",
+      "prompt_sha256": "726c24a280a169b405f1e77982f7d3cd56733cdc50c0082669e1ab944f2e6f95"
+    }
+  ],
+  "median_prefill": 2131.5972991015956,
+  "median_decode": 36.03719383142028,
+  "same_output_tokens": false,
+  "decode_change_percent": -1.744419355351945
+}

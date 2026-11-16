@@ -1,0 +1,62 @@
+{
+  "status": "passed",
+  "scope": "Actual initial full-output fit block with injected worker responses; no GPU. Memory stop lowers the budget and restarts all genres; setup errors halt; ordinary Flash keeps a single pass.",
+  "source_sha256": "f7a122f1ea9ee5f0d28167aaa9a64a0d65759400e4553aef630a19e3ed9a5db3",
+  "checks": {
+    "pressure": {
+      "calls": [
+        [
+          92,
+          "text"
+        ],
+        [
+          92,
+          "chat"
+        ],
+        [
+          88,
+          "text"
+        ],
+        [
+          88,
+          "chat"
+        ],
+        [
+          88,
+          "story"
+        ]
+      ],
+      "raised": null
+    },
+    "setup": {
+      "calls": [
+        [
+          92,
+          "text"
+        ],
+        [
+          92,
+          "chat"
+        ]
+      ],
+      "raised": "Initial workload failed; inspect non-memory error before tuning"
+    },
+    "flash": {
+      "calls": [
+        [
+          92,
+          "text"
+        ],
+        [
+          92,
+          "chat"
+        ],
+        [
+          92,
+          "story"
+        ]
+      ],
+      "raised": null
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "mode": "nonworker-budget",
+  "reserved_gib": 12,
+  "minimum_free_gib": 0,
+  "requested_by_user": true,
+  "at": "2026-11-15T23:35:14.462524-08:00",
+  "meaning": "12GiB is for OS/other applications including RAM they use; it need not remain free. Worker cgroup cap leaves at least this physical-RAM budget; OS may use its swap."
+}

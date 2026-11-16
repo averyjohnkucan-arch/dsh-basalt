@@ -1,0 +1,24 @@
+{
+  "engine": "old-strata",
+  "status": "complete",
+  "scope": "2048 generated after an 80%-full text prefix; compatibility/screen only, not final throughput. Hard limit108GiB and host reserve12GiB stay unchanged.",
+  "benchmark_memory_policy_id": "hybrid-high104-max108",
+  "host_memory_policy": {
+    "memory_high_gib": 104,
+    "memory_max_gib": 108,
+    "minimum_host_available_gib": 12
+  },
+  "probes": [
+    {
+      "budget_gib": 96,
+      "status": "ok",
+      "case": "range-perf-hybrid-old-strata-budget-fit-96-high104",
+      "error": null,
+      "engine_binary_sha256": "cee93d26f710d3685ccf3541a95054dc193e63b239650a9d7122b4b938ad9193"
+    }
+  ],
+  "safe_budgets_gib": [
+    96
+  ],
+  "selected_budget_gib": 96
+}

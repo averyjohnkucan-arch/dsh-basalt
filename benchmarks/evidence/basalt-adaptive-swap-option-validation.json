@@ -1,0 +1,142 @@
+{
+  "status": "passed",
+  "version": "0.1.2",
+  "scope": "Current bounded0\u201396 option validation/export controls; full28-JS/4-Python suite after rebuilt client, actual frozen launcher config/flag checks, build and formatting. All23 packaged files byte-match source. Cache-control GPU performance trials remain queued.",
+  "javascript_tests": 28,
+  "python_tests": 4,
+  "rebuilt_client_activation_included_in_js_suite": true,
+  "real_launcher_contract_included_in_python_suite": true,
+  "frozen_launcher_matches_tested_source": true,
+  "launcher_sha256": "a7b22d88f986310f4528f43a9cb5347b9d923b0263f85d4417dd03a71d59bb80",
+  "build": "passed",
+  "format": "passed",
+  "artifact": "/mnt/media/scratch/dsh-inference-tuning-20261115/outputs/dsh-basalt-0.1.2.tgz",
+  "bytes": 64442,
+  "sha256": "6624f9e56ec06a3b5bc8a113b7785e8531dc5339f085d81b00bdd43cb523725d",
+  "files": [
+    {
+      "path": "LICENSE",
+      "bytes": 1073,
+      "sha256": "eb74854a7c6c9838b7ae53ea7c6274cd684a78b6954bafa692236f4f3f63e78d"
+    },
+    {
+      "path": "lib/adapter.js",
+      "bytes": 4976,
+      "sha256": "a9a58d8b9206cc95d35fd3908a0c87e7e079bab1bdda95ea18f97dd4266c45f5"
+    },
+    {
+      "path": "client.js",
+      "bytes": 20304,
+      "sha256": "532cc05197b8232793b6951192fe35b9c4fdd1a2ec39686030ed70bd082756c3"
+    },
+    {
+      "path": "lib/cpu-set.js",
+      "bytes": 3497,
+      "sha256": "929eee79ec47679b1b4adc1b47ce06a916c48613a063fd1491129e7d3566369b"
+    },
+    {
+      "path": "lib/downloads.js",
+      "bytes": 3574,
+      "sha256": "896146ec914c7d5737b80fa35997d30544ff1af11ec939471793583e501d16be"
+    },
+    {
+      "path": "lib/http.js",
+      "bytes": 946,
+      "sha256": "73154c996fea367ff848c54ffb55deb966a310c1b71fb6f7c32b83b6ed24e54f"
+    },
+    {
+      "path": "index.js",
+      "bytes": 1370,
+      "sha256": "7b71f5c01ad3e5d0f0f8a083c9c1ffe13a79d9b57bc009fe15909468459cbb4d"
+    },
+    {
+      "path": "lib/models.js",
+      "bytes": 9891,
+      "sha256": "40b4bc2f0e4433ef1eee6809d628e9d159c018800a918dbeb317ade1c5e4d772"
+    },
+    {
+      "path": "lib/process.js",
+      "bytes": 3061,
+      "sha256": "7bc7f40ff145d553180fb0f2dec3ff63487c9fff205cd90ada20ce69631b137c"
+    },
+    {
+      "path": "lib/runtime.js",
+      "bytes": 2253,
+      "sha256": "cfc748eba1b11c5bb7b74ea4b96915db54d94c275d6c747bfb21095deea14c3c"
+    },
+    {
+      "path": "lib/scheduler.js",
+      "bytes": 967,
+      "sha256": "8349b5fae59a9a8bc327215e51acb05a556746cbff204d4437e6ac2ea2f56cea"
+    },
+    {
+      "path": "lib/service.js",
+      "bytes": 15505,
+      "sha256": "63d223e4682f1a143f5221b0e7ed65f8443ef08f7e7e3f36e94dec35b609d66a"
+    },
+    {
+      "path": "lib/store.js",
+      "bytes": 1149,
+      "sha256": "d5ab25cceb9a1e32247746b5738a0b006a32b76bce0325c7d56110cf77136eda"
+    },
+    {
+      "path": "lib/thinking.js",
+      "bytes": 1457,
+      "sha256": "e86fa2905f5c68c719eccd198f9c9c2a1de3514884f74835bcf7f0d2acddcf1c"
+    },
+    {
+      "path": "engine.json",
+      "bytes": 332,
+      "sha256": "7ac8433768a447573806df7dd7b42dbc84b0ae22d6a381057def455bac7ca12e"
+    },
+    {
+      "path": "package.json",
+      "bytes": 2077,
+      "sha256": "67aa706958fc178e0fd24e31f2a4b0f56208efbf6d951e298690ad899f72958e"
+    },
+    {
+      "path": "custom-engine/source.json",
+      "bytes": 796,
+      "sha256": "92544fc3d642cbdb11af7d65d2a9d6342ab3d002405b83b2ae3ad37c33e2976e"
+    },
+    {
+      "path": "ENGINE-INSPECTION.md",
+      "bytes": 3220,
+      "sha256": "80c9343a8cdaa60324635fc6df84cbe9da3e96c4a36e7d535e7b3ab34678f17f"
+    },
+    {
+      "path": "custom-engine/README.md",
+      "bytes": 2717,
+      "sha256": "d74f688892cc157f52b17242975b6636a3a3c1ba705310199c1dd0dd9c904caf"
+    },
+    {
+      "path": "README.md",
+      "bytes": 8381,
+      "sha256": "2cada0a2a0731687b4b6125e1a3dcf2b5fe17b72989c91e9df1cbaae456863f5"
+    },
+    {
+      "path": "patches/basalt-native-strata-support.patch",
+      "bytes": 126540,
+      "sha256": "af56a587f8a63a070e31ba56e5b3ef1d9dab420beea8079b5c51688bd2e54062"
+    },
+    {
+      "path": "scripts/prepare-engine.py",
+      "bytes": 3993,
+      "sha256": "92020eb5bcfff51597fec2cefc7d86cced25fd34b0f921dd7325be5c7865bfcc"
+    },
+    {
+      "path": "cordis.patch.yml",
+      "bytes": 71,
+      "sha256": "1923b8556da8773262534e1307c2112b8ffd52209ba6fbc55f435114ed50a35e"
+    }
+  ],
+  "source_files": {
+    "lib/models.js": "40b4bc2f0e4433ef1eee6809d628e9d159c018800a918dbeb317ade1c5e4d772",
+    "client/main.jsx": "e361ec21d1c456611b5f07b60c56fade9e83340711a959e6bbda7df5b80cadc7",
+    "client.js": "532cc05197b8232793b6951192fe35b9c4fdd1a2ec39686030ed70bd082756c3",
+    "test/models.test.js": "9c07807400ae1476aadc8db9a972122ea43ecc9d2ceb1edbcb81ff19a19a6bf5",
+    "test/adaptive_options_test.py": "f43adcdd65ee4a33d9956a4d15e0b9a7bd7035811c2fabe169c52729518defb2",
+    "package.json": "67aa706958fc178e0fd24e31f2a4b0f56208efbf6d951e298690ad899f72958e",
+    "package-lock.json": "5e4b9258c1b34cef6d3953e8aa746cc2f8b386ee6ffde4c21b212031d91cbec2"
+  }
+}

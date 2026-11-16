@@ -1,0 +1,54 @@
+[
+  {
+    "workload": "code",
+    "prefix_identical": true,
+    "suffix_identical": true,
+    "old_lengths": [
+      8,
+      307
+    ],
+    "huihui_lengths": [
+      8,
+      307
+    ]
+  },
+  {
+    "workload": "text",
+    "prefix_identical": true,
+    "suffix_identical": true,
+    "old_lengths": [
+      8,
+      130
+    ],
+    "huihui_lengths": [
+      8,
+      130
+    ]
+  },
+  {
+    "workload": "chat",
+    "prefix_identical": true,
+    "suffix_identical": true,
+    "old_lengths": [
+      409,
+      142
+    ],
+    "huihui_lengths": [
+      409,
+      142
+    ]
+  },
+  {
+    "workload": "story",
+    "prefix_identical": true,
+    "suffix_identical": true,
+    "old_lengths": [
+      8,
+      171
+    ],
+    "huihui_lengths": [
+      8,
+      171
+    ]
+  }
+]

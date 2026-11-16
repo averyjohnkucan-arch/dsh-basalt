@@ -1,0 +1,68 @@
+{
+  "at": "2026-11-15T17:12:28.496520-08:00",
+  "scope": "Native window stage timings across the complete continuation; not total wall clock or an isolated CUDA kernel profile",
+  "selection": "Initial repeated Flash long preset; additional tuning remains active",
+  "rows": [
+    {
+      "case": "range-perf-flash-basalt-final-text",
+      "workload": "text",
+      "tail_decode_tok_s": 66.26403189313031,
+      "windows": 3539,
+      "mean_proposed_width": 2.9480079118395026,
+      "mean_accepted": 1.316473580107375,
+      "native_stage_fraction": {
+        "draft_ms": 9.454966019071035e-05,
+        "verify_ms": 0.9638353516217015,
+        "post_ms": 0.036070098718107735
+      }
+    },
+    {
+      "case": "range-perf-flash-basalt-confirm-workers14",
+      "workload": "chat",
+      "tail_decode_tok_s": 68.50096333723353,
+      "windows": 2986,
+      "mean_proposed_width": 3.4722036168787676,
+      "mean_accepted": 1.74715338245144,
+      "native_stage_fraction": {
+        "draft_ms": 7.539874673085305e-05,
+        "verify_ms": 0.9670241794396165,
+        "post_ms": 0.032900421813652624
+      }
+    },
+    {
+      "case": "range-perf-flash-basalt-final-story",
+      "workload": "story",
+      "tail_decode_tok_s": 65.34566801883847,
+      "windows": 3603,
+      "mean_proposed_width": 2.8462392450735496,
+      "mean_accepted": 1.2758812101026922,
+      "native_stage_fraction": {
+        "draft_ms": 8.262887987467611e-05,
+        "verify_ms": 0.9685955425697299,
+        "post_ms": 0.03132182855039542
+      }
+    },
+    {
+      "case": "range-perf-flash_basalt-range-repeat-93fa8edb055c-story",
+      "workload": "story",
+      "tail_decode_tok_s": 65.22213340268758,
+      "windows": 3852,
+      "mean_proposed_width": 2.6853582554517135,
+      "mean_accepted": 1.128245067497404,
+      "native_stage_fraction": {
+        "draft_ms": 8.516481835144046e-05,
+        "verify_ms": 0.9674960311907786,
+        "post_ms": 0.032418803990869924
+      }
+    }
+  ],
+  "judgment": "Verification dominates measured window time. Continue planned CPU-share, expert-placement and speculative-width tests. Post-stage time alone bounds the gain available from eliminating that stage to only a few percent; cache adaptation can also alter verification cost, so this does not rule out all adaptation changes.",
+  "timing_field_semantics": {
+    "scope": "Host-clock native W-line intervals, not isolated CUDA kernel costs. Historical JSON field names retained.",
+    "draft_ms": "round0\u2192tw0: before-window setup; NOT isolated MTP/drafter computation",
+    "verify_ms": "tw0\u2192tw1: run/verify window elapsed interval",
+    "post_ms": "tw1\u2192tw3: post-verification commit and next-draft interval, including overlap; cannot isolate drafter cost",
+    "source_file": "src/models/qwen4exp/serve/qfn_decode.cpp",
+    "source_sha256": "910b586ca70970c0e7a7a9be9c66bfb571690c8c4563c78a8aa34810b48aa089"
+  }
+}

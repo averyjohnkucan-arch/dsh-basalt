@@ -1,0 +1,22 @@
+{
+  "scope": "Actual failures remain excluded from speed results. Source-tested soft-pressure gate eligibility only; GPU recovery and full qualification remain pending.",
+  "source_sha256": "7e57979a447faf224213afa3a7389dc9037d508dcbcdb6fda206ce619fc41831",
+  "cases": [
+    {
+      "case": "range-perf-hybrid_basalt-joint-469edbb34bd9-chat",
+      "error": "RAM safety stop: available=14.7GiB, memory-pressure avg10=40.5%",
+      "minimum_host_available_gib": 13.257377624511719,
+      "maximum_pressure_avg10": 52.68,
+      "strict106_trial_gate_passed": true,
+      "last_scope_events": "low 0\nhigh 4418\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\nsock_throttled 0"
+    },
+    {
+      "case": "range-perf-hybrid_basalt-joint-c281eb51d24e-chat",
+      "error": "RAM safety stop: available=14.7GiB, memory-pressure avg10=51.5%",
+      "minimum_host_available_gib": 12.829536437988281,
+      "maximum_pressure_avg10": 52.95,
+      "strict106_trial_gate_passed": true,
+      "last_scope_events": "low 0\nhigh 4552\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\nsock_throttled 0"
+    }
+  ]
+}

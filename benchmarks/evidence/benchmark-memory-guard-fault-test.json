@@ -1,0 +1,7 @@
+{
+  "status": "ok",
+  "qualification": "Injected impossible RAM floor stopped only the harmless owned sleep worker; controller remained alive; no model memory allocated",
+  "worker_returncode": -15,
+  "observed_stop": "RAM safety stop: available=107.1GiB, memory-pressure avg10=0.0%",
+  "worker_scope": "/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/app.slice/dsh-bench-590f61dffe4f-323834.scope"
+}

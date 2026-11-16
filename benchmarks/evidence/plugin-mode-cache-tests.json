@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "source_sha256": "d092ab5e6b0ad45a4891aaa22e9fb4c32d03123d841bb84954178db847296d80",
+  "checks": [
+    "current complete receipt accepted",
+    "schemaVersion stale evidence rejected",
+    "pluginSourceSha256 stale evidence rejected",
+    "nativeCommandEvidence stale evidence rejected",
+    "projectionModes stale evidence rejected",
+    "later semantic QA attachment preserves launch identity",
+    "changed model rejects reuse",
+    "DeepSeek, wrong geometry and Swift excluded from Qwen projection"
+  ],
+  "scope": "Actual AST cache eligibility functions only; no GPU claim"
+}

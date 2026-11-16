@@ -1,0 +1,55 @@
+{
+  "status": "complete",
+  "phase": "complete",
+  "files": [
+    {
+      "source": "/mnt/media/AI/Models/DeepSeek-V4.1-Flash-1017-GSQ-RCO-GGUF/DeepSeek-V4.1-Flash-1017-GSQ-RCO-IQ2_XXS-00001-of-00004.gguf",
+      "resolved": "/home/user/Desktop/DeepSeek-IQ2_XXS/DeepSeek-V4.1-Flash-1017-GSQ-RCO-IQ2_XXS-00001-of-00004.gguf",
+      "bytes": 39075725728,
+      "sha256": "2dfe9711eac1f7814aa59154d11e8f27739f8b96875dc1e667eac9f8c756e1fe",
+      "device": 66306,
+      "status": "verified-and-relocated"
+    },
+    {
+      "source": "/mnt/media/AI/Models/DeepSeek-V4.1-Flash-1017-GSQ-RCO-GGUF/DeepSeek-V4.1-Flash-1017-GSQ-RCO-IQ2_XXS-00002-of-00004.gguf",
+      "resolved": "/home/user/Desktop/DeepSeek-IQ2_XXS/DeepSeek-V4.1-Flash-1017-GSQ-RCO-IQ2_XXS-00002-of-00004.gguf",
+      "bytes": 39388449504,
+      "sha256": "cec1b2c3da429dc768b8bb9bc4dc4403d81f74d34db660a6a34ee3e555bf2c70",
+      "device": 66306,
+      "status": "verified-and-relocated"
+    },
+    {
+      "source": "/mnt/media/AI/Models/DeepSeek-V4.1-Flash-1017-GSQ-RCO-GGUF/DeepSeek-V4.1-Flash-1017-GSQ-RCO-IQ2_XXS-00003-of-00004.gguf",
+      "resolved": "/home/user/Desktop/DeepSeek-IQ2_XXS/DeepSeek-V4.1-Flash-1017-GSQ-RCO-IQ2_XXS-00003-of-00004.gguf",
+      "bytes": 39246891616,
+      "sha256": "9d9c2140fcb134a0b9a74dedd0e5167e68077af6d08ce7f856bce112f0a35dd3",
+      "device": 66306,
+      "status": "verified-and-relocated"
+    },
+    {
+      "source": "/mnt/media/AI/Models/DeepSeek-V4.1-Flash-1017-GSQ-RCO-GGUF/DeepSeek-V4.1-Flash-1017-GSQ-RCO-IQ2_XXS-00004-of-00004.gguf",
+      "resolved": "/home/user/Desktop/DeepSeek-IQ2_XXS/DeepSeek-V4.1-Flash-1017-GSQ-RCO-IQ2_XXS-00004-of-00004.gguf",
+      "bytes": 20527837312,
+      "sha256": "9b790a2297ed3cdede379fc984f4a52bb95f3b23724c797af11d1fa6a69db059",
+      "device": 66306,
+      "status": "verified-and-relocated"
+    },
+    {
+      "source": "/mnt/media/AI/Models/DeepSeek-V4.1-Flash-1017-GSQ-RCO-GGUF/support/dspark-DeepSeek-V4.1-Flash-1017-Q8_0.gguf",
+      "resolved": "/home/user/Desktop/DeepSeek-shared/support/dspark-DeepSeek-V4.1-Flash-1017-Q8_0.gguf",
+      "bytes": 7976914240,
+      "sha256": "6ba6ac1b331c540691a209e7fc97dec2a24e295acb1e755c84c7d24a4373927a",
+      "device": 66306,
+      "status": "verified-and-relocated"
+    }
+  ],
+  "started_unix": 1794818786.9518375,
+  "authorization": "User requested both DeepSeek quantizations on the internal system SSD",
+  "updated_unix": 1794818972.975123,
+  "current_file": "/home/user/Desktop/DeepSeek-shared/support/dspark-DeepSeek-V4.1-Flash-1017-Q8_0.gguf",
+  "current_bytes": 3800039424,
+  "current_size": 7976914240,
+  "completed_unix": 1794818972.9751186,
+  "internal_device": 66306,
+  "shared_engram": "Unchanged on media by user request; separating its I/O may reduce contention"
+}

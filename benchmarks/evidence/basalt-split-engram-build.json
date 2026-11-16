@@ -1,0 +1,8 @@
+{
+  "status": "built-cpu-validated-gpu-parity-pending",
+  "binary": "/mnt/media/scratch/dsh-inference-tuning-20261115/runtimes/basalt-deepseek-split/bin/basalt",
+  "binary_sha256": "4ef5891377f90b4190def5554b9d200d540c227da593fa893ca6988fbf1449ec",
+  "completed_unix": 1794820154.6088436,
+  "purpose": "Optional split-drive Engram; old frozen runtime and active Qwen benchmarks untouched",
+  "required_gpu_gate": "range_deepseek frozen64 identity probe with external Engram before throughput tuning"
+}

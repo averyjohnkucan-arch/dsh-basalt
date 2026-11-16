@@ -1,0 +1,46 @@
+{
+  "status": "passed",
+  "scope": "Real queue --plan validates current Flash native/GPU proof, confirms exact next job and refuses skipping incomplete work; no inference launched.",
+  "checks": [
+    {
+      "start_index": 0,
+      "accepted": true,
+      "plan": {
+        "start_index": 0,
+        "total_jobs": 57,
+        "next_job": [
+          "range_repeatability.py",
+          "flash_basalt",
+          "qwen"
+        ],
+        "validated_skipped_indices": [],
+        "benchmark_environment_id": "performance-powerd-20261115",
+        "plan_sha256": "5bddb5f648002085b331c3247b1c97b9f09a3dcd6c84dde135fe268bd68adb12"
+      }
+    },
+    {
+      "start_index": 3,
+      "accepted": true,
+      "plan": {
+        "start_index": 3,
+        "total_jobs": 57,
+        "next_job": [
+          "range_flash.py",
+          "hybrid"
+        ],
+        "validated_skipped_indices": [
+          0,
+          1,
+          2
+        ],
+        "benchmark_environment_id": "performance-powerd-20261115",
+        "plan_sha256": "5bddb5f648002085b331c3247b1c97b9f09a3dcd6c84dde135fe268bd68adb12"
+      }
+    },
+    {
+      "start_index": 4,
+      "accepted": false,
+      "reason": "Uncompleted hybrid job cannot be skipped"
+    }
+  ]
+}

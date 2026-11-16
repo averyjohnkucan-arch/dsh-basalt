@@ -1,0 +1,46 @@
+{
+  "status": "ok",
+  "scope": "Strata GGUF-backed pack index and Basalt converter receipt reference the same physical source artifact files and sizes; frozen-placement token identity remains a separate pending gate",
+  "legacy_pack_directory_name": "deepseek-v4.1-flash-ist-das-2.00bpw",
+  "pack_format": "gguf",
+  "source_directory": "/mnt/media/AI/Models/DeepSeek-V4.1-Flash-1017-GSQ-RCO-GGUF",
+  "pack_manifest_sha256": "6c8d5b4cb4dc21456a412c3a0644b3409da176821807f3b11539eb8adf348715",
+  "files": [
+    {
+      "strata_indexed_path": "/mnt/media/AI/Models/DeepSeek-V4.1-Flash-1017-GSQ-RCO-GGUF/DeepSeek-V4.1-Flash-1017-GSQ-RCO-IQ2_XXS-00001-of-00004.gguf",
+      "basalt_source_path": "DeepSeek-V4.1-Flash-1017-GSQ-RCO-IQ2_XXS-00001-of-00004.gguf",
+      "bytes": 39075725728,
+      "prior_source_fingerprint": "4d60f285be4b15fcc368950fef614b4f06a529b3353bea96ae538b6f73c92935"
+    },
+    {
+      "strata_indexed_path": "/mnt/media/AI/Models/DeepSeek-V4.1-Flash-1017-GSQ-RCO-GGUF/DeepSeek-V4.1-Flash-1017-GSQ-RCO-IQ2_XXS-00002-of-00004.gguf",
+      "basalt_source_path": "DeepSeek-V4.1-Flash-1017-GSQ-RCO-IQ2_XXS-00002-of-00004.gguf",
+      "bytes": 39388449504,
+      "prior_source_fingerprint": "4247b8e3ca6cf241eca2c4eb02716d2f22f0b85608bf894151c0bb5cd8007185"
+    },
+    {
+      "strata_indexed_path": "/mnt/media/AI/Models/DeepSeek-V4.1-Flash-1017-GSQ-RCO-GGUF/DeepSeek-V4.1-Flash-1017-GSQ-RCO-IQ2_XXS-00003-of-00004.gguf",
+      "basalt_source_path": "DeepSeek-V4.1-Flash-1017-GSQ-RCO-IQ2_XXS-00003-of-00004.gguf",
+      "bytes": 39246891616,
+      "prior_source_fingerprint": "4391ec6dc6a38e02d5e6d7fec46a863ac866c1bee2b843c60ebf5b6c51502248"
+    },
+    {
+      "strata_indexed_path": "/mnt/media/AI/Models/DeepSeek-V4.1-Flash-1017-GSQ-RCO-GGUF/DeepSeek-V4.1-Flash-1017-GSQ-RCO-IQ2_XXS-00004-of-00004.gguf",
+      "basalt_source_path": "DeepSeek-V4.1-Flash-1017-GSQ-RCO-IQ2_XXS-00004-of-00004.gguf",
+      "bytes": 20527837312,
+      "prior_source_fingerprint": "acc5ab68e682e5bdbb87360e858a6017dc32555f6b183c5453e1594f54facd4d"
+    },
+    {
+      "strata_indexed_path": "/mnt/media/AI/Models/DeepSeek-V4.1-Flash-1017-GSQ-RCO-GGUF/DeepSeek-V4.1-Flash-Engram-IQ4_NL.gguf",
+      "basalt_source_path": "DeepSeek-V4.1-Flash-Engram-IQ4_NL.gguf",
+      "bytes": 110595290816,
+      "prior_source_fingerprint": "8379e91fc6ca4798629334ae88b54c8a82eec9585320fe82070885df6317d07e"
+    },
+    {
+      "strata_indexed_path": "/mnt/media/AI/Models/DeepSeek-V4.1-Flash-1017-GSQ-RCO-GGUF/support/dspark-DeepSeek-V4.1-Flash-1017-Q8_0.gguf",
+      "basalt_source_path": "dspark-DeepSeek-V4.1-Flash-1017-Q8_0.gguf",
+      "bytes": 7976914240,
+      "prior_source_fingerprint": "6253a5ed6db0144c93a36354008af9044c39cb12237be0f334533079845da425"
+    }
+  ]
+}

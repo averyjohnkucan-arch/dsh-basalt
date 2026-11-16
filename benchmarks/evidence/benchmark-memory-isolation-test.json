@@ -1,0 +1,14 @@
+{
+  "status": "ok",
+  "worker_cgroup": "0::/user.slice/user-1000.slice/user@1000.service/app.slice/dsh-bench-620281bfbe65-318558.scope",
+  "controller_cgroup": "0::/user.slice/user-1000.slice/user@1000.service/app.slice/app-org.chromium.Chromium-316423.scope",
+  "policy": {
+    "isolation": "separate systemd user scope",
+    "memory_high_gib": 96,
+    "memory_max_gib": 108,
+    "swap_max_gib": 1,
+    "minimum_host_available_gib": 12,
+    "pressure_avg10_limit": 40,
+    "pressure_grace_s": 6
+  }
+}

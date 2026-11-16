@@ -1,0 +1,17 @@
+{
+  "model_key": "flash_basalt",
+  "status": "ok",
+  "benchmark_environment_id": "performance-powerd-20261115",
+  "receipts": [
+    {
+      "profile": "scratch-range-flash-basalt-long",
+      "status": "ok",
+      "reused_qualified_receipt": true
+    },
+    {
+      "profile": "scratch-range-flash-basalt-short",
+      "status": "ok",
+      "receipt": "/mnt/media/scratch/dsh-inference-tuning-20261115/validation/range-plugin-gpu/scratch-range-flash-basalt-short/adapter-result.json"
+    }
+  ]
+}

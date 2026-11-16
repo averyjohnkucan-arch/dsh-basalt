@@ -1,0 +1,26 @@
+[
+  {
+    "source": "/mnt/media/AI/Model Configs/ninfer/portable/QWEN-3.8-27B-NVFP4-full---256K---NVFP4-NVFP4---p2852-d186---p1300-d39.dsh-model.json",
+    "source_sha256": "24b1144b6f9f795da6ab4f7af017416c62252ba07015a686792218a1d85d3b47",
+    "baseline_config": "quiet-ninfer-nvfp4full-old-90",
+    "differences": []
+  },
+  {
+    "source": "/mnt/media/AI/Model Configs/ninfer/portable/QWEN-3.8-27B-IQ3_S-Huihui---256K---FP8-FP8---p1271-d140---p496-d32.dsh-model.json",
+    "source_sha256": "fd2f8b081de6eafd0e05ca8a309e3ac3540f5426c8615c86c34a0e9d46cf61bf",
+    "baseline_config": "quiet-ninfer-huihui-fp8-old-90",
+    "differences": []
+  },
+  {
+    "source": "/mnt/media/AI/Model Configs/ninfer/portable/QWEN-3.8-27B-IQ3_S-Huihui---256K---INT8-INT8---p1192-d147---p804-d36.dsh-model.json",
+    "source_sha256": "470b4efadeb40cd1c85ae62314985b795e83ba7cf8d16a391b4e0cc5ffc49145",
+    "baseline_config": "quiet-ninfer-huihui-int8-old-90",
+    "differences": []
+  },
+  {
+    "source": "/mnt/media/AI/Model Configs/ninfer/portable/QWEN-3.8-27B-IQ3_S-Huihui---256K---NVFP4-NVFP4---p1223-d154---p834-d34.dsh-model.json",
+    "source_sha256": "afe4bc526f48cddd7be9adb79be186188983e74b3672283496cb509c51414a8d",
+    "baseline_config": "quiet-ninfer-huihui-nvfp4-old-90",
+    "differences": []
+  }
+]

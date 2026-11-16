@@ -1,0 +1,29 @@
+{
+  "status": "pending",
+  "requested_unix": 1794816723.1322346,
+  "last_model_tuning_stage": {
+    "id": "deepseek-iq2-xs",
+    "order": "After all originally requested tuning; before final combined comparison/report delivery",
+    "download_plan": "outputs/iq2-xs-download-plan.json",
+    "download_status": "outputs/iq2-xs-download-status.json",
+    "new_shard_bytes": 155225835328,
+    "shared_engram": "Remain on media, shared identically by XXS/XS; disclose engine conversion layout differences",
+    "requirements": [
+      "Complete pinned resumable download and verify every new shard SHA256",
+      "Tune IQ2_XS on supported engines under the same low-code/high-context chat/text/story protocol and decode-first per-genre5% rule",
+      "Run actual generated-function speculation tests",
+      "Append IQ2_XS vs IQ2_XXS to final three-column speed table and comparison chart",
+      "Write paired P/D to profile/model names and publish resulting changes",
+      "Verified internal SSD expert-weight residency for both quantizations; Engram left on other drive",
+      "Actual DeepSeek refusal-projection demonstration or exact verified limitation"
+    ],
+    "destination_current": "/home/user/Desktop/DeepSeek-IQ2_XS",
+    "storage_alternative": "XXS and XS expert weights on system NVMe, shared Engram on media to separate I/O",
+    "cleanup_authorized": "After comparison, move the surviving quantization back to media and delete the losing quantization per user authorization. Keep both until results and functional tests support selection; preserve shared Engram and support files.",
+    "basalt_optional_projection": "Flash Next plugin implementation local, GPU proof pending; DeepSeek-specific published vector discovered, runtime compatibility not yet demonstrated",
+    "pipeline_script": "work/range_deepseek_xs.py",
+    "storage_validation": "outputs/deepseek-storage-validation.json",
+    "deepseek_projection_research": "outputs/deepseek-projection-research.json"
+  },
+  "goal_completion_requires_this_stage": true
+}

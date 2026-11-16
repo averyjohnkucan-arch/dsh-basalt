@@ -1,0 +1,11 @@
+{
+  "at": "2026-11-15T17:23:50.059454-08:00",
+  "case": "range-perf-flash_basalt-joint-5ba1de1ff8dc-story",
+  "pid": 379289,
+  "live_executable": "/mnt/media/scratch/dsh-inference-tuning-20261115/runtimes/basalt-custom-latest/bin/basalt",
+  "actual_expert_profile": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/range-perf-flash_basalt-joint-5ba1de1ff8dc-story/input-expert-profile.bin",
+  "master": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/saved-expert-profiles/flash-basalt.prof",
+  "copied_sha256": "cd4f488c45c6936eb2e2f33b164553398f2201da352b4f4c8ffd66c12bcdf2df",
+  "master_sha256": "cd4f488c45c6936eb2e2f33b164553398f2201da352b4f4c8ffd66c12bcdf2df",
+  "status": "byte-identical owned copy verified in live native argv"
+}

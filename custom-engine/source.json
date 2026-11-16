@@ -1,0 +1,18 @@
+{
+  "upstream": "https://github.com/jesdga95/basalt",
+  "revision": "6809edfae74de8b49662e2e1afecdb6456670ac5",
+  "source_tree": "175152f3716bd0be3d3c50133e49e9c0a1768e26",
+  "patch": "patches/basalt-native-strata-support.patch",
+  "patch_sha256": "3ddcbe95601c3d753ebbd91b26a3c3266e58f1668c583562e063a47669dd1eee",
+  "required_features": [
+    "fp8-ple",
+    "mixed-nvfp4-q8",
+    "qwen35-bf16-projections",
+    "qwen35-nvfp4-dflash2",
+    "deepseek_external_engram"
+  ],
+  "status": "Experimental source preview: focused parity/import/BF16 tests and real text+DFlash2 serving passed; sustained workload range tuning in progress; optional split-drive DeepSeek Engram compiled and CPU-row-validated, GPU parity pending",
+  "architecture": "120a",
+  "cuda_build_version": "13.1.115",
+  "publish_scope": "Source preview only; managed stock runtime remains separate. Required feature receipts guard custom packs."
+}

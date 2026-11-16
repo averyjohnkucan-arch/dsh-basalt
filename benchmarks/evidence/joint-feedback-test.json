@@ -1,0 +1,45 @@
+{
+  "status": "passed",
+  "scope": "Actual feedback guard, exact child invocation, nested no-feedback recursion prevention, other engines excluded and child failure propagation. No GPU performance claim.",
+  "source_sha256": "981d09fe7b2f50e05e0ff4ab08cf1eb93b23ca1d067fdd6843841a0b046ef142",
+  "cases": [
+    {
+      "key": "hybrid_basalt",
+      "args": [
+        "hybrid_basalt",
+        "qwen",
+        "--include-peak-code"
+      ],
+      "child_calls": 2
+    },
+    {
+      "key": "hybrid_basalt",
+      "args": [
+        "hybrid_basalt",
+        "qwen"
+      ],
+      "child_calls": 0
+    },
+    {
+      "key": "flash_basalt",
+      "args": [
+        "flash_basalt",
+        "qwen",
+        "--include-peak-code"
+      ],
+      "child_calls": 0
+    },
+    {
+      "key": "hybrid_strata",
+      "args": [
+        "hybrid_strata",
+        "qwen",
+        "--include-peak-code"
+      ],
+      "child_calls": 0
+    }
+  ],
+  "child_failure_propagated": true,
+  "peak_search_skip_joint_guard_passed": true,
+  "peak_source_sha256": "8cb4dd88fa397db22a1a7babeab2fb1bb208fd34851f7ed235d73fb6b38a6a3f"
+}

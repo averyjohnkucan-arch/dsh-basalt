@@ -47,7 +47,7 @@ test("real DSH adapter preserves messages, streams tools + reasoning, honors out
     name: "Test Qwen",
     context: 32768,
     vision: false,
-    model: { architecture: "qwen4exp" },
+    model: { architecture: "qwen4exp", layerCount: 48, embeddingLength: 2560 },
   };
   let releases = 0;
   const service = {
@@ -69,7 +69,17 @@ test("real DSH adapter preserves messages, streams tools + reasoning, honors out
       { role: "user", content: [{ type: "text", text: "Say OK" }] },
     ],
     original = structuredClone(messages);
-  for (const effort of [undefined, "off", "low", "medium", "high"]) {
+  for (const effort of [
+    undefined,
+    "off",
+    "low",
+    "medium",
+    "high",
+    "xhigh",
+    "uncensored",
+    "medium",
+    "uncensored",
+  ]) {
     const chunks = [];
     for await (const chunk of call.stream({
       provider: "basalt",
@@ -94,9 +104,16 @@ test("real DSH adapter preserves messages, streams tools + reasoning, honors out
     assert.equal(auth, "Bearer test-private-key");
     assert.equal(
       body.reasoning_effort,
-      effort === "off" ? "none" : effort || "medium",
+      effort === "off"
+        ? "none"
+        : effort === "high"
+          ? "xhigh"
+          : effort === "uncensored"
+            ? "medium"
+            : effort || "medium",
     );
     assert.equal(body.max_completion_tokens ?? body.max_tokens, 47);
+    assert.equal(body.experimental_speed_projection, effort === "uncensored");
     assert.deepEqual(
       body.messages.filter((m) => m.role === "system"),
       [{ role: "system", content: "Original instructions" }],
@@ -112,7 +129,7 @@ test("real DSH adapter preserves messages, streams tools + reasoning, honors out
       assert.equal(body.chat_template_kwargs.enable_thinking, false);
   }
   assert.deepEqual(messages, original);
-  assert.equal(releases, 5);
+  assert.equal(releases, 9);
 });
 
 test("failed/aborted streams always release GPU admission", async () => {

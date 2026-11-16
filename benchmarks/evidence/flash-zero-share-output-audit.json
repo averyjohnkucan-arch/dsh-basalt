@@ -1,0 +1,40 @@
+{
+  "at": "2026-11-15T17:33:22.029960-08:00",
+  "candidate": "Flash Basalt zero CPU prefill share; not finally qualified",
+  "scope": "Offline output-token identity and repetition inspection only. All rates retained; this does not establish semantic quality or BF16-reference parity.",
+  "cases": [
+    {
+      "case": "range-perf-flash_basalt-range-check-26b17faede3c-text",
+      "workload": "text",
+      "tokens": 8192,
+      "tail_decode_tok_s": 70.1504144324384,
+      "token_sha256": "b6a2c41bf8553b4c2f99b5d26e49622ae607e744ddaa866dd12a69ac83588c45",
+      "text_sha256": "32a9e9ac2048e0e8f132fe1df306e7af0f86733ce9874db58cba1cad5fccdfee",
+      "long_paragraphs": 72,
+      "exact_duplicate_long_paragraphs": 0,
+      "duplicate_16_token_window_fraction": 0.0
+    },
+    {
+      "case": "range-perf-flash_basalt-range-check-26b17faede3c-chat",
+      "workload": "chat",
+      "tokens": 8192,
+      "tail_decode_tok_s": 78.99508450790434,
+      "token_sha256": "b1b0251178b9cae3e72aa86dc7a9b5c7f2569d35e19bc105258d057f1a4325d7",
+      "text_sha256": "ecb4f268b2f9375601809f5f5f391376bde9d8524f294bac8d71169af8fface4",
+      "long_paragraphs": 128,
+      "exact_duplicate_long_paragraphs": 0,
+      "duplicate_16_token_window_fraction": 0.18185153479271127
+    },
+    {
+      "case": "range-perf-flash_basalt-joint-26b17faede3c-story",
+      "workload": "story",
+      "tokens": 8192,
+      "tail_decode_tok_s": 64.94745368574253,
+      "token_sha256": "aa640358e56d3cac759bf99ae8063e61702fe75dae2faee6c3637097ed98dab5",
+      "text_sha256": "f902e7d34f7f208846664a18db2d4943ec45e49d858ca3c626894deef55f1775",
+      "long_paragraphs": 58,
+      "exact_duplicate_long_paragraphs": 0,
+      "duplicate_16_token_window_fraction": 0.00012229423994129877
+    }
+  ]
+}

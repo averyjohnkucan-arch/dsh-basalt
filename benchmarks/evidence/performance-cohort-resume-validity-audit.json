@@ -1,0 +1,308 @@
+{
+  "at": "2026-11-15T18:18:00.883929-08:00",
+  "status": "passed",
+  "scope": "All currently completed performance-cohort range cases match planned input and have controller END-ok evidence. END follows the successful post-worker environment check. Unfinished active cases are not accepted.",
+  "cases": [
+    {
+      "case": "range-perf-flash-basalt-base-chat",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash-basalt-low-screen-spec4",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash-basalt-screen-resident131k",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash-basalt-screen-spec4",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash_basalt-peak-code-screen-414245859b07",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash-basalt-confirm-spec4",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash-basalt-low-screen-spec0",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash_basalt-range-check-26b17faede3c-text",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash_basalt-range-check-15d0219d565d-text",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash-basalt-confirm-spec0",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash-basalt-prefill-4k",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash-basalt-final-story",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash_basalt-joint-ab4521534bd7-story",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash_basalt-range-check-c2b7d0b7dddd-text",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash_basalt-joint-c2b7d0b7dddd-story",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash-old-text",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash-basalt-low-confirm-spec8",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash-basalt-low-confirm-spec6",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash-basalt-final-text",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash_basalt-peak-code-screen-b880f20a9748",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash_basalt-repeat-final-code-35b46ec69f83",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash_basalt-peak-code-confirm-b880f20a9748-1",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash_basalt-range-check-26b17faede3c-chat",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash_basalt-peak-code-screen-ff2844031644",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash_basalt-range-check-35b46ec69f83-text",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash_basalt-joint-35b46ec69f83-story",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash-basalt-screen-base-controls",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash-basalt-confirm-workers14",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash-basalt-base-story",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash-basalt-screen-spec6",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash-old-story",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash-basalt-screen-workers8",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash_basalt-range-check-c0eb8789b4d1-text",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash_basalt-joint-9f177cefcba5-story",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash_basalt-range-repeat-48fa9a75d6b6-story",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash-old-chat",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash_basalt-range-check-ab4521534bd7-text",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash_basalt-peak-code-confirm-b880f20a9748-0",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash_basalt-joint-5ba1de1ff8dc-story",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash_basalt-range-repeat-35b46ec69f83-story",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash_basalt-repeat-final-code-93fa8edb055c",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash_basalt-range-check-c0eb8789b4d1-story",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash_basalt-peak-code-screen-bf0410544fda",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash-basalt-low-screen-spec8",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash_basalt-range-repeat-48fa9a75d6b6-chat",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash_basalt-joint-26b17faede3c-story",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash-basalt-base-text",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash-old-code",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash_basalt-peak-code-screen-ee7e49cc6cfa",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash_basalt-range-repeat-93fa8edb055c-story",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash_basalt-range-check-c2b7d0b7dddd-chat",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash-basalt-low-screen-spec6",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash_basalt-peak-code-profile-b880f20a9748-text",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash_basalt-range-check-35b46ec69f83-chat",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash_basalt-range-repeat-c0eb8789b4d1-chat",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash-basalt-screen-workers14",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash-basalt-prefill-32k",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash_basalt-range-check-5ba1de1ff8dc-text",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash_basalt-peak-code-confirm-2623182bbb21-1",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash-basalt-long-profile-code",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    }
+  ],
+  "unconfirmed_or_mismatched": []
+}

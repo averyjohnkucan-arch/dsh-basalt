@@ -1,0 +1,45 @@
+{
+  "engine": "strata",
+  "status": "complete",
+  "scope": "2048 generated after an 80%-full text prefix; compatibility/screen only, not final throughput. Hard limit108GiB and host reserve12GiB stay unchanged.",
+  "benchmark_memory_policy_id": "hybrid-high104-max108",
+  "host_memory_policy": {
+    "memory_high_gib": 104,
+    "memory_max_gib": 108,
+    "minimum_host_available_gib": 12
+  },
+  "probes": [
+    {
+      "budget_gib": 96,
+      "status": "failed",
+      "case": "range-perf-hybrid-strata-budget-fit-96-high104",
+      "error": "RAM safety stop: available=11.3GiB, memory-pressure avg10=1.7%",
+      "engine_binary_sha256": "0ba914b28df1c8e09c0b5209c2ca6040c75fb650a7408ff3d9ef3ad159a13eb9"
+    },
+    {
+      "budget_gib": 92,
+      "status": "failed",
+      "case": "range-perf-hybrid-strata-budget-fit-92-high104",
+      "error": "RAM safety stop: available=11.9GiB, memory-pressure avg10=0.4%",
+      "engine_binary_sha256": "0ba914b28df1c8e09c0b5209c2ca6040c75fb650a7408ff3d9ef3ad159a13eb9"
+    },
+    {
+      "budget_gib": 88,
+      "status": "failed",
+      "case": "range-perf-hybrid-strata-budget-fit-88-high104",
+      "error": "RAM safety stop: available=19.1GiB, memory-pressure avg10=63.1%",
+      "engine_binary_sha256": "0ba914b28df1c8e09c0b5209c2ca6040c75fb650a7408ff3d9ef3ad159a13eb9"
+    },
+    {
+      "budget_gib": 84,
+      "status": "ok",
+      "case": "range-perf-hybrid-strata-budget-fit-84-high104",
+      "error": null,
+      "engine_binary_sha256": "0ba914b28df1c8e09c0b5209c2ca6040c75fb650a7408ff3d9ef3ad159a13eb9"
+    }
+  ],
+  "safe_budgets_gib": [
+    84
+  ],
+  "selected_budget_gib": 84
+}

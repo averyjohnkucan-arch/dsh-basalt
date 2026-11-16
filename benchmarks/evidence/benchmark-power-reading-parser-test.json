@@ -1,0 +1,13 @@
+{
+  "status": "ok",
+  "scope": "Production parser on actual nvidia-smi POWER output, plus supported numeric and unavailable requested-power fields; no model/GPU workload launched",
+  "observed": {
+    "requested": null,
+    "enforced": 106.12,
+    "default": 95,
+    "maximum": 110
+  },
+  "unavailableRequestPreserved": true,
+  "numericRequestParsed": true,
+  "sourceSha256": "cd35b48303a9429511d37b1f72e1fa08e973cc7604a91916b43b460e2717b332"
+}

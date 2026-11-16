@@ -1,0 +1,40 @@
+{
+  "status": "passed",
+  "scope": "Actual run() and input-matching functions extracted without importing the GPU harness; only the worker and power checks are simulated. Files, archives and resume paths are real NVMe scratch operations.",
+  "source_sha256": "6537001785e88bf6108697ff641beb359cfe8b20962b55a0469990d86d6947c5",
+  "current": {
+    "pre_launch_failure": {
+      "stale_success_left_active": false,
+      "relaunched": true,
+      "recovered_input_matches": true,
+      "prior_success_preserved": true
+    },
+    "post_run_failure": {
+      "stored_status": "failed",
+      "disqualified": true,
+      "relaunched": true,
+      "measurement_preserved": true
+    },
+    "interrupted_legacy_attempt": {
+      "relaunched": true,
+      "recovered_input_matches": true
+    },
+    "valid_owned_profile_cache": {
+      "reused": true,
+      "same_result": true,
+      "owned_profile_differs_from_planned": true
+    },
+    "malformed_result": {
+      "raised_parse_error": false,
+      "relaunched": true,
+      "original_bytes_preserved": true
+    },
+    "malformed_input": {
+      "raised_parse_error": false,
+      "relaunched": true,
+      "original_bytes_preserved": true
+    }
+  },
+  "legacy_bug_reproduced": null,
+  "legacy_source_sha256": null
+}

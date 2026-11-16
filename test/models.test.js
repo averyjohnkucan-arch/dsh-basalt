@@ -32,6 +32,87 @@ test("native v2 header + metadata inspection handles every supported architectur
     assert.equal(cfg.server.host, "127.0.0.1");
   }
 });
+
+test("tuned native options preserve values and reject flags belonging to another model or service", async (t) => {
+  const root = await temporary(t);
+  const model = await inspectModel(
+    await modelFile(join(root, "tuned.basalt"), "qwen4exp", {
+      requiredEngineFeatures: ["mixed-nvfp4-q8", "fp8-ple"],
+    }),
+  );
+  assert.deepEqual(model.requiredEngineFeatures, ["mixed-nvfp4-q8", "fp8-ple"]);
+  const p = newProfile(model);
+  p.engineOptions = {
+    spec: 8,
+    "pool-workers": 14,
+    "pool-affinity": "auto",
+    "resident-budget-gib": 96,
+    "expert-profile": join(root, "ranking.prof"),
+    "kv-resident": 65536,
+    "prefill-cpu-share": 0.6,
+    "adapt-swaps": 16,
+  };
+  const entry = serverConfig(p, 18081, root).models[0];
+  for (const [key, value] of Object.entries(p.engineOptions))
+    assert.equal(entry[key], value);
+  for (const options of [
+    { model: "/tmp/other" },
+    { host: "0.0.0.0" },
+    { "prefill-cpu-share": NaN },
+    { "adapt-swaps": -1 },
+    { "adapt-swaps": 1.5 },
+    { "adapt-swaps": 97 },
+    { "adapt-swaps": Infinity },
+    { spec: 17 },
+    { spec: 9 },
+    { "kv-resident": 999999 },
+    { "kv-resident": 1024 },
+    { "pcie-frac": 0.25 },
+    { "resident-budget-gib": 0 },
+    { "resident-budget-gib": Infinity },
+    { "expert-profile": "relative.prof" },
+    { "expert-profile": "/bad\0profile" },
+  ]) {
+    p.engineOptions = options;
+    assert.throws(() => validateProfile(p), /native engine option/);
+  }
+  for (const swaps of [0, 16, 32, 96]) {
+    p.engineOptions = { "adapt-swaps": swaps };
+    assert.equal(serverConfig(p, 18081, root).models[0]["adapt-swaps"], swaps);
+  }
+  p.engineOptions = {};
+  p.defaultEffort = "off";
+  assert.equal(validateProfile(p).defaultEffort, "off");
+  p.defaultEffort = "invented";
+  assert.throws(() => validateProfile(p), /default reasoning/);
+  p.model.architecture = "deepseek41";
+  delete p.defaultEffort;
+  p.kv = "fp8";
+  p.engineOptions = { "draft-experts": 64, "pool-workers": 12, spec: 6 };
+  assert.equal(validateProfile(p), p);
+  p.engineOptions = { prefill: "auto" };
+  assert.throws(() => validateProfile(p), /native engine option/);
+  p.model.architecture = "qwen35";
+  p.kv = "int8";
+  for (const resident of [0, 8192, 16384, 65536]) {
+    p.engineOptions = { "kv-resident": resident, spec: 8 };
+    assert.equal(
+      serverConfig(p, 18081, root).models[0]["kv-resident"],
+      resident,
+    );
+  }
+  for (const options of [
+    { "kv-resident": -1 },
+    { "kv-resident": 512 },
+    { "kv-resident": p.context + 1 },
+    { prefill: 2048 },
+    { "pool-workers": 14 },
+    { "adapt-swaps": 16 },
+  ]) {
+    p.engineOptions = options;
+    assert.throws(() => validateProfile(p), /native engine option/);
+  }
+});
 test("rejects old packs, truncation, corrupted metadata, unknown architectures and invalid section offsets", async (t) => {
   const root = await temporary(t);
   await assert.rejects(
@@ -99,5 +180,11 @@ test("Qwen defaults to Medium, all models expose Off, and native effort payloads
     assert.equal(thinkingPayload(p).reasoning_effort, info.defaultEffort);
     assert.equal("messages" in thinkingPayload(p), false);
     assert.throws(() => thinkingPayload(p, "invented"), /Unsupported/);
+    p.defaultEffort = "off";
+    assert.equal(
+      thinkingInfo(p).defaultEffort,
+      arch === "deepseek41" ? "off" : "medium",
+    );
+    assert.equal(thinkingPayload(p).enable_thinking, arch !== "deepseek41");
   }
 });

@@ -1,0 +1,51 @@
+{
+  "status": "passed",
+  "scope": "Actual quality batch --plan AST with only scratch-root literal redirected to controlled receipts; full14-family, distinct-peak, partial and modified-controls cases. GPU launches explicitly forbidden. No real model qualification is claimed.",
+  "source_sha256": "6388fd23a55944aad47725bc08117ced3b081bf537d20746bc966f36c02b63e5",
+  "checks": {
+    "partial": {
+      "exit_code": 1,
+      "status": "not-ready",
+      "planned_presets": 0,
+      "missing": [
+        "hybrid_basalt",
+        "27b_basalt",
+        "27b_ninfer",
+        "flash_strata",
+        "hybrid_strata",
+        "gyro_strata",
+        "flash_fp16_basalt",
+        "hybrid_fp16_basalt",
+        "flash_fp16_strata",
+        "hybrid_fp16_strata",
+        "huihui_nvfp4_ninfer",
+        "huihui_int8_ninfer",
+        "huihui_fp8_ninfer"
+      ],
+      "gpu_workers": 0
+    },
+    "complete": {
+      "exit_code": 0,
+      "status": "ready",
+      "planned_presets": 14,
+      "missing": [],
+      "gpu_workers": 0
+    },
+    "distinct_peak": {
+      "exit_code": 0,
+      "status": "ready",
+      "planned_presets": 15,
+      "missing": [],
+      "gpu_workers": 0
+    },
+    "tampered": {
+      "exit_code": 1,
+      "status": "not-ready",
+      "planned_presets": 0,
+      "missing": [
+        "flash_basalt"
+      ],
+      "gpu_workers": 0
+    }
+  }
+}

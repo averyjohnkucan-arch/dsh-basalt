@@ -1,0 +1,2392 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 53ef2d7..7504b35 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -203,7 +203,7 @@ if(BASALT_MODEL_QWEN35)
+ # only model, so the stack is built with it
+ add_library(dense STATIC src/dense/model.cpp src/dense/forward.cpp src/dense/session.cpp src/dense/prompt_line.cpp)
+ target_include_directories(dense PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include PRIVATE ${_gpu_include_directories})
+-target_link_libraries(dense PUBLIC model kernels window_gemm mmq prefill_fp4 prefill_fp8 core warnings ${_gpu_runtime_target})
++target_link_libraries(dense PUBLIC model kernels window_gemm mmq prefill_fp4 prefill_fp8 prefill_bf16 core warnings ${_gpu_runtime_target})
+ add_library(model_qwen35 STATIC src/models/qwen35/adapter.cpp)
+ target_include_directories(model_qwen35 PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src PRIVATE ${_gpu_include_directories})
+ target_link_libraries(model_qwen35 PUBLIC model tokenizer dense core ${_gpu_runtime_target})
+@@ -1468,17 +1468,19 @@ target_link_libraries(kernels_cpu PUBLIC Threads::Threads platform)
+ add_library(ggml_quants STATIC src/kernels/cpu/ggml/ggml_quants.c)
+ target_include_directories(ggml_quants PUBLIC include PRIVATE src/kernels/cpu/ggml)
+ set_target_properties(ggml_quants PROPERTIES C_STANDARD 11 C_EXTENSIONS ON POSITION_INDEPENDENT_CODE ON)
+-# The CPU dot products are built for AVX2 and for AVX-512, each with its own name for the table lookup;
+-# ggml_cpu_dispatch.cpp picks one at run time (cpu_avx512_ok / cpu_avx2_ok).
++# Each CPU dot ISA has its own table lookup; ggml_cpu_dispatch.cpp selects the supported table.
++# Q8_0 uses the signed VNNI dot on AVX2 hosts that support it.
+ set(_ggml_dots_avx2_flags ${_isa_avx2_flags})
+ set(_ggml_dots_avx512_flags ${_isa_avx512_flags})
+-foreach(_isa avx2 avx512)
++set(_ggml_dots_avxvnniint8_flags ${_isa_avxvnniint8_flags})
++foreach(_isa avx2 avx512 avxvnniint8)
+   add_library(ggml_dots_${_isa} OBJECT src/kernels/cpu/ggml/ggml_cpu_dots.c)
+   target_include_directories(ggml_dots_${_isa} PRIVATE include src/kernels/cpu/ggml)
+   target_compile_options(ggml_dots_${_isa} PRIVATE ${_ggml_dots_${_isa}_flags})
+   target_compile_definitions(ggml_dots_${_isa} PRIVATE ggml_get_type_traits_cpu=ggml_get_type_traits_cpu_${_isa})
+   set_target_properties(ggml_dots_${_isa} PROPERTIES C_STANDARD 11 C_EXTENSIONS ON POSITION_INDEPENDENT_CODE ON)
+ endforeach()
++target_compile_definitions(ggml_dots_avxvnniint8 PRIVATE __AVXVNNIINT8__=1)
+ # part of kernels_cpu (the pool calls these and they call its CPU probe: one library, so GNU ld's
+ # one-pass static linking has no cycle to resolve)
+ target_sources(kernels_cpu PRIVATE src/kernels/cpu/native_expert.cpp src/kernels/cpu/iq_avx512.cpp
+@@ -1487,7 +1489,8 @@ target_sources(kernels_cpu PRIVATE src/kernels/cpu/native_expert.cpp src/kernels
+                                          src/kernels/cpu/iq_avx2.cpp src/kernels/cpu/iq_avx2_vnni.cpp
+                                          src/kernels/cpu/kq_avx2.cpp
+                                          src/kernels/cpu/kq_avx1.cpp src/kernels/cpu/ggml/ggml_cpu_dispatch.cpp
+-                                         $<TARGET_OBJECTS:ggml_dots_avx2> $<TARGET_OBJECTS:ggml_dots_avx512>)
++                                         $<TARGET_OBJECTS:ggml_dots_avx2> $<TARGET_OBJECTS:ggml_dots_avx512>
++                                         $<TARGET_OBJECTS:ggml_dots_avxvnniint8>)
+ # the i-quant rows also use BMI2 (pdep/pext for the sign masks; cpu_avx512_ok requires it). MSVC compiles the
+ # intrinsics without a switch.
+ if(MSVC)
+@@ -1554,6 +1557,18 @@ target_compile_options(model_qwen4exp_moe_fused PRIVATE $<$<COMPILE_LANGUAGE:CUD
+ target_link_libraries(model_qwen4exp_moe_fused PUBLIC mmq ${_gpu_runtime_target})
+ target_link_libraries(model_qwen4exp_prefill PUBLIC model_qwen4exp_moe_fused)
+ endif()
++add_library(prefill_bf16 STATIC src/prefill/bf16_gemm.cpp)
++target_include_directories(prefill_bf16 PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include PRIVATE ${_gpu_include_directories})
++target_link_libraries(prefill_bf16 PUBLIC ${_gpu_runtime_target} ${_gpu_blas_target})
++if(BUILD_TESTING)
++  add_executable(bf16_gemm_test tests/kernels/bf16_gemm_test.cpp)
++  target_link_libraries(bf16_gemm_test PRIVATE prefill_bf16 ${_gpu_runtime_target})
++  basalt_gpu_test(NAME bf16_gemm_test COMMAND bf16_gemm_test)
++  set_tests_properties(bf16_gemm_test PROPERTIES SKIP_RETURN_CODE 77 TIMEOUT 300)
++endif()
++if(BASALT_MODEL_QWEN4EXP)
++  target_link_libraries(model_qwen4exp_prefill PUBLIC prefill_bf16)
++endif()
+ # a prompt chunk's products against FP8 E4M3 weights on the FP8 tensor cores (W8A8)
+ add_library(prefill_fp8 STATIC src/prefill/fp8_gemm.cu)
+ set_target_properties(prefill_fp8 PROPERTIES CUDA_ARCHITECTURES 120a-real)   # the block-scaled mma
+@@ -1720,6 +1735,7 @@ if(BUILD_TESTING)
+   basalt_gpu_test(NAME native_expert_parity_q5_1_min COMMAND native_expert_parity --q5_1-min)
+   # the AVX-512 Q8_K activation quantizer bit for bit against ggml's reference
+   basalt_cpu_test(NAME native_expert_parity_q8k_quant COMMAND native_expert_parity --q8k-quant)
++  basalt_cpu_test(NAME native_expert_parity_q8_vnni COMMAND native_expert_parity --cpu-synthetic q8_0/q8_0)
+   # the BF16 token embedding gathered and dequantized bit for bit
+   basalt_gpu_test(NAME native_expert_parity_bf16_embd COMMAND native_expert_parity --bf16-embd)
+   # the Q6_K token embedding dequantized against ggml's reference
+@@ -1729,12 +1745,17 @@ if(BUILD_TESTING)
+   # NVFP4 on the CPU tier: AVX2/AVX-512 dots vs plain C, the expert with its tail scales vs a double reference
+   basalt_gpu_test(NAME native_expert_parity_nvfp4 COMMAND native_expert_parity --synthetic nvfp4/nvfp4 nvfp4/nvfp4)
+   set_tests_properties(native_expert_parity_nvfp4 PROPERTIES TIMEOUT 120)
++  basalt_gpu_test(NAME native_expert_parity_nvfp4_q8 COMMAND native_expert_parity --synthetic nvfp4/q8_0 q8_0/nvfp4)
++  set_tests_properties(native_expert_parity_nvfp4_q8 PROPERTIES TIMEOUT 120)
+ endif()
+ # real-weight checks: test programs, not part of a release
+ if(BUILD_TESTING)
+   if(BASALT_MODEL_QWEN4EXP)
+   add_executable(ple_q5_parity tests/kernels/ple_q5_parity.cpp)
+   target_link_libraries(ple_q5_parity PRIVATE model_qwen4exp_kernels kernels artifact ggml_quants ${_gpu_runtime_target})
++  add_executable(ple_fp8_test tests/ngram/ple_fp8_test.cpp)
++  target_link_libraries(ple_fp8_test PRIVATE model_qwen4exp_kernels kernels artifact ggml_quants ${_gpu_runtime_target})
++  basalt_cpu_test(NAME ple_fp8_test COMMAND ple_fp8_test)
+   # a synthetic BF16 PLE table through PleTable: single reads, the batched issue/collect path and the Direct
+   # reader, every element against an independent field-by-field decode (host, synthetic, no model)
+   add_executable(ple_bf16_parity tests/kernels/ple_bf16_parity.cpp)
+diff --git a/docs/model-file.md b/docs/model-file.md
+index 971c6eb..8f4eec0 100644
+--- a/docs/model-file.md
++++ b/docs/model-file.md
+@@ -69,6 +69,26 @@ python3 tools/convert/convert.py --sections-from Qwen3.8-FN-UD-Q4_K_XL.basalt --
+ `--mtp-dense FILE` (the `mtp/dense` bytes of an official NVFP4, UD-IQ1_M, UD-IQ2_XS or UD-IQ3_XXS pack) swaps in a tuned drafter layer; the converter
+ records it in `meta.mtp.dense`. Output is about 122 GiB (123 GiB for the 8-bit variant). The base's vocabulary must be NVIDIA's.
+ 
++## Native Strata inputs (custom build)
++
++This branch can import a prepared Strata NVFP4/Q8 pack directly, retaining expert bytes and the original drafter:
++
++```sh
++python3 tools/convert/convert.py --gguf qwen-nvfp4-gptq-dense.gguf \
++    --strata-pack pack --ple-gguf ple-fp8.gguf --embd-gguf token-embd-bf16.gguf \
++    --strata-mtp mtp --draft-vocab mtp/draft_vocab.bin --out model.basalt
++```
++
++The native expert index must be v3. Gate/up may be NVFP4 or Q8_0 and down may independently be either; the converter
++checks every mixed expert's scale tail, geometry and file bounds. The PLE must be a scaled E4M3 table with a finite,
++positive `strata.ple.scale`; the embedding must match the dense model and be BF16. Hadamard Gyro experts are not supported.
++Packs record `required_engine_features`: `fp8-ple` and `mixed-nvfp4-q8`. Use this custom runtime, not stock v0.4.0.
++
++Legacy DeepSeek split GGUFs with separate Engram tables use `--engram-gguf TABLE.gguf`. The converter canonicalizes
++integer hash metadata and layer offsets, joins the contiguous table views, aliases `engram_wkv` to `engram_kv`, and
++folds the stored query/key gates into FP32 products. Expert and table payloads remain unchanged. This is separate from
++quality qualification against the original checkpoint; a readable output or kernel parity test alone does not establish it.
++
+ ## Qwen3.8-27B pack
+ 
+ The published pack comes from QUASAR's quantization-aware NVFP4 checkpoint
+@@ -111,6 +131,32 @@ python3 tools/convert/convert.py --checkpoint nvidia --drafter dflash2 --out Qwe
+   `<name>.scale`; its GDN and attention projections are FP8 and keep their E4M3 codes as `F8_E4M3` with each matrix's FP32
+   `weight_scale` as `<name>.scale`. Everything else as above. About 22 GiB with the drafter.
+ 
++### Experimental NInfer v3 dense artifact import
++
++The custom converter also accepts a single-file v3 `qwen3_5_text` NInfer artifact:
++
++```sh
++python3 tools/convert/convert.py --ninfer model.ninfer --out model.basalt
++```
++
++This route accepts the explicit BF16, NVFP4 and Q8G32 layouts it validates; it does not infer unsupported codecs.
++Target NVFP4 code/scale planes and reciprocal global divisors are preserved. The Q8G32 output head is losslessly
++repacked as Q8_0. BF16 attention projections remain BF16, using a shared cuBLAS product with FP32 accumulation.
++The embedding is materialized as its represented BF16 lookup values. GDN channel permutations and norm offsets
++follow the target GGUF representation. Source tensors are never modified.
++
++An included DFlash2 component is imported automatically. Its NVFP4 projection weights remain NVFP4, including
++the feature projection split along target-layer columns. The small proposal selector tables are materialized
++as BF16 represented values for Basalt's selector; this is a proposal-only precision change, not a change to target
++weights. The source mask token, layer list and window size are retained. Vision and source MTP components are not
++imported by this route. Packs advertise `qwen35-bf16-projections` and, when applicable, `qwen35-nvfp4-dflash2` as
++required engine features. They require this custom runtime. The current Basalt dense path uses INT8 or FP16 KV,
++so an NVFP4 source artifact does not imply NVFP4 attention-cache storage in Basalt.
++
++Focused tests cover import mappings, exact codes/scales, head pairing, BF16 products and a real DFlash2 serving
++smoke on Linux SM120. These checks do not establish BF16-reference perplexity, vision support or sustained
++throughput. Compare complete workload receipts before choosing a profile.
++
+ ### `NVFP4_PLANES` (tensor type 45)
+ 
+ An NVFP4 matrix of `rows` x `K` (rows a multiple of 128, K of 64) as two planes in one tensor, 36 bytes per 64 values like
+diff --git a/include/basalt/ggml/ggml.h b/include/basalt/ggml/ggml.h
+index 61263d8..eacb99e 100644
+--- a/include/basalt/ggml/ggml.h
++++ b/include/basalt/ggml/ggml.h
+@@ -92,6 +92,7 @@ const struct ggml_type_traits_cpu* ggml_get_type_traits_cpu(enum ggml_type type)
+ // Each instruction set's table, whatever this CPU has (parity tests compare them).
+ const struct ggml_type_traits_cpu* ggml_get_type_traits_cpu_avx2(enum ggml_type type);
+ const struct ggml_type_traits_cpu* ggml_get_type_traits_cpu_avx512(enum ggml_type type);
++const struct ggml_type_traits_cpu* ggml_get_type_traits_cpu_avxvnniint8(enum ggml_type type);
+ 
+ // NVFP4 row . Q8_0 row in plain C: the reference for the SIMD vec_dot (ggml_quants.c).
+ void ggml_vec_dot_nvfp4_q8_0_ref(int n, float* GGML_RESTRICT s, const void* GGML_RESTRICT x, const void* GGML_RESTRICT y);
+diff --git a/include/basalt/model/adapter.hpp b/include/basalt/model/adapter.hpp
+index 0f0f1f5..9796e80 100644
+--- a/include/basalt/model/adapter.hpp
++++ b/include/basalt/model/adapter.hpp
+@@ -73,6 +73,7 @@ struct Result {
+ };
+ 
+ struct LoadRequest {
++    std::string deepseek_engram_gguf;  ///< optional separately streamed DeepSeek table
+     std::vector<std::string> paths;   ///< pack or GGUF shards
+     std::string diag_dump;            ///< diagnostic: directory for per-layer tensor dumps (empty = off)
+     int diag_tier_ram = -1;           ///< diagnostic: fixed RAM-tier experts per layer (-1 = sized from free memory)
+diff --git a/include/basalt/prefill/bf16_gemm.hpp b/include/basalt/prefill/bf16_gemm.hpp
+new file mode 100644
+index 0000000..0661814
+--- /dev/null
++++ b/include/basalt/prefill/bf16_gemm.hpp
+@@ -0,0 +1,24 @@
++#pragma once
++#include <cstddef>
++#include <cstdint>
++#include <string>
++#include <cuda_runtime.h>
++
++namespace basalt::prefill::bf16 {
++// Row-major W[N,K] and X[T,K], column-major Y[N,T], FP32 accumulation.
++void product(void* handle, const uint16_t* x, const uint16_t* w, float* y,
++             int64_t T, int64_t N, int64_t K, int64_t ldy, float beta = 0.0f);
++class Context {
++public:
++    Context() = default;
++    ~Context();
++    Context(const Context&) = delete;
++    Context& operator=(const Context&) = delete;
++    bool init(std::string& err);
++    void run(const uint16_t* x, const uint16_t* w, float* y,
++             int64_t T, int64_t N, int64_t K, cudaStream_t stream);
++private:
++    void* handle_ = nullptr;
++    void* workspace_ = nullptr;
++};
++}
+diff --git a/include/basalt/program/options.hpp b/include/basalt/program/options.hpp
+index 368d9b2..b81ca17 100644
+--- a/include/basalt/program/options.hpp
++++ b/include/basalt/program/options.hpp
+@@ -18,6 +18,7 @@ inline constexpr int64_t kDefaultContext = 8192;
+ /// The flags every model takes.
+ struct CommonOptions {
+     virtual ~CommonOptions() = default;
++    std::string deepseek_engram_gguf;  ///< optional original Engram on a separate drive
+     std::string model;                ///< --model: the .basalt file every loader reads from
+     std::vector<int64_t> tokens;      // the prompt, PRE-TOKENIZED
+     int64_t max_new = 16;
+diff --git a/src/dense/forward.cpp b/src/dense/forward.cpp
+index f23ac36..a04aa9e 100644
+--- a/src/dense/forward.cpp
++++ b/src/dense/forward.cpp
+@@ -34,7 +34,7 @@ namespace wg = kernels::wgemm;
+ // window's rows (up to kBatch) and which applies the tensor scale; others (the drafters' Q8_0) on MMQ with the tile of
+ // kNarrow or kBatch rows whatever the window's rows (activations quantized for the whole tile, the bounds {0, T} saying
+ // which rows are written), the scale applied after.  The window gemm's activations go to m.ws.xq, MMQ's to m.ws.x8.
+-bool on_wg(int type) { return type == kTypeF8 || type == kTypeNvfp4Planes || type == kTypeQ8P; }
++bool on_wg(int type) { return type == kTypeBf16 || type == kTypeF8 || type == kTypeNvfp4Planes || type == kTypeQ8P; }
+ // the scale the step after a prompt chunk product applies: an NVFP4 matrix's on MMQ (its product leaves it out), none after
+ // F8 and NVFP4 planes (their products apply it)
+ const float* post_scale(const Linear& l) { return l.type == kTypeF8 || l.type == kTypeNvfp4Planes ? nullptr : l.scale; }
+@@ -106,7 +106,7 @@ void mmq_run(Model& m, const Linear& l, const void* xq, float* y, int T, cudaStr
+ }
+ wg::Call wcall(const Linear& l, wg::Epilogue epi = wg::Epilogue::Store) {
+     wg::Call c;
+-    c.fmt = l.type == kTypeF8 ? wg::Format::F8 : l.type == kTypeQ8P ? wg::Format::Q8 : wg::Format::Nvfp4;
++    c.fmt = l.type == kTypeBf16 ? wg::Format::Bf16 : l.type == kTypeF8 ? wg::Format::F8 : l.type == kTypeQ8P ? wg::Format::Q8 : wg::Format::Nvfp4;
+     c.K = l.cols;
+     c.epi = epi;
+     return c;
+@@ -190,6 +190,11 @@ void prod_swiglu(Model& m, const Linear& gate, const Linear& up, const float* x,
+ // the tensor scale applied
+ void gemm(Model& m, const Linear& l, float* y, int T, cudaStream_t s) {
+     const void* xq = m.cs.xq;
++    if (l.type == kTypeBf16) {
++        m.bf16->run(static_cast<const uint16_t*>(xq), static_cast<const uint16_t*>(l.w),
++                     y, T, l.rows, l.cols, s);
++        return;
++    }
+     if (l.type == kTypeF8) {
+         prefill::fp8::gemm((const uint8_t*) l.w, l.rows, l.cols, l.scale, xq, T, y, l.rows, prefill::fp8::Epilogue::Store, s);
+         return;
+@@ -219,7 +224,8 @@ void gemm(Model& m, const Linear& l, float* y, int T, cudaStream_t s) {
+ // planes W4A4, E2M1 with a UE4M3 scale per 16 values against a per-row FP32 scale, in cs.a4 and cs.gs
+ void chunk_act(Model& m, const float* x, int type, int64_t cols, int T, cudaStream_t s) {
+     ChunkScratch& b = m.cs;
+-    if (type == kTypeF8) prefill::fp8::quantize(x, T, cols, cols, b.xq, s);
++    if (type == kTypeBf16) kernels::to_bf16(x, static_cast<uint16_t*>(b.xq), int64_t(T) * cols, s);
++    else if (type == kTypeF8) prefill::fp8::quantize(x, T, cols, cols, b.xq, s);
+     else if (type == kTypeNvfp4Planes) prefill::fp4_dense::quantize(x, T, cols, cols, b.a4, b.gs, s);
+     else prefill::mmq::quantize(x, nullptr, b.xq, type, cols, cols, T, s);
+ }
+diff --git a/src/dense/internal.hpp b/src/dense/internal.hpp
+index 4560fe9..f7de371 100644
+--- a/src/dense/internal.hpp
++++ b/src/dense/internal.hpp
+@@ -4,6 +4,7 @@
+ #include "basalt/dense/model.hpp"
+ #include "basalt/kernels/window_gemm.hpp"
+ #include "basalt/prefill/moe_mmq.hpp"
++#include "basalt/prefill/bf16_gemm.hpp"
+ 
+ #include <cuda_runtime.h>
+ 
+@@ -27,6 +28,7 @@ constexpr int kDraftQ = 20;       // candidates a block drafter's position keeps
+ constexpr int64_t kDraftVocab = 131072;   // vocabulary rows the block drafter's head scores (a multiple of 128)
+ constexpr int kChunk = 4096;      // tokens a prompt chunk reads at once
+ constexpr int kAttnSplits = 3;    // key splits the prompt attention may use: the most its plan picks for a full chunk
++constexpr int kTypeBf16 = 30;
+ constexpr int kTypeF8 = 44;       // F8_E4M3 projections (Linear::type)
+ constexpr int kTypeQ8P = 108;     // Q8_0 in planes (window_gemm Format::Q8), made at load for the decode window
+ constexpr int kTypeNvfp4Planes = 45;   // NVFP4_PLANES matrices (Linear::type, nvfp4_planes.hpp)
+@@ -125,6 +127,8 @@ public:
+     cudaStream_t stage_side = nullptr;
+     cudaEvent_t stage_free = nullptr, stage_ready = nullptr;
+     std::unique_ptr<prefill::mmq::Context> mmq;
++    std::unique_ptr<prefill::bf16::Context> bf16;
++    int64_t bf16_cols = 0;
+     std::vector<int> gdn_index, attn_index;      // per layer: its index among the GDN or attention layers (-1)
+     // the batch windows' graphs, one per composition (the sessions in the window and their rows), the least recently used out
+     using BatchKey = std::vector<std::pair<const SessionState*, int>>;
+diff --git a/src/dense/model.cpp b/src/dense/model.cpp
+index 74320cc..631b030 100644
+--- a/src/dense/model.cpp
++++ b/src/dense/model.cpp
+@@ -137,12 +137,12 @@ size_t window_bytes(const Geometry& g, const BlockDrafter& bd, int64_t max_conte
+     return f * 4 + 2 * act_slot(g) + q8_slot(g) + (wp + wt + 1) * 4 + W * 4 * 6 + 76 * 256;
+ }
+ 
+-size_t chunk_bytes(const Geometry& g) {
++size_t chunk_bytes(const Geometry& g, size_t bf16_cols = 0) {
+     const size_t T = kChunk, H = (size_t) g.n_embd, AQ = (size_t) g.n_head * g.head_dim, C = (size_t) g.conv_channels();
+     const size_t VD = (size_t) g.value_width(), HV = (size_t) g.gdn_v_heads;
+     const size_t widest = std::max<size_t>({H, (size_t) g.n_ff, VD, AQ});
+     const size_t keep = 6 * T * H * 4 + H * 4 +
+-                        std::max(prefill::mmq::q8_bytes(T, (int64_t) widest), prefill::fp8::act_bytes(T, (int64_t) widest)) +
++                        std::max({2 * T * bf16_cols, prefill::mmq::q8_bytes(T, (int64_t) widest), prefill::fp8::act_bytes(T, (int64_t) widest)}) +
+                         prefill::fp4_dense::act_bytes((int64_t) T, (int64_t) widest) + 2 * T * 4 + 5 * 256;
+     const size_t gdn = g.gdn_layers() ? (2 * T * C + 3 * T * VD + 4 * T * HV) * 4 + kernels::gdn_work_bytes(T) : 0;
+     const size_t attn = g.attn_layers() ? T * (2 * AQ + 2 * (size_t) g.n_kv * g.head_dim + 3 * AQ) * 4 +
+@@ -219,6 +219,7 @@ bool decode_drafter(Model& m, std::string& err) {
+         if (kernels::nvfp4p::fits(D.k.rows, D.k.cols) && kernels::nvfp4p::fits(D.v.rows, D.v.cols)) {
+             // k and v as NVFP4 copies (prompt chunks read their blocks), so q, k and v stay one call
+             for (Linear* l : {&D.k, &D.v}) {
++                if (l->type == kTypeNvfp4Planes || l->type == kTypeBf16 || l->type == kTypeF8) continue;
+                 void* p = nullptr;
+                 void* sc = nullptr;
+                 if (!q8(*l) || cudaMalloc(&p, kernels::nvfp4p::bytes(l->rows, l->cols)) != cudaSuccess ||
+@@ -378,6 +379,10 @@ bool Model::ready_products(std::string& err) {
+         for (const Linear* l : {&Lp->qkv, &Lp->z, &Lp->out, &Lp->q, &Lp->k, &Lp->v, &Lp->o, &Lp->gate, &Lp->up, &Lp->down})
+             if (l->w) ls.push_back(l);
+     for (const Linear* l : ls) {
++        if (l->type == kTypeBf16) {
++            bf16_cols = std::max(bf16_cols, l->cols);
++            continue;
++        }
+         if (l->type == kTypeF8 || l->type == kTypeNvfp4Planes) continue;   // the window gemm's, not MMQ's
+         if (!prefill::mmq::fits(l->type, l->rows)) {
+             err = o.arch + ": the products have no tile for a " + std::to_string(l->rows) + "-row matrix";
+@@ -385,13 +390,19 @@ bool Model::ready_products(std::string& err) {
+         }
+         prefill::mmq::load(l->type, l->rows);
+     }
++    if (bf16_cols) {
++        bf16 = std::make_unique<prefill::bf16::Context>();
++        if (!bf16->init(err)) return false;
++    }
+     return true;
+ }
+ 
+ bool Model::ensure_chunk(std::string& err) {
+     if (chunk_ready) return true;
+     const Geometry& gg = g;
+-    if (!pre_arena.reserve(chunk_bytes(gg))) {
++    const size_t bf16_bytes = size_t(kChunk) * size_t(bf16_cols) * 2;
++    // Reserve extra only for a model that actually contains BF16 projections.
++    if (!pre_arena.reserve(chunk_bytes(gg, size_t(bf16_cols)))) {
+         err = o.arch + ": out of device memory for the prompt workspaces";
+         return false;
+     }
+@@ -402,7 +413,7 @@ bool Model::ensure_chunk(std::string& err) {
+     b.x = pre_arena.take<float>(T * H);
+     b.xn = pre_arena.take<float>(T * H);
+     b.tmp = pre_arena.take<float>(T * H);
+-    b.xq = pre_arena.take_bytes(std::max(prefill::mmq::q8_bytes(T, (int64_t) widest), prefill::fp8::act_bytes(T, (int64_t) widest)));
++    b.xq = pre_arena.take_bytes(std::max({bf16_bytes, prefill::mmq::q8_bytes(T, (int64_t) widest), prefill::fp8::act_bytes(T, (int64_t) widest)}));
+     b.tok = pre_arena.take<int32_t>(T);
+     b.pos = pre_arena.take<int32_t>(3 * T);
+     b.iota = pre_arena.take<int32_t>(T);
+diff --git a/src/kernels/cpu/ggml/ggml_cpu_dispatch.cpp b/src/kernels/cpu/ggml/ggml_cpu_dispatch.cpp
+index aa85695..b0c5f58 100644
+--- a/src/kernels/cpu/ggml/ggml_cpu_dispatch.cpp
++++ b/src/kernels/cpu/ggml/ggml_cpu_dispatch.cpp
+@@ -5,12 +5,15 @@
+ extern "C" {
+ const ggml_type_traits_cpu* ggml_get_type_traits_cpu_avx2(ggml_type type);
+ const ggml_type_traits_cpu* ggml_get_type_traits_cpu_avx512(ggml_type type);
++const ggml_type_traits_cpu* ggml_get_type_traits_cpu_avxvnniint8(ggml_type type);
+ 
+ const ggml_type_traits_cpu* ggml_get_type_traits_cpu(ggml_type type) {
+     namespace cpu = basalt::kernels::cpu;
+     static const bool avx512 = cpu::cpu_avx512_ok();
+     static const bool avx2 = cpu::cpu_avx2_ok();
++    static const bool vnni8 = cpu::cpu_avxvnni_int8_ok();
+     if (avx512) return ggml_get_type_traits_cpu_avx512(type);
++    if (vnni8 && type == GGML_TYPE_Q8_0) return ggml_get_type_traits_cpu_avxvnniint8(type);
+     if (avx2) return ggml_get_type_traits_cpu_avx2(type);
+     return nullptr;
+ }
+diff --git a/src/kernels/cpu/native_expert.cpp b/src/kernels/cpu/native_expert.cpp
+index 5110f4c..7cd7aa3 100644
+--- a/src/kernels/cpu/native_expert.cpp
++++ b/src/kernels/cpu/native_expert.cpp
+@@ -119,12 +119,13 @@ bool native_fmt(int gu_type, int d_type, int64_t n_embd, int64_t n_ff, NativeFmt
+     f.down_off = f.up_off + f.up_row * (size_t) n_ff;
+     f.bytes = f.down_off + f.d_row * (size_t) n_embd;
+     // NVFP4 keeps its per-expert FP32 scales in a tail after down, so they move with the blob through every tier.
+-    // The scales cover all three projections: the two kinds cannot mix in one expert.
+-    if ((gu_type == GGML_TYPE_NVFP4) != (d_type == GGML_TYPE_NVFP4)) {
+-        err = "native experts: NVFP4 gate/up and down come together (the scale tail covers all three)";
++    const bool scaled = gu_type == GGML_TYPE_NVFP4 || d_type == GGML_TYPE_NVFP4;
++    if (scaled && ((gu_type != GGML_TYPE_NVFP4 && gu_type != GGML_TYPE_Q8_0) ||
++                   (d_type != GGML_TYPE_NVFP4 && d_type != GGML_TYPE_Q8_0))) {
++        err = "native experts: NVFP4 projections can share an expert with Q8_0 only";
+         return false;
+     }
+-    f.tail = gu_type == GGML_TYPE_NVFP4 ? kNvfp4Tail : 0;
++    f.tail = scaled ? kNvfp4Tail : 0;
+     f.bytes += f.tail;
+     f.act_bytes = ggml_row_size(tg->vec_dot_type, n_embd);
+     f.h_bytes = ggml_row_size(td->vec_dot_type, n_ff);
+diff --git a/src/kernels/cuda/iq_kernels.cu b/src/kernels/cuda/iq_kernels.cu
+index c3f5374..32abeaa 100644
+--- a/src/kernels/cuda/iq_kernels.cu
++++ b/src/kernels/cuda/iq_kernels.cu
+@@ -3175,6 +3175,8 @@ void iq_dequant_gu_f16(int t, const void* gate, const void* up, int64_t n_ff, in
+ }
+ 
+ bool native_expert_supported(int gu_type, int d_type, int64_t n_embd, int64_t n_ff, int up_type) noexcept {
++    if ((gu_type == 40 || d_type == 40) &&
++        ((gu_type != 40 && gu_type != 8) || (d_type != 40 && d_type != 8))) return false;
+     const int qg = gu_qk(gu_type), qd = d_qk(d_type);
+     bool mix = up_type < 0 || up_type == gu_type;
+     switch (gu_type * 100 + up_type) {
+@@ -3201,7 +3203,8 @@ NativeExpertLayout native_expert_layout(int gu_type, int d_type, int64_t n_embd,
+     L.d_row = iq_row_bytes(d_type, n_ff);
+     L.up_off = (size_t) n_ff * L.gu_row;
+     L.down_off = L.up_off + (size_t) n_ff * L.up_row;
+-    L.bytes = L.down_off + (size_t) n_embd * L.d_row + (gu_type == 40 ? kNvfp4Tail : 0);   // NVFP4's scale tail
++    L.bytes = L.down_off + (size_t) n_embd * L.d_row +
++              ((gu_type == 40 || d_type == 40) ? kNvfp4Tail : 0);
+     return L;
+ }
+ 
+diff --git a/src/models/deepseek41/adapter.cpp b/src/models/deepseek41/adapter.cpp
+index a9428d3..721d9fb 100644
+--- a/src/models/deepseek41/adapter.cpp
++++ b/src/models/deepseek41/adapter.cpp
+@@ -39,7 +39,7 @@ public:
+         if (req.paths.empty()) return {model::Status::Error, "deepseek41: no model path"};
+         auto m = std::make_unique<DsModel>();
+         std::string err;
+-        if (!m->load(req.paths.front(), err)) return {model::Status::Error, "deepseek41: " + err};
++        if (!m->load(req.paths.front(), err, req.deepseek_engram_gguf)) return {model::Status::Error, "deepseek41: " + err};
+         CacheFormat fmt = CacheFormat::Fp8;
+         if (!req.kv.empty() && !ctxp::cache_format(req.kv, fmt)) return {model::Status::Error, "deepseek41: --kv " + req.kv + ": fp8 or fp16"};
+         m->set_cache_format(fmt);
+@@ -87,7 +87,8 @@ public:
+ 
+     bool parse_flag(const std::string& a, model::FlagArgs& args, program::CommonOptions& o, int& code) const override {
+         (void) code;
+-        if (a == "--no-prompt-skip") o.no_prompt_skip = true;
++        if (a == "--deepseek-engram-gguf") o.deepseek_engram_gguf = args.next("--deepseek-engram-gguf");
++        else if (a == "--no-prompt-skip") o.no_prompt_skip = true;
+         else if (a == "--spec") { o.spec = std::atoi(args.next("--spec")); o.spec_given = true; }
+         else if (a == "--spec-oracle") o.spec_oracle = args.next("--spec-oracle");
+         else if (a == "--kv") o.kv = args.next("--kv");
+diff --git a/src/models/deepseek41/engram_external.hpp b/src/models/deepseek41/engram_external.hpp
+new file mode 100644
+index 0000000..cf66e76
+--- /dev/null
++++ b/src/models/deepseek41/engram_external.hpp
+@@ -0,0 +1,46 @@
++// Optional external DeepSeek Engram: validate the original adjacent GGUF table views.
++#pragma once
++#include "basalt/artifact/gguf_reader.hpp"
++#include <cstdint>
++#include <limits>
++#include <string>
++#include <vector>
++
++namespace basalt::models::deepseek41 {
++inline bool external_engram_offset(const std::string& path, uint64_t rows, uint32_t row_bytes,
++                                  int row_values, int type, const std::vector<int>& layers,
++                                  uint64_t& offset, std::string& err) {
++    try {
++        GgufFile file(path);
++        if (rows == 0 || row_bytes == 0 || row_values != 256 ||
++            (type != 20 && type != 39) || file.tensors().size() != layers.size() || layers.empty()) {
++            err = "external Engram: incompatible table geometry";
++            return false;
++        }
++        uint64_t covered = 0, bytes = 0;
++        for (size_t i = 0; i < layers.size(); ++i) {
++            const auto& t = file.tensors()[i];
++            if (t.name != "blk." + std::to_string(layers[i]) + ".engram_embd.weight" ||
++                t.type != static_cast<uint32_t>(type) || t.shape.size() != 2 ||
++                t.shape[0] != static_cast<uint64_t>(row_values) || t.shape[1] == 0 ||
++                covered > rows || t.shape[1] > rows - covered || t.offset != bytes ||
++                t.shape[1] > (std::numeric_limits<uint64_t>::max() - bytes) / row_bytes) {
++                err = "external Engram: wrong layers, type, rows or nonadjacent table offsets";
++                return false;
++            }
++            covered += t.shape[1];
++            bytes += t.shape[1] * row_bytes;
++        }
++        if (covered != rows || file.data_start() > file.file_size() ||
++            bytes != file.file_size() - file.data_start()) {
++            err = "external Engram: incomplete table or unexpected trailing payload";
++            return false;
++        }
++        offset = file.data_start();
++        return true;
++    } catch (const std::exception& e) {
++        err = std::string("external Engram: ") + e.what();
++        return false;
++    }
++}
++} // namespace basalt::models::deepseek41
+diff --git a/src/models/deepseek41/model.cpp b/src/models/deepseek41/model.cpp
+index f294a14..4b4f776 100644
+--- a/src/models/deepseek41/model.cpp
++++ b/src/models/deepseek41/model.cpp
+@@ -3,6 +3,7 @@
+ #include "basalt/core/load_progress.hpp"
+ #include "basalt/log.hpp"
+ #include "models/deepseek41/model.hpp"
++#include "models/deepseek41/engram_external.hpp"
+ 
+ #include "basalt/artifact/dequant.hpp"
+ #include "basalt/ggml/ggml.h"
+@@ -26,8 +27,15 @@ DsModel::~DsModel() {
+     if (experts_fd_ >= 0) platform::close_fd(experts_fd_);
+ }
+ 
+-bool DsModel::load(const std::string& path, std::string& err) {
++bool DsModel::load(const std::string& path, std::string& err, const std::string& external_engram) {
+     if (!open_pack(path, pack_, err)) return false;
++    uint64_t external_offset = 0;
++    if (!external_engram.empty()) {
++        const EngramInfo& e = pack_.engram;
++        if (!e.present) { err = "--deepseek-engram-gguf: model has no Engram table"; return false; }
++        if (!external_engram_offset(external_engram, e.rows, e.row_bytes, e.row_values, e.type,
++                                    e.layers, external_offset, err)) return false;
++    }
+     path_ = path;
+     cudaGetDevice(&device_);
+     const Geometry& g = pack_.geo;
+@@ -112,7 +120,13 @@ bool DsModel::load(const std::string& path, std::string& err) {
+     if (pack_.engram.present) {
+         engram_ = std::make_unique<ngram::PleReader>();
+         const EngramInfo& e = pack_.engram;
+-        if (!engram_->open(path, e.file_offset, e.rows, 64, 1 << 16, err, e.row_bytes)) return false;
++        const std::string& table_path = external_engram.empty() ? path : external_engram;
++        const uint64_t table_offset = external_engram.empty() ? e.file_offset : external_offset;
++        if (!engram_->open(table_path, table_offset, e.rows, 64, 1 << 16, err, e.row_bytes)) return false;
++        if (!external_engram.empty())
++            basalt::log::info("basalt deepseek41", "external Engram: %s at %llu, %llu rows of %u bytes",
++                             table_path.c_str(), (unsigned long long) table_offset,
++                             (unsigned long long) e.rows, e.row_bytes);
+     }
+     return true;
+ }
+diff --git a/src/models/deepseek41/model.hpp b/src/models/deepseek41/model.hpp
+index 701c531..cd2aaa1 100644
+--- a/src/models/deepseek41/model.hpp
++++ b/src/models/deepseek41/model.hpp
+@@ -38,7 +38,7 @@ class DsModel final : public model::LoadedModel {
+ public:
+     ~DsModel() override;
+     /// Reads the pack and uploads every dense tensor except the token embedding (read per token from the file).
+-    bool load(const std::string& path, std::string& err);
++    bool load(const std::string& path, std::string& err, const std::string& external_engram = {});
+ 
+     const model::ModelDesc& desc() const override { return desc_; }
+     int64_t context() const override { return ctx_ ? ctx_ : ctxp_default(); }
+diff --git a/src/models/deepseek41/tier.cpp b/src/models/deepseek41/tier.cpp
+index 5a9a526..18c5754 100644
+--- a/src/models/deepseek41/tier.cpp
++++ b/src/models/deepseek41/tier.cpp
+@@ -896,20 +896,21 @@ void ExpertTier::pump(int layer, int pieces) {
+ }
+ 
+ int ExpertTier::fetch(int layer, Lookup& lk) {
+-    // with the RAM tier caching the file the bus stays with the reads and the promotions
+-    if (m_.tiers().diag_tier_frozen || reads_.is_open()) return 0;
++    // Completed RAM hits can use the bus even while other experts remain in the file. A read still in flight
++    // must stay on the CPU lane, which waits for that read before consuming the buffer.
++    if (m_.tiers().diag_tier_frozen) return 0;
+     int np = 0, nf = 0;
+     for (int i = 0; i < lk.k; ++i)
+-        if (!lk.dev[i] && !lk.peer[i]) ++(pinned(layer, lk.experts[i]) ? np : nf);
+-    int left = policy::bus_count(np, nf);
++        if (!lk.dev[i] && !lk.peer[i]) ++(pinned(layer, lk.experts[i]) && !lk.reading[i] ? np : nf);
++    int left = policy::bus_count(np, nf, reads_.is_open());
+     // A second card fetches some over its own link into a scratch slot and computes them there. Their main card slots are
+     // claimed all the same, filled behind the window's work as a promotion is, so every expert's place is the one the
+     // main card's link alone would have given it.
+-    int far = peer_ ? std::min(policy::peer_bus_count(np, nf), peer_->scratch_free()) : 0;
++    int far = peer_ ? std::min(policy::peer_bus_count(np, nf, reads_.is_open()), peer_->scratch_free()) : 0;
+     const uint64_t bytes = m_.pack().experts[(size_t) layer].blob_bytes;
+     int started = 0;
+     for (int i = lk.k - 1; i >= 0 && left > 0; --i) {
+-        if (lk.dev[i] || !pinned(layer, lk.experts[i])) continue;   // pinned sources only
++        if (lk.dev[i] || lk.peer[i] || lk.reading[i] || !pinned(layer, lk.experts[i])) continue;   // completed pinned sources only
+         --left;
+         const int32_t slot = far > 0 ? claim(layer, lk.experts[i], lk.host[i], copy_stream_, false, false, /*later=*/true)
+                                      : claim(layer, lk.experts[i], lk.host[i], fetch_stream_, false, /*whole=*/true);
+diff --git a/src/models/deepseek41/tier_policy.hpp b/src/models/deepseek41/tier_policy.hpp
+index 5759f91..f33d296 100644
+--- a/src/models/deepseek41/tier_policy.hpp
++++ b/src/models/deepseek41/tier_policy.hpp
+@@ -71,8 +71,10 @@ inline Place place_of_rank(const Homes& h, int copies, int r) {
+ }
+ 
+ /// Misses of a layer go half to the CPU (rounded up) and the rest to the bus; the file-backed ones can only go to the
+-/// CPU. Returns how many of the `pinned` misses the bus fetches, given `file` file-backed misses.
+-inline int bus_count(int pinned, int file) {
++/// CPU. With a file cache the CPU keeps the file misses and all complete RAM sources use the bus.
++/// Returns how many of the `pinned` misses the bus fetches, given `file` file-backed misses.
++inline int bus_count(int pinned, int file, bool file_cache = false) {
++    if (file_cache) return pinned;   // the CPU waits for and computes the file misses; ready RAM does not wait on it
+     const int m = pinned + file;
+     const int cpu = (m + 1) / 2 > file ? (m + 1) / 2 : file;
+     const int n = m - cpu;
+@@ -86,8 +88,8 @@ constexpr int kPeerFetchSlots = 4;
+ /// taking the rest. A copy takes longer than a CPU expert, so one link carrying as many misses as the CPU ends well after
+ /// it: half of them, rounded down, go over the second card's link instead. When the CPU has one more, it ends last
+ /// anyway, and a second link would only slow it.
+-inline int peer_bus_count(int pinned, int file) {
+-    const int bus = bus_count(pinned, file);
++inline int peer_bus_count(int pinned, int file, bool file_cache = false) {
++    const int bus = bus_count(pinned, file, file_cache);
+     return 2 * bus >= pinned + file ? bus / 2 : 0;
+ }
+ 
+diff --git a/src/models/deepseek41/tier_policy_test.cpp b/src/models/deepseek41/tier_policy_test.cpp
+index 878fd10..fe85e89 100644
+--- a/src/models/deepseek41/tier_policy_test.cpp
++++ b/src/models/deepseek41/tier_policy_test.cpp
+@@ -49,6 +49,18 @@ int main() {
+             CHECK(p + f - b >= f);   // the CPU always takes every file-backed miss
+         }
+ 
++    // A file cache: only complete RAM sources are counted as pinned by the caller. Disk and pending reads stay on
++    // the CPU lane, while those ready sources are fetched instead of queuing more work on that lane.
++    CHECK(bus_count(1, 0, true) == 1);
++    CHECK(bus_count(2, 1, true) == 2);
++    CHECK(bus_count(2, 4, true) == 2);
++    for (int p = 0; p <= 48; ++p)
++        for (int f = 0; f <= 48 - p; ++f) {
++            const int b = bus_count(p, f, true), peer = peer_bus_count(p, f, true);
++            CHECK(b == p && p + f - b == f);
++            CHECK(peer >= 0 && peer <= b - peer);
++        }
++
+     // the second card's link: half the bus's misses, rounded down, when the bus has as many as the CPU
+     CHECK(peer_bus_count(1, 0) == 0);
+     CHECK(peer_bus_count(2, 0) == 0);
+diff --git a/src/models/qwen35/meta.hpp b/src/models/qwen35/meta.hpp
+index f31c7d4..8f0df13 100644
+--- a/src/models/qwen35/meta.hpp
++++ b/src/models/qwen35/meta.hpp
+@@ -18,11 +18,13 @@ inline std::string linear_type_error(const std::string& base, uint32_t type, int
+     if (type == kTypeNvfp4)
+         return "qwen35: " + base + ".weight is NVFP4 in ggml blocks, from a pack older than NVFP4_PLANES: re-convert the "
+                "pack (tools/convert/convert.py --checkpoint, docs/model-file.md)";
+-    if (type != kTypeQ8_0 && type != kTypeNvfp4Planes && type != kTypeF8)
+-        return "qwen35: " + base + ".weight is " + ggml_type_name(type) + "; the dense kernels read Q8_0, NVFP4_PLANES and F8_E4M3";
++    if (type != kTypeQ8_0 && type != kTypeNvfp4Planes && type != kTypeF8 && type != kTypeBf16)
++        return "qwen35: " + base + ".weight is " + ggml_type_name(type) + "; the dense kernels read BF16, Q8_0, NVFP4_PLANES and F8_E4M3";
+     if (type == kTypeNvfp4Planes && !kernels::nvfp4p::fits(rows, cols))
+         return "qwen35: " + base + ".weight: NVFP4_PLANES of " + std::to_string(rows) + " x " + std::to_string(cols) +
+                " (planes need rows in 128s and 64-value groups)";
++    if (type == kTypeBf16 && (rows % 128 != 0 || cols % 256 != 0))
++        return "qwen35: " + base + ".weight: BF16 requires rows in 128s and columns in 256s";
+     if (type == kTypeF8 && cols % 256 != 0)
+         return "qwen35: " + base + ".weight: F8_E4M3 rows of " + std::to_string(cols) + " values (the kernels read multiples of 256)";
+     return {};
+diff --git a/src/models/qwen4exp/kernels/ngram.cpp b/src/models/qwen4exp/kernels/ngram.cpp
+index b38f018..bc4bac1 100644
+--- a/src/models/qwen4exp/kernels/ngram.cpp
++++ b/src/models/qwen4exp/kernels/ngram.cpp
+@@ -103,7 +103,7 @@ void iq4nl_dequant_row(const uint8_t* row, float* out160) {
+ }
+ 
+ // ---------------------------------------------------------------------------------------------------
+-enum class PleFormat { IQ4_NL, Q5_0, Q8_0, BF16 };
++enum class PleFormat { IQ4_NL, Q5_0, Q8_0, BF16, F8_E4M3 };
+ 
+ struct PleTable::Impl {
+     GgufFile* file = nullptr;
+@@ -130,8 +130,12 @@ struct PleTable::Impl {
+     uint32_t prefetch_keys[kMaxPrefetch][PLE_N_HEADS] = {};
+     uint8_t prefetch_raw[kMaxPrefetch][PLE_N_HEADS * PLE_ROW_BYTES_MAX] = {};
+     uint32_t rb = PLE_ROW_BYTES;      // bytes per row
++    float fp8[256] = {};
+     void decode(const uint8_t* row, float* out160) const {
+         switch (fmt) {
++        case PleFormat::F8_E4M3:
++            for (int j = 0; j < PLE_HEAD_DIM; ++j) out160[j] = fp8[row[j]];
++            break;
+         case PleFormat::Q5_0:
+             for (int b = 0; b < PLE_HEAD_DIM / 32; ++b) basalt::dequantize_q5_0(row + (size_t) b * 22, out160 + b * 32);
+             break;
+@@ -185,13 +189,30 @@ bool PleTable::open(const std::string& gguf_path, std::string& err, const PleIoO
+     else if (std::strcmp(t->type_name(), "Q5_0") == 0) impl_->fmt = PleFormat::Q5_0;
+     else if (std::strcmp(t->type_name(), "Q8_0") == 0) impl_->fmt = PleFormat::Q8_0;
+     else if (std::strcmp(t->type_name(), "BF16") == 0) impl_->fmt = PleFormat::BF16;
++    else if (std::strcmp(t->type_name(), "F8_E4M3") == 0) {
++        const auto* scale = impl_->file->get("basalt.ple.scale");
++        if (!scale || !scale->is_num() || !std::isfinite(scale->num()) || scale->num() <= 0) {
++            err = "F8_E4M3 PLE needs a finite positive basalt.ple.scale";
++            close();
++            return false;
++        }
++        impl_->fmt = PleFormat::F8_E4M3;
++        for (int code = 0; code < 256; ++code) {
++            const int magnitude = code & 127, exponent = magnitude >> 3, mantissa = magnitude & 7;
++            const float value = exponent ? std::ldexp(1.f + mantissa / 8.f, exponent - 7)
++                                         : std::ldexp((float) mantissa, -9);
++            impl_->fp8[code] = magnitude == 127 ? NAN
++                                : (code & 128 ? -value : value) * (float) scale->num();
++        }
++    }
+     else {
+-        err = std::string("per_layer_token_embd.weight is ") + t->type_name() + ", not IQ4_NL, Q5_0, Q8_0 or BF16";
++        err = std::string("per_layer_token_embd.weight is ") + t->type_name() + ", not IQ4_NL, Q5_0, Q8_0, BF16 or F8_E4M3";
+         close();
+         return false;
+     }
+     impl_->rb = impl_->fmt == PleFormat::Q8_0 ? PLE_ROW_BYTES_Q8_0
+               : impl_->fmt == PleFormat::Q5_0 ? PLE_ROW_BYTES_Q5_0
++              : impl_->fmt == PleFormat::F8_E4M3 ? PLE_HEAD_DIM
+               : impl_->fmt == PleFormat::BF16 ? PLE_ROW_BYTES_BF16 : PLE_ROW_BYTES;
+     // PleReader's row_bytes is a runtime parameter: every format's rows go through the same generic path
+     // (ple_reader_test --selftest covers straddling, caching, in-flight tickets, keep-alive).
+diff --git a/src/models/qwen4exp/prefill/gemm.cu b/src/models/qwen4exp/prefill/gemm.cu
+index ffd860f..bca7ad8 100644
+--- a/src/models/qwen4exp/prefill/gemm.cu
++++ b/src/models/qwen4exp/prefill/gemm.cu
+@@ -1,5 +1,6 @@
+ // src/models/qwen4exp/prefill/gemm.cu - see include/basalt/models/qwen4exp/prefill/gemm.hpp.
+ #include "basalt/models/qwen4exp/prefill/gemm.hpp"
++#include "basalt/prefill/bf16_gemm.hpp"
+ #include "basalt/kernels/dequant_bf16.hpp"
+ #include "basalt/models/qwen4exp/kernels/hc_fused.hpp"
+ 
+@@ -124,12 +125,7 @@ void Gemm::bf16(const uint16_t* X, const uint16_t* W, float* Y, int64_t T, int64
+                 float beta) {
+     if (T <= 0 || N <= 0) return;
+     if (ldy <= 0) ldy = N;
+-    const float alpha = 1.0f;
+-    // Column-major view: Y^T[N, T] = W[N, K] (stored K x N col-major, transposed) . X^T[K, T].
+-    ck(cublasGemmEx((cublasHandle_t) handle_, CUBLAS_OP_T, CUBLAS_OP_N, (int) N, (int) T, (int) K, &alpha, W,
+-                    CUDA_R_16BF, (int) K, X, CUDA_R_16BF, (int) K, &beta, Y, CUDA_R_32F, (int) ldy,
+-                    CUBLAS_COMPUTE_32F, CUBLAS_GEMM_DEFAULT),
+-       "cublasGemmEx");
++    bf16::product(handle_, X, W, Y, T, N, K, ldy, beta);
+ }
+ 
+ void Gemm::bf16_w(const uint16_t* X, const uint16_t* W, float* Y, int64_t T, int64_t N, int64_t K, int64_t ldy) {
+diff --git a/src/prefill/bf16_gemm.cpp b/src/prefill/bf16_gemm.cpp
+new file mode 100644
+index 0000000..1c653a7
+--- /dev/null
++++ b/src/prefill/bf16_gemm.cpp
+@@ -0,0 +1,51 @@
++#include "basalt/prefill/bf16_gemm.hpp"
++#include <cublas_v2.h>
++#include <limits>
++#include <stdexcept>
++
++namespace basalt::prefill::bf16 {
++namespace {
++constexpr size_t kWorkspace = 32u << 20;
++void check(cublasStatus_t status, const char* call) {
++    if (status != CUBLAS_STATUS_SUCCESS)
++        throw std::runtime_error(std::string("BF16 product: ") + call + ": cuBLAS " + std::to_string(int(status)));
++}
++}
++void product(void* handle, const uint16_t* x, const uint16_t* w, float* y,
++             int64_t T, int64_t N, int64_t K, int64_t ldy, float beta) {
++    if (T <= 0 || N <= 0 || K <= 0 || ldy < N ||
++        T > std::numeric_limits<int>::max() || N > std::numeric_limits<int>::max() ||
++        K > std::numeric_limits<int>::max() || ldy > std::numeric_limits<int>::max())
++        throw std::invalid_argument("BF16 product: invalid matrix geometry");
++    const float alpha = 1.0f;
++    check(cublasGemmEx(static_cast<cublasHandle_t>(handle), CUBLAS_OP_T, CUBLAS_OP_N,
++        int(N), int(T), int(K), &alpha, w, CUDA_R_16BF, int(K), x, CUDA_R_16BF, int(K),
++        &beta, y, CUDA_R_32F, int(ldy), CUBLAS_COMPUTE_32F, CUBLAS_GEMM_DEFAULT), "cublasGemmEx");
++}
++Context::~Context() {
++    if (handle_) cublasDestroy(static_cast<cublasHandle_t>(handle_));
++    if (workspace_) cudaFree(workspace_);
++}
++bool Context::init(std::string& err) {
++    cublasHandle_t handle = nullptr;
++    const auto status = cublasCreate(&handle);
++    if (status != CUBLAS_STATUS_SUCCESS) {
++        err = "BF16 product: cublasCreate: " + std::to_string(int(status));
++        return false;
++    }
++    handle_ = handle;
++    const auto allocated = cudaMalloc(&workspace_, kWorkspace);
++    if (allocated != cudaSuccess) {
++        err = std::string("BF16 product: workspace: ") + cudaGetErrorString(allocated);
++        return false;
++    }
++    return true;
++}
++void Context::run(const uint16_t* x, const uint16_t* w, float* y,
++                   int64_t T, int64_t N, int64_t K, cudaStream_t stream) {
++    const auto h = static_cast<cublasHandle_t>(handle_);
++    check(cublasSetStream(h, stream), "cublasSetStream");
++    check(cublasSetWorkspace(h, workspace_, kWorkspace), "cublasSetWorkspace");
++    product(handle_, x, w, y, T, N, K, N);
++}
++}
+diff --git a/src/program/generate/adapter.cpp b/src/program/generate/adapter.cpp
+index a3666f0..fd7aa18 100644
+--- a/src/program/generate/adapter.cpp
++++ b/src/program/generate/adapter.cpp
+@@ -352,6 +352,7 @@ int run_session_model(basalt::program::CommonOptions& o, const basalt::model::Mo
+             uint64_t bytes = 0;
+             if (!key.empty() && basalt::platform::file_size(prof, bytes) && bytes > 0) lreq.expert_profile = prof;
+         }
++        lreq.deepseek_engram_gguf = o.deepseek_engram_gguf;
+         lreq.expert_cache = o.expert_cache;
+         lreq.resident_budget = o.resident_budget;
+         lreq.pool_workers = o.pool_workers;
+diff --git a/tests/cuda/prefill_mmq_nvfp4_test.cpp b/tests/cuda/prefill_mmq_nvfp4_test.cpp
+index a942910..9107e8c 100644
+--- a/tests/cuda/prefill_mmq_nvfp4_test.cpp
++++ b/tests/cuda/prefill_mmq_nvfp4_test.cpp
+@@ -1,4 +1,4 @@
+-// prefill_mmq_nvfp4_test - the prompt path's NVFP4 experts through MMQ (moe_mmq.hpp): the NVFP4 tile loader with the
++// prefill_mmq_nvfp4_test - the prompt path's NVFP4/Q8 expert projection pairs through MMQ (moe_mmq.hpp): the NVFP4 tile loader with the
+ // per-16-scale int8 dot, the scale tail gathered with each expert and applied in mmq::swiglu, at the real geometry
+ // (gate/up 1280 x 2560, down 2560 x 640) on synthetic NVFP4 experts (sub-block scales over 13 binades, UE4M3
+ // subnormals included; tails {s_gate, s_up, s_down} in 0.004..0.03), in expert_mmq.cpp's sequence (16-expert groups,
+@@ -38,8 +38,13 @@ namespace {
+ namespace mmq = basalt::prefill::mmq;
+ 
+ constexpr int N = 2560, FF = 640, K = 10, GROUP = 16;
+-constexpr size_t GU_ROW = (size_t) N / 64 * 36, D_ROW = (size_t) FF / 64 * 36;
+-constexpr size_t UP_OFF = GU_ROW * FF, DOWN_OFF = 2 * UP_OFF, TAIL_OFF = DOWN_OFF + D_ROW * N, BYTES = TAIL_OFF + 16;
++ggml_type GU_TYPE = GGML_TYPE_NVFP4, D_TYPE = GGML_TYPE_NVFP4;
++size_t GU_ROW, D_ROW, UP_OFF, DOWN_OFF, TAIL_OFF, BYTES;
++void configure(ggml_type gu, ggml_type down) {
++    GU_TYPE = gu; D_TYPE = down;
++    GU_ROW = (size_t) ggml_row_size(gu, N); D_ROW = (size_t) ggml_row_size(down, FF);
++    UP_OFF = GU_ROW * FF; DOWN_OFF = 2 * UP_OFF; TAIL_OFF = DOWN_OFF + D_ROW * N; BYTES = TAIL_OFF + 16;
++}
+ 
+ void ck(cudaError_t e, const char* what) {
+     if (e != cudaSuccess) throw std::runtime_error(std::string(what) + ": " + cudaGetErrorString(e));
+@@ -65,23 +70,23 @@ template <typename F> void parallel(int n, F f) {
+ // one NVFP4 expert blob [gate | up | down | tail]: each 16 values N(0, 1) times 2^U(-10, 3), so the UE4M3 sub-block
+ // scales span normals and subnormals
+ std::vector<uint8_t> make_blob(std::mt19937& rng, float tail[3]) {
+-    const auto* tr = ggml_get_type_traits(GGML_TYPE_NVFP4);
+     std::vector<uint8_t> b(BYTES);
+     std::vector<float> row(N);
+     std::normal_distribution<float> nd(0.0f, 1.0f);
+     std::uniform_real_distribution<float> ex(-10.0f, 3.0f), ts(0.004f, 0.03f);
+-    auto fill = [&](uint8_t* dst, int rows, int cols, size_t row_bytes) {
++    auto fill = [&](uint8_t* dst, int rows, int cols, size_t row_bytes, ggml_type type) {
++        const auto* tr = ggml_get_type_traits(type);
+         for (int r = 0; r < rows; ++r) {
+             for (int c = 0; c < cols; c += 16) {
+                 const float m = std::exp2(ex(rng));
+-                for (int j = 0; j < 16; ++j) row[(size_t) (c + j)] = nd(rng) * m;
++                for (int j = 0; j < 16; ++j) row[(size_t) (c + j)] = nd(rng) * m * (type == GGML_TYPE_Q8_0 ? 0.02f : 1.0f);
+             }
+             tr->from_float_ref(row.data(), dst + (size_t) r * row_bytes, cols);
+         }
+     };
+-    fill(b.data(), 2 * FF, N, GU_ROW);
+-    fill(b.data() + DOWN_OFF, N, FF, D_ROW);
+-    for (int i = 0; i < 3; ++i) tail[i] = ts(rng);
++    fill(b.data(), 2 * FF, N, GU_ROW, GU_TYPE);
++    fill(b.data() + DOWN_OFF, N, FF, D_ROW, D_TYPE);
++    for (int i = 0; i < 3; ++i) tail[i] = (i < 2 ? GU_TYPE : D_TYPE) == GGML_TYPE_NVFP4 ? ts(rng) : 1.0f;
+     const float t4[4] = {tail[0], tail[1], tail[2], 0.0f};
+     std::memcpy(b.data() + TAIL_OFF, t4, 16);
+     return b;
+@@ -165,20 +170,20 @@ struct Bufs {
+     Bufs(int64_t rows, size_t nb)
+         : xq(mmq::q8_bytes(rows, N)), gu((size_t) rows * 1280 * 4), h((size_t) rows * FF * 4),
+           hq(mmq::q8_bytes(rows, FF)), dm((size_t) rows * N * 4), ident((size_t) rows * 4), bounds(nb * 4),
+-          grp_gu(GROUP * mmq::matrix_bytes(GGML_TYPE_NVFP4, 1280, N) + TAIL),
+-          grp_d(GROUP * mmq::matrix_bytes(GGML_TYPE_NVFP4, N, FF) + TAIL + GROUP * 16) {}
+-    float* scales() const { return (float*) (grp_d.as<uint8_t>() + GROUP * mmq::matrix_bytes(GGML_TYPE_NVFP4, N, FF) + TAIL); }
++          grp_gu(GROUP * mmq::matrix_bytes(GU_TYPE, 1280, N) + TAIL),
++          grp_d(GROUP * mmq::matrix_bytes(D_TYPE, N, FF) + TAIL + GROUP * 16) {}
++    float* scales() const { return (float*) (grp_d.as<uint8_t>() + GROUP * mmq::matrix_bytes(D_TYPE, N, FF) + TAIL); }
+ };
+ 
+ // expert_mmq.cpp's sequence for one layer; `grouped`: one gather launch per group, else one per expert
+ void run_mmq(mmq::Context& ctx, Bufs& b, const Layer& L, const float* x_dev, const int32_t* src_dev,
+              const std::vector<const uint8_t*>& blob, bool grouped, cudaStream_t s) {
+-    const size_t gub = mmq::matrix_bytes(GGML_TYPE_NVFP4, 1280, N), db = mmq::matrix_bytes(GGML_TYPE_NVFP4, N, FF);
++    const size_t gub = mmq::matrix_bytes(GU_TYPE, 1280, N), db = mmq::matrix_bytes(D_TYPE, N, FF);
+     const int64_t rows = (int64_t) L.T * K;
+     const size_t n = L.order.size();
+     ck(cudaMemcpyAsync(b.bounds.p, L.bh.data(), L.bh.size() * 4, cudaMemcpyHostToDevice, s), "bounds");
+     mmq::iota(b.ident.as<int32_t>(), rows, s);
+-    mmq::quantize(x_dev, src_dev, b.xq.p, GGML_TYPE_NVFP4, N, N, rows, s);
++    mmq::quantize(x_dev, src_dev, b.xq.p, GU_TYPE, N, N, rows, s);
+     mmq::GatherGroup gg;
+     for (size_t j = 0; j < n; ++j) {
+         const size_t q = j % GROUP;
+@@ -206,14 +211,14 @@ void run_mmq(mmq::Context& ctx, Bufs& b, const Layer& L, const float* x_dev, con
+         ck(cudaMemsetAsync(b.grp_d.as<uint8_t>() + (size_t) ngx * db, 0, TAIL, s), "tail");
+         const int32_t* rel = b.bounds.as<int32_t>() + n + 1 + g * (GROUP + 1);
+         mmq::Product gu;
+-        gu.w = b.grp_gu.p; gu.type = GGML_TYPE_NVFP4; gu.w_rows = 1280; gu.w_cols = N; gu.expert_bytes = gub;
++        gu.w = b.grp_gu.p; gu.type = GU_TYPE; gu.w_rows = 1280; gu.w_cols = N; gu.expert_bytes = gub;
+         gu.n = ngx; gu.xq = b.xq.p; gu.bounds = b.bounds.as<int32_t>() + j0; gu.ids = b.ident.as<int32_t>();
+         gu.total_rows = rows; gu.max_rows = maxr; gu.dst = b.gu.as<float>(); gu.ld_dst = 1280;
+         ctx.run(gu, s);
+         mmq::swiglu(b.gu.as<float>() + r0 * 1280, b.h.as<float>() + r0 * FF, nr, FF, false, s, b.scales(), rel, ngx);
+-        mmq::quantize(b.h.as<float>() + r0 * FF, nullptr, b.hq.p, GGML_TYPE_NVFP4, FF, FF, nr, s);
++        mmq::quantize(b.h.as<float>() + r0 * FF, nullptr, b.hq.p, D_TYPE, FF, FF, nr, s);
+         mmq::Product dn;
+-        dn.w = b.grp_d.p; dn.type = GGML_TYPE_NVFP4; dn.w_rows = N; dn.w_cols = FF; dn.expert_bytes = db;
++        dn.w = b.grp_d.p; dn.type = D_TYPE; dn.w_rows = N; dn.w_cols = FF; dn.expert_bytes = db;
+         dn.n = ngx; dn.xq = b.hq.p; dn.bounds = rel; dn.ids = b.ident.as<int32_t>(); dn.total_rows = nr;
+         dn.max_rows = maxr; dn.dst = b.dm.as<float>() + r0 * N; dn.ld_dst = N;
+         ctx.run(dn, s);
+@@ -268,13 +273,14 @@ int parity(cudaStream_t s) {
+     // the references, an expert at a time on all cores
+     std::vector<float> r_same((size_t) rows * N), r_dbl((size_t) rows * N), r_f16((size_t) rows * N),
+                        r_gu((size_t) rows * 1280);
+-    const auto* tr = ggml_get_type_traits(GGML_TYPE_NVFP4);
++    const auto* tr_gu = ggml_get_type_traits(GU_TYPE);
++    const auto* tr_d = ggml_get_type_traits(D_TYPE);
+     parallel(E, [&](int e) {
+         if (L.cnt[(size_t) e] == 0) return;
+         const float sg = tails[(size_t) e][0], su = tails[(size_t) e][1], sd = tails[(size_t) e][2];
+         std::vector<float> wgu((size_t) 2 * FF * N), wd((size_t) N * FF);
+-        for (int r = 0; r < 2 * FF; ++r) tr->to_float(host[(size_t) e].data() + (size_t) r * GU_ROW, wgu.data() + (size_t) r * N, N);
+-        for (int r = 0; r < N; ++r) tr->to_float(host[(size_t) e].data() + DOWN_OFF + (size_t) r * D_ROW, wd.data() + (size_t) r * FF, FF);
++        for (int r = 0; r < 2 * FF; ++r) tr_gu->to_float(host[(size_t) e].data() + (size_t) r * GU_ROW, wgu.data() + (size_t) r * N, N);
++        for (int r = 0; r < N; ++r) tr_d->to_float(host[(size_t) e].data() + DOWN_OFF + (size_t) r * D_ROW, wd.data() + (size_t) r * FF, FF);
+         std::vector<float> wgu16(wgu.size()), wd16(wd.size());
+         for (size_t i = 0; i < wgu.size(); ++i) wgu16[i] = f16(wgu[i] * (i < (size_t) FF * N ? sg : su));
+         for (size_t i = 0; i < wd.size(); ++i) wd16[i] = f16(wd[i] * sd);
+@@ -358,11 +364,9 @@ int parity(cudaStream_t s) {
+ void bench(cudaStream_t s) {
+     constexpr int T = 2048, E = 512;
+     std::mt19937 rng(77);
+-    // random code bytes with sane sub-block scales (timing only): one blob copied to every slot
+-    std::vector<uint8_t> h(BYTES);
+-    for (auto& v : h) v = (uint8_t) (rng() & 0x77);
+-    const float t4[4] = {0.01f, 0.01f, 0.01f, 0.0f};
+-    std::memcpy(h.data() + TAIL_OFF, t4, 16);
++    // One finite, canonically scaled blob copied to every slot; weight generation is outside the timed region.
++    float scales[3];
++    const std::vector<uint8_t> h = make_blob(rng, scales);
+     const size_t stride = (BYTES + 255) / 256 * 256;
+     Dev all(stride * E);
+     for (int e = 0; e < E; ++e) ck(cudaMemcpy(all.as<uint8_t>() + stride * e, h.data(), BYTES, cudaMemcpyHostToDevice), "blob");
+@@ -412,8 +416,15 @@ int main(int argc, char** argv) {
+         }
+         cudaStream_t s;
+         ck(cudaStreamCreateWithFlags(&s, cudaStreamNonBlocking), "stream");
+-        const int rc = parity(s);
+-        if (do_bench) bench(s);
++        int rc = 0;
++        for (const auto& pair : {std::array{GGML_TYPE_NVFP4, GGML_TYPE_NVFP4},
++                                 std::array{GGML_TYPE_NVFP4, GGML_TYPE_Q8_0},
++                                 std::array{GGML_TYPE_Q8_0, GGML_TYPE_NVFP4}}) {
++            configure(pair[0], pair[1]);
++            std::printf("native prefill pair: %s/%s\n", ggml_type_name(GU_TYPE), ggml_type_name(D_TYPE));
++            rc += parity(s);
++            if (do_bench) bench(s);
++        }
+         cudaStreamDestroy(s);
+         return rc;
+     } catch (const std::exception& ex) {
+diff --git a/tests/kernels/bf16_gemm_test.cpp b/tests/kernels/bf16_gemm_test.cpp
+new file mode 100644
+index 0000000..475972f
+--- /dev/null
++++ b/tests/kernels/bf16_gemm_test.cpp
+@@ -0,0 +1,52 @@
++#include "basalt/prefill/bf16_gemm.hpp"
++#include <cuda_runtime.h>
++#include <algorithm>
++#include <cmath>
++#include <cstdint>
++#include <cstdio>
++#include <cstring>
++#include <stdexcept>
++#include <utility>
++#include <vector>
++
++namespace {
++uint32_t mix(uint32_t v) {
++    v ^= v >> 16; v *= 0x7feb352d; v ^= v >> 15; v *= 0x846ca68b; return v ^ (v >> 16);
++}
++uint16_t bits(float x) { uint32_t u; std::memcpy(&u,&x,4); return uint16_t((u+0x7fff+((u>>16)&1))>>16); }
++float value(uint16_t b) { uint32_t u=uint32_t(b)<<16; float x; std::memcpy(&x,&u,4); return x; }
++void check(cudaError_t e) { if(e!=cudaSuccess) throw std::runtime_error(cudaGetErrorString(e)); }
++}
++int main() {
++    int devices=0;
++    if(cudaGetDeviceCount(&devices)!=cudaSuccess || devices==0) return 77;
++    try {
++        basalt::prefill::bf16::Context context;
++        std::string error;
++        if(!context.init(error)) throw std::runtime_error(error);
++        double max_abs=0, max_scaled=0;
++        for(const auto shape : {std::pair<int,int>{128,256}, {12288,5120}, {5120,6144}}) {
++            const int N=shape.first,K=shape.second;
++            std::vector<uint16_t> w(size_t(N)*K), x(size_t(4096)*K);
++            for(size_t i=0;i<w.size();++i) w[i]=bits((int(mix(uint32_t(i)+17)%511)-255)/512.0f);
++            for(size_t i=0;i<x.size();++i) x[i]=bits((int(mix(uint32_t(i)+97)%511)-255)/128.0f);
++            uint16_t *dw=nullptr,*dx=nullptr;float*dy=nullptr;
++            check(cudaMalloc(&dw,w.size()*2));check(cudaMalloc(&dx,x.size()*2));check(cudaMalloc(&dy,size_t(4096)*N*4));
++            check(cudaMemcpy(dw,w.data(),w.size()*2,cudaMemcpyHostToDevice));check(cudaMemcpy(dx,x.data(),x.size()*2,cudaMemcpyHostToDevice));
++            for(int T : {1,4,7,16,17,33,4096}) {
++                context.run(dx,dw,dy,T,N,K,nullptr);check(cudaDeviceSynchronize());
++                for(int t : {0,T/2,T-1}) for(int n : {0,1,N/3,N/2,N-1}) {
++                    double reference=0,mass=0;
++                    for(int k=0;k<K;++k){double p=double(value(w[size_t(n)*K+k]))*value(x[size_t(t)*K+k]);reference+=p;mass+=std::abs(p);}
++                    float got;check(cudaMemcpy(&got,dy+size_t(t)*N+n,4,cudaMemcpyDeviceToHost));
++                    const double abs=std::abs(double(got)-reference),scaled=abs/std::max(1.0,mass);
++                    max_abs=std::max(max_abs,abs);max_scaled=std::max(max_scaled,scaled);
++                    if(!std::isfinite(got)||scaled>2e-6) throw std::runtime_error("BF16 product differs from FP64 oracle");
++                }
++            }
++            cudaFree(dw);cudaFree(dx);cudaFree(dy);
++        }
++        std::printf("OK BF16 product real attention shapes T=1,4,7,16,17,33,4096 max_abs=%.9g max_error_over_sum_abs=%.9g\n",max_abs,max_scaled);
++        return 0;
++    } catch(const std::exception& e) { std::fprintf(stdout,"FAIL %s\n",e.what());return 1; }
++}
+diff --git a/tests/kernels/native_expert_parity.cpp b/tests/kernels/native_expert_parity.cpp
+index 75a2507..325d47b 100644
+--- a/tests/kernels/native_expert_parity.cpp
++++ b/tests/kernels/native_expert_parity.cpp
+@@ -34,6 +34,8 @@
+ #include <cstdlib>
+ #include <cstring>
+ #include <fstream>
++#include <filesystem>
++#include <sstream>
+ #include <random>
+ #include <string>
+ #include <vector>
+@@ -69,17 +71,20 @@ int check_blob(const cpu::NativeFmt& f, const std::vector<uint8_t>& blob, int se
+     std::vector<float> x((size_t) NT * H);
+     for (auto& v : x) v = nd(rng);
+     std::vector<float> ref((size_t) NT * H), got_c((size_t) NT * H), got_g((size_t) NT * H);
++    float scales[4] = {1.f, 1.f, 1.f, 0.f};
++    if (f.tail) std::memcpy(scales, blob.data() + f.bytes - f.tail, sizeof scales);
+     for (int k = 0; k < NT; ++k) {
+         std::vector<float> h(FF);
+         for (int64_t r = 0; r < FF; ++r) {
+             double g = 0, u = 0;
+             for (int64_t i = 0; i < H; ++i) { g += (double) G[r * H + i] * x[k * H + i]; u += (double) U[r * H + i] * x[k * H + i]; }
++            g *= scales[0]; u *= scales[1];
+             h[r] = (float) (g / (1.0 + std::exp(-g)) * u);
+         }
+         for (int64_t r = 0; r < H; ++r) {
+             double o = 0;
+             for (int64_t i = 0; i < FF; ++i) o += (double) D[r * FF + i] * h[i];
+-            ref[k * H + r] = (float) o;
++            ref[k * H + r] = (float) (o * scales[2]);
+         }
+     }
+     // (b) the CPU
+@@ -322,6 +327,34 @@ int check_blob(const cpu::NativeFmt& f, const std::vector<uint8_t>& blob, int se
+             std::printf("          gpu decode-once vs per-entry kernels: %s\n", same ? "bitwise equal" : "MISMATCH");
+             if (!same) ++failures;
+         }
++        if (f.gu_type != f.d_type && (f.gu_type == 40 || f.d_type == 40)) {
++            const int32_t single[2] = {0, 1}, zero = 0;
++            cudaMemcpy(dstart, single, sizeof single, cudaMemcpyHostToDevice);
++            cudaMemcpy(ddst, &zero, sizeof zero, cudaMemcpyHostToDevice);
++            cudaMemcpy(dtok, &zero, sizeof zero, cudaMemcpyHostToDevice);
++            std::vector<float> one(H);
++            size_t differ = 0;
++            for (int k = NT - 1; k >= 0; --k) {
++                const uint8_t* input = (const uint8_t*) dxq + (size_t) k * H / 32 * 36;
++                basalt::kernels::native_expert_grouped(L, dptr, dstart, dn, ddst, dtok, 1, 1, input, dscr, dout, s);
++                cudaStreamSynchronize(s);
++                cudaMemcpy(one.data(), dout, one.size() * 4, cudaMemcpyDeviceToHost);
++                for (int64_t row = 0; row < H; ++row)
++                    differ += std::memcmp(one.data() + row, got_g.data() + k * H + row, 4) != 0;
++            }
++            std::printf("          GPU width/position invariance, reversed single-token calls: %zu rows differ\n", differ);
++            if (differ) ++failures;
++            cudaEvent_t begin, end;
++            cudaEventCreate(&begin); cudaEventCreate(&end);
++            cudaEventRecord(begin, s);
++            for (int i = 0; i < 100; ++i)
++                basalt::kernels::native_expert_grouped(L, dptr, dstart, dn, ddst, dtok, 1, 1, dxq, dscr, dout, s);
++            cudaEventRecord(end, s); cudaEventSynchronize(end);
++            float ms = 0.f; cudaEventElapsedTime(&ms, begin, end);
++            std::printf("          GPU expert, cache-resident weights: %.2f us/call, %.1f GB/s\n",
++                        ms * 10.f, (double) f.bytes / (ms * 10.) / 1000.);
++            cudaEventDestroy(begin); cudaEventDestroy(end);
++        }
+         {   // (d) the GPU dequantizers (prompt path: iq_dequant_f32/_f16; embedding: iq_embed_rows) against to_float
+             float* dq = nullptr;
+             uint16_t* dh = nullptr;
+@@ -370,6 +403,20 @@ int check_blob(const cpu::NativeFmt& f, const std::vector<uint8_t>& blob, int se
+         cudaFree(dstart); cudaFree(dn); cudaFree(ddst); cudaFree(dtok);
+     }
+     const double ec = rel(got_c, ref), eg = rel(got_g, ref), ecg = rel(got_c, got_g);
++    if (f.tail && f.gu_type != f.d_type) {
++        auto errors = [](const std::vector<float>& a, const std::vector<float>& b) {
++            double absolute = 0, relative = 0;
++            for (size_t i = 0; i < a.size(); ++i) {
++                const double e = std::fabs((double) a[i] - b[i]);
++                absolute = std::max(absolute, e);
++                relative = std::max(relative, e / std::max(1e-6, std::fabs((double) b[i])));
++            }
++            std::printf("max_abs %.3e max_rel(floor 1e-6) %.3e", absolute, relative);
++        };
++        std::printf("          CPU vs double: "); errors(got_c, ref);
++        std::printf("; GPU vs double: "); errors(got_g, ref);
++        std::printf("; GPU vs CPU: "); errors(got_g, got_c); std::printf("\n");
++    }
+     const bool ok = ec < 3e-2 && eg < 3e-2 && std::isfinite(ec) && std::isfinite(eg);
+     std::printf("%-9s %-8s/%-7s blob %8zu  cpu rel %.2e  gpu rel %.2e  cpu-gpu %.2e  %s\n", label.c_str(),
+                 ggml_type_name((ggml_type) f.gu_type), ggml_type_name((ggml_type) f.d_type), f.bytes, ec, eg, ecg,
+@@ -397,7 +444,8 @@ std::vector<uint8_t> synthetic_blob(const cpu::NativeFmt& f, int seed) {
+     auto quant = [&](int type, int64_t rows, int64_t cols, uint8_t* dst) {
+         std::vector<float> w((size_t) (rows * cols));
+         for (int64_t r = 0; r < rows; ++r) {
+-            const float scale = 0.02f * (0.5f + (float) (r % 7) / 7.0f);
++            const float scale = 0.02f * (0.5f + (float) (r % 7) / 7.0f) /
++                                (type == GGML_TYPE_NVFP4 ? 4e-5f : 1.f);
+             for (int64_t c = 0; c < cols; ++c) w[(size_t) (r * cols + c)] = scale * nd(rng);
+         }
+         ggml_quantize_chunk((ggml_type) type, w.data(), dst, 0, rows, cols);
+@@ -405,6 +453,12 @@ std::vector<uint8_t> synthetic_blob(const cpu::NativeFmt& f, int seed) {
+     quant(f.gu_type, FF, H, blob.data());
+     quant(f.gu_type, FF, H, blob.data() + f.up_off);
+     quant(f.d_type, H, FF, blob.data() + f.down_off);
++    if (f.tail) {
++        const float scales[4] = {f.gu_type == GGML_TYPE_NVFP4 ? 4e-5f : 1.f,
++                                 f.gu_type == GGML_TYPE_NVFP4 ? 4e-5f : 1.f,
++                                 f.d_type == GGML_TYPE_NVFP4 ? 4e-5f : 1.f, 0.f};
++        std::memcpy(blob.data() + f.bytes - f.tail, scales, sizeof scales);
++    }
+     return blob;
+ }
+ 
+@@ -817,13 +871,16 @@ int gpu_nvfp4(const cpu::NativeFmt& f, const std::vector<uint8_t>& blob, const s
+ 
+ // Expert `e` of `layer` from an NVFP4 pack: a native experts.bin (its native_experts.txt beside it) or a .basalt
+ // (its `experts` section and `experts.layout`).  Blobs are layer-major, `blob` bytes each.
+-bool read_pack_expert(const std::string& path, int layer, int e, const cpu::NativeFmt& f, std::vector<uint8_t>& out) {
++bool read_pack_expert(const std::string& path, int layer, int e, cpu::NativeFmt& f, std::vector<uint8_t>& out) {
+     std::ifstream in(path, std::ios::binary);
+     if (!in) return false;
+-    uint64_t base = 0, n_expert = 512;
++    in.seekg(0, std::ios::end);
++    uint64_t base = 0, span = (uint64_t) in.tellg(), n_expert = 512;
++    in.seekg(0);
+     char magic[8] = {};
+     in.read(magic, 8);
+-    if (std::memcmp(magic, "BASALTMF", 8) == 0) {   // header (64 B) then 128-byte entries: name[64], off, size, ...
++    std::string layout;
++    if (std::memcmp(magic, "BASALTMF", 8) == 0) {
+         uint32_t ver = 0, n = 0;
+         in.read((char*) &ver, 4);
+         in.read((char*) &n, 4);
+@@ -834,22 +891,39 @@ bool read_pack_expert(const std::string& path, int layer, int e, const cpu::Nati
+             uint64_t off, size;
+             std::memcpy(&off, ent + 64, 8);
+             std::memcpy(&size, ent + 72, 8);
+-            if (std::strncmp(ent, "experts", 64) == 0) base = off;
++            if (std::strncmp(ent, "experts", 64) == 0) { base = off; span = size; }
+             if (std::strncmp(ent, "experts.layout", 64) == 0) {
+-                std::string text(size, '\0');
++                layout.assign(size, '\0');
+                 in.seekg((std::streamoff) off);
+-                in.read(text.data(), (std::streamsize) size);
+-                const size_t at = text.find("(n_expert ");
+-                if (at != std::string::npos) n_expert = std::strtoull(text.c_str() + at + 10, nullptr, 10);
++                in.read(layout.data(), (std::streamsize) size);
+             }
+         }
+         if (base == 0) return false;
++    } else {
++        std::ifstream index(std::filesystem::path(path).parent_path() / "native_experts.txt");
++        std::ostringstream text;
++        text << index.rdbuf();
++        layout = text.str();
++    }
++    const size_t at = layout.find("(n_expert ");
++    if (at != std::string::npos) n_expert = std::strtoull(layout.c_str() + at + 10, nullptr, 10);
++    std::istringstream lines(layout);
++    std::string line;
++    while (std::getline(lines, line)) {
++        int l, gu, down;
++        uint64_t off, bytes;
++        std::istringstream row(line);
++        if (!(row >> l >> gu >> down >> off >> bytes) || l != layer) continue;
++        std::string err;
++        if (!cpu::native_fmt((ggml_type) gu, (ggml_type) down, H, FF, f, err) || bytes != f.bytes ||
++            e < 0 || (uint64_t) e >= n_expert || off + ((uint64_t) e + 1) * bytes > span) return false;
++        out.assign(f.bytes, 0);
++        in.clear();
++        in.seekg((std::streamoff) (base + off + (uint64_t) e * bytes));
++        in.read((char*) out.data(), (std::streamsize) f.bytes);
++        return (size_t) in.gcount() == f.bytes;
+     }
+-    out.assign(f.bytes, 0);
+-    in.clear();
+-    in.seekg((std::streamoff) (base + ((uint64_t) layer * n_expert + (uint64_t) e) * f.bytes));
+-    in.read((char*) out.data(), (std::streamsize) f.bytes);
+-    return (size_t) in.gcount() == f.bytes;
++    return false;
+ }
+ 
+ // The Q5_1 min term.  Activations x = d * (q + 0.45) round to q, so each q8_1 block's sum of the ORIGINAL values
+@@ -999,10 +1073,17 @@ int check_cpu_pair(int gu, int dn, int seed) {
+     // the activations the dot sees (Q8_K), dequantized
+     std::vector<float> xd((size_t) NT * H);
+     for (int k = 0; k < NT; ++k) {
+-        if (f.gu_act != GGML_TYPE_Q8_K) {
+-            std::printf("  the pair's activation is not Q8_K\n");
+-            return 1;
++        if (f.gu_act == GGML_TYPE_Q8_0) {
++            std::vector<uint8_t> base(f.act_bytes);
++            ggml_get_type_traits_cpu_avx2(GGML_TYPE_Q8_0)->from_float(x.data() + k * H, base.data(), H);
++            if (std::memcmp(base.data(), act[k].data(), f.act_bytes)) {
++                std::printf("Q8_0 quantizer differs from AVX2\n");
++                return 1;
++            }
++            ggml_get_type_traits(GGML_TYPE_Q8_0)->to_float(act[k].data(), xd.data() + k * H, H);
++            continue;
+         }
++        if (f.gu_act != GGML_TYPE_Q8_K) return 1;
+         // block_q8_K: float d, int8 qs[256], int16 bsums[16]
+         for (int64_t b = 0; b < H / 256; ++b) {
+             const uint8_t* blk = act[k].data() + b * 292;
+@@ -1019,7 +1100,8 @@ int check_cpu_pair(int gu, int dn, int seed) {
+     for (int64_t r = 0; r < H; ++r) td->to_float(blob.data() + f.down_off + r * f.d_row, D.data() + r * FF, FF);
+     const struct { const char* name; const ggml_type_traits_cpu* (*get)(ggml_type); bool ok; } isas[] = {
+         {"avx2", ggml_get_type_traits_cpu_avx2, cpu::cpu_avx2_ok()},
+-        {"avx512", ggml_get_type_traits_cpu_avx512, cpu::cpu_avx512_ok()}};
++        {"avx512", ggml_get_type_traits_cpu_avx512, cpu::cpu_avx512_ok()},
++        {"avx-vnni-int8", ggml_get_type_traits_cpu_avxvnniint8, gu == GGML_TYPE_Q8_0 && cpu::cpu_avxvnni_int8_ok()}};
+     for (const auto& isa : isas) {
+         if (!isa.ok) continue;
+         const auto* tc = isa.get((ggml_type) gu);
+@@ -1033,6 +1115,11 @@ int check_cpu_pair(int gu, int dn, int seed) {
+             for (int64_t r = 0; r < FF; ++r) {
+                 float got = 0.f;
+                 tc->vec_dot((int) H, &got, 0, blob.data() + r * f.gu_row, 0, a[k], 0, 1);
++                if (gu == GGML_TYPE_Q8_0) {
++                    float base = 0.f;
++                    ggml_get_type_traits_cpu_avx2(GGML_TYPE_Q8_0)->vec_dot((int) H, &base, 0, blob.data() + r * f.gu_row, 0, a[k], 0, 1);
++                    if (std::memcmp(&base, &got, 4)) ++failures;
++                }
+                 double want = 0.0, mag = 0.0;
+                 for (int64_t i = 0; i < H; ++i) {
+                     const double t = (double) G[r * H + i] * xd[k * H + i];
+@@ -1376,7 +1463,9 @@ int main(int argc, char** argv) {
+                 ++failures;
+                 continue;
+             }
+-            failures += check_nvfp4_cpu(f, blob, l, "layer " + std::to_string(l), gpu());
++            if (f.gu_type == GGML_TYPE_NVFP4 && f.d_type == GGML_TYPE_NVFP4)
++                failures += check_nvfp4_cpu(f, blob, l, "layer " + std::to_string(l), gpu());
++            else failures += check_blob(f, blob, l, "layer " + std::to_string(l), gpu());
+         }
+     } else {
+         const basalt::GgufModel model(basalt::gguf_split_paths(argv[1]));
+diff --git a/tests/kernels/window_gemm_parity.cpp b/tests/kernels/window_gemm_parity.cpp
+index 02c73d6..5e9c9f0 100644
+--- a/tests/kernels/window_gemm_parity.cpp
++++ b/tests/kernels/window_gemm_parity.cpp
+@@ -112,7 +112,9 @@ const Shape kShapes[] = {{wg::Format::F8, 10240, 5120, "F8 GDN qkv 10240x5120"},
+                          {wg::Format::F8, 5120, 6144, "F8 out 5120x6144"},       {wg::Format::F8, 12288, 5120, "F8 attn q 12288x5120"},
+                          {wg::Format::F8, 1024, 5120, "F8 attn k 1024x5120"},    {wg::Format::Nvfp4, 17408, 5120, "FP4 gate 17408x5120"},
+                          {wg::Format::Nvfp4, 5120, 17408, "FP4 down 5120x17408"},
+-                         {wg::Format::Bf16, 256, 5120, "BF16 selector 256x5120"}};
++                         {wg::Format::Bf16, 256, 5120, "BF16 selector 256x5120"},
++                         {wg::Format::Bf16, 12288, 5120, "BF16 attention query-gate 12288x5120"},
++                         {wg::Format::Bf16, 5120, 6144, "BF16 attention output 5120x6144"}};
+ 
+ wg::Workspace ws;
+ void need(const wg::Call& c) {
+diff --git a/tests/models/qwen35/linear_types_test.cpp b/tests/models/qwen35/linear_types_test.cpp
+index bdf3465..5ea3dd8 100644
+--- a/tests/models/qwen35/linear_types_test.cpp
++++ b/tests/models/qwen35/linear_types_test.cpp
+@@ -21,6 +21,10 @@ int main() {
+     check(linear_type_error(w, kTypeNvfp4Planes, 17408, 5120).empty(), "NVFP4_PLANES of 128-row blocks runs");
+     check(linear_type_error(w, kTypeF8, 6144, 5120).empty(), "F8_E4M3 with 256-value rows runs");
+ 
++    check(linear_type_error(w, kTypeBf16, 12288, 5120).empty(), "BF16 attention projections run");
++    check(has(linear_type_error(w, kTypeBf16, 127, 5120), "128s"), "unaligned BF16 rows are refused");
++    check(has(linear_type_error(w, kTypeBf16, 128, 5000), "256s"), "unaligned BF16 columns are refused");
++
+     const std::string old = linear_type_error(w, kTypeNvfp4, 17408, 5120);
+     check(has(old, "blk.0.ffn_gate.weight") && has(old, "older than NVFP4_PLANES") && has(old, "re-convert"),
+           "an old pack's ggml-block NVFP4 matrix is told to re-convert, by name");
+diff --git a/tests/ngram/ple_fp8_test.cpp b/tests/ngram/ple_fp8_test.cpp
+new file mode 100644
+index 0000000..9be6cd6
+--- /dev/null
++++ b/tests/ngram/ple_fp8_test.cpp
+@@ -0,0 +1,62 @@
++#include "../core/gguf_fixture.hpp"
++#include "basalt/models/qwen4exp/kernels/ngram.hpp"
++
++#include <chrono>
++#include <cmath>
++#include <cstdio>
++#include <cstring>
++#include <filesystem>
++#include <limits>
++
++int main() {
++    namespace fs = std::filesystem;
++    namespace k = basalt::kernels;
++    const fs::path dir = fs::temp_directory_path() /
++        ("basalt-ple-fp8-" + std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
++    fs::create_directories(dir);
++    int failures = 0;
++    const auto path = dir / "table.gguf";
++    auto write = [&](bool scale, uint32_t value) {
++        std::vector<fixture::Kv> kv;
++        if (scale) kv.push_back(fixture::u32("basalt.ple.scale", value));
++        fixture::write(path, kv, {{"per_layer_token_embd.weight", {160, 32}, 44, 1}});
++    };
++    write(true, 2);
++    for (auto mode : {k::PleIo::Mmap, k::PleIo::Direct}) {
++        k::PleTable table;
++        k::PleIoOptions options;
++        options.mode = mode;
++        std::string error;
++        if (!table.open(path.string(), error, options)) {
++            std::printf("open: %s\n", error.c_str()); ++failures; continue;
++        }
++        auto check = [&](uint32_t row, const float* values) {
++            for (int i = 0; i < 160; ++i) {
++                const uint8_t code = fixture::pattern(1, (uint64_t) row * 160 + i);
++                const int bits = code & 127, e = bits >> 3, m = bits & 7;
++                const double sign = code & 128 ? -1. : 1.;
++                const double magnitude = e ? (8. + m) * std::pow(2., e - 10) : m / 512.;
++                const float want = (float) (sign * magnitude * 2.);
++                if (bits == 127) failures += !std::isnan(values[i]);
++                else failures += std::memcmp(&want, values + i, sizeof want) != 0;
++            }
++        };
++        for (uint32_t row = 0; row < 32; ++row) {
++            float values[160]; table.read_row(row, values); check(row, values);
++        }
++        uint32_t rows[16];
++        for (int i = 0; i < 16; ++i) rows[i] = (uint32_t) (31 - i);
++        float values[16 * 160];
++        if (!table.issue(rows) || !table.collect(values, error)) ++failures;
++        else for (int i = 0; i < 16; ++i) check(rows[i], values + i * 160);
++    }
++    for (bool scale : {false, true}) {
++        write(scale, 0);
++        k::PleTable table;
++        std::string error;
++        failures += table.open(path.string(), error);
++    }
++    fs::remove_all(dir);
++    std::printf("FP8 PLE: all codes, mmap/direct, scalar/batch, invalid scale: %d failures\n", failures);
++    return failures ? 1 : 0;
++}
+diff --git a/tools/convert/convert.py b/tools/convert/convert.py
+index db98da5..fb2c2ab 100644
+--- a/tools/convert/convert.py
++++ b/tools/convert/convert.py
+@@ -358,7 +358,7 @@ def convert(a) -> None:
+     for p in side:
+         if not p.is_file():
+             die(f"missing input: {p}")
+-    if a.draft_vocab and not a.mtp_source:
++    if a.draft_vocab and not a.mtp_source and not getattr(a, "strata_mtp", None):
+         die("--draft-vocab needs --mtp-source")
+     if a.mtp_dense and not a.mtp_source:
+         die("--mtp-dense needs --mtp-source")
+@@ -367,6 +367,12 @@ def convert(a) -> None:
+     try:
+         print("reading the source GGUFs ...", flush=True)
+         model = S.SourceModel(paths, frozenset(arch.own_sections) if base is not None else frozenset())
++        if getattr(a, "strata_pack", None):
++            import strata_pack
++            strata_pack.overlay(model, a.ple_gguf, a.embd_gguf)
++        if getattr(a, "engram_gguf", None):
++            import legacy_deepseek
++            legacy_deepseek.overlay(model, a.engram_gguf)
+         kv, tensors = source_tensors(model, arch.own_sections)
+         own = {n: model.where[n][1] for n in arch.own_sections if n in model.where}
+         if not arch.side_sections:
+@@ -374,8 +380,8 @@ def convert(a) -> None:
+         for k, v in arch.sampling_kv.items():
+             kv.setdefault(k, v)
+         dense = S.Dense(model, a.compat_bf16, arch)
+-        experts = S.Experts(model)
+-        mtp = S.Mtp(a.mtp_source, a.mtp_dense) if a.mtp_source else None
++        experts = strata_pack.Experts(a.strata_pack, model) if getattr(a, "strata_pack", None) else S.Experts(model)
++        mtp = strata_pack.Mtp(a.strata_mtp) if getattr(a, "strata_mtp", None) else S.Mtp(a.mtp_source, a.mtp_dense) if a.mtp_source else None
+         n_vocab = len(kv.get("tokenizer.ggml.tokens") or []) or None
+         draft_vocab = S.draft_vocab_bytes(a.draft_vocab, n_vocab) if a.draft_vocab else None
+         if base is not None:
+@@ -480,6 +486,7 @@ def convert(a) -> None:
+             meta = {
+                 "format": "basalt", "version": 2, "name": a.name,
+                 "converter": {"tool": "tools/convert/convert.py"},
++                **({"required_engine_features": ["fp8-ple", "mixed-nvfp4-q8"]} if getattr(a, "strata_pack", None) else {}),
+                 "sources": sources,
+                 "gguf_kv": kv,
+                 "tensors": {**{n: {"type": t.type_name, "type_id": t.type_id, "shape": [int(d) for d in t.shape],
+@@ -764,6 +771,11 @@ def main():
+                          "else from the checkpoint or the GGUF")
+     ap.add_argument("--gguf", action="append", metavar="FILE",
+                     help="the model's GGUF: shard 1 of a split model (the others are found beside it), or repeat per shard")
++    ap.add_argument("--strata-pack", metavar="DIR", help="qwen4exp: native NVFP4/Q8 experts.bin and native_experts.txt")
++    ap.add_argument("--ple-gguf", metavar="FILE", help="with --strata-pack: the original scaled FP8 PLE table")
++    ap.add_argument("--embd-gguf", metavar="FILE", help="with --strata-pack: the original BF16 token embedding")
++    ap.add_argument("--strata-mtp", metavar="DIR", help="with --strata-pack: prepared native Q2_0 MTP drafter")
++    ap.add_argument("--engram-gguf", metavar="FILE", help="with DeepSeek IST-DAS --gguf: the original separate Engram tables")
+     ap.add_argument("--mmproj", help="vision projector GGUF (required unless --no-vision)")
+     ap.add_argument("--dspark", metavar="FILE", help="deepseek41: the DSpark drafter GGUF, stored whole as dspark/gguf")
+     ap.add_argument("--into", metavar="PACK.basalt", help="with --dspark: add it to this pack, whose other sections stay as they are")
+@@ -782,6 +794,7 @@ def main():
+     ap.add_argument("--checkpoint", metavar="DIR",
+                     help="an NVFP4 safetensors checkpoint: with --sections-from, the language model is read from it; "
+                          "with --requant-dense-q6k, the BF16 projections")
++    ap.add_argument("--ninfer", metavar="FILE", help="import the text component of a single-file NInfer v3 dense Qwen3.5 artifact")
+     ap.add_argument("--dense-q8-0", action="store_true",
+                     help="with --checkpoint and --sections-from: Q8_0 projections instead of Q6_K")
+     ap.add_argument("--stream-shards", action="store_true",
+@@ -796,6 +809,20 @@ def main():
+     ap.add_argument("--dry-run", action="store_true",
+                     help="with --gguf: print every section's offset and size and write nothing")
+     a = ap.parse_args()
++    if a.ninfer:
++        if not a.out or any((a.gguf, a.checkpoint, a.sections_from, a.strata_pack, a.into, a.dspark,
++                            a.requant_dense_q6k, a.mmproj, a.mtp_source, a.drafter, a.head, a.dry_run)):
++            ap.error("--ninfer takes --out, --name and --force only")
++        import ninfer_qwen35
++        ninfer_qwen35.convert(a)
++        return
++    if a.engram_gguf and (not a.gguf or a.strata_pack or a.sections_from or a.checkpoint or a.into or a.requant_dense_q6k):
++        ap.error("--engram-gguf goes with DeepSeek --gguf shards only")
++    if a.strata_pack:
++        if not a.gguf or not a.ple_gguf or not a.embd_gguf or a.sections_from or a.checkpoint or a.into or a.requant_dense_q6k or a.mtp_source or a.mtp_dense:
++            ap.error("--strata-pack needs --gguf, --ple-gguf and --embd-gguf; it cannot combine with another source mode")
++    elif a.ple_gguf or a.embd_gguf or a.strata_mtp:
++        ap.error("--ple-gguf, --embd-gguf and --strata-mtp need --strata-pack")
+     if a.into or a.roll_back or a.undo_dir:
+         if not a.into or not a.undo_dir or bool(a.dspark) == a.roll_back or a.out or a.gguf or a.sections_from or a.checkpoint or a.requant_dense_q6k:
+             ap.error("--into takes --undo-dir and either --dspark or --roll-back, and nothing else")
+diff --git a/tools/convert/legacy_deepseek.py b/tools/convert/legacy_deepseek.py
+new file mode 100644
+index 0000000..ea69e63
+--- /dev/null
++++ b/tools/convert/legacy_deepseek.py
+@@ -0,0 +1,83 @@
++"""Normalize IST-DAS Engram metadata and join its adjacent table views without changing any weight bytes."""
++from dataclasses import replace
++from pathlib import Path
++import re
++import tempfile
++import numpy as np
++
++from gguf_reader import GGUFFile
++from gguf_writer import GGUFWriter
++import model_sections as S
++
++
++def overlay(model, path):
++    kv = model.files[0].metadata
++    prefix = "deepseek41."
++    if kv.get("general.architecture") != "deepseek41":
++        raise S.ConvertError("--engram-gguf requires deepseek41")
++    path = Path(path)
++    table = GGUFFile(path)
++    layers, rows, offset = [], [], 0
++    for tensor in table.tensors:
++        match = re.fullmatch(r"blk\.(\d+)\.engram_embd\.weight", tensor.name)
++        if not match or tensor.type_id != 20 or len(tensor.shape) != 2 or tensor.shape[0] != 256 or tensor.offset != offset:
++            raise S.ConvertError("expected adjacent IQ4_NL Engram tables with 256 values per row")
++        layers.append(int(match[1]))
++        rows.append(tensor.shape[1])
++        offset += tensor.expected_bytes()
++    if not rows or table.data_start + offset != path.stat().st_size or kv.get(prefix + "engram.layer_ids") != layers:
++        raise S.ConvertError("incomplete Engram table or mismatched layer ids")
++    ints = {}
++    for name, kind in (("token_map", "<i4"), ("primes", "<i8"), ("offsets", "<i8"), ("multipliers", "<i8")):
++        tensor = "engram_" + name + ".weight"
++        ints[name] = np.frombuffer(model.bytes(tensor), dtype=kind).tolist()
++        del model.where[tensor]
++    ng = int(kv[prefix + "engram_max_ngram_size"])
++    heads = int(kv[prefix + "engram_n_heads"])
++    columns = (ng - 1) * heads
++    if (len(ints["primes"]) != len(rows) * columns or len(ints["offsets"]) != len(rows) * columns or
++            len(ints["multipliers"]) != len(rows) * ng):
++        raise S.ConvertError("Engram hash parameter shapes do not match the tables")
++    before = 0
++    for layer, count in enumerate(rows):
++        at = layer * columns
++        primes, offsets = ints["primes"][at:at + columns], ints["offsets"][at:at + columns]
++        expected = np.cumsum([0] + primes[:-1]).tolist()
++        if sum(primes) != count or offsets != expected:
++            raise S.ConvertError("Engram primes/offsets do not cover the layer's rows")
++        ints["offsets"][at:at + columns] = [value + before for value in offsets]
++        before += count
++    for name, value in {
++        "ple.layers": layers, "ple.ngram_size": ng, "ple.heads_per_ngram": heads,
++        "ple.layer_multipliers": ints["multipliers"], "ple.head_vocab_sizes": ints["primes"],
++        "ple.head_offsets": ints["offsets"], "embedding_length_per_layer_input": 256,
++        "engram.token_map": ints["token_map"], "engram.pad_token_id": kv[prefix + "engram_pad_token_id"],
++    }.items():
++        kv[prefix + name] = value
++    tensor = replace(table.tensors[0], name="per_layer_token_embd.weight", shape=[256, sum(rows)], offset=0)
++    model.paths.append(path)
++    model.files.append(table)
++    model.sizes.append(path.stat().st_size)
++    model.where[tensor.name] = (table, tensor, path)
++    gates = GGUFWriter()
++    for layer in layers:
++        prefix = f"blk.{layer}.engram_"
++        names = [prefix + role + ".weight" for role in ("q", "k")]
++        ts = [model.where[name][1] for name in names]
++        if any(t.type_id != 30 for t in ts) or ts[0].shape != ts[1].shape:
++            raise S.ConvertError("expected matching BF16 Engram q/k weights")
++        values = [(np.frombuffer(model.bytes(name), dtype="<u2").astype(np.uint32) << 16).view(np.float32) for name in names]
++        gates.add_raw(prefix + "gate.weight", ts[0].shape, "F32", (values[0] * values[1]).astype("<f4").tobytes())
++        for name in names:
++            del model.where[name]
++        old = prefix + "wkv.weight"
++        source, t, p = model.where.pop(old)
++        model.where[prefix + "kv.weight"] = (source, replace(t, name=prefix + "kv.weight"), p)
++    model._legacy_gate_temp = tempfile.TemporaryDirectory(prefix="basalt-engram-gates-")
++    generated = gates.write(Path(model._legacy_gate_temp.name) / "engram-gates.gguf")
++    g = GGUFFile(generated)
++    model.paths.append(generated)
++    model.files.append(g)
++    model.sizes.append(generated.stat().st_size)
++    for tensor in g.tensors:
++        model.where[tensor.name] = (g, tensor, generated)
+diff --git a/tools/convert/model_sections.py b/tools/convert/model_sections.py
+index 1a3b679..2350475 100644
+--- a/tools/convert/model_sections.py
++++ b/tools/convert/model_sections.py
+@@ -10,6 +10,7 @@ from __future__ import annotations
+ 
+ import hashlib
+ import json
++import math
+ import pathlib
+ import re
+ import struct
+@@ -215,7 +216,7 @@ class Dense:
+         for name, (g, t, p) in model.where.items():
+             if is_expert(name) or name in arch.not_in_dense:
+                 continue
+-            if len(t.shape) > 2:
++            if len(t.shape) > 2 and not (arch.name == "deepseek41" and t.type_name not in FLOAT and arch.native(name, t.type_name)):
+                 raise ConvertError(f"tensor {name} has {len(t.shape)} dimensions; the index holds two")
+             form = arch.form_of(name)
+             # quantized tensors are served from the source unless the pool needs them dequantized (--compat-bf16)
+@@ -231,7 +232,7 @@ class Dense:
+         at = 0
+         for name, t, p, native in self.todo:
+             ne0 = int(t.shape[0])
+-            ne1 = int(t.shape[1]) if len(t.shape) > 1 else 0
++            ne1 = math.prod(int(d) for d in t.shape[1:]) if len(t.shape) > 1 else 0
+             if native:
+                 self.rows.append([name, "0", "0", "0", "0", "0", "0", str(ne0), str(ne1), "8", "0", "32"] + ["0"] * 7)
+                 continue
+diff --git a/tools/convert/ninfer_qwen35.py b/tools/convert/ninfer_qwen35.py
+new file mode 100644
+index 0000000..0846d2a
+--- /dev/null
++++ b/tools/convert/ninfer_qwen35.py
+@@ -0,0 +1,379 @@
++"""Import the text component of a single-file NInfer v3 dense Qwen3.5 artifact.
++
++NVFP4 weights keep their E2M1 codes, UE4M3 scales and tensor multiplier; Q8_G32_FP16
++heads are repacked without rounding. BF16 projections stay BF16. The embedding is
++materialized as the BF16 values the source embedding Op returns. DFlash2 projections also keep their stored format; its selector is materialized as
++BF16 for the proposal-only selector. Vision and MTP are excluded. This converter does not change or copy source artifacts in place.
++"""
++from __future__ import annotations
++
++import json
++import math
++import pathlib
++import struct
++import tempfile
++from types import SimpleNamespace
++
++import numpy as np
++
++import checkpoint as C
++import checkpoint_qwen35 as Q
++import model_sections as S
++from model_file import ModelWriter, Stream, TENSOR_ALIGN
++import tokenizer
++
++HEADER = struct.Struct('<8sQ16s')
++TYPE = {'F32': 0, 'BF16': 30, 'Q8_0': 8, 'NVFP4_PLANES': 45}
++
++
++def bf16_values(bits):
++    return (np.asarray(bits, dtype=np.uint32) << 16).view(np.float32)
++
++
++def bf16_bits(values):
++    bits = np.asarray(values, dtype='<f4').view(np.uint32)
++    return ((bits + 0x7fff + ((bits >> 16) & 1)) >> 16).astype('<u2')
++
++
++def unpack_scales(raw, rows, cols):
++    if rows % 128 or cols % 64:
++        raise ValueError('NVFP4 requires 128-row and 64-column tiles')
++    # Tile axes: row block, column block, row%32, row//32%4, group%4.
++    return np.frombuffer(raw, np.uint8).reshape(rows//128, cols//64, 32, 4, 4).transpose(0, 3, 2, 1, 4).reshape(rows, cols//16).copy()
++
++
++def pack_scales(values):
++    rows, groups = values.shape
++    return values.reshape(rows//128, 4, 32, groups//4, 4).transpose(0, 3, 2, 1, 4).copy().tobytes()
++
++
++def matrix_values(matrix):
++    if matrix['format'] == 'BF16':
++        return bf16_values(matrix['bits'])
++    codes = matrix['codes']
++    unpacked = np.empty((codes.shape[0], codes.shape[1]*2),np.uint8)
++    unpacked[:,0::2],unpacked[:,1::2] = codes & 15,codes >> 4
++    return (Q.E2M1.astype(np.float32)[unpacked] *
++            np.repeat(S.fp8_e4m3_table()[matrix['scales']].astype(np.float32),16,axis=1) *
++            matrix['multiplier'])
++
++
++class Source:
++    def __init__(self, path):
++        self.path = pathlib.Path(path)
++        self.file = self.path.open('rb')
++        try:
++            magic, size, _ = HEADER.unpack(self.file.read(HEADER.size))
++            if magic != b'NINFER\0\3':
++                raise ValueError('expected NInfer v3')
++            self.directory = json.loads(self.file.read(size))
++            self.start = (HEADER.size + size + 4095) // 4096 * 4096
++            files = self.directory['files']
++            if len(files) != 1:
++                raise ValueError('this importer requires a single-file v3 artifact')
++            if self.path.stat().st_size != self.start + files[0]['payload_bytes']:
++                raise ValueError('artifact payload length mismatch')
++            self.objects = {o['id']: o for o in self.directory['objects']}
++            self.bindings = self.directory['bindings']
++            self.text = self.directory['components']['text']['config']
++            if self.text.get('model_type') != 'qwen3_5_text' or self.text.get('num_experts', 0):
++                raise ValueError('only the dense Qwen3.5 text architecture is supported')
++            geometry = tuple(self.text[k] for k in ('linear_num_key_heads', 'linear_num_value_heads', 'linear_key_head_dim', 'linear_value_head_dim'))
++            if geometry != (16, 48, 128, 128):
++                raise ValueError('unsupported GDN head order')
++        except BaseException:
++            self.file.close()
++            raise
++
++    def close(self):
++        self.file.close()
++
++    def read(self, obj, begin=0, length=None):
++        length = obj['bytes'] - begin if length is None else length
++        if begin < 0 or length < 0 or begin + length > obj['bytes']:
++            raise ValueError('object range out of bounds')
++        self.file.seek(self.start + obj['offset'] + begin)
++        data = self.file.read(length)
++        if len(data) != length:
++            raise ValueError('short object read')
++        return data
++
++    def binding(self, role):
++        binding = self.bindings[role]
++        parts = binding.get('parts') or [{'object': binding['object']}]
++        if len(parts) != 1:
++            raise ValueError(f'{role}: concatenated source bindings are unsupported')
++        part = parts[0]
++        obj = self.objects[part['object']]
++        begin, end = part.get('range', (0, math.prod(obj['shape'])))
++        if not 0 <= begin < end <= math.prod(obj['shape']):
++            raise ValueError(f'{role}: invalid logical binding range')
++        return obj, begin, end
++
++    def shape(self, role):
++        obj, begin, end = self.binding(role)
++        shape = obj['shape']
++        if len(shape) == 2:
++            if begin % shape[1] or end % shape[1]:
++                raise ValueError(f'{role}: partial matrix rows')
++            return ((end-begin)//shape[1], shape[1])
++        if begin or end != math.prod(shape):
++            raise ValueError(f'{role}: partial non-matrix binding')
++        return tuple(shape)
++
++    def raw_float(self, role):
++        obj, begin, end = self.binding(role)
++        fmt = obj['format']
++        if obj['layout'] != 'contiguous_le_v1' or fmt not in ('bf16', 'fp32'):
++            raise ValueError(f'{role}: expected contiguous BF16 or FP32')
++        size = 2 if fmt == 'bf16' else 4
++        values = np.frombuffer(self.read(obj, begin*size, (end-begin)*size), '<u2' if size == 2 else '<f4')
++        return (bf16_values(values) if size == 2 else values).reshape(self.shape(role))
++
++    def matrix(self, role):
++        obj, begin, end = self.binding(role)
++        rows, cols = self.shape(role)
++        if obj['format'] == 'bf16':
++            if obj['layout'] != 'contiguous_le_v1':
++                raise ValueError('unsupported BF16 layout')
++            bits = np.frombuffer(self.read(obj, begin*2, (end-begin)*2), '<u2').reshape(rows, cols).copy()
++            return {'format': 'BF16', 'bits': bits}
++        if obj['format'] != 'nvfp4' or obj['layout'] != 'block_scale_k16_m128x4_v1':
++            raise ValueError(f'{role}: matrix format {obj["format"]} unsupported')
++        n, k = obj['shape']
++        code_bytes = n*k//2
++        scale_offset = (code_bytes+255)//256*256
++        scales = unpack_scales(self.read(obj, scale_offset, n*k//16), n, k)
++        codes = np.frombuffer(self.read(obj, begin//2, (end-begin)//2), np.uint8).reshape(rows, cols//2).copy()
++        divisor = struct.unpack('<f', self.read(obj, scale_offset+n*k//16, 4))[0]
++        if not math.isfinite(divisor) or divisor <= 0:
++            raise ValueError('invalid NVFP4 divisor')
++        return {'format': 'NVFP4_PLANES', 'codes': codes, 'scales': scales[begin//k:end//k], 'multiplier': np.float32(1)/np.float32(divisor)}
++
++    def q8_chunks(self, role, embedding=False):
++        obj, begin, end = self.binding(role)
++        n, k = obj['shape']
++        if begin or end != n*k or obj['format'] != 'q8_g32_fp16' or obj['layout'] != 'row_split_k128_v1' or k % 128:
++            raise ValueError(f'{role}: expected whole Q8-G32 row-split matrix')
++        scale_offset = (n*k + 255)//256*256
++        for row in range(0, n, 1024):
++            count = min(1024, n-row)
++            codes = np.frombuffer(self.read(obj, row*k, count*k), np.int8).reshape(count, k//32, 32)
++            scales = np.frombuffer(self.read(obj, scale_offset+row*k//16, count*k//16), '<f2').reshape(count, k//32)
++            if embedding:
++                yield bf16_bits(codes.astype(np.float32)*scales.astype(np.float32)[..., None]).tobytes()
++            else:
++                blocks = np.empty((count, k//32, 34), np.uint8)
++                blocks[..., :2] = scales.copy().view(np.uint8).reshape(count, k//32, 2)
++                blocks[..., 2:] = codes.view(np.uint8)
++                yield blocks.tobytes()
++
++
++def transform_matrix(matrix, how):
++    if how == 'id':
++        return matrix
++    cols = matrix['bits'].shape[1] if matrix['format'] == 'BF16' else matrix['codes'].shape[1]*2
++    rows = matrix['bits'].shape[0] if matrix['format'] == 'BF16' else matrix['codes'].shape[0]
++    if how in ('vrows', 'zrows'):
++        indices = S.gdn_index(rows, S.GDN_QK_ROWS if how == 'vrows' else 0)
++        for key in ('bits', 'codes', 'scales'):
++            if key in matrix:
++                matrix[key] = matrix[key][indices].copy()
++    elif how == 'vcols':
++        indices = S.gdn_index(cols, 0)
++        if matrix['format'] == 'BF16':
++            matrix['bits'] = matrix['bits'][:, indices].copy()
++        else:
++            # The permutation moves 128-wide heads: packed pairs and groups stay whole.
++            matrix['codes'] = matrix['codes'][:, indices[::2]//2].copy()
++            matrix['scales'] = matrix['scales'][:, indices[::16]//16].copy()
++    else:
++        raise ValueError(f'unsupported matrix transform {how}')
++    return matrix
++
++
++class Plan:
++    def __init__(self, source):
++        self.source = source
++        self.specs = []
++        self.add('token_embd.weight', ('text/token_embedding',), 'embedding')
++        self.add('output.weight', ('text/output_head',), 'q8')
++        self.add('output_norm.weight', ('text/final_norm',), 'norm')
++        for layer, kind in enumerate(source.text['layer_types']):
++            p, g = f'text/layers/{layer}/', f'blk.{layer}.'
++            for role, name in [('input_norm', 'attn_norm.weight'), ('post_attention_norm', 'post_attention_norm.weight')]:
++                self.add(g+name, (p+role,), 'norm')
++            for role in ('gate', 'up', 'down'):
++                self.add(g+f'ffn_{role}.weight', (p+'mlp/'+role,), 'id')
++            if kind == 'linear_attention':
++                rules = [('attn_qkv.weight', ('query', 'key', 'value'), 'vrows'),
++                         ('attn_gate.weight', ('z',), 'zrows'), ('ssm_out.weight', ('output',), 'vcols'),
++                         ('ssm_alpha.weight', ('a_projection',), 'heads_bf16'),
++                         ('ssm_beta.weight', ('b_projection',), 'heads_bf16'),
++                         ('ssm_a', ('a_log',), 'negexp'), ('ssm_dt.bias', ('dt_bias',), 'heads'),
++                         ('ssm_conv1d.weight', ('convolution',), 'conv'), ('ssm_norm.weight', ('norm',), 'float')]
++                for name, roles, how in rules:
++                    self.add(g+name, tuple(p+'gdn/'+role for role in roles), how)
++            elif kind == 'full_attention':
++                for name, roles, how in [('attn_q.weight', ('query', 'gate'), 'qgate'),
++                    ('attn_k.weight', ('key',), 'id'), ('attn_v.weight', ('value',), 'id'),
++                    ('attn_output.weight', ('output',), 'id'), ('attn_q_norm.weight', ('query_norm',), 'norm'),
++                    ('attn_k_norm.weight', ('key_norm',), 'norm')]:
++                    self.add(g+name, tuple(p+'attention/'+role for role in roles), how)
++            else:
++                raise ValueError(f'unknown layer kind {kind}')
++        if 'dflash2'in source.directory['components']:
++            self.add_drafter()
++
++    def add_drafter(self):
++        config=self.source.directory['components']['dflash2']['config']
++        if config.get('architectures')!=['DFlash2DraftModel'] or set(config['layer_types'])!={'sliding_attention'}:
++            raise ValueError('unsupported DFlash2 architecture')
++        dc=config['dflash_config'];hidden=self.source.text['hidden_size']
++        for j,_ in enumerate(dc['target_layer_ids']):
++            self.add(f'dflash.fc.{j}.weight',('dflash2/feature_projection',),f'feature:{j}:{hidden}')
++        for name,role in [('hidden_norm.weight','context_norm'),('norm.weight','final_norm')]:
++            self.add('dflash.'+name,('dflash2/'+role,),'float')
++        for name,role in [('hidden.weight','hidden_projection'),('pred','predecessor_codebook'),('succ','successor_codebook')]:
++            self.add('dflash.selector.'+name,('dflash2/candidate_selector/'+role,),'draft_bf16')
++        rules=[('attn_norm.weight','input_norm','float'),('post_attention_norm.weight','post_attention_norm','float'),
++               ('attn_q.weight','attention/query','id'),('attn_k.weight','attention/key','id'),
++               ('attn_v.weight','attention/value','id'),('attn_output.weight','attention/output','id'),
++               ('attn_q_norm.weight','attention/query_norm','float'),('attn_k_norm.weight','attention/key_norm','float'),
++               ('ffn_gate.weight','mlp/gate','id'),('ffn_up.weight','mlp/up','id'),('ffn_down.weight','mlp/down','id'),
++               ('attn_conv.base','attention_conv/base_kernel','float'),('attn_conv.weight','attention_conv/kernel_projection','id'),
++               ('ffn_conv.base','mlp_conv/base_kernel','float'),('ffn_conv.weight','mlp_conv/kernel_projection','id')]
++        for layer in range(config['num_hidden_layers']):
++            for name,role,how in rules:
++                self.add(f'dflash.blk.{layer}.'+name,(f'dflash2/layers/{layer}/'+role,),how)
++
++    def drafter_kv(self):
++        if 'dflash2'not in self.source.directory['components']:return {}
++        c=self.source.directory['components']['dflash2']['config'];dc=c['dflash_config'];a='qwen35.dflash.'
++        return {a+'block_count':c['num_hidden_layers'],a+'block_size':8,a+'mask_token_id':dc['mask_token_id'],
++                a+'target_layers':dc['target_layer_ids'],a+'conv_kernel':dc['conv_kernel_size'],a+'conv_group':dc['conv_group_size'],
++                a+'selector_rank':dc['selector_rank'],a+'selector_top_k':dc['selector_top_k'],a+'sliding_window':c['sliding_window'],
++                a+'attention.head_count':c['num_attention_heads'],a+'attention.head_count_kv':c['num_key_value_heads'],
++                a+'attention.key_length':c['head_dim'],a+'feed_forward_length':c['intermediate_size'],
++                a+'rope.freq_base':float(c['rope_parameters']['rope_theta']),a+'attention.layer_norm_rms_epsilon':float(c['rms_norm_eps'])}
++
++    def add(self, name, roles, how):
++        shape = self.source.shape(roles[0])
++        if len(roles)>1:
++            shape = (sum(self.source.shape(role)[0] for role in roles), shape[1])
++        obj = self.source.binding(roles[0])[0]
++        form = {'embedding': 'BF16', 'q8': 'Q8_0', 'heads_bf16': 'BF16', 'draft_bf16':'BF16'}.get(how)
++        if form is None:
++            form = 'F32' if how in ('norm', 'float', 'heads', 'negexp', 'conv') else {'bf16':'BF16','nvfp4':'NVFP4_PLANES'}[obj['format']]
++        if how.startswith('feature:'):
++            shape=(shape[0],int(how.split(':')[2]))
++        if how == 'conv':
++            shape = tuple(reversed(shape))
++        elements = math.prod(shape)
++        size = {'BF16':elements*2,'F32':elements*4,'Q8_0':elements//32*34,'NVFP4_PLANES':elements//16*9}[form]
++        self.specs.append(dict(name=name, roles=roles, how=how, shape=list(reversed(shape)), form=form, size=size))
++
++    def chunks(self, spec):
++        roles, how = spec['roles'], spec['how']
++        if how in ('embedding', 'q8'):
++            yield from self.source.q8_chunks(roles[0], how == 'embedding')
++            return
++        if how in ('norm', 'float', 'heads', 'heads_bf16', 'negexp', 'conv'):
++            values = self.source.raw_float(roles[0])
++            if how == 'norm': values = values + np.float32(1)
++            elif how in ('heads', 'heads_bf16', 'negexp'): values = values[S.gdn_block_source()]
++            if how == 'negexp': values = -np.exp(values)
++            elif how == 'conv': values = values.T[S.gdn_index(values.shape[1], S.GDN_QK_ROWS)]
++            yield bf16_bits(values).tobytes() if how == 'heads_bf16' else values.astype('<f4').tobytes()
++            return
++        matrices = [self.source.matrix(role) for role in roles]
++        matrix = matrices[0]
++        if len(matrices)>1:
++            if any(m['format'] != matrix['format'] for m in matrices):
++                raise ValueError('mixed source formats in one matrix')
++            for key in ('bits', 'codes', 'scales'):
++                if key in matrix: matrix[key] = np.concatenate([m[key] for m in matrices])
++            if matrix['format'] == 'NVFP4_PLANES' and any(m['multiplier'] != matrix['multiplier'] for m in matrices):
++                raise ValueError('different tensor scales in one matrix')
++        if how=='draft_bf16':
++            yield bf16_bits(matrix_values(matrix)).tobytes()
++            return
++        if how.startswith('feature:'):
++            _,index,width=how.split(':');start=int(index)*int(width);end=start+int(width)
++            if matrix['format']=='BF16':matrix['bits']=matrix['bits'][:,start:end].copy()
++            else:
++                matrix['codes']=matrix['codes'][:,start//2:end//2].copy()
++                matrix['scales']=matrix['scales'][:,start//16:end//16].copy()
++        elif how == 'qgate':
++            # Source [all query heads, all gate heads]; target [query, gate] per head.
++            n, k = self.source.shape(roles[0]); d = self.source.text['head_dim']
++            for key in ('bits', 'codes', 'scales'):
++                if key in matrix:
++                    width = matrix[key].shape[1]
++                    matrix[key] = matrix[key].reshape(2,n//d,d,width).transpose(1,0,2,3).reshape(2*n,width).copy()
++        else:
++            transform_matrix(matrix, how)
++        if matrix['format'] == 'BF16':
++            yield matrix['bits'].astype('<u2').tobytes()
++        else:
++            yield matrix['codes'].tobytes()
++            yield pack_scales(matrix['scales'])
++
++    def multiplier(self, spec):
++        obj, _, _ = self.source.binding(spec['roles'][0]);n,k = obj['shape']
++        at = ((n*k//2+255)//256*256)+n*k//16
++        divisor = struct.unpack('<f',self.source.read(obj,at,4))[0]
++        if divisor<=0 or not math.isfinite(divisor):raise ValueError('invalid NVFP4 divisor')
++        return struct.pack('<f',np.float32(1)/np.float32(divisor))
++
++
++def convert(args):
++    out = pathlib.Path(args.out)
++    if out.resolve() == pathlib.Path(args.ninfer).resolve():
++        raise ValueError('output must differ from the source artifact')
++    if out.exists() and not args.force:
++        raise ValueError(f'{out} exists')
++    source = Source(args.ninfer)
++    partial = out.with_suffix(out.suffix+'.partial')
++    writer = None
++    try:
++        plan = Plan(source)
++        with tempfile.TemporaryDirectory(dir=out.parent) as tmp:
++            directory = pathlib.Path(tmp)
++            for name in ('tokenizer.json','tokenizer_config.json','generation_config.json','chat_template.jinja'):
++                obj = source.objects.get('frontend/'+name)
++                if obj: (directory/name).write_bytes(source.read(obj))
++            interval = source.text['layer_types'].index('full_attention')+1
++            tc = dict(source.text, attn_output_gate=True, full_attention_interval=interval, mtp_num_hidden_layers=0)
++            added = {t['content']:t['id'] for t in json.loads((directory/'tokenizer.json').read_text()).get('added_tokens',[])}
++            config = dict(image_token_id=added['<|image_pad|>'], video_token_id=added['<|video_pad|>'], vision_start_token_id=added['<|vision_start|>'])
++            ck = SimpleNamespace(dir=directory,text=tc,config=config)
++            kv = Q.model_kv(ck,args.name or source.directory.get('metadata',{}).get('name','Qwen3.5'))
++            kv.update(plan.drafter_kv())
++            tokenizer.extract_metadata(kv,directory)
++            writer = ModelWriter(str(partial))
++            for path in sorted((directory/'tokenizer').iterdir()):
++                if path.is_file():writer.add_file('tokenizer/'+path.name,str(path))
++            specs, parts = [], []
++            for spec in plan.specs:
++                specs.append(spec)
++                parts.append(Stream(spec['size'],plan.chunks(spec)))
++                if spec['form'] == 'NVFP4_PLANES':
++                    specs.append(dict(name=spec['name'].removesuffix('.weight')+'.scale',form='F32',shape=[1],size=4))
++                    parts.append(plan.multiplier(spec))
++            offsets = writer.add_parts('gguf',parts,TENSOR_ALIGN)
++            tensors = {s['name']:dict(type=s['form'],type_id=TYPE[s['form']],shape=s['shape'],bytes=s['size'],offset=off) for s,off in zip(specs,offsets)}
++            meta = dict(format='basalt',version=2,arch='qwen35',name=kv['general.name'],gguf_kv=kv,tensors=tensors,
++                converter=dict(tool='tools/convert/convert.py --ninfer'),sources=[dict(path=source.path.name,size=source.path.stat().st_size)],
++                mtp=dict(layers=0),conversions=dict(source='NInfer v3 text',weights='NVFP4 and BF16 preserved, Q8 head losslessly repacked',embedding='Q8 values rounded once to semantic BF16',excluded_components=['vision','mtp'],draft_selector='NVFP4 represented values rounded to BF16 for Basalt proposal selection; target weights unchanged'))
++            meta['required_engine_features']=['qwen35-bf16-projections']
++            if plan.drafter_kv():meta['required_engine_features'].append('qwen35-nvfp4-dflash2')
++            if plan.drafter_kv():meta['dflash']=dict(source='NInfer v3 DFlash2',block_size=8,selector='BF16 materialized from represented NVFP4 values; proposal only')
++            writer.add_bytes('meta',json.dumps(meta,separators=(',',':'),ensure_ascii=False).encode())
++            writer.close();writer=None
++            partial.replace(out)
++            print(f'Imported {len(tensors)} tensors to {out} ({out.stat().st_size/2**30:.3f} GiB)',flush=True)
++    finally:
++        source.close()
++        if writer is not None:writer.f.close()
++        partial.unlink(missing_ok=True)
+diff --git a/tools/convert/strata_pack.py b/tools/convert/strata_pack.py
+new file mode 100644
+index 0000000..0b330be
+--- /dev/null
++++ b/tools/convert/strata_pack.py
+@@ -0,0 +1,129 @@
++"""Read a native NVFP4/Q8 Strata pack without requantizing its experts or drafter."""
++from __future__ import annotations
++
++from dataclasses import replace
++import hashlib
++import math
++from pathlib import Path
++import re
++
++from gguf_reader import GGUFFile
++import model_sections as S
++
++
++def chunks(path):
++    with Path(path).open("rb") as source:
++        for block in iter(lambda: source.read(16 << 20), b""):
++            yield block
++
++
++def overlay(model, ple, embedding):
++    """Replace the embedding view and attach the separately stored, scaled FP8 PLE table."""
++    first = model.files[0]
++    if first.metadata.get("general.architecture") != "qwen4exp":
++        raise S.ConvertError("--strata-pack requires qwen4exp")
++    if "prism.hadamard.version" in first.metadata:
++        raise S.ConvertError("Hadamard-rotated experts are not supported")
++    for path, name in ((ple, "per_layer_token_embd.weight"), (embedding, "token_embd.weight")):
++        path = Path(path)
++        g = GGUFFile(path)
++        if len(g.tensors) != 1 or g.tensors[0].name != name:
++            raise S.ConvertError(f"{path}: expected only {name}")
++        tensor = g.tensors[0]
++        if name.startswith("per_layer_"):
++            scale = g.metadata.get("strata.ple.scale")
++            if (tensor.type_id != 24 or tensor.shape[0] != 160 or
++                    g.metadata.get("strata.ple.format") != "f8_e4m3" or
++                    not isinstance(scale, (float, int)) or not math.isfinite(scale) or scale <= 0):
++                raise S.ConvertError("expected Strata's scaled E4M3 PLE table")
++            tensor = replace(tensor, type_id=44, type_name="F8_E4M3")
++            first.metadata["basalt.ple.scale"] = scale
++        elif tensor.type_id != 30 or tensor.shape != model.where[name][1].shape:
++            raise S.ConvertError("the BF16 embedding shape does not match the dense GGUF")
++        if tensor.expected_bytes() is None or g.data_start + tensor.offset + tensor.expected_bytes() != path.stat().st_size:
++            raise S.ConvertError(f"{path}: incomplete or oversized tensor payload")
++        model.paths.append(path)
++        model.files.append(g)
++        model.sizes.append(path.stat().st_size)
++        model.where[name] = (g, tensor, path)
++
++
++class Experts:
++    def __init__(self, root, model):
++        root = Path(root)
++        self.path = root / "experts.bin"
++        table = (root / "native_experts.txt").read_text()
++        if not table.startswith("# strata native experts v3:"):
++            raise S.ConvertError("expected Strata native expert layout v3")
++        kv = model.files[0].metadata
++        h, ff, layers = (int(kv["qwen4exp." + name]) for name in
++                         ("embedding_length", "expert_feed_forward_length", "block_count"))
++        self.n_expert = int(kv["qwen4exp.expert_count"])
++        self.layout = []
++        at = 0
++        for line in table.splitlines():
++            if not line.strip() or line.startswith("#"):
++                continue
++            fields = line.split()
++            if len(fields) != 5:
++                raise S.ConvertError("malformed native expert layout")
++            layer, gu, down, offset, size = map(int, fields)
++            if gu not in (8, 40) or down not in (8, 40):
++                raise S.ConvertError("only NVFP4 and Q8_0 expert projections are supported")
++            def row(ty, width):
++                block, nb = (64, 36) if ty == 40 else (32, 34)
++                if width % block:
++                    raise S.ConvertError("expert width is not whole blocks")
++                return width // block * nb
++            expected = 2 * ff * row(gu, h) + h * row(down, ff) + (16 if 40 in (gu, down) else 0)
++            if layer != len(self.layout) or offset != at or size != expected:
++                raise S.ConvertError(f"layer {layer}: inconsistent expert geometry or offset")
++            self.layout.append((layer, gu, down, offset, size))
++            at += size * self.n_expert
++        if len(self.layout) != layers or at != self.path.stat().st_size:
++            raise S.ConvertError("expert file is incomplete or does not match the dense model")
++        self.total = at
++
++    def layout_text(self):
++        return S.nvfp4_layout_text(self.n_expert, self.total, self.layout)
++
++    def chunks(self):
++        # Canonical unit scales for Q8 projections let every prefill path reuse the scale tail.
++        with self.path.open("rb") as source:
++            for _, gu, down, offset, size in self.layout:
++                if 40 in (gu, down):
++                    import struct
++                    for expert in range(self.n_expert):
++                        source.seek(offset + (expert + 1) * size - 16)
++                        scales = struct.unpack("<4f", source.read(16))
++                        if (not all(math.isfinite(s) and s > 0 for s in scales[:3]) or
++                                (gu == 8 and scales[:2] != (1., 1.)) or (down == 8 and scales[2] != 1.)):
++                            raise S.ConvertError("invalid NVFP4 scales or non-unit Q8 scales")
++        yield from chunks(self.path)
++
++
++class Mtp:
++    tuned = None
++
++    def __init__(self, root):
++        self.root = Path(root)
++        self.index = (self.root / "dense.txt").read_bytes()
++        size = (self.root / "dense.bin").stat().st_size
++        for line in self.index.decode().splitlines():
++            name, kind, rows, cols, offset, length = line.split()
++            if kind not in ("q8_0", "f32", "bf16") or min(int(rows), int(cols), int(length)) <= 0 or int(offset) < 0 or int(offset) + int(length) > size:
++                raise S.ConvertError("invalid native MTP dense index")
++        if (self.root / "experts.bin").stat().st_size != 512 * (1280 * 640 + 2560 * 160 + 1280 * 40 * 2 + 2560 * 10 * 2):
++            raise S.ConvertError("native MTP experts have the wrong size")
++
++    def source_sha256(self):
++        return hashlib.sha256(self.index).hexdigest()
++
++    def dense_index(self):
++        return self.index
++
++    def dense_chunks(self):
++        yield from chunks(self.root / "dense.bin")
++
++    def expert_chunks(self):
++        yield from chunks(self.root / "experts.bin")
+diff --git a/tools/convert/test_legacy_deepseek.py b/tools/convert/test_legacy_deepseek.py
+new file mode 100644
+index 0000000..b0a4ae4
+--- /dev/null
++++ b/tools/convert/test_legacy_deepseek.py
+@@ -0,0 +1,55 @@
++from pathlib import Path
++import struct
++import sys
++import tempfile
++import unittest
++
++sys.path.insert(0, str(Path(__file__).resolve().parent))
++sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
++import legacy_deepseek as L
++import model_sections as S
++from gguf_writer import GGUFWriter, TYPE_IDS
++
++
++class LegacyDeepSeekTest(unittest.TestCase):
++    def test_tables_and_integer_metadata_keep_their_meaning(self):
++        with tempfile.TemporaryDirectory() as folder:
++            root = Path(folder)
++            TYPE_IDS.update(I32=26, I64=27)
++            writer = GGUFWriter()
++            writer.add("general.architecture", "deepseek41")
++            for name, value in (("engram.layer_ids", [1, 14]), ("engram_max_ngram_size", 2),
++                                ("engram_n_heads", 2), ("engram_pad_token_id", 2)):
++                writer.add("deepseek41." + name, value)
++            for name, values, code, ty in (("token_map", [0, 1, 2, -1], "i", "I32"),
++                                           ("primes", [5, 7, 11, 13], "q", "I64"),
++                                           ("offsets", [0, 5, 0, 11], "q", "I64"),
++                                           ("multipliers", [3, 5, 7, 11], "q", "I64")):
++                writer.add_raw("engram_" + name + ".weight", [len(values)], ty,
++                               struct.pack("<" + str(len(values)) + code, *values))
++            for layer in (1, 14):
++                writer.add_raw(f"blk.{layer}.engram_q.weight", [2, 1], "BF16", struct.pack("<2H", 0x3f80, 0xc000))
++                writer.add_raw(f"blk.{layer}.engram_k.weight", [2, 1], "BF16", struct.pack("<2H", 0x4000, 0x4040))
++                writer.add_raw(f"blk.{layer}.engram_wkv.weight", [32, 1], "Q8_0", bytes(34))
++            dense = writer.write(root / "model.gguf")
++            writer = GGUFWriter()
++            for layer, rows in ((1, 12), (14, 24)):
++                writer.add_raw(f"blk.{layer}.engram_embd.weight", [256, rows], "IQ4_NL", bytes([layer]) * (rows * 144))
++            engram = writer.write(root / "engram.gguf")
++            model = S.SourceModel([dense])
++            L.overlay(model, engram)
++            self.addCleanup(model._legacy_gate_temp.cleanup)
++            kv = model.files[0].metadata
++            self.assertEqual(kv["deepseek41.ple.head_offsets"], [0, 5, 12, 23])
++            self.assertEqual(kv["deepseek41.engram.token_map"], [0, 1, 2, -1])
++            self.assertEqual(kv["deepseek41.ple.layer_multipliers"], [3, 5, 7, 11])
++            self.assertFalse(any(name.startswith("engram_") for name in model.where))
++            tensor = model.where["per_layer_token_embd.weight"][1]
++            self.assertEqual(tensor.shape, [256, 36])
++            self.assertEqual(model.bytes(tensor.name).tobytes(), bytes([1]) * (12 * 144) + bytes([14]) * (24 * 144))
++            self.assertEqual(model.bytes("blk.1.engram_gate.weight").tobytes(), struct.pack("<2f", 2., -6.))
++            self.assertIn("blk.14.engram_kv.weight", model.where)
++
++
++if __name__ == "__main__":
++    unittest.main()
+diff --git a/tools/convert/test_ninfer_qwen35.py b/tools/convert/test_ninfer_qwen35.py
+new file mode 100644
+index 0000000..54a818a
+--- /dev/null
++++ b/tools/convert/test_ninfer_qwen35.py
+@@ -0,0 +1,136 @@
++"""Exact import semantics: packed values, binding slices and GDN head pairing."""
++import json
++import pathlib
++import struct
++import tempfile
++import unittest
++
++import numpy as np
++import ninfer_qwen35 as N
++
++
++class ImportTests(unittest.TestCase):
++    def source(self, objects, bindings):
++        temporary = tempfile.TemporaryDirectory()
++        self.addCleanup(temporary.cleanup)
++        path = pathlib.Path(temporary.name)/'fixture.ninfer'
++        payload, entries = bytearray(), []
++        for name, shape, form, layout, raw in objects:
++            padding = (-len(payload)) % 256
++            payload.extend(bytes(padding))
++            entries.append(dict(id=name,shape=shape,format=form,layout=layout,offset=len(payload),bytes=len(raw),kind='tensor'))
++            payload.extend(raw)
++        text = dict(model_type='qwen3_5_text',linear_num_key_heads=16,linear_num_value_heads=48,
++                    linear_key_head_dim=128,linear_value_head_dim=128)
++        directory = dict(objects=entries,bindings=bindings,components=dict(text=dict(config=text)),files=[dict(path=None,payload_bytes=len(payload))])
++        data = json.dumps(directory).encode()
++        framed = N.HEADER.pack(b'NINFER\0\3',len(data),bytes(16))+data
++        path.write_bytes(framed+bytes((-len(framed))%4096)+payload)
++        source = N.Source(path)
++        self.addCleanup(source.close)
++        return source
++
++    def test_bf16_rounding_matches_even_at_halfway(self):
++        bits = np.array([0x3f800000,0x3f808000,0x3f818000,0xbf808000,0xbf818000],dtype=np.uint32)
++        np.testing.assert_array_equal(N.bf16_bits(bits.view(np.float32)),[0x3f80,0x3f80,0x3f82,0xbf80,0xbf82])
++
++    def test_q8_repack_preserves_every_code_and_scale_and_embedding_cast(self):
++        rows, cols = 128, 256
++        codes = (np.arange(rows*cols,dtype=np.uint32)*13+97).astype(np.uint8).view(np.int8).reshape(rows,cols//32,32)
++        scales = ((np.arange(rows*cols//32)%37+1)/128).astype('<f2').reshape(rows,cols//32)
++        raw = codes.tobytes()+scales.tobytes()
++        source = self.source([('table',[rows,cols],'q8_g32_fp16','row_split_k128_v1',raw)],{'table':dict(object='table')})
++        repacked = np.frombuffer(b''.join(source.q8_chunks('table')),np.uint8).reshape(rows,cols//32,34)
++        np.testing.assert_array_equal(repacked[...,2:].view(np.int8),codes)
++        np.testing.assert_array_equal(repacked[...,:2].copy().view('<f2').reshape(scales.shape),scales)
++        expected = codes.astype(np.float64)*scales.astype(np.float64)[...,None]
++        got = np.frombuffer(b''.join(source.q8_chunks('table',True)),'<u2').reshape(expected.shape)
++        # Values are exactly represented in FP32 before the semantic BF16 output cast.
++        expected_bits = N.bf16_bits(expected.astype(np.float32))
++        np.testing.assert_array_equal(got,expected_bits)
++
++    def test_bf16_binding_slice_does_not_requantize(self):
++        values = (np.arange(512*256,dtype=np.uint32)*31).astype('<u2').reshape(512,256)
++        source = self.source([('parent',[512,256],'bf16','contiguous_le_v1',values.tobytes())],
++                             {'slice':dict(parts=[dict(object='parent',range=[128*256,384*256])])})
++        np.testing.assert_array_equal(source.matrix('slice')['bits'],values[128:384])
++        self.assertEqual(source.shape('slice'),(256,256))
++
++    def test_nvfp4_payload_and_swizzled_scales_are_exact(self):
++        rows, cols = 256, 256
++        codes = (np.arange(rows*cols//2,dtype=np.uint32)*17+5).astype(np.uint8).reshape(rows,cols//2)
++        scales = (np.arange(rows*cols//16,dtype=np.uint32)*11%127).astype(np.uint8).reshape(rows,cols//16)
++        # Independent writer of the published m128x4 scale coordinates.
++        stored = bytearray(rows*cols//16)
++        for row in range(rows):
++            for group in range(cols//16):
++                tile = (row//128)*(cols//64)+group//4
++                stored[tile*512+(row%32)*16+((row//32)%4)*4+group%4] = scales[row,group]
++        raw = codes.tobytes()+stored+struct.pack('<f',13)
++        source = self.source([('w',[rows,cols],'nvfp4','block_scale_k16_m128x4_v1',raw)],{'w':dict(object='w')})
++        matrix = source.matrix('w')
++        np.testing.assert_array_equal(matrix['codes'],codes)
++        np.testing.assert_array_equal(matrix['scales'],scales)
++        self.assertEqual(N.pack_scales(matrix['scales']),stored)
++        self.assertEqual(matrix['multiplier'],np.float32(1)/np.float32(13))
++
++    def test_gdn_reorder_preserves_query_key_and_value_pairing(self):
++        rows, cols = 10240, 256
++        codes = np.broadcast_to(np.arange(rows,dtype=np.uint32)[:,None]%256,(rows,cols//2)).astype(np.uint8).copy()
++        scales = np.broadcast_to(np.arange(rows,dtype=np.uint32)[:,None]%127,(rows,cols//16)).astype(np.uint8).copy()
++        matrix = dict(format='NVFP4_PLANES',codes=codes.copy(),scales=scales.copy(),multiplier=np.float32(1))
++        N.transform_matrix(matrix,'vrows')
++        np.testing.assert_array_equal(matrix['codes'][:4096],codes[:4096])
++        for value_head in range(48):
++            key_head = value_head%16
++            repetition = value_head//16
++            source_head = key_head*3+repetition
++            for offset in (0,17,127):
++                target_row=4096+value_head*128+offset
++                source_row=4096+source_head*128+offset
++                np.testing.assert_array_equal(matrix['codes'][target_row],codes[source_row])
++                np.testing.assert_array_equal(matrix['scales'][target_row],scales[source_row])
++        # Output columns reverse precisely that permutation, moving complete code pairs and groups.
++        c=np.arange(128*6144//2,dtype=np.uint32).astype(np.uint8).reshape(128,3072)
++        sc=np.arange(128*384,dtype=np.uint32).astype(np.uint8).reshape(128,384)
++        out=dict(format='NVFP4_PLANES',codes=c.copy(),scales=sc.copy(),multiplier=np.float32(1))
++        N.transform_matrix(out,'vcols')
++        for value_head in range(48):
++            original=(value_head%16)*3+value_head//16
++            np.testing.assert_array_equal(out['codes'][:,value_head*64:(value_head+1)*64],c[:,original*64:(original+1)*64])
++            np.testing.assert_array_equal(out['scales'][:,value_head*8:(value_head+1)*8],sc[:,original*8:(original+1)*8])
++
++    def test_partial_matrix_rows_are_refused(self):
++        source = self.source([('w',[128,256],'bf16','contiguous_le_v1',bytes(128*256*2))],
++                             {'bad':dict(parts=[dict(object='w',range=[1,257])])})
++        with self.assertRaisesRegex(ValueError,'partial matrix rows'):
++            source.shape('bad')
++
++    def test_draft_selector_materialization_and_feature_column_slices(self):
++        rows, cols = 128, 512
++        codes = (np.arange(rows*cols//2,dtype=np.uint32)*13+7).astype(np.uint8).reshape(rows,cols//2)
++        scales = (np.arange(rows*cols//16,dtype=np.uint32)%40+30).astype(np.uint8).reshape(rows,cols//16)
++        raw = codes.tobytes()+N.pack_scales(scales)+struct.pack('<f',13)
++        source = self.source([('w',[rows,cols],'nvfp4','block_scale_k16_m128x4_v1',raw)],{'w':dict(object='w')})
++        plan = N.Plan.__new__(N.Plan)
++        plan.source, plan.specs = source, []
++        plan.add('selector',('w',),'draft_bf16')
++        got = np.frombuffer(b''.join(plan.chunks(plan.specs[0])),'<u2').reshape(rows,cols)
++        magnitudes = (0,.5,1,1.5,2,3,4,6)
++        for row in (0,31,32,127):
++            for col in (0,1,15,16,255,256,511):
++                byte = int(codes[row,col//2])
++                code = (byte >> (4*(col%2))) & 15
++                scale = int(scales[row,col//16])
++                exponent, mantissa = scale>>3,scale&7
++                decoded_scale = (mantissa/8*2**-6 if exponent==0 else (1+mantissa/8)*2**(exponent-7))
++                expected = (-1 if code&8 else 1)*magnitudes[code&7]*decoded_scale/13
++                self.assertEqual(got[row,col],N.bf16_bits(np.float32(expected)))
++        plan.add('feature',('w',),'feature:1:256')
++        packed = b''.join(plan.chunks(plan.specs[-1]))
++        np.testing.assert_array_equal(np.frombuffer(packed[:rows*128],np.uint8).reshape(rows,128),codes[:,128:])
++        np.testing.assert_array_equal(N.unpack_scales(packed[rows*128:],rows,256),scales[:,16:])
++
++
++if __name__ == '__main__':
++    unittest.main()
+diff --git a/tools/convert/test_strata_pack.py b/tools/convert/test_strata_pack.py
+new file mode 100644
+index 0000000..a5b4e6e
+--- /dev/null
++++ b/tools/convert/test_strata_pack.py
+@@ -0,0 +1,87 @@
++import hashlib
++from pathlib import Path
++import struct
++import tempfile
++from types import SimpleNamespace
++import unittest
++import sys
++
++sys.path.insert(0, str(Path(__file__).resolve().parent))
++sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
++import strata_pack as P
++import model_sections as S
++
++
++class StrataPackTest(unittest.TestCase):
++    def setUp(self):
++        self.temp = tempfile.TemporaryDirectory()
++        self.root = Path(self.temp.name)
++        self.addCleanup(self.temp.cleanup)
++        self.model = SimpleNamespace(files=[SimpleNamespace(metadata={
++            "qwen4exp.embedding_length": 2560, "qwen4exp.expert_feed_forward_length": 640,
++            "qwen4exp.block_count": 4, "qwen4exp.expert_count": 1})])
++        self.rows = []
++        at = 0
++        with (self.root / "experts.bin").open("wb") as out:
++            for layer, (gu, down) in enumerate(((40, 40), (40, 8), (8, 40), (8, 8))):
++                gr = 2560 // (64 if gu == 40 else 32) * (36 if gu == 40 else 34)
++                dr = 640 // (64 if down == 40 else 32) * (36 if down == 40 else 34)
++                tail = 16 if 40 in (gu, down) else 0
++                size = 1280 * gr + 2560 * dr + tail
++                self.rows.append([layer, gu, down, at, size])
++                if tail:
++                    out.seek(at + size - 16)
++                    out.write(struct.pack("<4f", .001 if gu == 40 else 1., .002 if gu == 40 else 1.,
++                                          .003 if down == 40 else 1., 0.))
++                at += size
++            out.truncate(at)
++        self.write_layout()
++
++    def write_layout(self):
++        (self.root / "native_experts.txt").write_text("# strata native experts v3: test\n" +
++            "".join(" ".join(map(str, row)) + "\n" for row in self.rows))
++
++    def test_four_formats_stream_byte_for_byte(self):
++        experts = P.Experts(self.root, self.model)
++        self.assertEqual(experts.total, (self.root / "experts.bin").stat().st_size)
++        digest = hashlib.sha256()
++        for block in experts.chunks():
++            digest.update(block)
++        with (self.root / "experts.bin").open("rb") as source:
++            self.assertEqual(digest.digest(), hashlib.file_digest(source, "sha256").digest())
++        self.assertTrue(experts.layout_text().startswith(b"# experts v6:"))
++
++    def test_missing_or_truncated_layer(self):
++        for field, value in ((0, 8), (1, 14), (3, 1), (4, 2)):
++            with self.subTest(field=field):
++                old = self.rows[0][field]
++                self.rows[0][field] = value
++                self.write_layout()
++                with self.assertRaises(S.ConvertError):
++                    P.Experts(self.root, self.model)
++                self.rows[0][field] = old
++        self.write_layout()
++        with (self.root / "experts.bin").open("r+b") as stream:
++            stream.truncate(128)
++        with self.assertRaises(S.ConvertError):
++            P.Experts(self.root, self.model)
++
++    def test_nonunit_q8_and_nonfinite_nvfp4_scale_rejected(self):
++        for layer, scales in ((1, (.001, .002, 2., 0.)), (2, (1., 2., .003, 0.)),
++                              (0, (float("nan"), .002, .003, 0.))):
++            with self.subTest(layer=layer):
++                row = self.rows[layer]
++                with (self.root / "experts.bin").open("r+b") as out:
++                    out.seek(row[3] + row[4] - 16)
++                    original = out.read(16)
++                    out.seek(-16, 1)
++                    out.write(struct.pack("<4f", *scales))
++                with self.assertRaises(S.ConvertError):
++                    next(P.Experts(self.root, self.model).chunks())
++                with (self.root / "experts.bin").open("r+b") as out:
++                    out.seek(row[3] + row[4] - 16)
++                    out.write(original)
++
++
++if __name__ == "__main__":
++    unittest.main()
+diff --git a/tools/gguf_reader.py b/tools/gguf_reader.py
+index cb512ad..d902738 100644
+--- a/tools/gguf_reader.py
++++ b/tools/gguf_reader.py
+@@ -34,6 +34,7 @@ GGUF_META = {
+ 
+ # ggml block geometry per encoding: (block elements, bytes per block); makes tensor byte counts checkable
+ BLOCK_GEOMETRY: dict[str, tuple[int, int]] = {
++    "I32": (1, 4), "I64": (1, 8),
+     "F32": (1, 4), "F16": (1, 2), "BF16": (1, 2), "F64": (1, 8),
+     "Q4_0": (32, 18), "Q4_1": (32, 20), "Q5_0": (32, 22), "Q5_1": (32, 24),
+     "Q8_0": (32, 34), "Q8_1": (32, 36),

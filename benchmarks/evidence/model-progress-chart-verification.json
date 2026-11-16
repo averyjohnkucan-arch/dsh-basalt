@@ -1,0 +1,9 @@
+{
+  "status": "passed",
+  "scope": "Rendered and visually inspected actual overview; all plotted extrema checked against complete current-cohort raw benchmark cases. Pending hybrid fit and text-only results excluded.",
+  "basalt_families": 6,
+  "qualified_families": 1,
+  "plotted_ranges": 2,
+  "chart_sha256": "8ceb5e148f80891d7f3eb77574d3a788f9b90ea8724857db2521f7f7ed20a871",
+  "source_sha256": "ba688cd4f7ba4d8d58597197bff0082db8a38d1d2d778d41f9cc6cb18eba7658"
+}

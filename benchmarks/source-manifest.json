@@ -1,0 +1,350 @@
+{
+  "scope": "Exact harness snapshot; scratch paths and sibling clone layout retained for audit. No weights, generated answers, credentials, or token-ID fixtures included.",
+  "files": [
+    {
+      "path": "harness/test_ninfer_planner.py",
+      "sha256": "3e39fa0412852ddfdea82bc2fd8abb2a6fd288f58e074c726d171b182f236cdc",
+      "bytes": 1888
+    },
+    {
+      "path": "harness/audit_harness_dependencies.py",
+      "sha256": "fd0c52b250229c541b2c125357aefc0341153d7e7fc2df6503bc397856f1568a",
+      "bytes": 2215
+    },
+    {
+      "path": "harness/test_strata_cold_screens.py",
+      "sha256": "770027d815e1d052f38b785eb1d4cd0823edb33afd5dff46dd13bd3d446a8120",
+      "bytes": 3306
+    },
+    {
+      "path": "harness/move_deepseek_internal.py",
+      "sha256": "e93eb6d20aba4c3817b39969353c672f057b8807f390128aefa3aabc057e6fa4",
+      "bytes": 5841
+    },
+    {
+      "path": "harness/deepseek_storage.py",
+      "sha256": "ddbdf4404b7896dfe45e38cc5501beb5383090534d915e628a93446370c36c76",
+      "bytes": 7421
+    },
+    {
+      "path": "harness/range_deepseek_xs.py",
+      "sha256": "062a67f56bfc64a7f3a51be0086e8475f030d53f45ea0be62f1f5e45ba941856",
+      "bytes": 7552
+    },
+    {
+      "path": "harness/finish_split_engram_build.py",
+      "sha256": "ae96b9b13a2e0ae6c591b7bdf07916397cf7a56f85888761e610d7fb41032868",
+      "bytes": 1903
+    },
+    {
+      "path": "harness/test_external_engram.cpp",
+      "sha256": "15fde25fa3a2ba216cc7c81c014d33bc3953832934b5171af0a0cb069cf4ebc5",
+      "bytes": 2688
+    },
+    {
+      "path": "harness/test_external_engram.py",
+      "sha256": "13abbd377fe9a62faf052a7c07e54d30e58db17253949a3a25055aec087f20de",
+      "bytes": 1820
+    },
+    {
+      "path": "harness/download_iq2_xs.py",
+      "sha256": "fcc6776c3437a6bd01bb88db2bc05022bbc4c7e57b0ef7b73cd4b0f6d3e6329e",
+      "bytes": 4932
+    },
+    {
+      "path": "harness/relocate_iq2xs_download.py",
+      "sha256": "a592141d62c18a2e291fca000b855da777c34823b7181c9f50e3bb25e5d7e906",
+      "bytes": 2388
+    },
+    {
+      "path": "harness/test_iq2xs_download.py",
+      "sha256": "ce5e0af476b272f47122ac7dda1e6d6ea16bbf2b92dd9ba9150cd2e66e00b59d",
+      "bytes": 3472
+    },
+    {
+      "path": "harness/test_nonworker_memory_budget.py",
+      "sha256": "1d9894c464cdef80ed8e0c34b931e3281422ddcc5591d3af9445461cc9a8628e",
+      "bytes": 3246
+    },
+    {
+      "path": "harness/test_joint_feedback.py",
+      "sha256": "39c3e1ce0d1e3893f91483de17408487219e3ddc56b156f58cebe06e3d7bb64e",
+      "bytes": 3064
+    },
+    {
+      "path": "harness/hybrid_candidate_progress.py",
+      "sha256": "db8656aab6ff2e27cf92c8fcaba2daf52454cde1edb593442fc927596f997a1d",
+      "bytes": 3739
+    },
+    {
+      "path": "harness/test_benchmark_end_policy.py",
+      "sha256": "b3994b18dde544228016f23477c147b709fd35bf2261eaff850a8a1325c4a6ff",
+      "bytes": 2320
+    },
+    {
+      "path": "harness/test_soft_pressure_refinement.py",
+      "sha256": "1a939a3ad3d2ca0a0ab1d35cdcd09c1b8a6f339f536232f199ce8ffcdc094a3e",
+      "bytes": 6865
+    },
+    {
+      "path": "harness/test_confirmation_diversity.py",
+      "sha256": "a0f242fbe59eee4214bda8942b1817d9355a2f5fc1b7706c21c968101a9d7020",
+      "bytes": 1749
+    },
+    {
+      "path": "harness/test_decode_screen_recovery.py",
+      "sha256": "1898b8423c34ceefd441cd1071039fbfe313fcaf4cfc4c8e3d9615962f2ed575",
+      "bytes": 2491
+    },
+    {
+      "path": "harness/draft_log_diagnostics.py",
+      "sha256": "10256aa1a212366f8705aea38f854d87889df468fbded087ff5e7713a6223c27",
+      "bytes": 1185
+    },
+    {
+      "path": "harness/test_draft_log_recovery.py",
+      "sha256": "aca0fb647a119e0ad28f9fb73bae220074b5a6292c7103650bd91242af7a9471",
+      "bytes": 3891
+    },
+    {
+      "path": "harness/draft-log-recovery-fixture.txt",
+      "sha256": "1bcf5711289f6737b1ad564a1c9b185076b72ffb62e118ec8e666d82fc2c6297",
+      "bytes": 201
+    },
+    {
+      "path": "harness/functional_benchmark_recovery.py",
+      "sha256": "dafb213096ab264f985264b8c2e6ed318bd67bcb914af2a7f6f1f7205e6a85bf",
+      "bytes": 3563
+    },
+    {
+      "path": "harness/test_functional_recovery.py",
+      "sha256": "799435956daa2a88bcc48d00ba7336a25e3e761db11745e40c2cf3d62f9690f8",
+      "bytes": 4045
+    },
+    {
+      "path": "harness/test_functional_export.mjs",
+      "sha256": "51055405e8efea17f585573e0f30ad90e031f80eae81f40138a47475af3cd01a",
+      "bytes": 3324
+    },
+    {
+      "path": "harness/test_quality_batch_plan.py",
+      "sha256": "e8ea2e26834b062a21b0a16aa06d6eb04627832ddd7493384b0e13caa2e68029",
+      "bytes": 3654
+    },
+    {
+      "path": "harness/range_model_progress.py",
+      "sha256": "c67c8513abbf392001c15cca3d4f0a17a792e32b52dcaf70f6a6259bbce31ba1",
+      "bytes": 4907
+    },
+    {
+      "path": "harness/test_hybrid_sustained_fit.py",
+      "sha256": "bf13b1401ace48acb3e76bac9ce97d89142822ac945b5edba14b6ef07f5d2973",
+      "bytes": 1924
+    },
+    {
+      "path": "harness/resume_hybrid_pipeline.py",
+      "sha256": "51f2699527aec4d01411fd53a78401e37e5b333a180709aa0e29527051a56411",
+      "bytes": 1392
+    },
+    {
+      "path": "harness/refresh_range_metrics.py",
+      "sha256": "ce5dd0d9918ed24994ac7f00b69b7c14a9cfdb340678bc39bb85ee0b9d18885a",
+      "bytes": 2690
+    },
+    {
+      "path": "harness/fit_hybrid_memory.py",
+      "sha256": "800850120358f13db874b76b4f61d8ed9082165f31a276946489ac03739eebe4",
+      "bytes": 3058
+    },
+    {
+      "path": "harness/benchmark_resume_validity_test.py",
+      "sha256": "4399e9d62c060ffd4b6012ad94a8bf72a348db86e6a72bbc098920649e4e0b3b",
+      "bytes": 7346
+    },
+    {
+      "path": "harness/range_objective.py",
+      "sha256": "28cf88c27735d91b94a7efdf4c4600240ca92e5ec3137263dbdfe644e124a9e7",
+      "bytes": 497
+    },
+    {
+      "path": "harness/calibrate_performance_ninfer.py",
+      "sha256": "a0c431ecec9b4d8d59f8928230502b9d8a2719a97dbaa1de58c663b4f6846886",
+      "bytes": 3069
+    },
+    {
+      "path": "harness/benchmark_environment.py",
+      "sha256": "041d2d62d21c215fcd47e03b3b5975e9a0c4194bb3706172062067ae01e112c2",
+      "bytes": 1537
+    },
+    {
+      "path": "harness/performance_range_pipeline.py",
+      "sha256": "d39bd79937642d022235a0bd754c25a2f627c7d427b9d9343b080b4f5155eece",
+      "bytes": 1874
+    },
+    {
+      "path": "harness/range_queue.py",
+      "sha256": "08e7902b59763a928884dac23eaaa8ee4090f5f19ddf9cf9de1f56a9cd0f9e79",
+      "bytes": 5397
+    },
+    {
+      "path": "harness/continue_after_range_queue.py",
+      "sha256": "b0d3c3ac752cc9d692b9ed011722248417e350973f013dea2bdc53b614dd9956",
+      "bytes": 2501
+    },
+    {
+      "path": "harness/prepare_benchmark_publication.py",
+      "sha256": "01ff234eca0e347994d34b832ca75ce050260d7fe8c60a2ab41be78995690256",
+      "bytes": 6118
+    },
+    {
+      "path": "harness/native_bench.py",
+      "sha256": "45520f88a3120c6e77a4fd0d8283f4f3752106f860da27492d49d9cd5f468742",
+      "bytes": 7841
+    },
+    {
+      "path": "harness/http_bench.py",
+      "sha256": "b837f3644ad56cb3e9d420de16d8c26a00f35abc6c8198639b8dc09d816d99e7",
+      "bytes": 6223
+    },
+    {
+      "path": "harness/benchmark_prompts.py",
+      "sha256": "4430d8e250c230ee7dd98f7cde2ebbceb5734f142c60a1cd34e45a90d2899e93",
+      "bytes": 980
+    },
+    {
+      "path": "harness/benchmark_memory_guard.py",
+      "sha256": "7e3063d7117f4da3636f2ec38374ed3855bdb181fb5965b26ce157a6bf6c31f9",
+      "bytes": 4359
+    },
+    {
+      "path": "harness/range_common.py",
+      "sha256": "6537001785e88bf6108697ff641beb359cfe8b20962b55a0469990d86d6947c5",
+      "bytes": 9205
+    },
+    {
+      "path": "harness/range_identity.py",
+      "sha256": "11ec49c59ce9ad2cdd0d82f9c67a8f577eae34ade37219d3c22f99b77af08153",
+      "bytes": 1056
+    },
+    {
+      "path": "harness/range_tuner.py",
+      "sha256": "dfd97f90e8ef11caef4bf55de0d0bd6dbd42c8724bfc2f3235226208656fa5fc",
+      "bytes": 3401
+    },
+    {
+      "path": "harness/range_repeatability.py",
+      "sha256": "981d09fe7b2f50e05e0ff4ab08cf1eb93b23ca1d067fdd6843841a0b046ef142",
+      "bytes": 6870
+    },
+    {
+      "path": "harness/range_low_peak.py",
+      "sha256": "f96aa0ccf781b8dd60e75735aae5e6a14b32f707e3818dda7a4921f0b9eecf5c",
+      "bytes": 6400
+    },
+    {
+      "path": "harness/range_joint_refine.py",
+      "sha256": "5cb52dbf9d07d4ff0b958979d6d6a65bd8260c6ae3fd63eaec42e097ec89b140",
+      "bytes": 7781
+    },
+    {
+      "path": "harness/range_flash.py",
+      "sha256": "f7a122f1ea9ee5f0d28167aaa9a64a0d65759400e4553aef630a19e3ed9a5db3",
+      "bytes": 6325
+    },
+    {
+      "path": "harness/range_strata.py",
+      "sha256": "17c33c904bb8be5ebcd9b7e0bbb91c8880208dd812522853f1f947546df48596",
+      "bytes": 2574
+    },
+    {
+      "path": "harness/range_ninfer.py",
+      "sha256": "7619158fec7fe9e3248f0365358c864b6504e0ff90c31cf5d0ec42192609bd1f",
+      "bytes": 1418
+    },
+    {
+      "path": "harness/range_27b_basalt.py",
+      "sha256": "619a7cd68a339647b83731c9b27bf5ca0d4ea22155e83be6771612528a0c58da",
+      "bytes": 1901
+    },
+    {
+      "path": "harness/range_deepseek.py",
+      "sha256": "e44d3e02b689af2490fa1bc9209eec00156f7cadade89dc59596d0fe5b8739a7",
+      "bytes": 8127
+    },
+    {
+      "path": "harness/mark_performance_qualified.py",
+      "sha256": "15093adb33245048bfe61b745ff827b9a2d6006458a5a1d367af898bcba94fd6",
+      "bytes": 5849
+    },
+    {
+      "path": "harness/range_plugin_gpu_gate.py",
+      "sha256": "d092ab5e6b0ad45a4891aaa22e9fb4c32d03123d841bb84954178db847296d80",
+      "bytes": 4472
+    },
+    {
+      "path": "harness/range_plugin_adapter_smoke.mjs",
+      "sha256": "2d0dc909d79531d6780fd5e1bba2bd34d5af19239f0eb12b61884e324704f8c1",
+      "bytes": 9275
+    },
+    {
+      "path": "harness/profile_measurement_helpers.mjs",
+      "sha256": "8a6a0c9436c7c9113a0a4e23dc5645eb07aa9a2d784d7e51cd4389efd0c10b76",
+      "bytes": 4873
+    },
+    {
+      "path": "harness/export_range_basalt.mjs",
+      "sha256": "0b94f51d20ada33eaf5e5fa005166c6d51f8f3a62fc4aac0915d236d41abe889",
+      "bytes": 5607
+    },
+    {
+      "path": "harness/export_range_ninfer.mjs",
+      "sha256": "bc16bfd2f3f271ca928d71ce2da9dbf3efd2f6f227bfc0c4621cd381c1a444f4",
+      "bytes": 3747
+    },
+    {
+      "path": "harness/export_range_strata.mjs",
+      "sha256": "a79c8e37edcf84df37a2db0599153de603590a455dbc0f7ef1c9ff2356c71ccd",
+      "bytes": 5250
+    },
+    {
+      "path": "harness/range_progress_report.py",
+      "sha256": "75d1580bdc62a4204b04bb81ef42a66c6f369cd06ff4ab94e7b5582d6654c464",
+      "bytes": 7993
+    },
+    {
+      "path": "harness/range_progress_chart.py",
+      "sha256": "2f74b37bd0b025dfebcdd99f056bed6cf3e0153f04a8d35cff1318bee9cf59ca",
+      "bytes": 5875
+    },
+    {
+      "path": "harness/prepare_range_fixtures.py",
+      "sha256": "f1bf53adf936380cf8227b76769264a38f2bf04685e1dc9f33efc754d5d6c3ec",
+      "bytes": 7907
+    },
+    {
+      "path": "harness/audit_range_outputs.py",
+      "sha256": "78a801a43840175bd679381b778667dc4d7d782a1a6d31e82be710852d4a39fe",
+      "bytes": 4994
+    },
+    {
+      "path": "harness/quality_range_selected.py",
+      "sha256": "6388fd23a55944aad47725bc08117ced3b081bf537d20746bc966f36c02b63e5",
+      "bytes": 4147
+    },
+    {
+      "path": "harness/code_function_eval.py",
+      "sha256": "13f095e7aae28da5bbf42dcc6261021eadb27784fc4c1f2ad6ace3de78175970",
+      "bytes": 5820
+    },
+    {
+      "path": "harness/latest80_common.py",
+      "sha256": "4528128cf2e9844b65b7398be1795de0c8e134d598062a898719485e6ee42981",
+      "bytes": 3319
+    },
+    {
+      "path": "harness/tune80_common.py",
+      "sha256": "5a6544972cfba423b556e51c233b9cf1463c3b7e96150c92b9bbd496780e346c",
+      "bytes": 2691
+    }
+  ]
+}

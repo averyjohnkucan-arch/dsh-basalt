@@ -63,6 +63,12 @@ var gib = (bytes) => (bytes / 2 ** 30).toFixed(1) + " GiB";
 function Profile({ profile, architectures, busy, act }) {
   const [p, set] = (0, import_react.useState)(profile);
   const edit = (key, value) => set((old) => ({ ...old, [key]: value }));
+  const editEngine = (key, value) => set((old) => {
+    const engineOptions = { ...old.engineOptions };
+    if (value === "") delete engineOptions[key];
+    else engineOptions[key] = Number(value);
+    return { ...old, engineOptions };
+  });
   (0, import_react.useEffect)(() => set(profile), [profile.id]);
   return /* @__PURE__ */ import_react.default.createElement("details", { className: "basalt-model" }, /* @__PURE__ */ import_react.default.createElement("summary", null, profile.name, " ", /* @__PURE__ */ import_react.default.createElement("small", null, profile.running ? profile.active ? "Answering" : "Loaded" : "Unloaded", " ", "\xB7 ", gib(profile.model.size))), /* @__PURE__ */ import_react.default.createElement("p", { className: "basalt-path" }, profile.model.path), /* @__PURE__ */ import_react.default.createElement(
     "form",
@@ -129,7 +135,43 @@ function Profile({ profile, architectures, busy, act }) {
         value: p.answerRoom,
         onChange: (e) => edit("answerRoom", Number(e.target.value))
       }
-    ), /* @__PURE__ */ import_react.default.createElement("small", null, "0 keeps native thinking uncapped by an answer reserve.")), /* @__PURE__ */ import_react.default.createElement("label", { className: "basalt-checkbox" }, /* @__PURE__ */ import_react.default.createElement(
+    ), /* @__PURE__ */ import_react.default.createElement("small", null, "0 keeps native thinking uncapped by an answer reserve.")), /* @__PURE__ */ import_react.default.createElement("label", null, "Speculation window", /* @__PURE__ */ import_react.default.createElement(
+      "select",
+      {
+        value: p.engineOptions?.spec ?? "",
+        onChange: (e) => editEngine("spec", e.target.value)
+      },
+      /* @__PURE__ */ import_react.default.createElement("option", { value: "" }, "Automatic"),
+      [
+        0,
+        2,
+        4,
+        6,
+        8,
+        ...p.model.architecture === "qwen35" ? [12, 16] : []
+      ].map((value) => /* @__PURE__ */ import_react.default.createElement("option", { key: value, value }, value === 0 ? "Off" : value))
+    )), p.model.architecture !== "qwen35" && /* @__PURE__ */ import_react.default.createElement("label", null, "CPU workers", /* @__PURE__ */ import_react.default.createElement(
+      "input",
+      {
+        type: "number",
+        min: "1",
+        max: "256",
+        value: p.engineOptions?.["pool-workers"] ?? "",
+        placeholder: "Automatic",
+        onChange: (e) => editEngine("pool-workers", e.target.value)
+      }
+    )), p.model.architecture === "qwen4exp" && /* @__PURE__ */ import_react.default.createElement("label", null, "Expert swaps per update", /* @__PURE__ */ import_react.default.createElement(
+      "input",
+      {
+        type: "number",
+        min: "0",
+        max: "96",
+        step: "1",
+        value: p.engineOptions?.["adapt-swaps"] ?? "",
+        placeholder: "Native default",
+        onChange: (e) => editEngine("adapt-swaps", e.target.value)
+      }
+    ), /* @__PURE__ */ import_react.default.createElement("small", null, "0 keeps the GPU expert cache fixed.")), /* @__PURE__ */ import_react.default.createElement("label", { className: "basalt-checkbox" }, /* @__PURE__ */ import_react.default.createElement(
       "input",
       {
         type: "checkbox",
