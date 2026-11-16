@@ -2,6 +2,11 @@
   "scope": "Exact harness snapshot; scratch paths and sibling clone layout retained for audit. No weights, generated answers, credentials, or token-ID fixtures included.",
   "files": [
     {
+      "path": "harness/test_strata_cold_screens.py",
+      "sha256": "b18ed43899c2c6110c693d168f064bfba34a875216da866ba4f40009c024e2e5",
+      "bytes": 1997
+    },
+    {
       "path": "harness/move_deepseek_internal.py",
       "sha256": "e93eb6d20aba4c3817b39969353c672f057b8807f390128aefa3aabc057e6fa4",
       "bytes": 5841
@@ -13,8 +18,8 @@
     },
     {
       "path": "harness/range_deepseek_xs.py",
-      "sha256": "5288c624de1c41d9b5ac985c69eb79849a936ab1f19bb39308e30294e1f829b9",
-      "bytes": 7628
+      "sha256": "8443b5733b833bcd97244dbca77ed1294443e269f6dea54c107ff9a46b0301fb",
+      "bytes": 7640
     },
     {
       "path": "harness/finish_split_engram_build.py",
@@ -178,8 +183,8 @@
     },
     {
       "path": "harness/prepare_benchmark_publication.py",
-      "sha256": "dd92fe119a60d11526deb8e9cc240e86f6e48629eea13b054779b16f8fcb6bef",
-      "bytes": 5699
+      "sha256": "d632cbb94f3200a0a9e41238a6bfdf6fddb1a7f5a714c2a57034a76738835d59",
+      "bytes": 5912
     },
     {
       "path": "harness/native_bench.py",
@@ -238,8 +243,8 @@
     },
     {
       "path": "harness/range_strata.py",
-      "sha256": "ed1dbbaf424de857c8bb3a7a16c6d56505214182bbdeff2bd658e2cdd7a95513",
-      "bytes": 2564
+      "sha256": "24bbf226bbf21e95b94660b703875261e21927c674975960c74cb57916543616",
+      "bytes": 2576
     },
     {
       "path": "harness/range_ninfer.py",
@@ -253,8 +258,8 @@
     },
     {
       "path": "harness/range_deepseek.py",
-      "sha256": "a3b332495b58583c9be51d3b0914f79154f81d4dcc6c7fc3d31effdf4391f553",
-      "bytes": 8115
+      "sha256": "e44d3e02b689af2490fa1bc9209eec00156f7cadade89dc59596d0fe5b8739a7",
+      "bytes": 8127
     },
     {
       "path": "harness/mark_performance_qualified.py",

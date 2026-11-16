@@ -1,0 +1,38 @@
+{
+  "status": "passed",
+  "updated_unix": 1794839351.4119813,
+  "scope": "Actual five-model Strata planner executed with tune replaced by capture-only spy; every base/candidate checked against installed native binary flags; all DeepSeek tune calls explicitly cold. No GPU processes launched.",
+  "source_sha256": "24bbf226bbf21e95b94660b703875261e21927c674975960c74cb57916543616",
+  "models": [
+    {
+      "model": "flash",
+      "planned_candidates": 11,
+      "cold_screens": true,
+      "native_flag_vocabulary": "passed"
+    },
+    {
+      "model": "hybrid",
+      "planned_candidates": 11,
+      "cold_screens": true,
+      "native_flag_vocabulary": "passed"
+    },
+    {
+      "model": "gyro",
+      "planned_candidates": 10,
+      "cold_screens": true,
+      "native_flag_vocabulary": "passed"
+    },
+    {
+      "model": "flash_fp16",
+      "planned_candidates": 11,
+      "cold_screens": true,
+      "native_flag_vocabulary": "passed"
+    },
+    {
+      "model": "hybrid_fp16",
+      "planned_candidates": 11,
+      "cold_screens": true,
+      "native_flag_vocabulary": "passed"
+    }
+  ]
+}

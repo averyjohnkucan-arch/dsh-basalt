@@ -1,0 +1,929 @@
+{
+  "model_key": "hybrid_basalt",
+  "performance_qualified": true,
+  "qualified_at_unix": 1794831707.0696635,
+  "scope": "Native throughput and paired metric labels only; separate generated-code, plugin GPU and final-publication gates remain",
+  "long_selection": "range-perf-hybrid_basalt-range-check-9e82bc86386d-story",
+  "short_selection": "range-perf-hybrid_basalt-peak-code-confirm-9e82bc86386d-1",
+  "long_identity": "9e82bc86386d",
+  "short_identity": "9e82bc86386d",
+  "long_metrics": {
+    "low": {
+      "case": "range-perf-hybrid_basalt-peak-code-confirm-9e82bc86386d-1",
+      "prefill": 1987.8670225673377,
+      "decode": 37.6232520848706
+    },
+    "low_cases": [
+      {
+        "case": "range-perf-hybrid_basalt-peak-code-confirm-9e82bc86386d-1",
+        "prefill": 1987.8670225673377,
+        "decode": 37.6232520848706
+      },
+      {
+        "case": "range-perf-hybrid_basalt-repeat-final-code-9e82bc86386d",
+        "prefill": 1950.847780529625,
+        "decode": 38.44577555313356
+      }
+    ],
+    "high": {
+      "cases": [
+        {
+          "case": "range-perf-hybrid_basalt-range-check-9e82bc86386d-text",
+          "workload": "text",
+          "prefill": 2198.088418254673,
+          "decode": 43.75708894285641
+        },
+        {
+          "case": "range-perf-hybrid_basalt-policy-prefill-9e82bc86386d-chat",
+          "workload": "chat",
+          "prefill": 2182.5010693178115,
+          "decode": 40.11968623668042
+        },
+        {
+          "case": "range-perf-hybrid_basalt-range-check-9e82bc86386d-story",
+          "workload": "story",
+          "prefill": 2189.0690076304004,
+          "decode": 38.86496628808136
+        },
+        {
+          "case": "range-perf-hybrid_basalt-range-repeat-9e82bc86386d-story",
+          "workload": "story",
+          "prefill": 2199.3309142773246,
+          "decode": 39.962484748350974
+        }
+      ],
+      "worst_case": "range-perf-hybrid_basalt-range-check-9e82bc86386d-story",
+      "best_case": "range-perf-hybrid_basalt-range-check-9e82bc86386d-text",
+      "prefill_range": [
+        2182.5010693178115,
+        2199.3309142773246
+      ],
+      "decode_range": [
+        38.86496628808136,
+        43.75708894285641
+      ]
+    },
+    "repeatability": {
+      "objective": "First maximize the minimum genre-median long decode. Then maximize minimum cold prefill while retaining >=95% of EACH genre median from that peak-decode preset. Repeat absolute limiting genres and, when controls differ, the limiting relative genre for both presets.",
+      "selected": "range-perf-hybrid_basalt-range-check-9e82bc86386d-story",
+      "peak_decode_tok_s": 39.41372551821617,
+      "decode_floor_tok_s": 37.44303924230536,
+      "peak_decode_identity": "9e82bc86386d",
+      "genre_decode_floor_tok_s": {
+        "text": 41.56923449571359,
+        "chat": 38.1137019248464,
+        "story": 37.44303924230536
+      },
+      "candidates": [
+        {
+          "identity": "a536f0bc1e63",
+          "complete": true,
+          "prefill": 2151.763920054914,
+          "decode": 34.0344454488701,
+          "worst_genre": "chat",
+          "genres": {
+            "text": {
+              "prefill": 2169.7879926292494,
+              "decode": 39.254296027460896,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid-basalt-base-text"
+              ]
+            },
+            "chat": {
+              "prefill": 2151.763920054914,
+              "decode": 34.0344454488701,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid-basalt-base-chat"
+              ]
+            },
+            "story": {
+              "prefill": 2163.718978079597,
+              "decode": 37.41448290902424,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid-basalt-base-story"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "f2339c84acb2",
+          "complete": true,
+          "prefill": 2107.413101805794,
+          "decode": 36.03719383142028,
+          "worst_genre": "chat",
+          "genres": {
+            "text": {
+              "prefill": 2193.839069301317,
+              "decode": 48.55351292432234,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid-basalt-final-text"
+              ]
+            },
+            "chat": {
+              "prefill": 2131.5972991015956,
+              "decode": 36.03719383142028,
+              "samples": 2,
+              "cases": [
+                "range-perf-hybrid-basalt-confirm-resident131k",
+                "range-perf-hybrid_basalt-range-repeat-f2339c84acb2-chat"
+              ]
+            },
+            "story": {
+              "prefill": 2107.413101805794,
+              "decode": 37.97404778940219,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid-basalt-final-story"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "4513d0e01f0a",
+          "complete": false,
+          "prefill": 2146.994627266622,
+          "decode": 32.96319536928844,
+          "worst_genre": "chat",
+          "genres": {
+            "chat": {
+              "prefill": 2146.994627266622,
+              "decode": 32.96319536928844,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid-basalt-confirm-spec0"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "f055669c71c7",
+          "complete": false,
+          "prefill": 1293.8501783004083,
+          "decode": 35.57715681092591,
+          "worst_genre": "chat",
+          "genres": {
+            "chat": {
+              "prefill": 1293.8501783004083,
+              "decode": 35.57715681092591,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid-basalt-prefill-4k"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "ed30cfe8653d",
+          "complete": false,
+          "prefill": 2148.461711044885,
+          "decode": 33.60443575662792,
+          "worst_genre": "text",
+          "genres": {
+            "text": {
+              "prefill": 2172.2782430353786,
+              "decode": 33.60443575662792,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid_basalt-range-check-ed30cfe8653d-text"
+              ]
+            },
+            "chat": {
+              "prefill": 2148.461711044885,
+              "decode": 42.7164145630396,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid_basalt-joint-ed30cfe8653d-chat"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "a6da1505b724",
+          "complete": false,
+          "prefill": 2125.0799254603253,
+          "decode": 35.19021011961342,
+          "worst_genre": "chat",
+          "genres": {
+            "chat": {
+              "prefill": 2125.0799254603253,
+              "decode": 35.19021011961342,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid_basalt-joint-a6da1505b724-chat"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "0a083a504201",
+          "complete": false,
+          "prefill": 2106.9854078840026,
+          "decode": 34.824284842181534,
+          "worst_genre": "chat",
+          "genres": {
+            "chat": {
+              "prefill": 2106.9854078840026,
+              "decode": 34.824284842181534,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid_basalt-joint-0a083a504201-chat"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "e33ba9e0fda1",
+          "complete": true,
+          "prefill": 2159.525741518006,
+          "decode": 39.28743440600178,
+          "worst_genre": "chat",
+          "genres": {
+            "text": {
+              "prefill": 2198.8198112362725,
+              "decode": 39.44682918636714,
+              "samples": 2,
+              "cases": [
+                "range-perf-hybrid_basalt-range-check-e33ba9e0fda1-text",
+                "range-perf-hybrid_basalt-range-repeat-e33ba9e0fda1-text"
+              ]
+            },
+            "chat": {
+              "prefill": 2185.235669660474,
+              "decode": 39.28743440600178,
+              "samples": 2,
+              "cases": [
+                "range-perf-hybrid_basalt-range-repeat-e33ba9e0fda1-chat",
+                "range-perf-hybrid_basalt-joint-e33ba9e0fda1-chat"
+              ]
+            },
+            "story": {
+              "prefill": 2159.525741518006,
+              "decode": 40.867435433654016,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid_basalt-range-check-e33ba9e0fda1-story"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "4030e3bc7b33",
+          "complete": false,
+          "prefill": 2124.845232763844,
+          "decode": 36.529292416508206,
+          "worst_genre": "chat",
+          "genres": {
+            "chat": {
+              "prefill": 2124.845232763844,
+              "decode": 36.529292416508206,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid_basalt-joint-4030e3bc7b33-chat"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "de1f2307b1b7",
+          "complete": false,
+          "prefill": 2089.0632362126207,
+          "decode": 35.51904862906869,
+          "worst_genre": "chat",
+          "genres": {
+            "chat": {
+              "prefill": 2089.0632362126207,
+              "decode": 35.51904862906869,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid_basalt-policy-prefill-de1f2307b1b7-chat"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "6b3e53d7aafa",
+          "complete": false,
+          "prefill": 1239.7514999210803,
+          "decode": 36.90317412512494,
+          "worst_genre": "chat",
+          "genres": {
+            "chat": {
+              "prefill": 1239.7514999210803,
+              "decode": 36.90317412512494,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid_basalt-policy-prefill-6b3e53d7aafa-chat"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "781aaace5314",
+          "complete": false,
+          "prefill": 2166.000663077236,
+          "decode": 33.90437852754475,
+          "worst_genre": "chat",
+          "genres": {
+            "chat": {
+              "prefill": 2166.000663077236,
+              "decode": 33.90437852754475,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid_basalt-policy-prefill-781aaace5314-chat"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "e6141d3d8a80",
+          "complete": false,
+          "prefill": 2222.3199487959846,
+          "decode": 37.19095306714255,
+          "worst_genre": "text",
+          "genres": {
+            "text": {
+              "prefill": 2222.3199487959846,
+              "decode": 37.19095306714255,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid_basalt-range-check-e6141d3d8a80-text"
+              ]
+            },
+            "chat": {
+              "prefill": 2236.1180270255572,
+              "decode": 38.59256097030504,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid_basalt-joint-e6141d3d8a80-chat"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "1d19bb14bc55",
+          "complete": false,
+          "prefill": 2219.2086975753414,
+          "decode": 37.24210491650045,
+          "worst_genre": "chat",
+          "genres": {
+            "chat": {
+              "prefill": 2219.2086975753414,
+              "decode": 37.24210491650045,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid_basalt-joint-1d19bb14bc55-chat"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "7ef8b149dbfa",
+          "complete": false,
+          "prefill": 2127.844151891028,
+          "decode": 35.03774373340584,
+          "worst_genre": "chat",
+          "genres": {
+            "chat": {
+              "prefill": 2127.844151891028,
+              "decode": 35.03774373340584,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid_basalt-joint-7ef8b149dbfa-chat"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "e798c42f3805",
+          "complete": false,
+          "prefill": 2144.244031667514,
+          "decode": 39.10816140261369,
+          "worst_genre": "text",
+          "genres": {
+            "text": {
+              "prefill": 2168.607795468482,
+              "decode": 39.10816140261369,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid_basalt-range-check-e798c42f3805-text"
+              ]
+            },
+            "chat": {
+              "prefill": 2144.244031667514,
+              "decode": 40.989310700240786,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid_basalt-joint-e798c42f3805-chat"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "e7935c4eb867",
+          "complete": false,
+          "prefill": 2114.6401890032457,
+          "decode": 35.82940839043335,
+          "worst_genre": "text",
+          "genres": {
+            "text": {
+              "prefill": 2195.4835109729684,
+              "decode": 35.82940839043335,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid_basalt-range-check-e7935c4eb867-text"
+              ]
+            },
+            "chat": {
+              "prefill": 2114.6401890032457,
+              "decode": 42.917488086060395,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid_basalt-joint-e7935c4eb867-chat"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "a1d5c1673449",
+          "complete": false,
+          "prefill": 2249.917122715242,
+          "decode": 20.836135046350417,
+          "worst_genre": "chat",
+          "genres": {
+            "chat": {
+              "prefill": 2249.917122715242,
+              "decode": 20.836135046350417,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid_basalt-joint-a1d5c1673449-chat"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "19a688fbb57f",
+          "complete": false,
+          "prefill": 2276.3882587146763,
+          "decode": 36.80949398263539,
+          "worst_genre": "chat",
+          "genres": {
+            "chat": {
+              "prefill": 2276.3882587146763,
+              "decode": 36.80949398263539,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid_basalt-joint-19a688fbb57f-chat"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "289b0a9640c2",
+          "complete": false,
+          "prefill": 2233.940903333841,
+          "decode": 36.05316517063959,
+          "worst_genre": "chat",
+          "genres": {
+            "chat": {
+              "prefill": 2233.940903333841,
+              "decode": 36.05316517063959,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid_basalt-joint-289b0a9640c2-chat"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "9e82bc86386d",
+          "complete": true,
+          "prefill": 2182.5010693178115,
+          "decode": 39.41372551821617,
+          "worst_genre": "story",
+          "genres": {
+            "text": {
+              "prefill": 2198.088418254673,
+              "decode": 43.75708894285641,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid_basalt-range-check-9e82bc86386d-text"
+              ]
+            },
+            "chat": {
+              "prefill": 2182.5010693178115,
+              "decode": 40.11968623668042,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid_basalt-policy-prefill-9e82bc86386d-chat"
+              ]
+            },
+            "story": {
+              "prefill": 2194.1999609538625,
+              "decode": 39.41372551821617,
+              "samples": 2,
+              "cases": [
+                "range-perf-hybrid_basalt-range-repeat-9e82bc86386d-story",
+                "range-perf-hybrid_basalt-range-check-9e82bc86386d-story"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "1746d49b9f7a",
+          "complete": false,
+          "prefill": 2234.4026516850577,
+          "decode": 38.40599612978547,
+          "worst_genre": "story",
+          "genres": {
+            "text": {
+              "prefill": 2235.159951185978,
+              "decode": 41.00532194275452,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid_basalt-range-check-1746d49b9f7a-text"
+              ]
+            },
+            "story": {
+              "prefill": 2234.4026516850577,
+              "decode": 38.40599612978547,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid_basalt-joint-1746d49b9f7a-story"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "6c0ebf24c7bf",
+          "complete": false,
+          "prefill": 2197.0797796162874,
+          "decode": 37.877009109088085,
+          "worst_genre": "story",
+          "genres": {
+            "text": {
+              "prefill": 2205.5830810117823,
+              "decode": 39.018594262579214,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid_basalt-range-check-6c0ebf24c7bf-text"
+              ]
+            },
+            "story": {
+              "prefill": 2197.0797796162874,
+              "decode": 37.877009109088085,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid_basalt-joint-6c0ebf24c7bf-story"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "a050b88fcb8f",
+          "complete": false,
+          "prefill": 2203.580746473945,
+          "decode": 38.43053012669987,
+          "worst_genre": "text",
+          "genres": {
+            "text": {
+              "prefill": 2221.8937826386837,
+              "decode": 38.43053012669987,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid_basalt-range-check-a050b88fcb8f-text"
+              ]
+            },
+            "story": {
+              "prefill": 2203.580746473945,
+              "decode": 39.58957871408065,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid_basalt-joint-a050b88fcb8f-story"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "67c5c79a442a",
+          "complete": false,
+          "prefill": 2214.9335197814166,
+          "decode": 39.29099249865002,
+          "worst_genre": "text",
+          "genres": {
+            "text": {
+              "prefill": 2216.0499436781047,
+              "decode": 39.29099249865002,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid_basalt-range-check-67c5c79a442a-text"
+              ]
+            },
+            "story": {
+              "prefill": 2214.9335197814166,
+              "decode": 41.76314143046381,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid_basalt-joint-67c5c79a442a-story"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "d944acb5c1de",
+          "complete": false,
+          "prefill": 2202.941877797468,
+          "decode": 37.49065161162954,
+          "worst_genre": "text",
+          "genres": {
+            "text": {
+              "prefill": 2202.941877797468,
+              "decode": 37.49065161162954,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid_basalt-range-check-d944acb5c1de-text"
+              ]
+            },
+            "story": {
+              "prefill": 2212.9912394186063,
+              "decode": 39.28011709993883,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid_basalt-joint-d944acb5c1de-story"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "128621bbb872",
+          "complete": false,
+          "prefill": 2197.6162232626766,
+          "decode": 38.724345943104325,
+          "worst_genre": "text",
+          "genres": {
+            "text": {
+              "prefill": 2205.3163566615353,
+              "decode": 38.724345943104325,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid_basalt-range-check-128621bbb872-text"
+              ]
+            },
+            "story": {
+              "prefill": 2197.6162232626766,
+              "decode": 40.087152972318165,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid_basalt-joint-128621bbb872-story"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "447cb1fb1294",
+          "complete": true,
+          "prefill": 1373.1741429570438,
+          "decode": 39.243383072862734,
+          "worst_genre": "chat",
+          "genres": {
+            "text": {
+              "prefill": 1375.8957936815668,
+              "decode": 42.6298042277868,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid_basalt-range-check-447cb1fb1294-text"
+              ]
+            },
+            "chat": {
+              "prefill": 1374.906248197081,
+              "decode": 39.243383072862734,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid_basalt-range-check-447cb1fb1294-chat"
+              ]
+            },
+            "story": {
+              "prefill": 1373.1741429570438,
+              "decode": 41.26919864719297,
+              "samples": 1,
+              "cases": [
+                "range-perf-hybrid_basalt-policy-prefill-447cb1fb1294-story"
+              ]
+            }
+          }
+        }
+      ],
+      "original_selection": {
+        "objective": "Maximize cold prefill subject to sustained late decode >=95% of the fastest qualified 8192-output result on the same workload",
+        "peak_decode_tok_s": 36.35427937437292,
+        "decode_floor_tok_s": 34.53656540565427,
+        "selected": "range-perf-hybrid-basalt-confirm-resident131k",
+        "candidates": [
+          {
+            "case": "range-perf-hybrid-basalt-base-chat",
+            "prefill": 2151.763920054914,
+            "decode": 34.0344454488701
+          },
+          {
+            "case": "range-perf-hybrid-basalt-confirm-resident131k",
+            "prefill": 2132.817100369479,
+            "decode": 36.35427937437292
+          },
+          {
+            "case": "range-perf-hybrid-basalt-confirm-spec0",
+            "prefill": 2146.994627266622,
+            "decode": 32.96319536928844
+          },
+          {
+            "case": "range-perf-hybrid-basalt-prefill-4k",
+            "prefill": 1293.8501783004083,
+            "decode": 35.57715681092591
+          },
+          {
+            "case": "range-perf-hybrid_basalt-joint-ed30cfe8653d-chat",
+            "prefill": 2148.461711044885,
+            "decode": 42.7164145630396,
+            "source": "joint reserve/CPU/KV or explicitly guarded soft-limit refinement",
+            "refinement": "reserve256"
+          },
+          {
+            "case": "range-perf-hybrid_basalt-joint-a6da1505b724-chat",
+            "prefill": 2125.0799254603253,
+            "decode": 35.19021011961342,
+            "source": "joint reserve/CPU/KV or explicitly guarded soft-limit refinement",
+            "refinement": "prefill-cpu-share-0"
+          },
+          {
+            "case": "range-perf-hybrid_basalt-joint-0a083a504201-chat",
+            "prefill": 2106.9854078840026,
+            "decode": 34.824284842181534,
+            "source": "joint reserve/CPU/KV or explicitly guarded soft-limit refinement",
+            "refinement": "prefill-cpu-share-1"
+          },
+          {
+            "case": "range-perf-hybrid_basalt-joint-e33ba9e0fda1-chat",
+            "prefill": 2228.736852508983,
+            "decode": 38.41787619604246,
+            "source": "joint reserve/CPU/KV or explicitly guarded soft-limit refinement",
+            "refinement": "high106-recover-workers14"
+          },
+          {
+            "case": "range-perf-hybrid_basalt-joint-4030e3bc7b33-chat",
+            "prefill": 2124.845232763844,
+            "decode": 36.529292416508206,
+            "source": "joint reserve/CPU/KV or explicitly guarded soft-limit refinement",
+            "refinement": "high106-selected-controls-workers14"
+          },
+          {
+            "case": "range-perf-hybrid_basalt-policy-prefill-de1f2307b1b7-chat",
+            "prefill": 2089.0632362126207,
+            "decode": 35.51904862906869,
+            "source": "prefill/cache refit after measured106GiB policy selection",
+            "refinement": "prefill32k"
+          },
+          {
+            "case": "range-perf-hybrid_basalt-policy-prefill-6b3e53d7aafa-chat",
+            "prefill": 1239.7514999210803,
+            "decode": 36.90317412512494,
+            "source": "prefill/cache refit after measured106GiB policy selection",
+            "refinement": "prefill4k"
+          },
+          {
+            "case": "range-perf-hybrid_basalt-policy-prefill-781aaace5314-chat",
+            "prefill": 2166.000663077236,
+            "decode": 33.90437852754475,
+            "source": "prefill/cache refit after measured106GiB policy selection",
+            "refinement": "prefill-share-0"
+          },
+          {
+            "case": "range-perf-hybrid_basalt-joint-e6141d3d8a80-chat",
+            "prefill": 2236.1180270255572,
+            "decode": 38.59256097030504,
+            "source": "joint reserve/CPU/KV or explicitly guarded soft-limit refinement",
+            "refinement": "reserve256"
+          },
+          {
+            "case": "range-perf-hybrid_basalt-joint-1d19bb14bc55-chat",
+            "prefill": 2219.2086975753414,
+            "decode": 37.24210491650045,
+            "source": "joint reserve/CPU/KV or explicitly guarded soft-limit refinement",
+            "refinement": "reserve256-resident96k"
+          },
+          {
+            "case": "range-perf-hybrid_basalt-joint-7ef8b149dbfa-chat",
+            "prefill": 2127.844151891028,
+            "decode": 35.03774373340584,
+            "source": "joint reserve/CPU/KV or explicitly guarded soft-limit refinement",
+            "refinement": "prefill-cpu-share-0.3"
+          },
+          {
+            "case": "range-perf-hybrid_basalt-joint-e798c42f3805-chat",
+            "prefill": 2144.244031667514,
+            "decode": 40.989310700240786,
+            "source": "joint reserve/CPU/KV or explicitly guarded soft-limit refinement",
+            "refinement": "prefill-cpu-share-1"
+          },
+          {
+            "case": "range-perf-hybrid_basalt-joint-e7935c4eb867-chat",
+            "prefill": 2114.6401890032457,
+            "decode": 42.917488086060395,
+            "source": "joint reserve/CPU/KV or explicitly guarded soft-limit refinement",
+            "refinement": "saved-ranking"
+          },
+          {
+            "case": "range-perf-hybrid_basalt-joint-a1d5c1673449-chat",
+            "prefill": 2249.917122715242,
+            "decode": 20.836135046350417,
+            "source": "joint reserve/CPU/KV or explicitly guarded soft-limit refinement",
+            "refinement": "adapt-swaps-0"
+          },
+          {
+            "case": "range-perf-hybrid_basalt-joint-19a688fbb57f-chat",
+            "prefill": 2276.3882587146763,
+            "decode": 36.80949398263539,
+            "source": "joint reserve/CPU/KV or explicitly guarded soft-limit refinement",
+            "refinement": "adapt-swaps-16"
+          },
+          {
+            "case": "range-perf-hybrid_basalt-joint-289b0a9640c2-chat",
+            "prefill": 2233.940903333841,
+            "decode": 36.05316517063959,
+            "source": "joint reserve/CPU/KV or explicitly guarded soft-limit refinement",
+            "refinement": "adapt-swaps-32"
+          },
+          {
+            "case": "range-perf-hybrid_basalt-policy-prefill-9e82bc86386d-chat",
+            "prefill": 2182.5010693178115,
+            "decode": 40.11968623668042,
+            "source": "prefill/cache refit after measured106GiB policy selection",
+            "refinement": "adapt-swaps-96"
+          },
+          {
+            "case": "range-perf-hybrid_basalt-joint-1746d49b9f7a-story",
+            "prefill": 2234.4026516850577,
+            "decode": 38.40599612978547,
+            "source": "joint reserve/CPU/KV or explicitly guarded soft-limit refinement",
+            "refinement": "reserve256"
+          },
+          {
+            "case": "range-perf-hybrid_basalt-joint-6c0ebf24c7bf-story",
+            "prefill": 2197.0797796162874,
+            "decode": 37.877009109088085,
+            "source": "joint reserve/CPU/KV or explicitly guarded soft-limit refinement",
+            "refinement": "reserve256-resident96k"
+          },
+          {
+            "case": "range-perf-hybrid_basalt-joint-a050b88fcb8f-story",
+            "prefill": 2203.580746473945,
+            "decode": 39.58957871408065,
+            "source": "joint reserve/CPU/KV or explicitly guarded soft-limit refinement",
+            "refinement": "prefill-cpu-share-0"
+          },
+          {
+            "case": "range-perf-hybrid_basalt-joint-67c5c79a442a-story",
+            "prefill": 2214.9335197814166,
+            "decode": 41.76314143046381,
+            "source": "joint reserve/CPU/KV or explicitly guarded soft-limit refinement",
+            "refinement": "prefill-cpu-share-0.3"
+          },
+          {
+            "case": "range-perf-hybrid_basalt-joint-d944acb5c1de-story",
+            "prefill": 2212.9912394186063,
+            "decode": 39.28011709993883,
+            "source": "joint reserve/CPU/KV or explicitly guarded soft-limit refinement",
+            "refinement": "prefill-cpu-share-1"
+          },
+          {
+            "case": "range-perf-hybrid_basalt-joint-128621bbb872-story",
+            "prefill": 2197.6162232626766,
+            "decode": 40.087152972318165,
+            "source": "joint reserve/CPU/KV or explicitly guarded soft-limit refinement",
+            "refinement": "saved-ranking"
+          },
+          {
+            "case": "range-perf-hybrid_basalt-policy-prefill-447cb1fb1294-story",
+            "prefill": 1373.1741429570438,
+            "decode": 41.26919864719297,
+            "source": "prefill/cache refit after measured106GiB policy selection",
+            "refinement": "prefill4k"
+          }
+        ]
+      },
+      "free_generation_variation": "Continuations can change draft acceptance. Final name uses the slowest actual paired measurement across all selected-setting genres and repeats; selection floors use per-genre medians. Cold process/prefix does not imply globally dropped OS file cache."
+    }
+  },
+  "short_metrics": null,
+  "peak_long_minimum_median_decode": 39.41372551821617,
+  "selected_long_minimum_median_decode": 39.41372551821617,
+  "decode_floor": 37.44303924230536,
+  "peak_code_median_decode": 38.03451381900208,
+  "benchmark_environment_id": "performance-powerd-20261115",
+  "genre_decode_floor_tok_s": {
+    "text": 41.56923449571359,
+    "chat": 38.1137019248464,
+    "story": 37.44303924230536
+  }
+}

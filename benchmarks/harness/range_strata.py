@@ -30,4 +30,4 @@ if model!='gyro':
   candidates.append((tag,changed(base,{'--draft':'dflash2','--draft-model':R/'packs/flash-dflash2.pack','--draft-fallback':'none','--spec':8,'--draft-cap':cap,'--draft-conf':conf})))
 else:
  for kv in ['int8','fp16']:candidates.append(('kv-'+kv,changed(base,{'--kv':kv})))
-tune(model+'_strata',base,'qwen',candidates,[('32k',{'--prefill':'auto:32768'}),('4k',{'--prefill':'4096'})],[(f'spec{s}',{'--spec':s})for s in [0,4,6,8]],old=old if model=='gyro'else None)
+tune(model+'_strata',base,'qwen',candidates,[('32k',{'--prefill':'auto:32768'}),('4k',{'--prefill':'4096'})],[(f'spec{s}',{'--spec':s})for s in [0,4,6,8]],old=old if model=='gyro'else None,cache=False)

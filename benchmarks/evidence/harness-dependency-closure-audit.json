@@ -1,11 +1,41 @@
 {
-  "at": "2026-11-16T01:15:47.697392-08:00",
+  "at": "2026-11-16T06:40:57.809191-08:00",
   "status": "passed",
-  "prepared_from_base_commit": "2b037731fde37e254363753ea92c0b97dff71b82",
-  "manifest_sha256": "3dc50e40389f9ccb7b20994c1f830cdb976bc31fe360b74d319739182d8c60a1",
-  "source_count": 66,
+  "prepared_from_base_commit": "13320bcf4091ec383eb76b420f118c546500f050",
+  "manifest_sha256": "d59bf894d5ce52ac59becfcbd6c4189cca8a593605a00488882e297f200a8829",
+  "source_count": 67,
   "scope": "Current Python AST local imports and existing flat literal py/mjs/txt/cpp/hpp sibling references checked against current manifest. External engine/plugin clone layout remains required; dynamic references, packages, weights and fixtures excluded.",
   "checks": [
+    {
+      "source": "test_strata_cold_screens.py",
+      "dependency": "range_tuner.py",
+      "kind": "local import",
+      "passed": true
+    },
+    {
+      "source": "test_strata_cold_screens.py",
+      "dependency": "range_strata.py",
+      "kind": "existing literal sibling",
+      "passed": true
+    },
+    {
+      "source": "test_strata_cold_screens.py",
+      "dependency": "range_deepseek.py",
+      "kind": "existing literal sibling",
+      "passed": true
+    },
+    {
+      "source": "test_strata_cold_screens.py",
+      "dependency": "range_deepseek_xs.py",
+      "kind": "existing literal sibling",
+      "passed": true
+    },
+    {
+      "source": "test_strata_cold_screens.py",
+      "dependency": "range_strata.py",
+      "kind": "existing literal sibling",
+      "passed": true
+    },
     {
       "source": "range_deepseek_xs.py",
       "dependency": "range_tuner.py",
@@ -375,6 +405,12 @@
     {
       "source": "continue_after_range_queue.py",
       "dependency": "range_deepseek_xs.py",
+      "kind": "existing literal sibling",
+      "passed": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "test_strata_cold_screens.py",
       "kind": "existing literal sibling",
       "passed": true
     },

@@ -1,0 +1,38 @@
+{
+  "status": "passed",
+  "evidence": {
+    "quantization": "IQ2_XS",
+    "expert_storage": "internal-system-NVMe",
+    "expert_files": [
+      {
+        "path": "/home/user/Desktop/DeepSeek-IQ2_XS/DeepSeek-V4.1-Flash-1017-GSQ-RCO-IQ2_XS-00001-of-00004.gguf",
+        "bytes": 39535788064,
+        "sha256": "d9b949d55e27242b8afc7c2928749b888372d4c39682f9a131670d1c2555155e",
+        "device": 66306
+      },
+      {
+        "path": "/home/user/Desktop/DeepSeek-IQ2_XS/DeepSeek-V4.1-Flash-1017-GSQ-RCO-IQ2_XS-00002-of-00004.gguf",
+        "bytes": 39494617536,
+        "sha256": "933461a974fcccee741bf2f9798201e72ab4aa3f8a952be56f849896ca6ea30e",
+        "device": 66306
+      },
+      {
+        "path": "/home/user/Desktop/DeepSeek-IQ2_XS/DeepSeek-V4.1-Flash-1017-GSQ-RCO-IQ2_XS-00003-of-00004.gguf",
+        "bytes": 39423838496,
+        "sha256": "bbf91fa346a85ebaf32dd4fd5c456b534d780d381e54f46ac90783a481373240",
+        "device": 66306
+      },
+      {
+        "path": "/home/user/Desktop/DeepSeek-IQ2_XS/DeepSeek-V4.1-Flash-1017-GSQ-RCO-IQ2_XS-00004-of-00004.gguf",
+        "bytes": 36771591232,
+        "sha256": "e5b2f8781fab688cd4bc3bc7a69651b5dbb90ed94965657c6bead8bb4774f3cf",
+        "device": 66306
+      }
+    ],
+    "shared_engram": "/mnt/media/AI/Models/DeepSeek-V4.1-Flash-1017-GSQ-RCO-GGUF/DeepSeek-V4.1-Flash-Engram-IQ4_NL.gguf",
+    "shared_engram_device": 2431,
+    "draft": "/home/user/Desktop/DeepSeek-shared/support/dspark-DeepSeek-V4.1-Flash-1017-Q8_0.gguf",
+    "internal_device": 66306,
+    "layout": "Experts and draft on system SSD; shared Engram on media"
+  }
+}

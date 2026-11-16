@@ -36,5 +36,21 @@
   "sources": [
     "https://huggingface.co/cjxzdzh/DeepSeek-V4.1-Flash-1017-refusal-direction-dsv41-cvec",
     "https://huggingface.co/apetersson/DeepSeek-V4.1-Flash-Abliteration-Adapter"
-  ]
+  ],
+  "actual_vector_header_and_payload_validation": {
+    "architecture": "controlvector",
+    "model_hint": "dsv41",
+    "layers": 40,
+    "hidden_width": 5120,
+    "directions": 32,
+    "direction_layers": [
+      1,
+      32
+    ],
+    "type": "F32",
+    "norm_range": [
+      1.0000000001169014,
+      1.0000000001169014
+    ]
+  }
 }

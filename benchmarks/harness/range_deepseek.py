@@ -77,7 +77,7 @@ opt(base,'--expert-profile',W/'saved-expert-profiles/deepseek-basalt.prof')
 base['expert_profile_source']=str(W/'saved-expert-profiles/deepseek-basalt.prof')
 candidates=[(tag,changed(base,changes))for tag,changes in [('workers14',{'--pool-workers':14}),('workers12',{'--pool-workers':12}),('workers8',{'--pool-workers':8}),('dspark4',{'--spec':4}),('dspark6',{'--spec':6}),('dspark6-exp64',{'--spec':6,'--draft-experts':64})]]
 old=storage_config(saved_profile_baseline(read(W/'final-deepseek-old-90.json')))
-tune('deepseek_basalt',base,'deepseek',candidates,[],[(f'spec{s}',{'--spec':s})for s in [0,4,6]],old=old)
+tune('deepseek_basalt',base,'deepseek',candidates,[],[(f'spec{s}',{'--spec':s})for s in [0,4,6]],old=old,cache=False)
 strata=storage_config(read(W/'final-deepseek-strata-90.json'))
 strata['expert_profile_source']=str(W/'saved-expert-profiles/deepseek-strata.bin')
 candidates=[(tag,changed(strata,changes))for tag,changes in [('threads21',{'--cpu-threads':21}),('threads8',{'--cpu-threads':8}),('chunk8192',{'--prefill-chunk':8192}),('dspark-off',{'--dspark':'off'}),('dspark-conf85',{'--dspark-conf':.85})]]

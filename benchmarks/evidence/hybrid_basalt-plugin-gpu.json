@@ -1,0 +1,13 @@
+{
+  "model_key": "hybrid_basalt",
+  "status": "ok",
+  "plugin_source_sha256": "5d9fc505cdee94d12938d1771a7db61da4f78a1c05a7c32febac3dff4dd37a94",
+  "benchmark_environment_id": "performance-powerd-20261115",
+  "receipts": [
+    {
+      "profile": "scratch-range-hybrid-basalt-long",
+      "status": "ok",
+      "receipt": "/mnt/media/scratch/dsh-inference-tuning-20261115/validation/range-plugin-gpu/scratch-range-hybrid-basalt-long/adapter-result.json"
+    }
+  ]
+}

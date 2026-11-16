@@ -56,7 +56,7 @@ if __name__=='__main__' and '--plan' not in sys.argv:
         old=copy.deepcopy(original);opt(old,'--pack',pack);old=storage_config(old,'XS')
         base=read(W/(selections['deepseek_basalt_long']['selected']+'.json'));base=storage_config(base,'XS',basalt=True)
         candidates=[(tag,changed(base,changes))for tag,changes in [('workers14',{'--pool-workers':14}),('workers12',{'--pool-workers':12}),('workers8',{'--pool-workers':8}),('dspark4',{'--spec':4}),('dspark6',{'--spec':6}),('dspark6-exp64',{'--spec':6,'--draft-experts':64})]]
-        tune('deepseek_xs_basalt',base,'deepseek',candidates,[],[(f'spec{s}',{'--spec':s})for s in [0,4,6]],old=old)
+        tune('deepseek_xs_basalt',base,'deepseek',candidates,[],[(f'spec{s}',{'--spec':s})for s in [0,4,6]],old=old,cache=False)
         strata=read(W/(selections['deepseek_strata_long']['selected']+'.json'));opt(strata,'--pack',pack);strata=storage_config(strata,'XS')
         candidates=[(tag,changed(strata,changes))for tag,changes in [('threads21',{'--cpu-threads':21}),('threads8',{'--cpu-threads':8}),('chunk8192',{'--prefill-chunk':8192}),('dspark-off',{'--dspark':'off'}),('dspark-conf85',{'--dspark-conf':.85})]]
         tune('deepseek_xs_strata',strata,'deepseek',candidates,[('chunk8192',{'--prefill-chunk':8192}),('chunk2048',{'--prefill-chunk':2048})],[(f'conf{v}',{'--dspark':'auto','--dspark-conf':v})for v in [.55,.65,.85]],old=old,cache=False)

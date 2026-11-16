@@ -16,5 +16,7 @@
   "shared_engram_reason": "User suggested separate-drive Engram to reduce simultaneous I/O contention; benefit remains to be measured",
   "optional_engine_scope": "Separate custom Basalt runtime adds explicit external Engram path, no DeepSeek projection implementation",
   "deepseek_abliteration_current_finding": "Published dsv41 vector checksum-pinned; stock released Strata flag rejected; Basalt hooks are Qwen-only with 4096-width kernel versus DeepSeek5120. Exact current limitations documented; no behavioral success claimed.",
-  "engram_validation": "Actual direct SSD row reader tested independently, with GPU frozen-placement parity still mandatory"
+  "engram_validation": "Actual direct SSD row reader tested independently, with GPU frozen-placement parity still mandatory",
+  "flash_next_projection_observation": "Actual Medium off/on/off challenge: refusal, quoted requested term, identical refusal. Same prompt and native process, adapt-swaps=0 diagnostic placement, raw cleanup verified. This is one Flash Next challenge, not DeepSeek evidence.",
+  "strata_cache_screen_policy": "Cold prefixes for released Strata and DeepSeek screens; fixed unsupported Basalt-only disk-cache flags; five real Strata planners/candidates validated against installed flag vocabulary"
 }
