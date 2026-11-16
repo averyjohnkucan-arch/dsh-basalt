@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "scope": "Actual user-budget normalization, legacy stricter-success compatibility, rejection of changed native controls/larger old cap, physical cap enforcement and actual sampler with2GiB free/OS swap allowed. Sustained PSI still stops. No GPU.",
+  "worker_max_gib": 108,
+  "physical_gib": 122,
+  "nonworker_capacity_gib": 14,
+  "required_unused_ram_gib": 0,
+  "sampler_low_available_allowed": true,
+  "sampler_sustained_pressure_stopped": true,
+  "source_sha256": {
+    "benchmark_memory_guard.py": "7e3063d7117f4da3636f2ec38374ed3855bdb181fb5965b26ce157a6bf6c31f9",
+    "range_common.py": "6537001785e88bf6108697ff641beb359cfe8b20962b55a0469990d86d6947c5"
+  }
+}

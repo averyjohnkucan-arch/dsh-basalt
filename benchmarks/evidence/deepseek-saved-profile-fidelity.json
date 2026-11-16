@@ -1,0 +1,101 @@
+{
+  "status": "saved-profile-controls-match-earlier-test",
+  "profile_name": "DEEPSEEK V4.1 Flash 1017 IQ2_XXS GSQ-RCO - 1024K - NATIVE-MIXED - p401/d31 - p666/d15",
+  "source": "/mnt/media/AI/Model Configs/strata/native-profiles.json",
+  "source_sha256": "1023ce8ffa8d228db38144660b5cbc28152910fefcb2965188bfaa339de6a70d",
+  "portable_controls_verified": {
+    "--cpu-threads": "12",
+    "--ssd-cache": "104",
+    "--experts": "6",
+    "--dspark": "auto",
+    "--dspark-conf": "0.65",
+    "--prefill-chunk": "4096"
+  },
+  "environment_verified": {
+    "DS4_STORE_ZC": "1",
+    "DS4_GG_IQ256": "0",
+    "DS4_STORE_ZC_FRAC": "100",
+    "DS4_ATTN_SPLIT": "1"
+  },
+  "cpu_set": "0-21",
+  "historical_short_decode": {
+    "installed_utc": "2026-10-29T15:03:45.112446+00:00",
+    "source": "verified sandbox tuning",
+    "fresh_1000_250_tok_s": 16.65,
+    "warm_838861_250_tok_s": 23.283,
+    "first_restored_838861_250_tok_s": 19.2,
+    "profile_sha256": "4072f3acdfb424c4927898ddc697283e3bec196acd0e876bca019f3777ff4afd"
+  },
+  "historical_full_protocol": {
+    "protocol": "8192 generated; final 4096 timed",
+    "referenceProtocol": "8192 short input; floor(80% actual context) long input; thinking off",
+    "receipt": "/home/user/Documents/Codex/2026-10-26/can-you-please-set-a-listener/work/profile-prefill-optimization-20261031/tokens-only-receipts/approved-confirm-09-selected.json",
+    "context": 1048576,
+    "cpuSet": "0-21",
+    "pairedQualified": true,
+    "answerQualityTested": false
+  },
+  "earlier_test": {
+    "case": "final-deepseek-old-90",
+    "depth": 943718,
+    "generated": 4096,
+    "timed_tail": 2048,
+    "decode": 14.500275446935117
+  },
+  "ranking_note": "Earlier test uses preserved current ranking46fd3c3a; historical250-token warm/restored stats reference preserved seed4072f3ac. Both available; no originals modified.",
+  "latest_full_revalidation": "pending",
+  "future_baseline_constructor": "Actual source function executed and all portable controls, CPU set, original engine relocation and ranking bytes verified",
+  "range_deepseek_source_sha256": "ef02f2736802b87a90cc32633a0109253ed47ce0f62a2a712a05e1e65a91a2f0",
+  "baseline_config": {
+    "command": [
+      "taskset",
+      "-c",
+      "0-21",
+      "/mnt/media/scratch/dsh-inference-tuning-20261115/runtimes/deepseek-original/strata-dsv41",
+      "--vision",
+      "off",
+      "--max-context",
+      "1048576",
+      "--pack",
+      "/mnt/media/scratch/dsh-inference-tuning-20261115/strata-deepseek/data/packs/deepseek-v4.1-flash-ist-das-2.00bpw",
+      "--expert-profile",
+      "/mnt/media/scratch/dsh-inference-tuning-20261115/work/saved-expert-profiles/deepseek-current-profile-46fd3c3ad1eb.bin",
+      "--eos",
+      "2147483647",
+      "--serve",
+      "--cpu-threads",
+      "12",
+      "--ssd-cache",
+      "104",
+      "--experts",
+      "6",
+      "--dspark",
+      "auto",
+      "--dspark-conf",
+      "0.65",
+      "--prefill-chunk",
+      "4096"
+    ],
+    "env": {
+      "DS4_STORE_ZC": "1",
+      "DS4_GG_IQ256": "0",
+      "DS4_STORE_ZC_FRAC": "100",
+      "DS4_ATTN_SPLIT": "1",
+      "LD_LIBRARY_PATH": "/mnt/media/scratch/dsh-inference-tuning-20261115/runtimes/deepseek-original"
+    },
+    "depth": 943718,
+    "generate": 4096,
+    "timed_tail": 2048,
+    "output": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/final-deepseek-old-90",
+    "fixture": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/matched-deepseek.ids",
+    "cwd": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/dsh-strata",
+    "timeout": 18000,
+    "forbidden_token_ids": [
+      1
+    ],
+    "expert_profile_source": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/saved-expert-profiles/deepseek-current-profile-46fd3c3ad1eb.bin",
+    "saved_dsh_profile_name": "DEEPSEEK V4.1 Flash 1017 IQ2_XXS GSQ-RCO - 1024K - NATIVE-MIXED - p401/d31 - p666/d15",
+    "saved_dsh_profile_sha256": "1023ce8ffa8d228db38144660b5cbc28152910fefcb2965188bfaa339de6a70d",
+    "saved_expert_profile_sha256": "46fd3c3ad1eb8ed32d8c64d166d58fab3779372d16f9fa5acb5288921bc1ba4b"
+  }
+}

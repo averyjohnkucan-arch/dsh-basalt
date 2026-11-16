@@ -6,10 +6,15 @@ def soft_pressure_variant(result,telemetry,base):
  c=result.get('config',{});policy=c.get('host_memory_policy',{})
  if result.get('status')=='ok'or'RAM safety stop'not in str(result.get('error',''))or c.get('generate')!=8192:return None
  if c.get('benchmark_memory_policy_id')!='hybrid-high104-max108':return None
- if any(policy.get(k)!=v for k,v in [('memory_high_gib',104),('memory_max_gib',108),('minimum_host_available_gib',12)]):return None
+ if any(policy.get(k)!=v for k,v in [('memory_high_gib',104),('memory_max_gib',108)]):return None
+ legacy_free=policy.get('minimum_host_available_gib')==12
+ budget_mode=policy.get('minimum_host_available_gib')==0 and policy.get('minimum_nonworker_budget_gib')==12
+ if not(legacy_free or budget_mode):return None
  if any(not c.get(k)or c.get(k)!=base.get(k)for k in ['engine_binary_sha256','artifact_header_sha256','artifact_bytes','benchmark_environment_id']):return None
  memory=[row['host_memory']for row in telemetry if 'host_memory'in row]
- if not memory or min(row.get('host_available_bytes',0)for row in memory)<12*2**30:return None
+ if not memory:return None
+ if legacy_free and min(row.get('host_available_bytes',0)for row in memory)<12*2**30:return None
+ if budget_mode and min(row.get('host_physical_bytes',0)for row in memory)<120*2**30:return None
  if max(row.get('pressure_some_avg10',0)for row in memory)<=policy.get('pressure_avg10_limit',40):return None
  try:events=[dict(line.split()for line in row['scope_events'].splitlines())for row in memory if 'scope_events'in row]
  except(ValueError,TypeError):return None

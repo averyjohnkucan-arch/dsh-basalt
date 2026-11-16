@@ -63,3 +63,13 @@ assert len(plan.writes)==7 and len(plan.writes[-1]['selection']['candidates'])==
 assert len(calls)==1 and calls[0][0][0][-2:]==['hybrid_basalt','qwen'] and calls[0][1]['check']
 record.update(policy_prefill_refit=dict(status='passed',variants=9,non106_policy_skipped=True,actual_driver_attempts=8,existing_controls_skipped=1,failed_trials_excluded=1,successful_trials_added=7,full_genre_repeatability_invocations=1),source_sha256=hashlib.sha256(source.read_bytes()).hexdigest())
 (R/'outputs/hybrid-soft-pressure-refinement-test.json').write_text(json.dumps(record,indent=2)+'\n');print('Policy-prefill follow-up actual driver checks passed')
+
+# The user later clarified that12GiB is nonworker capacity, not unused RAM.
+r=copy.deepcopy(result);t=copy.deepcopy(telemetry)
+r['config']['host_memory_policy'].update(minimum_host_available_gib=0,minimum_nonworker_budget_gib=12)
+t[0]['host_memory'].update(host_available_bytes=9*2**30,host_physical_bytes=122*2**30)
+assert trial(r,t,c) is not None
+t[0]['host_memory']['host_physical_bytes']=112*2**30
+assert trial(r,t,c) is None
+record['nonworker_budget_mode']='passed;9GiB free allowed with122GiB physical/108GiB cap, insufficient physical capacity refused'
+(R/'outputs/hybrid-soft-pressure-refinement-test.json').write_text(json.dumps(record,indent=2)+'\n')

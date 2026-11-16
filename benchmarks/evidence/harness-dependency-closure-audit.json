@@ -1,12 +1,37 @@
 {
-  "at": "2026-11-15T22:31:05.996243-08:00",
+  "at": "2026-11-15T23:42:01.654864-08:00",
   "status": "passed",
-  "prepared_from_base_commit": "3b164ba06c29fbfd3fe8dab84774dcdc39cc609b",
-  "manifest_sha256": "12d35ca475fed72065675d7e583bd7100f8aa1c6f719564c4a18acf291e1a70f",
-  "scope": "Current Python AST local imports and existing literal file references, plus prior dependency paths revalidated; documented sibling checkout layout. Dynamic imports, model fixtures, weights and external package reconstruction excluded.",
-  "source_count": 56,
-  "prior_dependency_paths_revalidated": 155,
+  "prepared_from_base_commit": "56b98cd26c1f802de641e4cc2e41d93faf4dcdeb",
+  "manifest_sha256": "8554303d4f42882c9cb6b5d98b2a1acc83c24539ca570d2cbeafe8aaa4b8332b",
+  "scope": "Current Python AST local imports and existing literal script references, plus prior dependency paths and required user RAM policy evidence verified. Documented sibling layout; dynamic imports, weights, model fixtures and external package reconstruction excluded.",
+  "source_count": 57,
+  "prior_dependency_paths_revalidated": 175,
+  "user_memory_policy_published": true,
   "checks": [
+    {
+      "source": "test_nonworker_memory_budget.py",
+      "dependency": "benchmark_memory_guard.py",
+      "passed": true,
+      "kind": "local harness"
+    },
+    {
+      "source": "test_nonworker_memory_budget.py",
+      "dependency": "range_common.py",
+      "passed": true,
+      "kind": "local harness"
+    },
+    {
+      "source": "test_nonworker_memory_budget.py",
+      "dependency": "benchmark_memory_guard.py",
+      "passed": true,
+      "kind": "local harness"
+    },
+    {
+      "source": "test_nonworker_memory_budget.py",
+      "dependency": "range_common.py",
+      "passed": true,
+      "kind": "local harness"
+    },
     {
       "source": "test_joint_feedback.py",
       "dependency": "range_repeatability.py",
@@ -346,6 +371,12 @@
     {
       "source": "continue_after_range_queue.py",
       "dependency": "code_function_eval.py",
+      "passed": true,
+      "kind": "local harness"
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "test_nonworker_memory_budget.py",
       "passed": true,
       "kind": "local harness"
     },
@@ -730,6 +761,12 @@
     {
       "source": "range_common.py",
       "dependency": "latest80_common.py",
+      "passed": true,
+      "kind": "local harness"
+    },
+    {
+      "source": "range_common.py",
+      "dependency": "benchmark_memory_guard.py",
       "passed": true,
       "kind": "local harness"
     },

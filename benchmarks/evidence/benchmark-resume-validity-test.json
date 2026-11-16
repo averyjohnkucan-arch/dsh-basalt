@@ -1,7 +1,7 @@
 {
   "status": "passed",
   "scope": "Actual run() and input-matching functions extracted without importing the GPU harness; only the worker and power checks are simulated. Files, archives and resume paths are real NVMe scratch operations.",
-  "source_sha256": "e5f855bbe97ddf765c9342c41f2875e6ca99da5c4a765fc8addb62598c1c9dfb",
+  "source_sha256": "6537001785e88bf6108697ff641beb359cfe8b20962b55a0469990d86d6947c5",
   "current": {
     "pre_launch_failure": {
       "stale_success_left_active": false,

@@ -1,7 +1,24 @@
 """Run after Qwen models and their plugin checks; rotates only owned derived packs."""
 from range_tuner import *
-import shutil,os
+import shutil,os,hashlib
 from benchmark_memory_guard import MemoryGuard
+def saved_profile_baseline(template):
+ """Relocate the actual saved DSH profile without replacing its tuning controls."""
+ source=pathlib.Path('/mnt/media/AI/Model Configs/strata/native-profiles.json')
+ profile=next(p for p in read(source)if p.get('model',{}).get('architecture')=='deepseek41')
+ ranking=source.parent/'deepseek-runtime-metadata/decode-tuning/expert-profile.bin'
+ sha=hashlib.sha256(ranking.read_bytes()).hexdigest();owned=W/'saved-expert-profiles'/('deepseek-current-profile-'+sha[:12]+'.bin')
+ if owned.exists():assert hashlib.sha256(owned.read_bytes()).hexdigest()==sha
+ else:shutil.copy2(ranking,owned)
+ c=copy.deepcopy(template);args=list(profile['config']['args']);old_args=template['command'];pack=old_args[old_args.index('--pack')+1]
+ c['command']=['taskset','-c',profile.get('cpuSet','0-21'),old_args[3],*args]
+ opt(c,'--pack',pack);opt(c,'--expert-profile',owned);opt(c,'--eos',2147483647)
+ if '--serve'not in c['command']:c['command'].append('--serve')
+ for flag,value in profile['portableTuning'].items():opt(c,flag,value)
+ c['env']={**profile['config'].get('env',{}),**profile.get('environment',{}),'LD_LIBRARY_PATH':template['env']['LD_LIBRARY_PATH']}
+ c['expert_profile_source']=str(owned);c['saved_dsh_profile_name']=profile['name'];c['saved_dsh_profile_sha256']=hashlib.sha256(source.read_bytes()).hexdigest();c['saved_expert_profile_sha256']=sha
+ return c
+
 artifact=R/'packs/deepseek-gsq-rco-iq2xxs.basalt'
 if not artifact.exists():
  # Rotation is irreversible for our derived copies: require completed native and
@@ -64,7 +81,7 @@ base=latest(read(R/'bench/final-deepseek-basalt-fast-90/result.json')['config'],
 opt(base,'--expert-profile',W/'saved-expert-profiles/deepseek-basalt.prof')
 base['expert_profile_source']=str(W/'saved-expert-profiles/deepseek-basalt.prof')
 candidates=[(tag,changed(base,changes))for tag,changes in [('workers14',{'--pool-workers':14}),('workers12',{'--pool-workers':12}),('workers8',{'--pool-workers':8}),('dspark4',{'--spec':4}),('dspark6',{'--spec':6}),('dspark6-exp64',{'--spec':6,'--draft-experts':64})]]
-old=read(W/'final-deepseek-old-90.json')
+old=saved_profile_baseline(read(W/'final-deepseek-old-90.json'))
 tune('deepseek_basalt',base,'deepseek',candidates,[],[(f'spec{s}',{'--spec':s})for s in [0,4,6]],old=old)
 strata=read(W/'final-deepseek-strata-90.json')
 strata['expert_profile_source']=str(W/'saved-expert-profiles/deepseek-strata.bin')

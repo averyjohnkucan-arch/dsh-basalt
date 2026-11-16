@@ -1,5 +1,6 @@
 """Fresh, exact native-chat prompts and separately qualified decode screens."""
 from latest80_common import R,W,O,read,opt,latest,digest
+from benchmark_memory_guard import apply_user_host_budget
 import copy,json,pathlib,subprocess,sys,time,shutil
 from benchmark_environment import current_environment,case_name,repeatability_plan,ensure_environment
 WORKLOADS=read(O/'range-workloads.json')
@@ -37,6 +38,12 @@ def hybrid_strata_pack():
 def completed_input_matches(value,planned):
  actual=value.get('config',{})
  if not isinstance(actual,dict):return False
+ original_policy=actual.get('host_memory_policy',{})
+ actual=apply_user_host_budget(copy.deepcopy(actual));planned=apply_user_host_budget(copy.deepcopy(planned))
+ # A stricter old free-RAM guard is compatible only if performance-affecting
+ # cgroup limits stay unchanged. Never reinterpret a larger old worker cap.
+ for field in ['memory_high_gib','memory_max_gib','swap_max_gib']:
+  if field in original_policy and original_policy[field]!=actual['host_memory_policy'][field]:return False
  for field in ['engine_binary_sha256','artifact_header_sha256','artifact_bytes','benchmark_environment_id','benchmark_memory_policy_id','protocol','prompt_file','depth','generate','timed_tail','workload','sampling']:
   if field in planned and actual.get(field)!=planned[field]:return False
  for field,value in planned.get('host_memory_policy',{}).items():
@@ -51,7 +58,7 @@ def completed_input_matches(value,planned):
  return command(actual)==command(planned)
 
 def run(config,name,family,workload,n=8192,cache=None,reuse=False,role='qualified'):
- c=copy.deepcopy(config);name=case_name(name);out=R/'bench'/name
+ c=apply_user_host_budget(copy.deepcopy(config));name=case_name(name);out=R/'bench'/name
  environment=current_environment()
  if environment:c['benchmark_environment_id']=environment['id']
  fixture=next(x for x in WORKLOADS['cases']if x['family']==family and x['workload']==workload)
@@ -67,7 +74,8 @@ def run(config,name,family,workload,n=8192,cache=None,reuse=False,role='qualifie
   c['artifact_bytes']=artifact.stat().st_size
  path=W/(name+'.json');result=out/'result.json'
  previous=read_case_mapping(result)
- same=read_case_mapping(path)==c and(previous is None or completed_input_matches(previous,c))
+ prior_input=read_case_mapping(path)
+ same=(apply_user_host_budget(copy.deepcopy(prior_input))if prior_input else None)==c and(previous is None or completed_input_matches(previous,c))
  if out.exists()and(not same or previous is None or previous.get('status')!='ok'):
   files=[f for f in out.iterdir()if f.is_file()]
   if files:

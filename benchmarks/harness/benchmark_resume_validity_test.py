@@ -20,7 +20,7 @@ def fixture(source_path,label):
   out=Path(c['output']);out.mkdir(parents=True,exist_ok=True)
   (out/'result.json').write_text(json.dumps(dict(status='ok',config=actual,generated=8192,prefill_tok_s=1000,tail_decode_tok_s=100,synthetic_worker=state['workers'])))
   return types.SimpleNamespace(returncode=0)
- ns=dict(R=root,W=work,O=root/'outputs',read=read,copy=copy,json=json,pathlib=__import__('pathlib'),subprocess=types.SimpleNamespace(run=worker,STDOUT=-2),sys=sys,time=time,shutil=shutil,current_environment=lambda:None,case_name=lambda name:'range-'+name,ensure_environment=ensure,digest=lambda path:'fixture-engine-sha',opt=lambda *args:None,WORKLOADS=dict(cases=[dict(family='fixture',workload='code',prompt_file='fixture-token-ids.json',depth=8192)]))
+ ns=dict(apply_user_host_budget=lambda c:c,R=root,W=work,O=root/'outputs',read=read,copy=copy,json=json,pathlib=__import__('pathlib'),subprocess=types.SimpleNamespace(run=worker,STDOUT=-2),sys=sys,time=time,shutil=shutil,current_environment=lambda:None,case_name=lambda name:'range-'+name,ensure_environment=ensure,digest=lambda path:'fixture-engine-sha',opt=lambda *args:None,WORKLOADS=dict(cases=[dict(family='fixture',workload='code',prompt_file='fixture-token-ids.json',depth=8192)]))
  tree=ast.parse(source_path.read_text());functions=[x for x in tree.body if isinstance(x,ast.FunctionDef)and x.name in ['read_case_mapping','completed_input_matches','run']]
  exec(compile(ast.Module(body=functions,type_ignores=[]),str(source_path),'exec'),ns)
  def run(config):
