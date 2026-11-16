@@ -1,0 +1,52 @@
+{
+  "status": "passed",
+  "scope": "Actual run() and input-matching functions extracted without importing the GPU harness; only the worker and power checks are simulated. Files, archives and resume paths are real NVMe scratch operations.",
+  "source_sha256": "11a3894691a7e1027b0746ad1a10c0d4bc241fc1ed97b9ba98b1770c1d8c1fc6",
+  "current": {
+    "pre_launch_failure": {
+      "stale_success_left_active": false,
+      "relaunched": true,
+      "recovered_input_matches": true,
+      "prior_success_preserved": true
+    },
+    "post_run_failure": {
+      "stored_status": "failed",
+      "disqualified": true,
+      "relaunched": true,
+      "measurement_preserved": true
+    },
+    "interrupted_legacy_attempt": {
+      "relaunched": true,
+      "recovered_input_matches": true
+    },
+    "valid_owned_profile_cache": {
+      "reused": true,
+      "same_result": true,
+      "owned_profile_differs_from_planned": true
+    }
+  },
+  "legacy_bug_reproduced": {
+    "pre_launch_failure": {
+      "stale_success_left_active": true,
+      "relaunched": false,
+      "recovered_input_matches": false,
+      "prior_success_preserved": true
+    },
+    "post_run_failure": {
+      "stored_status": "ok",
+      "disqualified": false,
+      "relaunched": false,
+      "measurement_preserved": true
+    },
+    "interrupted_legacy_attempt": {
+      "relaunched": false,
+      "recovered_input_matches": false
+    },
+    "valid_owned_profile_cache": {
+      "reused": true,
+      "same_result": true,
+      "owned_profile_differs_from_planned": true
+    }
+  },
+  "legacy_source_sha256": "05585feca4db799730029b1ae52079a8642cd1b11711cc9989b774d7c90cc12d"
+}

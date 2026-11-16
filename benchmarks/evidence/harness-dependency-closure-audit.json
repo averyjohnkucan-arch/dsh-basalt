@@ -1,0 +1,673 @@
+{
+  "at": "2026-11-15T18:13:33.500056-08:00",
+  "status": "passed",
+  "prepared_from_base_commit": "749f2b54c20f543f89c04972124ef321f3430601",
+  "manifest_sha256": "95bc45653f8c9ffba5d494e475f96f26c729e833220b1ad85d621d12fb8f643f",
+  "scope": "Static local Python imports and literal script references in the exact 38-source snapshot identified by this manifest hash. JavaScript relative imports checked in the documented sibling-clone layout. Does not claim dynamic-import, fixture, weight or external-package reconstruction coverage.",
+  "source_count": 38,
+  "local_python_imports": [
+    {
+      "source": "audit_range_outputs.py",
+      "dependency": "prepare_range_fixtures.py",
+      "line": 4,
+      "published": true
+    },
+    {
+      "source": "calibrate_performance_ninfer.py",
+      "dependency": "benchmark_environment.py",
+      "line": 4,
+      "published": true
+    },
+    {
+      "source": "calibrate_performance_ninfer.py",
+      "dependency": "benchmark_memory_guard.py",
+      "line": 5,
+      "published": true
+    },
+    {
+      "source": "code_function_eval.py",
+      "dependency": "prepare_range_fixtures.py",
+      "line": 3,
+      "published": true
+    },
+    {
+      "source": "http_bench.py",
+      "dependency": "benchmark_memory_guard.py",
+      "line": 5,
+      "published": true
+    },
+    {
+      "source": "http_bench.py",
+      "dependency": "benchmark_environment.py",
+      "line": 6,
+      "published": true
+    },
+    {
+      "source": "http_bench.py",
+      "dependency": "benchmark_prompts.py",
+      "line": 34,
+      "published": true
+    },
+    {
+      "source": "latest80_common.py",
+      "dependency": "tune80_common.py",
+      "line": 1,
+      "published": true
+    },
+    {
+      "source": "latest80_common.py",
+      "dependency": "benchmark_environment.py",
+      "line": 3,
+      "published": true
+    },
+    {
+      "source": "mark_performance_qualified.py",
+      "dependency": "range_identity.py",
+      "line": 4,
+      "published": true
+    },
+    {
+      "source": "native_bench.py",
+      "dependency": "benchmark_prompts.py",
+      "line": 6,
+      "published": true
+    },
+    {
+      "source": "native_bench.py",
+      "dependency": "benchmark_memory_guard.py",
+      "line": 15,
+      "published": true
+    },
+    {
+      "source": "native_bench.py",
+      "dependency": "benchmark_environment.py",
+      "line": 16,
+      "published": true
+    },
+    {
+      "source": "performance_range_pipeline.py",
+      "dependency": "benchmark_environment.py",
+      "line": 4,
+      "published": true
+    },
+    {
+      "source": "quality_range_selected.py",
+      "dependency": "range_identity.py",
+      "line": 3,
+      "published": true
+    },
+    {
+      "source": "range_27b_basalt.py",
+      "dependency": "range_tuner.py",
+      "line": 1,
+      "published": true
+    },
+    {
+      "source": "range_common.py",
+      "dependency": "latest80_common.py",
+      "line": 2,
+      "published": true
+    },
+    {
+      "source": "range_common.py",
+      "dependency": "benchmark_environment.py",
+      "line": 4,
+      "published": true
+    },
+    {
+      "source": "range_deepseek.py",
+      "dependency": "range_tuner.py",
+      "line": 2,
+      "published": true
+    },
+    {
+      "source": "range_deepseek.py",
+      "dependency": "benchmark_memory_guard.py",
+      "line": 4,
+      "published": true
+    },
+    {
+      "source": "range_flash.py",
+      "dependency": "range_common.py",
+      "line": 1,
+      "published": true
+    },
+    {
+      "source": "range_identity.py",
+      "dependency": "range_common.py",
+      "line": 2,
+      "published": true
+    },
+    {
+      "source": "range_joint_refine.py",
+      "dependency": "range_tuner.py",
+      "line": 2,
+      "published": true
+    },
+    {
+      "source": "range_joint_refine.py",
+      "dependency": "range_identity.py",
+      "line": 3,
+      "published": true
+    },
+    {
+      "source": "range_low_peak.py",
+      "dependency": "range_tuner.py",
+      "line": 2,
+      "published": true
+    },
+    {
+      "source": "range_low_peak.py",
+      "dependency": "range_identity.py",
+      "line": 3,
+      "published": true
+    },
+    {
+      "source": "range_ninfer.py",
+      "dependency": "range_tuner.py",
+      "line": 1,
+      "published": true
+    },
+    {
+      "source": "range_plugin_gpu_gate.py",
+      "dependency": "benchmark_memory_guard.py",
+      "line": 4,
+      "published": true
+    },
+    {
+      "source": "range_progress_chart.py",
+      "dependency": "benchmark_environment.py",
+      "line": 4,
+      "published": true
+    },
+    {
+      "source": "range_progress_chart.py",
+      "dependency": "range_identity.py",
+      "line": 5,
+      "published": true
+    },
+    {
+      "source": "range_queue.py",
+      "dependency": "benchmark_environment.py",
+      "line": 3,
+      "published": true
+    },
+    {
+      "source": "range_repeatability.py",
+      "dependency": "range_common.py",
+      "line": 2,
+      "published": true
+    },
+    {
+      "source": "range_repeatability.py",
+      "dependency": "range_objective.py",
+      "line": 4,
+      "published": true
+    },
+    {
+      "source": "range_repeatability.py",
+      "dependency": "range_identity.py",
+      "line": 10,
+      "published": true
+    },
+    {
+      "source": "range_strata.py",
+      "dependency": "range_tuner.py",
+      "line": 1,
+      "published": true
+    },
+    {
+      "source": "range_tuner.py",
+      "dependency": "range_common.py",
+      "line": 2,
+      "published": true
+    }
+  ],
+  "literal_script_references": [
+    {
+      "source": "benchmark_resume_validity_test.py",
+      "dependency": "range_common.py",
+      "published": true
+    },
+    {
+      "source": "code_function_eval.py",
+      "dependency": "http_bench.py",
+      "published": true
+    },
+    {
+      "source": "code_function_eval.py",
+      "dependency": "native_bench.py",
+      "published": true
+    },
+    {
+      "source": "continue_after_range_queue.py",
+      "dependency": "range_deepseek.py",
+      "published": true
+    },
+    {
+      "source": "continue_after_range_queue.py",
+      "dependency": "range_repeatability.py",
+      "published": true
+    },
+    {
+      "source": "continue_after_range_queue.py",
+      "dependency": "range_low_peak.py",
+      "published": true
+    },
+    {
+      "source": "continue_after_range_queue.py",
+      "dependency": "range_repeatability.py",
+      "published": true
+    },
+    {
+      "source": "continue_after_range_queue.py",
+      "dependency": "code_function_eval.py",
+      "published": true
+    },
+    {
+      "source": "export_range_basalt.mjs",
+      "dependency": "profile_measurement_helpers.mjs",
+      "published": true
+    },
+    {
+      "source": "export_range_ninfer.mjs",
+      "dependency": "profile_measurement_helpers.mjs",
+      "published": true
+    },
+    {
+      "source": "export_range_strata.mjs",
+      "dependency": "profile_measurement_helpers.mjs",
+      "published": true
+    },
+    {
+      "source": "latest80_common.py",
+      "dependency": "http_bench.py",
+      "published": true
+    },
+    {
+      "source": "latest80_common.py",
+      "dependency": "native_bench.py",
+      "published": true
+    },
+    {
+      "source": "mark_performance_qualified.py",
+      "dependency": "range_progress_report.py",
+      "published": true
+    },
+    {
+      "source": "mark_performance_qualified.py",
+      "dependency": "range_plugin_gpu_gate.py",
+      "published": true
+    },
+    {
+      "source": "mark_performance_qualified.py",
+      "dependency": "audit_range_outputs.py",
+      "published": true
+    },
+    {
+      "source": "mark_performance_qualified.py",
+      "dependency": "range_progress_chart.py",
+      "published": true
+    },
+    {
+      "source": "performance_range_pipeline.py",
+      "dependency": "range_flash.py",
+      "published": true
+    },
+    {
+      "source": "performance_range_pipeline.py",
+      "dependency": "range_queue.py",
+      "published": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "benchmark_resume_validity_test.py",
+      "published": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "range_objective.py",
+      "published": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "calibrate_performance_ninfer.py",
+      "published": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "benchmark_environment.py",
+      "published": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "performance_range_pipeline.py",
+      "published": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "range_queue.py",
+      "published": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "continue_after_range_queue.py",
+      "published": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "prepare_benchmark_publication.py",
+      "published": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "native_bench.py",
+      "published": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "http_bench.py",
+      "published": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "benchmark_prompts.py",
+      "published": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "benchmark_memory_guard.py",
+      "published": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "range_common.py",
+      "published": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "range_identity.py",
+      "published": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "range_tuner.py",
+      "published": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "range_repeatability.py",
+      "published": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "range_low_peak.py",
+      "published": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "range_joint_refine.py",
+      "published": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "range_flash.py",
+      "published": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "range_strata.py",
+      "published": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "range_ninfer.py",
+      "published": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "range_27b_basalt.py",
+      "published": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "range_deepseek.py",
+      "published": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "mark_performance_qualified.py",
+      "published": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "range_plugin_gpu_gate.py",
+      "published": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "range_plugin_adapter_smoke.mjs",
+      "published": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "profile_measurement_helpers.mjs",
+      "published": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "export_range_basalt.mjs",
+      "published": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "export_range_ninfer.mjs",
+      "published": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "export_range_strata.mjs",
+      "published": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "range_progress_report.py",
+      "published": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "range_progress_chart.py",
+      "published": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "prepare_range_fixtures.py",
+      "published": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "audit_range_outputs.py",
+      "published": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "quality_range_selected.py",
+      "published": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "code_function_eval.py",
+      "published": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "latest80_common.py",
+      "published": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "tune80_common.py",
+      "published": true
+    },
+    {
+      "source": "quality_range_selected.py",
+      "dependency": "code_function_eval.py",
+      "published": true
+    },
+    {
+      "source": "range_common.py",
+      "dependency": "http_bench.py",
+      "published": true
+    },
+    {
+      "source": "range_common.py",
+      "dependency": "native_bench.py",
+      "published": true
+    },
+    {
+      "source": "range_deepseek.py",
+      "dependency": "native_bench.py",
+      "published": true
+    },
+    {
+      "source": "range_joint_refine.py",
+      "dependency": "range_repeatability.py",
+      "published": true
+    },
+    {
+      "source": "range_low_peak.py",
+      "dependency": "range_joint_refine.py",
+      "published": true
+    },
+    {
+      "source": "range_plugin_gpu_gate.py",
+      "dependency": "range_plugin_adapter_smoke.mjs",
+      "published": true
+    },
+    {
+      "source": "range_queue.py",
+      "dependency": "range_flash.py",
+      "published": true
+    },
+    {
+      "source": "range_queue.py",
+      "dependency": "range_strata.py",
+      "published": true
+    },
+    {
+      "source": "range_queue.py",
+      "dependency": "range_flash.py",
+      "published": true
+    },
+    {
+      "source": "range_queue.py",
+      "dependency": "range_strata.py",
+      "published": true
+    },
+    {
+      "source": "range_queue.py",
+      "dependency": "range_ninfer.py",
+      "published": true
+    },
+    {
+      "source": "range_queue.py",
+      "dependency": "range_27b_basalt.py",
+      "published": true
+    },
+    {
+      "source": "range_queue.py",
+      "dependency": "range_ninfer.py",
+      "published": true
+    },
+    {
+      "source": "range_queue.py",
+      "dependency": "quality_range_selected.py",
+      "published": true
+    },
+    {
+      "source": "range_queue.py",
+      "dependency": "range_repeatability.py",
+      "published": true
+    },
+    {
+      "source": "range_queue.py",
+      "dependency": "range_low_peak.py",
+      "published": true
+    },
+    {
+      "source": "range_queue.py",
+      "dependency": "range_repeatability.py",
+      "published": true
+    },
+    {
+      "source": "range_queue.py",
+      "dependency": "calibrate_performance_ninfer.py",
+      "published": true
+    },
+    {
+      "source": "range_repeatability.py",
+      "dependency": "mark_performance_qualified.py",
+      "published": true
+    },
+    {
+      "source": "tune80_common.py",
+      "dependency": "http_bench.py",
+      "published": true
+    },
+    {
+      "source": "tune80_common.py",
+      "dependency": "native_bench.py",
+      "published": true
+    }
+  ],
+  "relative_javascript_imports": [
+    {
+      "source": "export_range_basalt.mjs",
+      "dependency": "./profile_measurement_helpers.mjs",
+      "exists_in_declared_sibling_layout": true,
+      "scope": "harness module"
+    },
+    {
+      "source": "export_range_basalt.mjs",
+      "dependency": "./dsh-basalt/lib/models.js",
+      "exists_in_declared_sibling_layout": true,
+      "scope": "sibling DSH plugin source"
+    },
+    {
+      "source": "export_range_basalt.mjs",
+      "dependency": "./dsh-basalt/lib/runtime.js",
+      "exists_in_declared_sibling_layout": true,
+      "scope": "sibling DSH plugin source"
+    },
+    {
+      "source": "export_range_ninfer.mjs",
+      "dependency": "./profile_measurement_helpers.mjs",
+      "exists_in_declared_sibling_layout": true,
+      "scope": "harness module"
+    },
+    {
+      "source": "export_range_ninfer.mjs",
+      "dependency": "./dsh-ninfer/lib/profiles.js",
+      "exists_in_declared_sibling_layout": true,
+      "scope": "sibling DSH plugin source"
+    },
+    {
+      "source": "export_range_ninfer.mjs",
+      "dependency": "./dsh-ninfer/lib/reasoning.js",
+      "exists_in_declared_sibling_layout": true,
+      "scope": "sibling DSH plugin source"
+    },
+    {
+      "source": "export_range_strata.mjs",
+      "dependency": "./profile_measurement_helpers.mjs",
+      "exists_in_declared_sibling_layout": true,
+      "scope": "harness module"
+    },
+    {
+      "source": "export_range_strata.mjs",
+      "dependency": "./dsh-strata/lib/profiles.js",
+      "exists_in_declared_sibling_layout": true,
+      "scope": "sibling DSH plugin source"
+    }
+  ]
+}

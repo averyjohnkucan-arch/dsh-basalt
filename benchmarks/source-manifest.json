@@ -2,6 +2,11 @@
   "scope": "Exact harness snapshot; scratch paths and sibling clone layout retained for audit. No weights, generated answers, credentials, or token-ID fixtures included.",
   "files": [
     {
+      "path": "harness/benchmark_resume_validity_test.py",
+      "sha256": "fab5ad74fa48a56ac11d68871f4294b3bb51e6f6ed6ca0809312f2877f98e80c",
+      "bytes": 6319
+    },
+    {
       "path": "harness/range_objective.py",
       "sha256": "28cf88c27735d91b94a7efdf4c4600240ca92e5ec3137263dbdfe644e124a9e7",
       "bytes": 497
@@ -33,8 +38,8 @@
     },
     {
       "path": "harness/prepare_benchmark_publication.py",
-      "sha256": "b1cc209113939eef7afd8b546efb1997aed611f73a12ace6a1eb6319b68d54d5",
-      "bytes": 2915
+      "sha256": "06792b01b7ddf13aff50e193271133bae80f22d8200505ccef508886064aa620",
+      "bytes": 3077
     },
     {
       "path": "harness/native_bench.py",
@@ -58,8 +63,8 @@
     },
     {
       "path": "harness/range_common.py",
-      "sha256": "05585feca4db799730029b1ae52079a8642cd1b11711cc9989b774d7c90cc12d",
-      "bytes": 4488
+      "sha256": "11a3894691a7e1027b0746ad1a10c0d4bc241fc1ed97b9ba98b1770c1d8c1fc6",
+      "bytes": 5921
     },
     {
       "path": "harness/range_identity.py",
