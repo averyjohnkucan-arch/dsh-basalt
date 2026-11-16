@@ -1,6 +1,8 @@
 """Three-column comparison with explicit pending/unsupported cells; native engines stay separate."""
 from pathlib import Path
 import json,html,csv,datetime
+from benchmark_environment import current_environment
+environment=current_environment()
 R=Path('/mnt/media/scratch/dsh-inference-tuning-20261115');O=R/'outputs';s=json.loads((O/'range-selections.json').read_text())
 def fmt(x):return f'{x:,.1f}'
 def speed(metrics):
@@ -10,6 +12,7 @@ def qualified(key):
  p=O/'performance-qualified'/(key+'.json')
  if not p.exists():return None
  data=json.loads(p.read_text());current=s.get(key+'_long',{});short=s.get(key+'_short',{})
+ if not data.get('performance_qualified')or(environment and data.get('benchmark_environment_id')!=environment['id']):return None
  if data['long_selection']!=current.get('selected')or data['short_selection']!=short.get('selected'):return None
  return data
 models=[
@@ -40,6 +43,7 @@ for key,label,oldkey in [('flash_strata','Flash Next INT8 / Strata0.1.59','flash
 now=datetime.datetime.now().astimezone().isoformat(timespec='seconds');count=sum(qualified(key) is not None for key in {k.removesuffix('_long') for k in s if k.endswith('_long')})
 text='''<!doctype html><meta charset="utf-8"><title>Inference tuning progress</title><style>body{font:16px system-ui;max-width:1500px;margin:36px auto;padding:0 24px;color:#172a3a;background:#f7fafc}h1{font-size:30px}table{border-collapse:collapse;width:100%;background:white;margin:20px 0}td,th{border:1px solid #d8e2eb;padding:12px;text-align:left;vertical-align:top}th{background:#e9f1f7}p{max-width:1100px;line-height:1.5}.status{padding:16px;background:#fff4d5;border-left:5px solid #d89c2d}</style>'''
 text+='<h1>Inference tuning progress</h1><p class="status">Work remains in progress. '+str(count)+' preset families have passed the native performance evidence gate. Plugin-owned GPU, generated-code, packaging and publication gates are tracked separately.</p><p>Updated '+html.escape(now)+'. P = prefill tokens/s; D = sustained late decode tokens/s. Low input: 8,192 code tokens. High input: floor(80% native capacity), with text, chat and original-story tasks. All continuations: 8,192 tokens; final 4,096 timed (HTTP draft-batch boundaries can differ by up to seven tokens).</p>'
+text+='<img src="range-model-progress.png" alt="Basalt performance qualification progress across supported model families" style="max-width:100%;height:auto">'
 text+=table(headers,rows)+'<h2>Strata and NInfer, reported separately</h2>'+table(['Model / engine','Old settings','Current long preset'],other)
 text+='<p>95 W requested/default GPU power; enforced limit varies under load; thinking off; NVMe model reads; isolated worker RAM high/max96/108GiB by default; hybrid experiments use104/108GiB with the same12GiB host-reserve stop. Exact policy is retained per profile. The first pre-recovery sweep is diagnostic; final profiles require fresh isolated measurements. The long preset maximizes the minimum genre-median decode, then minimum cold prefill while each genre median retains at least95% of its value in that peak-decode preset. Both absolute and relative limiting genres are repeated. Profile-name high pairs come from the slowest actual selected-settings genre/repeat. Cold process/prefix does not imply globally dropped OS file cache.</p><p>Finite measured workloads establish an observed range, not a guarantee for every possible prompt. Small generated-function checks and numerical kernel tests are separate from BF16-reference model quality. Some greedy continuations repeat paragraphs or section patterns; their rates remain in the measured range. Offline output audits separately record exact long-paragraph duplicates and repeated 16-token windows. Shared phrases can be legitimate, and these counts alone do not establish semantic quality; so higher throughput must not be treated as evidence of better conversational quality.</p>'
 (O/'range-progress.html').write_text(text);print('Updated progress report;',count,'performance-qualified preset families')

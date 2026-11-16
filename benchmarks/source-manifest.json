@@ -2,6 +2,11 @@
   "scope": "Exact harness snapshot; scratch paths and sibling clone layout retained for audit. No weights, generated answers, credentials, or token-ID fixtures included.",
   "files": [
     {
+      "path": "harness/range_model_progress.py",
+      "sha256": "ba688cd4f7ba4d8d58597197bff0082db8a38d1d2d778d41f9cc6cb18eba7658",
+      "bytes": 4823
+    },
+    {
       "path": "harness/test_hybrid_sustained_fit.py",
       "sha256": "bf13b1401ace48acb3e76bac9ce97d89142822ac945b5edba14b6ef07f5d2973",
       "bytes": 1924
@@ -58,8 +63,8 @@
     },
     {
       "path": "harness/prepare_benchmark_publication.py",
-      "sha256": "0d42f64792fb8f717e67d43956e900bffb4ff685bba2d0767e3e5d2883d61fe9",
-      "bytes": 3615
+      "sha256": "9a28645f97c1c4b6983eab5b86381f377a882ca2c9dde2a442dbda28bd50ba4a",
+      "bytes": 3682
     },
     {
       "path": "harness/native_bench.py",
@@ -138,8 +143,8 @@
     },
     {
       "path": "harness/mark_performance_qualified.py",
-      "sha256": "6f7ec6eefd4122e6f394ab4e3ec6bb50bb1b8ff06a322a84dadd9707b3336148",
-      "bytes": 5726
+      "sha256": "15093adb33245048bfe61b745ff827b9a2d6006458a5a1d367af898bcba94fd6",
+      "bytes": 5849
     },
     {
       "path": "harness/range_plugin_gpu_gate.py",
@@ -173,8 +178,8 @@
     },
     {
       "path": "harness/range_progress_report.py",
-      "sha256": "b5c2331720bdd29d5039c050cf712628c56fd4aaed8d4278e3bcd851ba9d51af",
-      "bytes": 6820
+      "sha256": "1f3e17bd5ec2c7872076a45e55918ada974e701c808c362b55ed62334a42b400",
+      "bytes": 7197
     },
     {
       "path": "harness/range_progress_chart.py",

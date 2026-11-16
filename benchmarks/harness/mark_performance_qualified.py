@@ -53,6 +53,7 @@ record['genre_decode_floor_tok_s']=floors
 
 subprocess.run([sys.executable,str(R/'work/range_progress_report.py')],check=True)
 if key=='flash_basalt':subprocess.run(['taskset','-c','22',str(R/'tools/build-env/bin/python'),str(R/'work/range_progress_chart.py')],check=True)
+subprocess.run(['taskset','-c','22',str(R/'tools/build-env/bin/python'),str(R/'work/range_model_progress.py')],check=True)
 subprocess.run([sys.executable,str(R/'work/range_plugin_gpu_gate.py'),key],check=True)
 family='deepseek'if key.startswith('deepseek')else'qwen27b'if key.startswith(('27b','huihui'))else'qwen'
 subprocess.run(['taskset','-c','22',str(R/'tools/build-env/bin/python'),str(R/'work/audit_range_outputs.py'),key,family],check=True)
