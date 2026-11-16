@@ -2,6 +2,11 @@
   "scope": "Exact harness snapshot; scratch paths and sibling clone layout retained for audit. No weights, generated answers, credentials, or token-ID fixtures included.",
   "files": [
     {
+      "path": "harness/test_hybrid_sustained_fit.py",
+      "sha256": "bf13b1401ace48acb3e76bac9ce97d89142822ac945b5edba14b6ef07f5d2973",
+      "bytes": 1924
+    },
+    {
       "path": "harness/resume_hybrid_pipeline.py",
       "sha256": "51f2699527aec4d01411fd53a78401e37e5b333a180709aa0e29527051a56411",
       "bytes": 1392
@@ -53,8 +58,8 @@
     },
     {
       "path": "harness/prepare_benchmark_publication.py",
-      "sha256": "d22706a61a2c8141a41026f1848df0e0b9a2924661828ceff03cbbbae60b976c",
-      "bytes": 3421
+      "sha256": "f415d3a85c8b4849cf08ef20232b4bbf9d3f4167bf8e723da25c215b128ddc27",
+      "bytes": 3494
     },
     {
       "path": "harness/native_bench.py",
@@ -108,8 +113,8 @@
     },
     {
       "path": "harness/range_flash.py",
-      "sha256": "6339c058c3ea1f5a25a0ee26ddaab829d31f2855cd673359f5f1fc1de1c39832",
-      "bytes": 5084
+      "sha256": "93b143706bdda573bb081e5de0ccc103770bfbc7fdabc435718ca5b5562a3c9b",
+      "bytes": 6285
     },
     {
       "path": "harness/range_strata.py",

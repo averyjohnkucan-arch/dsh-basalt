@@ -21,8 +21,29 @@ if model.endswith('fp16'):
  opt(base,'--kv','fp16');opt(old,'--kv','fp16')
 # Start with all three actual long-answer genres. Decode screens are never profile-name measurements.
 initial=[]
-for workload in['text','chat','story']:
- x=run(base,model+'-basalt-base-'+workload,'qwen',workload,cache=model+'-'+workload);assert x['status']=='ok';initial.append(x)
+budgets=[None]
+if memory_fit:
+ current=int(float(base['command'][base['command'].index('--resident-budget-gib')+1]))
+ budgets=[current]+[b for b in [88,84,80]if b<current]
+ sustained_attempts=[]
+for budget in budgets:
+ if budget is not None:opt(base,'--resident-budget-gib',budget)
+ initial=[]
+ for workload in ['text','chat','story']:
+  x=run(base,model+'-basalt-base-'+workload,'qwen',workload,cache=model+'-'+workload)
+  if x['status']!='ok':
+   assert memory_fit and 'RAM safety stop'in str(x.get('error','')), 'Initial workload failed; inspect non-memory error before tuning'
+   sustained_attempts.append(dict(budget_gib=budget,failed_case=name(x),error=x.get('error')))
+   save(model+'_sustained_memory_fit',dict(status='screening',attempts=sustained_attempts));break
+  initial.append(x)
+ if len(initial)==3:
+  if memory_fit:
+   sustained_attempts.append(dict(budget_gib=budget,status='all-three-full-output-genres-passed',cases=[name(x)for x in initial]))
+   save(model+'_sustained_memory_fit',dict(status='complete',selected_initial_budget_gib=budget,attempts=sustained_attempts))
+   failed={a['budget_gib']for a in sustained_attempts if 'failed_case'in a}
+   memory_fit={**memory_fit,'safe_budgets_gib':sorted((set(memory_fit['safe_budgets_gib'])-failed)|{budget})}
+  break
+assert len(initial)==3,'No hybrid budget passed all three guarded full-output genres'
 worst=min(initial,key=lambda x:x['tail_decode_tok_s']);workload=worst['config']['workload'];save(model+'_screen_workload',workload)
 screens=[]
 variants=[('base-controls',{}),('spec6',{'--spec':6}),('spec4',{'--spec':4}),('workers14',{'--pool-workers':14}),('workers8',{'--pool-workers':8}),('resident131k',{'--kv-resident':131072})]
