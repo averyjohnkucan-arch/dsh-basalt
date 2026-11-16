@@ -1,7 +1,7 @@
 {
-  "at": "2026-11-15T18:11:51.313562-08:00",
+  "at": "2026-11-15T18:18:00.883929-08:00",
   "status": "passed",
-  "scope": "All currently completed performance-cohort range cases match planned input and have controller END-ok evidence. In this harness END is emitted only after the post-worker environment check succeeds. Active unfinished cases are not accepted by this audit.",
+  "scope": "All currently completed performance-cohort range cases match planned input and have controller END-ok evidence. END follows the successful post-worker environment check. Unfinished active cases are not accepted.",
   "cases": [
     {
       "case": "range-perf-flash-basalt-base-chat",
@@ -264,6 +264,11 @@
       "caller_completed_post_environment_check": true
     },
     {
+      "case": "range-perf-flash_basalt-peak-code-profile-b880f20a9748-text",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
       "case": "range-perf-flash_basalt-range-check-35b46ec69f83-chat",
       "matches_planned_input": true,
       "caller_completed_post_environment_check": true
@@ -285,6 +290,11 @@
     },
     {
       "case": "range-perf-flash_basalt-range-check-5ba1de1ff8dc-text",
+      "matches_planned_input": true,
+      "caller_completed_post_environment_check": true
+    },
+    {
+      "case": "range-perf-flash_basalt-peak-code-confirm-2623182bbb21-1",
       "matches_planned_input": true,
       "caller_completed_post_environment_check": true
     },

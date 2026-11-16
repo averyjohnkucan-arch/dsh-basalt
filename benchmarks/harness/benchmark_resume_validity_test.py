@@ -21,7 +21,7 @@ def fixture(source_path,label):
   (out/'result.json').write_text(json.dumps(dict(status='ok',config=actual,generated=8192,prefill_tok_s=1000,tail_decode_tok_s=100,synthetic_worker=state['workers'])))
   return types.SimpleNamespace(returncode=0)
  ns=dict(R=root,W=work,O=root/'outputs',read=read,copy=copy,json=json,pathlib=__import__('pathlib'),subprocess=types.SimpleNamespace(run=worker,STDOUT=-2),sys=sys,time=time,shutil=shutil,current_environment=lambda:None,case_name=lambda name:'range-'+name,ensure_environment=ensure,digest=lambda path:'fixture-engine-sha',opt=lambda *args:None,WORKLOADS=dict(cases=[dict(family='fixture',workload='code',prompt_file='fixture-token-ids.json',depth=8192)]))
- tree=ast.parse(source_path.read_text());functions=[x for x in tree.body if isinstance(x,ast.FunctionDef)and x.name in ['completed_input_matches','run']]
+ tree=ast.parse(source_path.read_text());functions=[x for x in tree.body if isinstance(x,ast.FunctionDef)and x.name in ['read_case_mapping','completed_input_matches','run']]
  exec(compile(ast.Module(body=functions,type_ignores=[]),str(source_path),'exec'),ns)
  def run(config):
   with contextlib.redirect_stdout(io.StringIO()):return ns['run'](config,'case','fixture','code')
@@ -47,11 +47,18 @@ def inspect(source_path,label):
  rows['interrupted_legacy_attempt']=dict(relaunched=state['workers']>before,recovered_input_matches=value['config']['command']==new['command'])
  root,state,run,old,new=fixture(source_path,label+'-cache');new['command']+=['--expert-profile',str(root/'master.prof')];first=run(new);before=state['workers'];second=run(new)
  rows['valid_owned_profile_cache']=dict(reused=state['workers']==before,same_result=first==second,owned_profile_differs_from_planned=second['config']['command']!=new['command'])
+ for target in ['result','input']:
+  root,state,run,old,new=fixture(source_path,label+'-malformed-'+target);run(new)
+  path=root/('bench/range-case/result.json'if target=='result'else'work/range-case.json');broken=b'{"interrupted":';path.write_bytes(broken);before=state['workers'];raised=False
+  try:run(new)
+  except (json.JSONDecodeError,UnicodeDecodeError):raised=True
+  archive_name='result.json'if target=='result'else'input-config.json';copies=list((root/'bench/range-case/prior-attempts').glob('*/'+archive_name))
+  rows['malformed_'+target]=dict(raised_parse_error=raised,relaunched=state['workers']>before,original_bytes_preserved=any(p.read_bytes()==broken for p in copies))
  return rows
 
-current=inspect(source,'fixed');assert not current['pre_launch_failure']['stale_success_left_active'];assert current['pre_launch_failure']['relaunched']and current['pre_launch_failure']['recovered_input_matches'];assert current['post_run_failure']['stored_status']=='failed'and current['post_run_failure']['disqualified']and current['post_run_failure']['relaunched']and current['post_run_failure']['measurement_preserved'];assert current['interrupted_legacy_attempt']['relaunched']and current['interrupted_legacy_attempt']['recovered_input_matches'];assert all(current['valid_owned_profile_cache'].values())
+current=inspect(source,'fixed');assert not current['pre_launch_failure']['stale_success_left_active'];assert current['pre_launch_failure']['relaunched']and current['pre_launch_failure']['recovered_input_matches'];assert current['post_run_failure']['stored_status']=='failed'and current['post_run_failure']['disqualified']and current['post_run_failure']['relaunched']and current['post_run_failure']['measurement_preserved'];assert current['interrupted_legacy_attempt']['relaunched']and current['interrupted_legacy_attempt']['recovered_input_matches'];assert all(current['valid_owned_profile_cache'].values());assert all(not current['malformed_'+kind]['raised_parse_error']and current['malformed_'+kind]['relaunched']and current['malformed_'+kind]['original_bytes_preserved']for kind in ['input','result'])
 legacy=None
 if len(sys.argv)>1:
- baseline=Path(sys.argv[1]);legacy=inspect(baseline,'before');assert legacy['pre_launch_failure']['stale_success_left_active']and not legacy['pre_launch_failure']['relaunched'];assert legacy['post_run_failure']['stored_status']=='ok'and not legacy['post_run_failure']['relaunched'];assert not legacy['interrupted_legacy_attempt']['relaunched']
+ baseline=Path(sys.argv[1]);legacy=inspect(baseline,'before');assert legacy['pre_launch_failure']['stale_success_left_active']and not legacy['pre_launch_failure']['relaunched'];assert legacy['post_run_failure']['stored_status']=='ok'and not legacy['post_run_failure']['relaunched'];assert not legacy['interrupted_legacy_attempt']['relaunched'];assert all(legacy['malformed_'+kind]['raised_parse_error']for kind in ['input','result'])
 out=dict(status='passed',scope='Actual run() and input-matching functions extracted without importing the GPU harness; only the worker and power checks are simulated. Files, archives and resume paths are real NVMe scratch operations.',source_sha256=hashlib.sha256(source.read_bytes()).hexdigest(),current=current,legacy_bug_reproduced=legacy,legacy_source_sha256=hashlib.sha256(Path(sys.argv[1]).read_bytes()).hexdigest()if legacy else None)
 (ROOT/'outputs/benchmark-resume-validity-test.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps(out,indent=2))

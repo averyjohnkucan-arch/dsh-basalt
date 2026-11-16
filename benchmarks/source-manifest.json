@@ -3,8 +3,8 @@
   "files": [
     {
       "path": "harness/benchmark_resume_validity_test.py",
-      "sha256": "fab5ad74fa48a56ac11d68871f4294b3bb51e6f6ed6ca0809312f2877f98e80c",
-      "bytes": 6319
+      "sha256": "085a9e78f4fa62c7bd76a27560c62810eb03a8ecc5185ace2cf840fe3b159594",
+      "bytes": 7312
     },
     {
       "path": "harness/range_objective.py",
@@ -63,8 +63,8 @@
     },
     {
       "path": "harness/range_common.py",
-      "sha256": "11a3894691a7e1027b0746ad1a10c0d4bc241fc1ed97b9ba98b1770c1d8c1fc6",
-      "bytes": 5921
+      "sha256": "3415276623b6428e111f168d6a1942a110ac0aea6e61c678de3d1ab6755265d7",
+      "bytes": 6275
     },
     {
       "path": "harness/range_identity.py",

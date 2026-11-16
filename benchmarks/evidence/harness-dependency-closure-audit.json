@@ -1,9 +1,9 @@
 {
-  "at": "2026-11-15T18:13:33.500056-08:00",
+  "at": "2026-11-15T18:18:32.476666-08:00",
   "status": "passed",
-  "prepared_from_base_commit": "749f2b54c20f543f89c04972124ef321f3430601",
-  "manifest_sha256": "95bc45653f8c9ffba5d494e475f96f26c729e833220b1ad85d621d12fb8f643f",
-  "scope": "Static local Python imports and literal script references in the exact 38-source snapshot identified by this manifest hash. JavaScript relative imports checked in the documented sibling-clone layout. Does not claim dynamic-import, fixture, weight or external-package reconstruction coverage.",
+  "prepared_from_base_commit": "7202cd16e6983fd6bf58322df967559d3ed10072",
+  "manifest_sha256": "09917f6bc43a52c6c7468ddbe6f54fe99a4649dc862f33553f4687f555603e60",
+  "scope": "Static local Python imports and literal script references in the exact 38-source snapshot identified by this manifest hash; JavaScript relative imports checked in documented sibling-clone layout. Excludes dynamic-import, fixture, weight and external-package reconstruction coverage.",
   "source_count": 38,
   "local_python_imports": [
     {

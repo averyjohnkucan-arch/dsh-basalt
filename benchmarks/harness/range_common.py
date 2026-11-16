@@ -4,15 +4,23 @@ import copy,json,pathlib,subprocess,sys,time,shutil
 from benchmark_environment import current_environment,case_name,repeatability_plan,ensure_environment
 WORKLOADS=read(O/'range-workloads.json')
 
+def read_case_mapping(path):
+ try:value=read(path)
+ except(FileNotFoundError,json.JSONDecodeError,UnicodeDecodeError):return None
+ return value if isinstance(value,dict)else None
+
 def completed_input_matches(value,planned):
  actual=value.get('config',{})
+ if not isinstance(actual,dict):return False
  for field in ['engine_binary_sha256','artifact_header_sha256','artifact_bytes','benchmark_environment_id','protocol','prompt_file','depth','generate','timed_tail','workload','sampling']:
   if field in planned and actual.get(field)!=planned[field]:return False
  for field,value in planned.get('host_memory_policy',{}).items():
   if actual.get('host_memory_policy',{}).get(field)!=value:return False
  def command(config):
-  argv=list(config.get('command',[]))
+  if not isinstance(config.get('command'),list):return None
+  argv=list(config['command'])
   if '--expert-profile'in argv and config.get('expert_profile_source'):
+   if argv.index('--expert-profile')+1>=len(argv):return None
    argv[argv.index('--expert-profile')+1]=config['expert_profile_source']
   return argv
  return command(actual)==command(planned)
@@ -33,8 +41,9 @@ def run(config,name,family,workload,n=8192,cache=None,reuse=False,role='qualifie
   with artifact.open('rb')as f:c['artifact_header_sha256']=__import__('hashlib').sha256(f.read(65536)).hexdigest()
   c['artifact_bytes']=artifact.stat().st_size
  path=W/(name+'.json');result=out/'result.json'
- same=path.exists()and read(path)==c and(not result.exists()or completed_input_matches(read(result),c))
- if out.exists()and(not same or not result.exists()or read(result).get('status')!='ok'):
+ previous=read_case_mapping(result)
+ same=read_case_mapping(path)==c and(previous is None or completed_input_matches(previous,c))
+ if out.exists()and(not same or previous is None or previous.get('status')!='ok'):
   files=[f for f in out.iterdir()if f.is_file()]
   if files:
    archive=out/'prior-attempts'/str(time.time_ns());archive.mkdir(parents=True)
@@ -44,7 +53,7 @@ def run(config,name,family,workload,n=8192,cache=None,reuse=False,role='qualifie
   # new worker starts must not make that old success reusable under the new input.
   result.unlink(missing_ok=True)
  path.write_text(json.dumps(c,indent=2))
- if not same or not result.exists()or read(result).get('status')!='ok':
+ if not same or previous is None or previous.get('status')!='ok':
   ensure_environment()
   if cache and not reuse:
    folder=R/'checkpoints'/('range-'+cache)
