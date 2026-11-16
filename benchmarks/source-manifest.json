@@ -2,6 +2,11 @@
   "scope": "Exact harness snapshot; scratch paths and sibling clone layout retained for audit. No weights, generated answers, credentials, or token-ID fixtures included.",
   "files": [
     {
+      "path": "harness/test_joint_feedback.py",
+      "sha256": "39c3e1ce0d1e3893f91483de17408487219e3ddc56b156f58cebe06e3d7bb64e",
+      "bytes": 3064
+    },
+    {
       "path": "harness/hybrid_candidate_progress.py",
       "sha256": "d439b781688bd7c5a8af3165b4eb221888a9702c99fde318aaa4f8f3b873b063",
       "bytes": 3317
@@ -123,8 +128,8 @@
     },
     {
       "path": "harness/prepare_benchmark_publication.py",
-      "sha256": "3fbf55edb7923cf59d0eea69b2ac67688d8fd54e4388315cda836e2c902b41cd",
-      "bytes": 4722
+      "sha256": "ce8fb560b5a8d0297781591a1237a24e806589ee63423c389c23f49c870d0817",
+      "bytes": 4939
     },
     {
       "path": "harness/native_bench.py",
@@ -163,13 +168,13 @@
     },
     {
       "path": "harness/range_repeatability.py",
-      "sha256": "e3bd2e9fdc5e99cd9c7301bfbcfdea203daedfdd71f3312967696d47ea163bb1",
-      "bytes": 6393
+      "sha256": "981d09fe7b2f50e05e0ff4ab08cf1eb93b23ca1d067fdd6843841a0b046ef142",
+      "bytes": 6870
     },
     {
       "path": "harness/range_low_peak.py",
-      "sha256": "3bf6a5d877b80c824d9f1118561b0722491d1f8c2fb868c7d2ab5d9cdf3e936c",
-      "bytes": 6200
+      "sha256": "8cb4dd88fa397db22a1a7babeab2fb1bb208fd34851f7ed235d73fb6b38a6a3f",
+      "bytes": 6233
     },
     {
       "path": "harness/range_joint_refine.py",

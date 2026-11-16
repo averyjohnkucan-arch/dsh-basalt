@@ -1,0 +1,32 @@
+{
+  "status": "preliminary",
+  "scope": "Single full209715-chat/8192output/final4096timed candidate; only native reserve control differs after per-attempt draft-log paths excluded. Both use same shipped ranking and binary. Free continuations differ; not isolated knob causality or final all-genre/maximum qualification.",
+  "case": "range-perf-hybrid_basalt-joint-ed30cfe8653d-chat",
+  "changed_controls": {
+    "--vram-reserve-mib": [
+      null,
+      "256"
+    ]
+  },
+  "previous_default_reserve_mib_runtime_log": 700,
+  "prefill": 2148.461711044885,
+  "decode": 42.7164145630396,
+  "previous_chat_median_decode": 36.03719383142028,
+  "decode_change_percent": 18.534242046881587,
+  "prompt_sha256": "726c24a280a169b405f1e77982f7d3cd56733cdc50c0082669e1ab944f2e6f95",
+  "result_sha256": "2b70e6e2bdf5cc79d46023822aaae3006ce277a8693f52e378777ae0e0f58a94",
+  "output_audit": {
+    "exact_duplicate_long_paragraphs": 0,
+    "duplicate_16_token_window_fraction": 0.001589825119236884,
+    "end_markers": {
+      "native_end_marker_ids_known": true,
+      "native_end_marker_counts": {
+        "248046": 0
+      },
+      "first_native_end_marker_index": null,
+      "tokens_after_first_native_end_marker": 0,
+      "timed_tokens_after_first_native_end_marker": 0,
+      "entire_timed_tail_after_native_end_marker": false
+    }
+  }
+}

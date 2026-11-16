@@ -3,7 +3,7 @@ from range_tuner import *
 from range_identity import config_id
 import statistics
 key,family=sys.argv[1:3]
-subprocess.run([sys.executable,str(W/'range_joint_refine.py'),key,family],check=True)
+if '--skip-joint'not in sys.argv:subprocess.run([sys.executable,str(W/'range_joint_refine.py'),key,family],check=True)
 state=read(O/'range-selections.json');long_selection=state[key+'_long'];long_metrics=state[key+'_long_metrics']
 base=read(R/'bench'/long_selection['selected']/'result.json')['config'];long_id=config_id(base)
 candidates={long_id:base}

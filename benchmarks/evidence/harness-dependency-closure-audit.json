@@ -1,12 +1,36 @@
 {
-  "at": "2026-11-15T21:54:42.961115-08:00",
+  "at": "2026-11-15T22:31:05.996243-08:00",
   "status": "passed",
-  "prepared_from_base_commit": "f50ff4134022f8943232352076d1a5a2efa9bf89",
-  "manifest_sha256": "01b559cc44759391110909bf06c75de2198fd7ff410da5ada98d643594d9682d",
-  "scope": "Current Python AST local imports and existing literal file references, plus every earlier dependency path revalidated; documented sibling checkout layout. Dynamic imports, model fixtures, weights and external package reconstruction excluded.",
-  "source_count": 55,
-  "prior_dependency_paths_revalidated": 159,
+  "prepared_from_base_commit": "3b164ba06c29fbfd3fe8dab84774dcdc39cc609b",
+  "manifest_sha256": "12d35ca475fed72065675d7e583bd7100f8aa1c6f719564c4a18acf291e1a70f",
+  "scope": "Current Python AST local imports and existing literal file references, plus prior dependency paths revalidated; documented sibling checkout layout. Dynamic imports, model fixtures, weights and external package reconstruction excluded.",
+  "source_count": 56,
+  "prior_dependency_paths_revalidated": 155,
   "checks": [
+    {
+      "source": "test_joint_feedback.py",
+      "dependency": "range_repeatability.py",
+      "passed": true,
+      "kind": "local harness"
+    },
+    {
+      "source": "test_joint_feedback.py",
+      "dependency": "range_low_peak.py",
+      "passed": true,
+      "kind": "local harness"
+    },
+    {
+      "source": "test_joint_feedback.py",
+      "dependency": "range_joint_refine.py",
+      "passed": true,
+      "kind": "local harness"
+    },
+    {
+      "source": "test_joint_feedback.py",
+      "dependency": "range_low_peak.py",
+      "passed": true,
+      "kind": "local harness"
+    },
     {
       "source": "test_benchmark_end_policy.py",
       "dependency": "http_bench.py",
@@ -44,14 +68,44 @@
       "kind": "local harness"
     },
     {
+      "source": "test_soft_pressure_refinement.py",
+      "dependency": "range_joint_refine.py",
+      "passed": true,
+      "kind": "local harness"
+    },
+    {
       "source": "test_confirmation_diversity.py",
       "dependency": "range_tuner.py",
       "passed": true,
       "kind": "local harness"
     },
     {
+      "source": "test_confirmation_diversity.py",
+      "dependency": "range_tuner.py",
+      "passed": true,
+      "kind": "local harness"
+    },
+    {
+      "source": "test_decode_screen_recovery.py",
+      "dependency": "range_common.py",
+      "passed": true,
+      "kind": "local harness"
+    },
+    {
       "source": "test_draft_log_recovery.py",
       "dependency": "draft_log_diagnostics.py",
+      "passed": true,
+      "kind": "local harness"
+    },
+    {
+      "source": "test_draft_log_recovery.py",
+      "dependency": "native_bench.py",
+      "passed": true,
+      "kind": "local harness"
+    },
+    {
+      "source": "test_draft_log_recovery.py",
+      "dependency": "draft-log-recovery-fixture.txt",
       "passed": true,
       "kind": "local harness"
     },
@@ -98,6 +152,12 @@
       "kind": "local harness"
     },
     {
+      "source": "test_quality_batch_plan.py",
+      "dependency": "quality_range_selected.py",
+      "passed": true,
+      "kind": "local harness"
+    },
+    {
       "source": "range_model_progress.py",
       "dependency": "benchmark_environment.py",
       "passed": true,
@@ -106,6 +166,12 @@
     {
       "source": "range_model_progress.py",
       "dependency": "range_progress_report.py",
+      "passed": true,
+      "kind": "local harness"
+    },
+    {
+      "source": "test_hybrid_sustained_fit.py",
+      "dependency": "range_flash.py",
       "passed": true,
       "kind": "local harness"
     },
@@ -280,6 +346,12 @@
     {
       "source": "continue_after_range_queue.py",
       "dependency": "code_function_eval.py",
+      "passed": true,
+      "kind": "local harness"
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "test_joint_feedback.py",
       "passed": true,
       "kind": "local harness"
     },
@@ -717,6 +789,18 @@
     },
     {
       "source": "range_repeatability.py",
+      "dependency": "range_joint_refine.py",
+      "passed": true,
+      "kind": "local harness"
+    },
+    {
+      "source": "range_repeatability.py",
+      "dependency": "range_low_peak.py",
+      "passed": true,
+      "kind": "local harness"
+    },
+    {
+      "source": "range_repeatability.py",
       "dependency": "mark_performance_qualified.py",
       "passed": true,
       "kind": "local harness"
@@ -832,6 +916,42 @@
     {
       "source": "mark_performance_qualified.py",
       "dependency": "range_identity.py",
+      "passed": true,
+      "kind": "local harness"
+    },
+    {
+      "source": "mark_performance_qualified.py",
+      "dependency": "refresh_range_metrics.py",
+      "passed": true,
+      "kind": "local harness"
+    },
+    {
+      "source": "mark_performance_qualified.py",
+      "dependency": "range_progress_report.py",
+      "passed": true,
+      "kind": "local harness"
+    },
+    {
+      "source": "mark_performance_qualified.py",
+      "dependency": "range_model_progress.py",
+      "passed": true,
+      "kind": "local harness"
+    },
+    {
+      "source": "mark_performance_qualified.py",
+      "dependency": "range_plugin_gpu_gate.py",
+      "passed": true,
+      "kind": "local harness"
+    },
+    {
+      "source": "mark_performance_qualified.py",
+      "dependency": "audit_range_outputs.py",
+      "passed": true,
+      "kind": "local harness"
+    },
+    {
+      "source": "mark_performance_qualified.py",
+      "dependency": "range_progress_chart.py",
       "passed": true,
       "kind": "local harness"
     },

@@ -3,6 +3,14 @@ from range_common import *
 import statistics,hashlib
 from range_objective import prefill_safe,could_improve
 key,family=sys.argv[1:3];GENRES=['text','chat','story']
+def joint_feedback_required(key,args):
+ # One bounded second pass around the winner found by the first joint stage.
+ # Nested repeatability calls have no feedback flag, so cannot recurse.
+ return key=='hybrid_basalt'and '--include-peak-code'in args
+
+if joint_feedback_required(key,sys.argv):
+ subprocess.run([sys.executable,str(W/'range_joint_refine.py'),key,family],check=True)
+ subprocess.run([sys.executable,str(W/'range_low_peak.py'),key,family,'--skip-joint'],check=True)
 state=read(O/'range-selections.json');plan=repeatability_plan(key)
 if plan.exists():original=read(plan)
 else:

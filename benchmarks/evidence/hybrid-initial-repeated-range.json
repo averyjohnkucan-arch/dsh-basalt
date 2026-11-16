@@ -1,0 +1,55 @@
+{
+  "status": "initial-repeatability-complete",
+  "scope": "Intermediate result before joint refinements/peak-code feedback; no final profile qualification.",
+  "selected": "range-perf-hybrid_basalt-range-repeat-f2339c84acb2-chat",
+  "peak_decode_identity": "f2339c84acb2",
+  "peak_decode_tok_s": 36.03719383142028,
+  "genre_decode_floor_tok_s": {
+    "text": 46.125837278106225,
+    "chat": 34.235334139849265,
+    "story": 36.07534539993208
+  },
+  "low": {
+    "case": "range-perf-hybrid-basalt-long-profile-code",
+    "prefill": 1996.4418882362977,
+    "decode": 35.61742888569065
+  },
+  "high": {
+    "cases": [
+      {
+        "case": "range-perf-hybrid-basalt-final-text",
+        "workload": "text",
+        "prefill": 2193.839069301317,
+        "decode": 48.55351292432234
+      },
+      {
+        "case": "range-perf-hybrid-basalt-confirm-resident131k",
+        "workload": "chat",
+        "prefill": 2132.817100369479,
+        "decode": 36.35427937437292
+      },
+      {
+        "case": "range-perf-hybrid_basalt-range-repeat-f2339c84acb2-chat",
+        "workload": "chat",
+        "prefill": 2130.3774978337124,
+        "decode": 35.72010828846764
+      },
+      {
+        "case": "range-perf-hybrid-basalt-final-story",
+        "workload": "story",
+        "prefill": 2107.413101805794,
+        "decode": 37.97404778940219
+      }
+    ],
+    "worst_case": "range-perf-hybrid_basalt-range-repeat-f2339c84acb2-chat",
+    "best_case": "range-perf-hybrid-basalt-final-text",
+    "prefill_range": [
+      2107.413101805794,
+      2193.839069301317
+    ],
+    "decode_range": [
+      35.72010828846764,
+      48.55351292432234
+    ]
+  }
+}
