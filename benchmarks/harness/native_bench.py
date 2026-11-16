@@ -6,6 +6,8 @@ root=Path(cfg['output']);root.mkdir(parents=True,exist_ok=True)
 from benchmark_prompts import load_prompt,prompt_record
 ids=load_prompt(cfg);depth=cfg['depth']
 (root/'prompt.json').write_text(json.dumps(prompt_record(ids,cfg)))
+if '--expert-profile'in cfg['command']and not cfg.get('expert_profile_source'):
+ cfg['expert_profile_source']=cfg['command'][cfg['command'].index('--expert-profile')+1]
 if cfg.get('expert_profile_source'):
  source=Path(cfg['expert_profile_source']);target=root/'input-expert-profile.bin';shutil.copy2(source,target)
  cfg['input_profile_sha256']=hashlib.file_digest(target.open('rb'),'sha256').hexdigest()

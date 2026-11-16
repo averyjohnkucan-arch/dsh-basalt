@@ -16,7 +16,10 @@ for workload in['text','chat','story']:
  x=run(base,model+'-basalt-base-'+workload,'qwen',workload,cache=model+'-'+workload);assert x['status']=='ok';initial.append(x)
 worst=min(initial,key=lambda x:x['tail_decode_tok_s']);workload=worst['config']['workload'];save(model+'_screen_workload',workload)
 screens=[]
-for tag,changes in [('base-controls',{}),('spec6',{'--spec':6}),('spec4',{'--spec':4}),('workers14',{'--pool-workers':14}),('workers8',{'--pool-workers':8}),('resident131k',{'--kv-resident':131072})]:
+variants=[('base-controls',{}),('spec6',{'--spec':6}),('spec4',{'--spec':4}),('workers14',{'--pool-workers':14}),('workers8',{'--pool-workers':8}),('resident131k',{'--kv-resident':131072})]
+if base['command'][base['command'].index('--spec')+1]!='8':variants.append(('spec8',{'--spec':8}))
+if base['command'][base['command'].index('--pool-workers')+1]!='21':variants.append(('workers21',{'--pool-workers':21}))
+for tag,changes in variants:
  c=copy.deepcopy(base)
  for flag,value in changes.items():opt(c,flag,value)
  x=run(c,model+'-basalt-screen-'+tag,'qwen',workload,n=2048,cache=model+'-'+workload,reuse=True,role='decode screen only')

@@ -1,0 +1,41 @@
+{
+  "status": "ok",
+  "scope": "Regression from actual completed209715-input/8192-output cases: aggregate minimum alone admits a text decode loss>5%; per-genre prefill eligibility correctly rejects it. Peak preset remains eligible.",
+  "reference": {
+    "genres": {
+      "text": {
+        "decode": 78.9787810971519,
+        "prefill": 3092.717370626153
+      },
+      "chat": {
+        "decode": 65.54048955185235,
+        "prefill": 3246.5783326134715
+      },
+      "story": {
+        "decode": 65.69012446865918,
+        "prefill": 3264.5903675787254
+      }
+    },
+    "decode": 65.54048955185235,
+    "prefill": 3092.717370626153
+  },
+  "rejected_prefill_candidate": {
+    "genres": {
+      "text": {
+        "decode": 66.26403189313031,
+        "prefill": 3214.7127352995276
+      },
+      "chat": {
+        "decode": 68.50096333723353,
+        "prefill": 3259.511279247242
+      },
+      "story": {
+        "decode": 65.34566801883847,
+        "prefill": 3230.2559529035566
+      }
+    },
+    "decode": 65.34566801883847,
+    "prefill": 3214.7127352995276
+  },
+  "text_decode_loss_percent": 16.098943320461167
+}

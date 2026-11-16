@@ -1,0 +1,7 @@
+{
+  "status": "ok",
+  "scope": "Actual native-benchmark profile initialization tested without launching a GPU worker; working-copy writes cannot change the saved source; normalized configuration identity remains unchanged",
+  "source_sha256": "8f59b4aa8873209dff11c11e37bcda9529a1335b724a1afeea37bf6388975baf",
+  "source_protected": true,
+  "normalized_identity_preserved": true
+}

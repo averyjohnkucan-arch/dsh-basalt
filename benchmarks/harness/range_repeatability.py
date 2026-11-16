@@ -1,6 +1,7 @@
 """Qualify all-genre minima and repeat the actual limiting workload before export."""
 from range_common import *
 import statistics,hashlib
+from range_objective import prefill_safe,could_improve
 key,family=sys.argv[1:3];GENRES=['text','chat','story']
 state=read(O/'range-selections.json');plan=repeatability_plan(key)
 if plan.exists():original=read(plan)
@@ -48,23 +49,30 @@ def measure(ident,genre,repeat=False):
 # Complete it only if it can improve decode or prefill within the current decode floor.
 for iteration in range(8*len(groups)+12):
  stats=summary();complete=[x for x in stats if x['complete']];assert complete,'No complete initial all-genre configuration'
- peak=max(complete,key=lambda x:x['decode']);floor=.95*peak['decode'];winner=max([x for x in complete if x['decode']>=floor],key=lambda x:x['prefill'])
- promising=[x for x in stats if not x['complete']and(x['decode']>peak['decode']or(x['decode']>=floor and x['prefill']>winner['prefill']))]
+ peak=max(complete,key=lambda x:x['decode']);floor=.95*peak['decode'];winner=max([x for x in complete if prefill_safe(x,peak)],key=lambda x:x['prefill'])
+ promising=[x for x in stats if not x['complete']and could_improve(x,peak,winner)]
  if promising:
   candidate=max(promising,key=lambda x:(x['decode'],x['prefill']))
   for genre in GENRES:
-   if not groups[candidate['identity']]['results'][genre]:measure(candidate['identity'],genre)
+   if not groups[candidate['identity']]['results'][genre]:
+    measure(candidate['identity'],genre)
+    updated=next(x for x in summary()if x['identity']==candidate['identity'])
+    if not updated['complete']and not could_improve(updated,peak,winner):break
   continue
- pending=next((x for x in [peak,winner]if x['genres'][x['worst_genre']]['samples']<2),None)
+ checks=[(peak,peak['worst_genre']),(winner,winner['worst_genre'])]
+ if peak['identity']!=winner['identity']:
+  relative=min(GENRES,key=lambda genre:winner['genres'][genre]['decode']/peak['genres'][genre]['decode'])
+  checks.extend([(peak,relative),(winner,relative)])
+ pending=next(((row,genre)for row,genre in checks if row['genres'][genre]['samples']<2),None)
  if pending:
-  measure(pending['identity'],pending['worst_genre'],repeat=True);continue
+  row,genre=pending;measure(row['identity'],genre,repeat=True);continue
  break
 else:raise RuntimeError('Global range qualification did not converge')
 ident=winner['identity'];all_high=[r for rs in groups[ident]['results'].values()for r in rs];chosen=min(all_high,key=lambda r:r['tail_decode_tok_s']);c=chosen['config']
 low=run(c,key+'-repeat-final-code-'+ident,family,'code');assert low['status']=='ok';lowcases=[dict(case=name(low),prefill=low['prefill_tok_s'],decode=low['tail_decode_tok_s'])]
 oldlow=original['metrics']['low'];r=read(R/'bench'/oldlow['case']/'result.json')
 if r['config'].get('host_memory_policy')and config_id(r['config'])==ident:lowcases.append(oldlow)
-choice=dict(objective='Maximize the minimum cold prefill across three genres, subject to minimum sustained late decode across genre medians >=95% of the fastest measured complete configuration. Repeat the actual limiting genre of both winner and peak.',selected=name(chosen),peak_decode_tok_s=peak['decode'],decode_floor_tok_s=floor,candidates=stats,original_selection=original['selection'],free_generation_variation='Continuations can change draft acceptance. Final name uses the slowest actual paired measurement across all selected-setting genres and repeats; the selection floor uses per-genre medians. Cold process/prefix does not imply globally dropped OS file cache.')
+choice=dict(objective='First maximize the minimum genre-median long decode. Then maximize minimum cold prefill while retaining >=95% of EACH genre median from that peak-decode preset. Repeat absolute limiting genres and, when controls differ, the limiting relative genre for both presets.',selected=name(chosen),peak_decode_tok_s=peak['decode'],decode_floor_tok_s=floor,peak_decode_identity=peak['identity'],genre_decode_floor_tok_s={genre:.95*peak['genres'][genre]['decode']for genre in GENRES},candidates=stats,original_selection=original['selection'],free_generation_variation='Continuations can change draft acceptance. Final name uses the slowest actual paired measurement across all selected-setting genres and repeats; selection floors use per-genre medians. Cold process/prefix does not imply globally dropped OS file cache.')
 save(key+'_long',choice);save(key+'_long_metrics',dict(low=min(lowcases,key=lambda x:x['decode']),low_cases=lowcases,high=summarize(all_high),repeatability=choice))
 print('REPEATED ALL-GENRE RANGE COMPLETE',key,flush=True)
 

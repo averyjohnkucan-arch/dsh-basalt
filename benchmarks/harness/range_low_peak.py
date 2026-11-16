@@ -28,6 +28,8 @@ for path in(R/'bench').glob('range-*/result.json'):
 for r in sorted(screens,key=lambda r:r['tail_decode_tok_s'],reverse=True)[:2]:add(r['config'])
 if not key.endswith('_ninfer'):
  if family=='qwen':
+  if key.endswith('_basalt'):
+   ranking=W/'saved-expert-profiles/flash-basalt.prof';ranked=changed(base,{'--expert-profile':ranking,'--kv-resident':20480});ranked['expert_profile_source']=str(ranking);add(ranked)
   for spec in [4,6,8]:add(changed(base,{'--kv-resident':20480,'--spec':spec}))
   for workers in [14,8]:add(changed(base,{'--kv-resident':20480,'--pool-workers':workers}))
   add(changed(base,{'--kv-resident':20480,'--vram-reserve-mib':256}))
