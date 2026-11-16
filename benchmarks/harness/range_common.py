@@ -113,3 +113,14 @@ def summarize(results):
  worst=min(valid,key=lambda r:r['tail_decode_tok_s']);best=max(valid,key=lambda r:r['tail_decode_tok_s'])
  return dict(cases=[dict(case=name(r),workload=r['config']['workload'],prefill=r['prefill_tok_s'],decode=r['tail_decode_tok_s'])for r in valid],
              worst_case=name(worst),best_case=name(best),prefill_range=[min(r['prefill_tok_s']for r in valid),max(r['prefill_tok_s']for r in valid)],decode_range=[worst['tail_decode_tok_s'],best['tail_decode_tok_s']])
+
+def decode_screen(config,logical,family,workload,n=2048,cache=None):
+ """Restored-prefix memory is diagnostic overhead; retry the same controls cold."""
+ assert 0<n<8192,'Decode screens cannot supply final full-output qualification'
+ result=run(config,logical,family,workload,n=n,cache=cache,reuse=bool(cache),role='decode screen only')
+ error=str(result.get('error',''))
+ restoration_failure=any(text in error for text in ['RAM safety stop','cached screening attempted a cold prefill','required cached prefix was not restored'])
+ if cache and result.get('status')!='ok'and restoration_failure:
+  print(time.strftime('%H:%M:%S'),'PREFIX SCREEN RETRY COLD',logical,error,flush=True)
+  return run(config,logical+'-cold-prefix-retry',family,workload,n=n,role='cold-prefix decode screen after diagnostic restoration failure; not final throughput')
+ return result

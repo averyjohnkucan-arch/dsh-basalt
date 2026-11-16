@@ -17,7 +17,7 @@ def tune(key,base,family,candidates,prefill_candidates,low_candidates,old=None,c
  save(key+'_screen_workload',genre)
  screens=[]
  for tag,config in candidates:
-  result=run(config,key+'-screen-'+tag,family,genre,n=2048,cache=key+'-'+genre if cache else None,reuse=cache,role='decode screen only')
+  result=decode_screen(config,key+'-screen-'+tag,family,genre,n=2048,cache=key+'-'+genre if cache else None)
   if result['status']=='ok':screens.append((result,tag,config))
  screens.sort(key=lambda x:x[0]['tail_decode_tok_s'],reverse=True)
  save(key+'_screens',[dict(case=name(r),decode=r['tail_decode_tok_s'])for r,_,_ in screens])

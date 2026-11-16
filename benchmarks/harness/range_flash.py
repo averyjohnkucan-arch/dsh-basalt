@@ -55,7 +55,7 @@ if base['command'][base['command'].index('--pool-workers')+1]!='21':variants.app
 for tag,changes in variants:
  c=copy.deepcopy(base)
  for flag,value in changes.items():opt(c,flag,value)
- x=run(c,model+'-basalt-screen-'+tag,'qwen',workload,n=2048,cache=model+'-'+workload,reuse=True,role='decode screen only')
+ x=decode_screen(c,model+'-basalt-screen-'+tag,'qwen',workload,n=2048,cache=model+'-'+workload)
  if x['status']=='ok':screens.append((x,tag,c))
 screens.sort(key=lambda x:x[0]['tail_decode_tok_s'],reverse=True);save(model+'_screens',[dict(case=name(x),decode=x['tail_decode_tok_s'])for x,_,_ in screens])
 fresh=[worst]

@@ -1,7 +1,7 @@
 {
   "status": "passed",
   "scope": "Actual initial full-output fit block with injected worker responses; no GPU. Memory stop lowers the budget and restarts all genres; setup errors halt; ordinary Flash keeps a single pass.",
-  "source_sha256": "93b143706bdda573bb081e5de0ccc103770bfbc7fdabc435718ca5b5562a3c9b",
+  "source_sha256": "260955d5e1ae4c1dcf708360906febb5fc3f9228df0dbc8f602539610969c455",
   "checks": {
     "pressure": {
       "calls": [

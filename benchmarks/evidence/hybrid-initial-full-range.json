@@ -1,0 +1,41 @@
+{
+  "status": "initial-full-workloads-completed",
+  "scope": "Initial92GiB-budget controls only; all three full workloads completed. Screening, candidate confirmation, global repeats, peak-code, old baselines and plugin/quality qualification remain pending.",
+  "rows": [
+    {
+      "case": "range-perf-hybrid-basalt-base-text",
+      "workload": "text",
+      "prefill_tok_s": 2169.7879926292494,
+      "decode_tok_s": 39.254296027460896,
+      "generated": 8192,
+      "prompt_tokens": 209715,
+      "engine_binary_sha256": "a2bb78bc53910cb738395d5582ab048c1ffc3aa7a0bd95838fcd31e4bf5ebeb0"
+    },
+    {
+      "case": "range-perf-hybrid-basalt-base-chat",
+      "workload": "chat",
+      "prefill_tok_s": 2151.763920054914,
+      "decode_tok_s": 34.0344454488701,
+      "generated": 8192,
+      "prompt_tokens": 209715,
+      "engine_binary_sha256": "a2bb78bc53910cb738395d5582ab048c1ffc3aa7a0bd95838fcd31e4bf5ebeb0"
+    },
+    {
+      "case": "range-perf-hybrid-basalt-base-story",
+      "workload": "story",
+      "prefill_tok_s": 2163.718978079597,
+      "decode_tok_s": 37.41448290902424,
+      "generated": 8192,
+      "prompt_tokens": 209715,
+      "engine_binary_sha256": "a2bb78bc53910cb738395d5582ab048c1ffc3aa7a0bd95838fcd31e4bf5ebeb0"
+    }
+  ],
+  "prefill_range": [
+    2151.763920054914,
+    2169.7879926292494
+  ],
+  "decode_range": [
+    34.0344454488701,
+    39.254296027460896
+  ]
+}

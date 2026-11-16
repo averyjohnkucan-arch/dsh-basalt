@@ -1,10 +1,10 @@
 {
-  "at": "2026-11-15T20:13:48.077504-08:00",
+  "at": "2026-11-15T20:21:35.183545-08:00",
   "status": "passed",
-  "prepared_from_base_commit": "1c83074c215c15eb28a1c0b3fecd2762a79b15d1",
-  "manifest_sha256": "8ca6775ab0d7400adadf0de032f2fc3df09fd5c39b7133d41d35979efae345ba",
-  "scope": "Static local imports and literal script references; sibling engine/plugin references verified in documented checkout layout. Includes real malformed timing fixture. Dynamic imports, model fixtures, weights and external package reconstruction excluded.",
-  "source_count": 50,
+  "prepared_from_base_commit": "942e057cea6568b99ee108487bb94ac341aad8af",
+  "manifest_sha256": "6f74d90c4f295074c18d26783959f090f8d824030401d0799f5b01421789d2cc",
+  "scope": "Static local imports and literal script references; sibling engine/plugin references verified in documented checkout layout. Includes malformed timing fixture. Dynamic imports, model fixtures, weights and external package reconstruction excluded.",
+  "source_count": 51,
   "checks": [
     {
       "source": "test_draft_log_recovery.py",
@@ -243,6 +243,12 @@
     {
       "source": "continue_after_range_queue.py",
       "dependency": "code_function_eval.py",
+      "passed": true,
+      "kind": "literal script or sibling engine"
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "test_decode_screen_recovery.py",
       "passed": true,
       "kind": "literal script or sibling engine"
     },

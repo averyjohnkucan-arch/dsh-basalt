@@ -1,0 +1,186 @@
+{
+  "status": "passed",
+  "scope": "Actual diagnostic-screen function with simulated worker responses. Restored-prefix memory/protocol failures retry identical controls cold; unsupported errors and already-cold failures do not retry; final8192-output calls are refused. No GPU.",
+  "source_sha256": "e5f855bbe97ddf765c9342c41f2875e6ca99da5c4a765fc8addb62598c1c9dfb",
+  "checks": {
+    "memory": {
+      "calls": [
+        {
+          "config": {
+            "command": [
+              "fixture-engine",
+              "--resident-budget-gib",
+              "92"
+            ]
+          },
+          "logical": "candidate",
+          "kwargs": {
+            "n": 2048,
+            "cache": "prefix",
+            "reuse": true,
+            "role": "decode screen only"
+          }
+        },
+        {
+          "config": {
+            "command": [
+              "fixture-engine",
+              "--resident-budget-gib",
+              "92"
+            ]
+          },
+          "logical": "candidate-cold-prefix-retry",
+          "kwargs": {
+            "n": 2048,
+            "role": "cold-prefix decode screen after diagnostic restoration failure; not final throughput"
+          }
+        }
+      ],
+      "refused_final_length": false,
+      "status": "ok"
+    },
+    "missing_checkpoint": {
+      "calls": [
+        {
+          "config": {
+            "command": [
+              "fixture-engine",
+              "--resident-budget-gib",
+              "92"
+            ]
+          },
+          "logical": "candidate",
+          "kwargs": {
+            "n": 2048,
+            "cache": "prefix",
+            "reuse": true,
+            "role": "decode screen only"
+          }
+        },
+        {
+          "config": {
+            "command": [
+              "fixture-engine",
+              "--resident-budget-gib",
+              "92"
+            ]
+          },
+          "logical": "candidate-cold-prefix-retry",
+          "kwargs": {
+            "n": 2048,
+            "role": "cold-prefix decode screen after diagnostic restoration failure; not final throughput"
+          }
+        }
+      ],
+      "refused_final_length": false,
+      "status": "ok"
+    },
+    "failed_restore": {
+      "calls": [
+        {
+          "config": {
+            "command": [
+              "fixture-engine",
+              "--resident-budget-gib",
+              "92"
+            ]
+          },
+          "logical": "candidate",
+          "kwargs": {
+            "n": 2048,
+            "cache": "prefix",
+            "reuse": true,
+            "role": "decode screen only"
+          }
+        },
+        {
+          "config": {
+            "command": [
+              "fixture-engine",
+              "--resident-budget-gib",
+              "92"
+            ]
+          },
+          "logical": "candidate-cold-prefix-retry",
+          "kwargs": {
+            "n": 2048,
+            "role": "cold-prefix decode screen after diagnostic restoration failure; not final throughput"
+          }
+        }
+      ],
+      "refused_final_length": false,
+      "status": "ok"
+    },
+    "unsupported": {
+      "calls": [
+        {
+          "config": {
+            "command": [
+              "fixture-engine",
+              "--resident-budget-gib",
+              "92"
+            ]
+          },
+          "logical": "candidate",
+          "kwargs": {
+            "n": 2048,
+            "cache": "prefix",
+            "reuse": true,
+            "role": "decode screen only"
+          }
+        }
+      ],
+      "refused_final_length": false,
+      "status": "failed"
+    },
+    "already_cold": {
+      "calls": [
+        {
+          "config": {
+            "command": [
+              "fixture-engine",
+              "--resident-budget-gib",
+              "92"
+            ]
+          },
+          "logical": "candidate",
+          "kwargs": {
+            "n": 2048,
+            "cache": null,
+            "reuse": false,
+            "role": "decode screen only"
+          }
+        }
+      ],
+      "refused_final_length": false,
+      "status": "failed"
+    },
+    "successful_restore": {
+      "calls": [
+        {
+          "config": {
+            "command": [
+              "fixture-engine",
+              "--resident-budget-gib",
+              "92"
+            ]
+          },
+          "logical": "candidate",
+          "kwargs": {
+            "n": 2048,
+            "cache": "prefix",
+            "reuse": true,
+            "role": "decode screen only"
+          }
+        }
+      ],
+      "refused_final_length": false,
+      "status": "ok"
+    },
+    "final_length_rejected": {
+      "calls": [],
+      "refused_final_length": true,
+      "status": null
+    }
+  }
+}
