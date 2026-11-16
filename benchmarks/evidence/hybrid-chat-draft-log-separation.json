@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "scope": "Optional draft diagnostics only; exact preceding-attempt byte prefix removed from analysis. Primary token hash, native DONE and P/D measurements unchanged; original result preserved.",
+  "case": "range-perf-hybrid-basalt-base-chat",
+  "archived_prefix": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/range-perf-hybrid-basalt-base-chat/prior-attempts/1794801788144580066/draft.log",
+  "archived_prefix_bytes": 333699,
+  "archived_prefix_sha256": "5bfd4e2aad43d7528fc0ce746c4315b77c988e651e9c498e872e59122ecc366d",
+  "full_log_bytes": 588761,
+  "suffix_bytes": 255062,
+  "suffix_sha256": "055c4b6ea508f35b872cce96e6582de3e0c0f3a9d3a283f3347c1e94607a2958",
+  "valid_windows": 3059,
+  "malformed_windows": 0,
+  "primary_measurements": {
+    "prefill_tok_s": 2151.763920054914,
+    "tail_decode_tok_s": 34.0344454488701,
+    "token_sha256": "006d4ebc398b4cf5676d12cc7d576c533d96ff464c0a9e12ab787accb8a3c71c",
+    "done_raw": "DONE 8192 209715 97461.9 241673.4 length 5138 6583 0 3187427 3983201 1309142 0 0.0 209715 647839",
+    "generated": 8192
+  }
+}

@@ -1,11 +1,65 @@
 {
-  "at": "2026-11-15T19:57:36.019597-08:00",
+  "at": "2026-11-15T20:13:48.077504-08:00",
   "status": "passed",
-  "prepared_from_base_commit": "baf38c8afe01b41b8582e56a034d93822f8d4acd",
-  "manifest_sha256": "08c653c88c5611203c27247f8525f3ee6ba5ab8284ce39eb010cdaa67c4d06e0",
-  "scope": "Static local imports and literal script references; sibling engine/plugin references verified in documented checkout layout. Dynamic imports, fixtures, weights and external package reconstruction excluded.",
-  "source_count": 43,
+  "prepared_from_base_commit": "1c83074c215c15eb28a1c0b3fecd2762a79b15d1",
+  "manifest_sha256": "8ca6775ab0d7400adadf0de032f2fc3df09fd5c39b7133d41d35979efae345ba",
+  "scope": "Static local imports and literal script references; sibling engine/plugin references verified in documented checkout layout. Includes real malformed timing fixture. Dynamic imports, model fixtures, weights and external package reconstruction excluded.",
+  "source_count": 50,
   "checks": [
+    {
+      "source": "test_draft_log_recovery.py",
+      "dependency": "draft_log_diagnostics.py",
+      "passed": true,
+      "kind": "local import"
+    },
+    {
+      "source": "functional_benchmark_recovery.py",
+      "dependency": "benchmark_environment.py",
+      "passed": true,
+      "kind": "local import"
+    },
+    {
+      "source": "functional_benchmark_recovery.py",
+      "dependency": "range_common.py",
+      "passed": true,
+      "kind": "local import"
+    },
+    {
+      "source": "functional_benchmark_recovery.py",
+      "dependency": "http_bench.py",
+      "passed": true,
+      "kind": "literal script or sibling engine"
+    },
+    {
+      "source": "functional_benchmark_recovery.py",
+      "dependency": "native_bench.py",
+      "passed": true,
+      "kind": "literal script or sibling engine"
+    },
+    {
+      "source": "test_functional_recovery.py",
+      "dependency": "functional_benchmark_recovery.py",
+      "passed": true,
+      "kind": "local import"
+    },
+    {
+      "source": "test_functional_export.mjs",
+      "dependency": "./profile_measurement_helpers.mjs",
+      "passed": true,
+      "kind": "relative JavaScript or sibling plugin"
+    },
+    {
+      "source": "test_quality_batch_plan.py",
+      "dependency": "benchmark_environment.py",
+      "passed": true,
+      "kind": "local import"
+    },
+    {
+      "source": "test_quality_batch_plan.py",
+      "dependency": "range_identity.py",
+      "passed": true,
+      "kind": "local import"
+    },
     {
       "source": "range_model_progress.py",
       "dependency": "benchmark_environment.py",
@@ -189,6 +243,42 @@
     {
       "source": "continue_after_range_queue.py",
       "dependency": "code_function_eval.py",
+      "passed": true,
+      "kind": "literal script or sibling engine"
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "draft_log_diagnostics.py",
+      "passed": true,
+      "kind": "literal script or sibling engine"
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "test_draft_log_recovery.py",
+      "passed": true,
+      "kind": "literal script or sibling engine"
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "functional_benchmark_recovery.py",
+      "passed": true,
+      "kind": "literal script or sibling engine"
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "test_functional_recovery.py",
+      "passed": true,
+      "kind": "literal script or sibling engine"
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "test_functional_export.mjs",
+      "passed": true,
+      "kind": "literal script or sibling engine"
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "test_quality_batch_plan.py",
       "passed": true,
       "kind": "literal script or sibling engine"
     },
@@ -469,6 +559,12 @@
       "kind": "local import"
     },
     {
+      "source": "native_bench.py",
+      "dependency": "draft_log_diagnostics.py",
+      "passed": true,
+      "kind": "local import"
+    },
+    {
       "source": "http_bench.py",
       "dependency": "benchmark_memory_guard.py",
       "passed": true,
@@ -740,27 +836,27 @@
     },
     {
       "source": "quality_range_selected.py",
+      "dependency": "benchmark_environment.py",
+      "passed": true,
+      "kind": "local import"
+    },
+    {
+      "source": "quality_range_selected.py",
       "dependency": "code_function_eval.py",
       "passed": true,
       "kind": "literal script or sibling engine"
     },
     {
       "source": "code_function_eval.py",
-      "dependency": "prepare_range_fixtures.py",
+      "dependency": "functional_benchmark_recovery.py",
       "passed": true,
       "kind": "local import"
     },
     {
       "source": "code_function_eval.py",
-      "dependency": "http_bench.py",
+      "dependency": "prepare_range_fixtures.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
-    },
-    {
-      "source": "code_function_eval.py",
-      "dependency": "native_bench.py",
-      "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local import"
     },
     {
       "source": "latest80_common.py",

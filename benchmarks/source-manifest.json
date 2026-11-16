@@ -2,6 +2,41 @@
   "scope": "Exact harness snapshot; scratch paths and sibling clone layout retained for audit. No weights, generated answers, credentials, or token-ID fixtures included.",
   "files": [
     {
+      "path": "harness/draft_log_diagnostics.py",
+      "sha256": "10256aa1a212366f8705aea38f854d87889df468fbded087ff5e7713a6223c27",
+      "bytes": 1185
+    },
+    {
+      "path": "harness/test_draft_log_recovery.py",
+      "sha256": "aca0fb647a119e0ad28f9fb73bae220074b5a6292c7103650bd91242af7a9471",
+      "bytes": 3891
+    },
+    {
+      "path": "harness/draft-log-recovery-fixture.txt",
+      "sha256": "1bcf5711289f6737b1ad564a1c9b185076b72ffb62e118ec8e666d82fc2c6297",
+      "bytes": 201
+    },
+    {
+      "path": "harness/functional_benchmark_recovery.py",
+      "sha256": "dafb213096ab264f985264b8c2e6ed318bd67bcb914af2a7f6f1f7205e6a85bf",
+      "bytes": 3563
+    },
+    {
+      "path": "harness/test_functional_recovery.py",
+      "sha256": "799435956daa2a88bcc48d00ba7336a25e3e761db11745e40c2cf3d62f9690f8",
+      "bytes": 4045
+    },
+    {
+      "path": "harness/test_functional_export.mjs",
+      "sha256": "51055405e8efea17f585573e0f30ad90e031f80eae81f40138a47475af3cd01a",
+      "bytes": 3324
+    },
+    {
+      "path": "harness/test_quality_batch_plan.py",
+      "sha256": "e8ea2e26834b062a21b0a16aa06d6eb04627832ddd7493384b0e13caa2e68029",
+      "bytes": 3654
+    },
+    {
       "path": "harness/range_model_progress.py",
       "sha256": "ba688cd4f7ba4d8d58597197bff0082db8a38d1d2d778d41f9cc6cb18eba7658",
       "bytes": 4823
@@ -63,13 +98,13 @@
     },
     {
       "path": "harness/prepare_benchmark_publication.py",
-      "sha256": "9a28645f97c1c4b6983eab5b86381f377a882ca2c9dde2a442dbda28bd50ba4a",
-      "bytes": 3682
+      "sha256": "adbde979f37e215618afc8bb3298816d9b285b3a634d0a351d2bb8444b69c50e",
+      "bytes": 4067
     },
     {
       "path": "harness/native_bench.py",
-      "sha256": "396cc21b51a9a4905222b3a5849dcf39c5359ca44c9e54ad9430086f10a5a0f5",
-      "bytes": 7152
+      "sha256": "45520f88a3120c6e77a4fd0d8283f4f3752106f860da27492d49d9cd5f468742",
+      "bytes": 7841
     },
     {
       "path": "harness/http_bench.py",
@@ -138,8 +173,8 @@
     },
     {
       "path": "harness/range_deepseek.py",
-      "sha256": "42d8d94e2de5540b87cf3edbff540e50ef21698528c76123d135b66d0d89a672",
-      "bytes": 6096
+      "sha256": "c46e1f5f25c6a8b418bb5a2ee8d26599f461bd3e6b7e5ebb87768cd56b4ba538",
+      "bytes": 6744
     },
     {
       "path": "harness/mark_performance_qualified.py",
@@ -158,8 +193,8 @@
     },
     {
       "path": "harness/profile_measurement_helpers.mjs",
-      "sha256": "b92ef3269f12a662a31eef64c077c8083b26178ee8ab64e3196da0d1181ad809",
-      "bytes": 4350
+      "sha256": "8a6a0c9436c7c9113a0a4e23dc5645eb07aa9a2d784d7e51cd4389efd0c10b76",
+      "bytes": 4873
     },
     {
       "path": "harness/export_range_basalt.mjs",
@@ -198,13 +233,13 @@
     },
     {
       "path": "harness/quality_range_selected.py",
-      "sha256": "c387c3e82e236d8e3ba98ec940224b2f1bb92284cd2da9897781882b29141c5a",
-      "bytes": 1247
+      "sha256": "3e6a47bf26c157cd73598554f7972ca19f4b9ba028e9b830e6910830131ea0f8",
+      "bytes": 3788
     },
     {
       "path": "harness/code_function_eval.py",
-      "sha256": "47b94211a4d98e447977b5bf47bbf7d743ef56a1332bc54f2356b5a02d664807",
-      "bytes": 5228
+      "sha256": "13f095e7aae28da5bbf42dcc6261021eadb27784fc4c1f2ad6ace3de78175970",
+      "bytes": 5820
     },
     {
       "path": "harness/latest80_common.py",

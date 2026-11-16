@@ -12,6 +12,15 @@ if cfg.get('expert_profile_source'):
  source=Path(cfg['expert_profile_source']);target=root/'input-expert-profile.bin';shutil.copy2(source,target)
  cfg['input_profile_sha256']=hashlib.file_digest(target.open('rb'),'sha256').hexdigest()
  cfg['command']=list(cfg['command']);cfg['command'][cfg['command'].index('--expert-profile')+1]=str(target)
+# The engine appends its optional trace. Each worker owns a fresh case-local
+# trace, with any previous bytes preserved even for standalone invocations.
+if '--draft-log'in cfg['command']:
+ at=cfg['command'].index('--draft-log')+1;owned=root/'draft.log'
+ if Path(cfg['command'][at])!=owned:cfg['draft_log_requested']=cfg['command'][at]
+ cfg['command']=list(cfg['command']);cfg['command'][at]=str(owned)
+ if owned.exists():
+  history=root/'prior-draft-logs';history.mkdir(exist_ok=True);shutil.move(owned,history/(str(time.time_ns())+'.log'))
+ cfg['draft_log_attempt_scope']='fresh owned log; preceding bytes archived'
 from benchmark_memory_guard import MemoryGuard
 from benchmark_environment import power_snapshot
 guard=MemoryGuard(cfg,root)
@@ -86,14 +95,23 @@ finally:
   try:proc.wait(timeout=30)
   except subprocess.TimeoutExpired:os.killpg(proc.pid,signal.SIGKILL);proc.wait()
  stop.set();mon.join(timeout=6);log.close();result['total_s']=time.monotonic()-start
+ result['gpu_telemetry_fields']=['timestamp','power.draw','temperature.gpu','clocks.current.graphics','memory.used','utilization.gpu','enforced.power.limit','power.default_limit']
+ completed_tokens=locals().get('tokens',[])
+ def persist_result():
+  (root/'result.json').write_text(json.dumps(result,indent=2)+'\n');(root/'telemetry.json').write_text(json.dumps(telemetry))
+  (root/'tokens.json').write_text(json.dumps(completed_tokens))
+ # Arrival timings, token IDs and safety telemetry are primary evidence. Save
+ # them before inspecting an optional concurrently written native draft log.
+ persist_result()
  draft=root/'draft.log'
  if draft.exists():
-  windows=[list(map(float,line.split()[1:7])) for line in draft.read_text().splitlines() if line.startswith('W ') and len(line.split())>=7]
-  if windows:
-   elapsed=[sum(w[3:6]) for w in windows];total=sum(elapsed)
-   result['draft_windows']={'count':len(windows),'mean_width':statistics.mean(w[0] for w in windows),'mean_accepted':statistics.mean(w[1] for w in windows),'mean_ms':statistics.mean(elapsed),'passes_per_s':len(windows)*1000/total if total else None,'draft_ms':sum(w[3] for w in windows),'verify_ms':sum(w[4] for w in windows),'post_ms':sum(w[5] for w in windows)}
- result['gpu_telemetry_fields']=['timestamp','power.draw','temperature.gpu','clocks.current.graphics','memory.used','utilization.gpu','enforced.power.limit','power.default_limit']
- (root/'result.json').write_text(json.dumps(result,indent=2)+'\n');(root/'telemetry.json').write_text(json.dumps(telemetry))
- (root/'tokens.json').write_text(json.dumps(tokens if 'tokens'in locals()else []))
+  try:
+   from draft_log_diagnostics import parse_draft_windows
+   diagnostics=parse_draft_windows(draft.read_text());windows=diagnostics.pop('windows',None)
+   result['draft_log_diagnostics']=diagnostics
+   if windows:result['draft_windows']=windows
+  except Exception as error:
+   result['draft_log_diagnostics']={'error':str(error),'scope':'Optional diagnostics unavailable; primary measurements retained'}
+  persist_result()
  print(json.dumps(result),flush=True)
 if result['status']!='ok':raise SystemExit(1)

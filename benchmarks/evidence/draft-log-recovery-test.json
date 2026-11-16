@@ -1,0 +1,25 @@
+{
+  "status": "passed",
+  "scope": "Actual native_bench postprocessing/persistence block; actual interleaved draft log, finite/incomplete-record checks, and injected optional-parser exception after primary files are verified durable. Fresh trace isolation also checked; no GPU.",
+  "source_sha256": "45520f88a3120c6e77a4fd0d8283f4f3752106f860da27492d49d9cd5f468742",
+  "log_sha256": "1bcf5711289f6737b1ad564a1c9b185076b72ffb62e118ec8e666d82fc2c6297",
+  "malformed_rows": 1,
+  "valid_rows": 2,
+  "checks": {
+    "real_malformed_log": {
+      "primary_result_retained": true,
+      "tokens_retained": true,
+      "optional_error_recorded": false
+    },
+    "parser_exception": {
+      "primary_result_retained": true,
+      "tokens_retained": true,
+      "optional_error_recorded": true
+    },
+    "attempt_log_isolation": {
+      "prior_log_preserved": true,
+      "active_log_fresh": true,
+      "requested_external_log_untouched": true
+    }
+  }
+}

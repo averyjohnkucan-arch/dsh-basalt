@@ -1,0 +1,43 @@
+{
+  "status": "passed",
+  "scope": "Actual functional-worker helper and input matching; file-backed old-result archival, exact attempt/prompt checks and real binary hashing. Only power checks and GPU workers are simulated.",
+  "source_sha256": "dafb213096ab264f985264b8c2e6ed318bd67bcb914af2a7f6f1f7205e6a85bf",
+  "checks": {
+    "pre-launch": {
+      "status": "failed",
+      "old_success_archived": true,
+      "workers": 0,
+      "power_checks": 1
+    },
+    "missing-result": {
+      "status": "failed",
+      "old_success_archived": true,
+      "workers": 1,
+      "power_checks": 1
+    },
+    "wrong-attempt": {
+      "status": "failed",
+      "old_success_archived": true,
+      "workers": 1,
+      "power_checks": 1
+    },
+    "post-run": {
+      "status": "failed",
+      "old_success_archived": true,
+      "workers": 1,
+      "power_checks": 2
+    },
+    "binary-changed": {
+      "status": "failed",
+      "old_success_archived": true,
+      "workers": 0,
+      "power_checks": 1
+    },
+    "success": {
+      "status": "ok",
+      "old_success_archived": true,
+      "workers": 1,
+      "power_checks": 2
+    }
+  }
+}

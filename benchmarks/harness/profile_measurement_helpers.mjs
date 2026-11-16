@@ -43,8 +43,10 @@ export async function codeFunctionalEvidence(root,config){
    if(!['merge_intervals','lru_trace','verify_draft'].includes(row.function))continue;
    let result;try{result=JSON.parse(await readFile(join(root,'bench',row.case,'result.json'),'utf8'));}catch(error){if(error.code==='ENOENT')continue;throw error;}
    if(nativeSignature(result.config)!==expected)continue;
-   tasks.set(row.function,{function:row.function,passed:row.passed===true,status:row.status,case:row.case,receipt:name});
+   const c=result.config;
+   if(row.grade_schema!==2||!row.functional_attempt_id||row.functional_attempt_id!==c.functional_attempt_id||row.function!==c.functional_task_name||row.generation_prompt_sha256!==c.functional_prompt_sha256||row.functional_checks_sha256!==c.functional_checks_sha256||(row.generation_token_sha256??null)!==(result.token_sha256??null)||row.status!==result.status)continue;
+   tasks.set(row.function,{function:row.function,passed:row.passed===true&&result.status==='ok',status:row.status,case:row.case,receipt:name,functionalAttemptId:row.functional_attempt_id});
   }
  }
- const tests=[...tasks.values()];return {status:tests.length===3?'tested':'pending',scope:'Three independently checked generated Python functions in a restricted sandbox; does not establish whole-model BF16-reference quality',passed:tests.filter(x=>x.passed).length,total:tests.length,tests};
+ const tests=[...tasks.values()];return {status:tests.length===3&&tests.every(x=>x.status==='ok')?'tested':tests.length?'incomplete':'pending',scope:'Three independently checked generated Python functions in a restricted sandbox; does not establish whole-model BF16-reference quality',passed:tests.filter(x=>x.passed).length,total:tests.length,tests};
 }

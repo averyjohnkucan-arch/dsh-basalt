@@ -1,5 +1,6 @@
 """Independent generated-function checks; generated code runs only inside bwrap."""
-import json,pathlib,subprocess,sys,copy,re,time
+import json,pathlib,subprocess,sys,copy,re,time,hashlib
+from functional_benchmark_recovery import run_functional_worker
 from prepare_range_fixtures import framing,tokenizer_for
 R=pathlib.Path('/mnt/media/scratch/dsh-inference-tuning-20261115');W=R/'work';O=R/'outputs'
 TASKS={
@@ -19,10 +20,11 @@ for label,item in configs.items():
    if flag in c['command']:
     at=c['command'].index(flag);del c['command'][at:at+2]
   if pathlib.Path(c['command'][3]).name.startswith('basalt')and '--stop-eos'not in c['command']:c['command'].append('--stop-eos')
-  config=W/(name+'.json');config.write_text(json.dumps(c,indent=2));print('START',name,flush=True)
-  if '--grade-only'not in sys.argv:
-   with(W/(name+'.progress')).open('w')as log:subprocess.run([sys.executable,str(W/('http_bench.py'if c.get('protocol')=='http'else'native_bench.py')),'--config',str(config)],stdout=log,stderr=subprocess.STDOUT)
-  result=json.loads((out/'result.json').read_text());row=dict(model=label,function=function,status=result['status'],case=name,passed=False)
+  c.update(functional_prompt_sha256=hashlib.sha256(','.join(map(str,ids)).encode()).hexdigest(),functional_checks_sha256=hashlib.sha256(checks.encode()).hexdigest(),functional_task_name=function)
+  config=W/(name+'.json');print('START',name,flush=True)
+  result=run_functional_worker(c,config,out,W/(name+'.progress'),grade_only='--grade-only'in sys.argv)
+  row=dict(model=label,function=function,status=result['status'],case=name,passed=False,grade_schema=2,generation_reused=result.get('functional_generation_reused',False),functional_attempt_id=result['config'].get('functional_attempt_id'),generation_prompt_sha256=result['config'].get('functional_prompt_sha256'),generation_token_sha256=result.get('token_sha256'),functional_checks_sha256=result['config'].get('functional_checks_sha256'))
+  if result.get('error'):row['error']=result['error']
   if result['status']=='ok':
    if c.get('protocol')=='http':
     text=(out/'content.txt').read_text()
@@ -42,3 +44,5 @@ for label,item in configs.items():
    except subprocess.TimeoutExpired:row['error']='sandbox timeout'
   rows.append(row);print(row,flush=True)
   (O/('code-functional-'+pathlib.Path(sys.argv[1]).stem+'.json')).write_text(json.dumps(rows,indent=2))
+
+if any(row['status']!='ok'for row in rows):raise SystemExit('Functional generation incomplete; current failures and previous attempts retained for recovery')
