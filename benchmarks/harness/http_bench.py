@@ -16,6 +16,10 @@ def monitor():
   except Exception as e:entry['gpu_error']=str(e)
   entry['ac']={p.parent.name:p.read_text().strip()for p in pathlib.Path('/sys/class/power_supply').glob('*/online')}
   stop.wait(1)
+def completion_payload(config,ids):
+ # Preserve the established request exactly; record the effective controls rather
+ # than assuming native GEN sampling options apply to the HTTP interface.
+ return {'prompt':ids,'n_predict':config.get('generate',8192),'temperature':0,'seed':42,'ignore_eos':config.get('ignore_eos',True),'cache_prompt':False,'stream':True,'return_tokens':True,'return_progress':True}
 def post(path,data,timeout=18000):
  return urllib.request.urlopen(urllib.request.Request(base+path,data=json.dumps(data).encode(),headers={'Content-Type':'application/json'}),timeout=timeout)
 log=(out/'engine.log').open('w');env={**os.environ,**cfg.get('env',{})};env.pop('LD_LIBRARY_PATH',None)
@@ -34,8 +38,10 @@ try:
  from benchmark_prompts import load_prompt,prompt_record
  ids=load_prompt(cfg);depth=cfg['depth']
  (out/'prompt.json').write_text(json.dumps(prompt_record(ids,cfg)))
+ request_body=completion_payload(cfg,ids);(out/'request.json').write_text(json.dumps(request_body));result['request_options']={k:v for k,v in request_body.items()if k!='prompt'}
+ result['output_end_policy']='model stop tokens ignored; logits not biased'if request_body['ignore_eos']else'model stop tokens honored'
  request=time.monotonic();last={};content=[];previous=0;progress=0
- with post('/completion',{'prompt':ids,'n_predict':cfg.get('generate',8192),'temperature':0,'seed':42,'ignore_eos':cfg.get('ignore_eos',True),'cache_prompt':False,'stream':True,'return_tokens':True,'return_progress':True}) as resp:
+ with post('/completion',request_body) as resp:
   for raw in resp:
    if not raw.startswith(b'data:'):continue
    value=json.loads(raw[5:]);now=time.monotonic()

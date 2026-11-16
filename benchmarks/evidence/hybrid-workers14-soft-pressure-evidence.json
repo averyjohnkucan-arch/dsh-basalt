@@ -1,0 +1,21 @@
+{
+  "status": "actual-failure-qualifies-for-queued-experiment",
+  "scope": "Planning evidence only: actual failed full run met strict soft-pressure criteria.106GiB trial still requires serial GPU execution and full repeatability; no performance claim.",
+  "failed_case": "range-perf-hybrid-basalt-confirm-workers14",
+  "error": "RAM safety stop: available=15.2GiB, memory-pressure avg10=55.9%",
+  "minimum_host_available_gib": 13.266284942626953,
+  "peak_worker_gib": 104.01016616821289,
+  "maximum_pressure_avg10": 55.93,
+  "last_events": "low 0\nhigh 4612\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\nsock_throttled 0",
+  "trial_memory_policy": {
+    "isolation": "separate systemd user scope",
+    "memory_high_gib": 106,
+    "memory_max_gib": 108,
+    "swap_max_gib": 1,
+    "minimum_host_available_gib": 12,
+    "pressure_avg10_limit": 40,
+    "pressure_grace_s": 6
+  },
+  "trial_memory_policy_id": "hybrid-high106-max108",
+  "source_sha256": "f056363d1bab5b8f4eec27670b188fa5261170daf0f35fbd0fdc4dcbfe05ab3d"
+}

@@ -1,0 +1,68 @@
+{
+  "status": "passed",
+  "scope": "Actual AST-extracted HTTP request builder preserves the previous wire controls exactly; quality runs honor native stopping. Actual end-marker audit counts known EOS/EOT markers, suffix timing overlap and unknown metadata. No GPU or model-quality claim.",
+  "sources": {
+    "http_bench.py": "b837f3644ad56cb3e9d420de16d8c26a00f35abc6c8198639b8dc09d816d99e7",
+    "audit_range_outputs.py": "78a801a43840175bd679381b778667dc4d7d782a1a6d31e82be710852d4a39fe"
+  },
+  "checks": {
+    "default_request": {
+      "prompt": [
+        10,
+        20
+      ],
+      "n_predict": 8192,
+      "temperature": 0,
+      "seed": 42,
+      "ignore_eos": true,
+      "cache_prompt": false,
+      "stream": true,
+      "return_tokens": true,
+      "return_progress": true
+    },
+    "quality_request": {
+      "prompt": [
+        10,
+        20
+      ],
+      "n_predict": 1024,
+      "temperature": 0,
+      "seed": 42,
+      "ignore_eos": false,
+      "cache_prompt": false,
+      "stream": true,
+      "return_tokens": true,
+      "return_progress": true
+    },
+    "early_end": {
+      "native_end_marker_ids_known": true,
+      "native_end_marker_counts": {
+        "7": 1,
+        "9": 1
+      },
+      "first_native_end_marker_index": 2,
+      "tokens_after_first_native_end_marker": 5,
+      "timed_tokens_after_first_native_end_marker": 4,
+      "entire_timed_tail_after_native_end_marker": true
+    },
+    "late_end": {
+      "native_end_marker_ids_known": true,
+      "native_end_marker_counts": {
+        "7": 1,
+        "9": 0
+      },
+      "first_native_end_marker_index": 7,
+      "tokens_after_first_native_end_marker": 0,
+      "timed_tokens_after_first_native_end_marker": 0,
+      "entire_timed_tail_after_native_end_marker": false
+    },
+    "unknown_metadata": {
+      "native_end_marker_ids_known": false,
+      "native_end_marker_counts": {},
+      "first_native_end_marker_index": null,
+      "tokens_after_first_native_end_marker": 0,
+      "timed_tokens_after_first_native_end_marker": 0,
+      "entire_timed_tail_after_native_end_marker": false
+    }
+  }
+}
