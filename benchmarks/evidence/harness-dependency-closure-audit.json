@@ -1,11 +1,17 @@
 {
-  "at": "2026-11-15T20:21:35.183545-08:00",
+  "at": "2026-11-15T20:37:06.135262-08:00",
   "status": "passed",
-  "prepared_from_base_commit": "942e057cea6568b99ee108487bb94ac341aad8af",
-  "manifest_sha256": "6f74d90c4f295074c18d26783959f090f8d824030401d0799f5b01421789d2cc",
+  "prepared_from_base_commit": "3e706a4108eb6e4541ca2d8d77387949c2808ad7",
+  "manifest_sha256": "4b7de679347eb670f896aa6ff184764de550946e353d883c55c43f36d2eceb46",
   "scope": "Static local imports and literal script references; sibling engine/plugin references verified in documented checkout layout. Includes malformed timing fixture. Dynamic imports, model fixtures, weights and external package reconstruction excluded.",
-  "source_count": 51,
+  "source_count": 52,
   "checks": [
+    {
+      "source": "test_confirmation_diversity.py",
+      "dependency": "range_tuner.py",
+      "passed": true,
+      "kind": "local import"
+    },
     {
       "source": "test_draft_log_recovery.py",
       "dependency": "draft_log_diagnostics.py",
@@ -243,6 +249,12 @@
     {
       "source": "continue_after_range_queue.py",
       "dependency": "code_function_eval.py",
+      "passed": true,
+      "kind": "literal script or sibling engine"
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "test_confirmation_diversity.py",
       "passed": true,
       "kind": "literal script or sibling engine"
     },
@@ -625,6 +637,12 @@
       "kind": "local import"
     },
     {
+      "source": "range_tuner.py",
+      "dependency": "range_identity.py",
+      "passed": true,
+      "kind": "local import"
+    },
+    {
       "source": "range_repeatability.py",
       "dependency": "range_common.py",
       "passed": true,
@@ -687,6 +705,12 @@
     {
       "source": "range_flash.py",
       "dependency": "range_common.py",
+      "passed": true,
+      "kind": "local import"
+    },
+    {
+      "source": "range_flash.py",
+      "dependency": "range_tuner.py",
       "passed": true,
       "kind": "local import"
     },

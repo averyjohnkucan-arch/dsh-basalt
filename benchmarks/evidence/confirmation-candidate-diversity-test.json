@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "scope": "Actual confirmation helper with normalized native identities. Existing full baseline and duplicate settings with owned expert-profile/log paths are excluded; next distinct settings receive the two confirmations. No GPU or model speed claim.",
+  "source_sha256": "dfd97f90e8ef11caef4bf55de0d0bd6dbd42c8724bfc2f3235226208656fa5fc",
+  "selected": [
+    "spec6",
+    "spec4"
+  ],
+  "already_measured_only": [],
+  "single_limit": 1,
+  "zero_limit": 0
+}

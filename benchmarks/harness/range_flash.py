@@ -1,4 +1,5 @@
 from range_common import *
+from range_tuner import confirmation_configs
 model=sys.argv[1]if len(sys.argv)>1 else'flash'
 memory_fit=None
 base=latest(read(W/'quiet-flash-int8-basalt-90.json'),'basalt');opt(base,'--pool-workers',21)
@@ -59,7 +60,7 @@ for tag,changes in variants:
  if x['status']=='ok':screens.append((x,tag,c))
 screens.sort(key=lambda x:x[0]['tail_decode_tok_s'],reverse=True);save(model+'_screens',[dict(case=name(x),decode=x['tail_decode_tok_s'])for x,_,_ in screens])
 fresh=[worst]
-for x,tag,c in screens[:2]:fresh.append(run(c,model+'-basalt-confirm-'+tag,'qwen',workload))
+for tag,c in confirmation_configs(screens,worst):fresh.append(run(c,model+'-basalt-confirm-'+tag,'qwen',workload))
 plain=copy.deepcopy(base);opt(plain,'--spec',0);fresh.append(run(plain,model+'-basalt-confirm-spec0','qwen',workload))
 fast=max([r for r in fresh if r['status']=='ok'],key=lambda r:r['tail_decode_tok_s'])['config']
 for tag,prefill in [('32k','auto:32768'),('4k','4096')]:

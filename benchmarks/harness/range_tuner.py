@@ -1,5 +1,17 @@
 """Serial measured tuning. Screens rank candidates; only full cold runs label profiles."""
 from range_common import *
+from range_identity import config_id
+
+def confirmation_configs(screens,baseline,limit=2):
+ """Reserve full-output confirmations for distinct, not already measured controls."""
+ if limit<=0:return []
+ known={config_id(baseline['config'])};chosen=[]
+ for result,tag,config in screens:
+  ident=config_id(result['config'])
+  if ident in known:continue
+  known.add(ident);chosen.append((tag,config))
+  if len(chosen)>=limit:break
+ return chosen
 
 def changed(config, changes):
  c=copy.deepcopy(config)
@@ -21,7 +33,7 @@ def tune(key,base,family,candidates,prefill_candidates,low_candidates,old=None,c
   if result['status']=='ok':screens.append((result,tag,config))
  screens.sort(key=lambda x:x[0]['tail_decode_tok_s'],reverse=True)
  save(key+'_screens',[dict(case=name(r),decode=r['tail_decode_tok_s'])for r,_,_ in screens])
- fresh=[worst]+[run(c,key+'-confirm-'+tag,family,genre)for _,tag,c in screens[:2]]
+ fresh=[worst]+[run(c,key+'-confirm-'+tag,family,genre)for tag,c in confirmation_configs(screens,worst)]
  fast=max([r for r in fresh if r['status']=='ok'],key=lambda r:r['tail_decode_tok_s'])['config']
  for tag,changes in prefill_candidates:
   fresh.append(run(changed(fast,changes),key+'-prefill-'+tag,family,genre))
