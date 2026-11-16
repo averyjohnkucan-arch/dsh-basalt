@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "source_receipt": "/mnt/media/scratch/dsh-inference-tuning-20261115/outputs/output-audits/flash_zero_share_candidate.json",
+  "actual_chat_case": "range-perf-flash_basalt-range-check-26b17faede3c-chat",
+  "actual_chat_duplicate_long_paragraphs": 0,
+  "actual_chat_duplicate_16_token_windows": 1487,
+  "actual_chat_duplicate_window_fraction": 0.18185153479271127,
+  "regression": "A continuation with repetitive section templates and zero identical long paragraphs is no longer represented by a single false repetition flag.",
+  "tokens_unchanged": true,
+  "rates_unchanged": true
+}
