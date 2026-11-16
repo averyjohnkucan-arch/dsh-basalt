@@ -17,7 +17,7 @@ export function nativeSignature(c){
  const omitted=new Set(['--draft-log','--conversation-cache-dir','--conversation-cache-disk-mib','--conversation-cache-mib','--prompt-cache','--eos','--eos-ids','--stop-eos']);
  while(i<a.length){const flag=a[i++];if(!flag.startsWith('--')){position.push(flag);continue;}let value=true;if(i<a.length&&!a[i].startsWith('--'))value=a[i++];if(!omitted.has(flag))flags[flag]=value;}
  if(flags['--expert-profile']&&c.expert_profile_source)flags['--expert-profile']=c.expert_profile_source;
- const identity=[a.slice(0,4),position,Object.entries(flags).sort(([a],[b])=>a.localeCompare(b)),c.artifact_header_sha256,c.engine_binary_sha256];if(c.benchmark_environment_id)identity.push(c.benchmark_environment_id);return JSON.stringify(identity);
+ const identity=[a.slice(0,4),position,Object.entries(flags).sort(([a],[b])=>a.localeCompare(b)),c.artifact_header_sha256,c.engine_binary_sha256];if(c.benchmark_environment_id)identity.push(c.benchmark_environment_id);if(c.benchmark_memory_policy_id)identity.push(['memory-policy',c.benchmark_memory_policy_id]);return JSON.stringify(identity);
 }
 export async function memoryEvidence(root,metrics){
  const cases=[metrics.low,...metrics.high.cases];const records=[];

@@ -1,0 +1,31 @@
+{
+  "engine": "basalt",
+  "status": "complete",
+  "scope": "2048 generated after an 80%-full text prefix; compatibility/screen only, not final throughput. Hard limit108GiB and host reserve12GiB stay unchanged.",
+  "benchmark_memory_policy_id": "hybrid-high104-max108",
+  "host_memory_policy": {
+    "memory_high_gib": 104,
+    "memory_max_gib": 108,
+    "minimum_host_available_gib": 12
+  },
+  "probes": [
+    {
+      "budget_gib": 96,
+      "status": "failed",
+      "case": "range-perf-hybrid-basalt-budget-fit-96-high104",
+      "error": "RAM safety stop: available=10.2GiB, memory-pressure avg10=26.4%",
+      "engine_binary_sha256": "a2bb78bc53910cb738395d5582ab048c1ffc3aa7a0bd95838fcd31e4bf5ebeb0"
+    },
+    {
+      "budget_gib": 92,
+      "status": "ok",
+      "case": "range-perf-hybrid-basalt-budget-fit-92-high104",
+      "error": null,
+      "engine_binary_sha256": "a2bb78bc53910cb738395d5582ab048c1ffc3aa7a0bd95838fcd31e4bf5ebeb0"
+    }
+  ],
+  "safe_budgets_gib": [
+    92
+  ],
+  "selected_budget_gib": 92
+}

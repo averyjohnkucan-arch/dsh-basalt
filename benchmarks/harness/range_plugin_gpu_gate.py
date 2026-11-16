@@ -24,7 +24,9 @@ for p in profiles:
   previous=json.loads(result.read_text())
   if previous.get('status')=='ok'and previous.get('nativeCommandEvidence',{}).get('status')=='ok'and same_launch_profile(previous.get('savedProfile'),p):
    receipts.append(dict(profile=p['id'],status='ok',reused_qualified_receipt=True));continue
- guard=MemoryGuard({},out);telemetry=[]
+ evidence=p.get('verification8192',{}).get('hostMemoryEvidence',[])
+ policy=evidence[0]['policy']if evidence else{}
+ guard=MemoryGuard({'host_memory_policy':policy},out);telemetry=[]
  with(out/'worker.log').open('a')as log:
   proc=subprocess.Popen(guard.command(['taskset','-c','0-21',str(node),str(W/'range_plugin_adapter_smoke.mjs'),engine,p['id'],str(out)]),stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
   deadline=time.monotonic()+660

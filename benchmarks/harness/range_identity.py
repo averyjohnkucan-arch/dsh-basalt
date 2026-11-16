@@ -13,4 +13,5 @@ def config_id(config):
  if '--expert-profile'in flags and c.get('expert_profile_source'):flags['--expert-profile']=c['expert_profile_source']
  identity=[a[:4],position,sorted(flags.items()),c.get('artifact_header_sha256'),c.get('engine_binary_sha256')]
  if c.get('benchmark_environment_id'):identity.append(c['benchmark_environment_id'])
+ if c.get('benchmark_memory_policy_id'):identity.append(['memory-policy',c['benchmark_memory_policy_id']])
  return hashlib.sha256(json.dumps(identity).encode()).hexdigest()[:12]

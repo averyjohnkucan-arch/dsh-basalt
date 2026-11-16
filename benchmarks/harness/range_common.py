@@ -9,10 +9,35 @@ def read_case_mapping(path):
  except(FileNotFoundError,json.JSONDecodeError,UnicodeDecodeError):return None
  return value if isinstance(value,dict)else None
 
+def hybrid_strata_pack():
+ """Scratch-only overlay: hybrid experts plus the unchanged Flash dense pack."""
+ source=pathlib.Path('/mnt/media/AI/Models/Scratch models/Maximilian228')
+ base=source/'Qwen3.8-Flash-Next-NVFP4-GPTQ-Strata/pack'
+ experts=source/'Qwen3.8-Flash-Next-NVFP4-Q8-Mix-Strata/pack'
+ target=R/'packs/strata-flash-hybrid-overlay/pack'
+ required=['dense.bin','index.txt','tokenizer','experts.bin','native_experts.txt']
+ target.mkdir(parents=True,exist_ok=True)
+ for part in required:
+  origin=(experts if part in ['experts.bin','native_experts.txt']else base)/part
+  assert origin.exists(),f'Missing hybrid component: {origin}'
+  link=target/part
+  if link.is_symlink():assert link.resolve()==origin.resolve(),f'Unexpected overlay link: {link}'
+  else:
+   assert not link.exists(),f'Unexpected overlay file: {link}'
+   link.symlink_to(origin,target_is_directory=origin.is_dir())
+ # Every layer is independently typed; ensure the table cannot overrun the blob.
+ rows=[line.split()for line in (target/'native_experts.txt').read_text().splitlines()if line.strip()and not line.startswith('#')]
+ assert len(rows)==48 and [int(x[0])for x in rows]==list(range(48))
+ size=(target/'experts.bin').stat().st_size
+ for layer,gu,d,offset,blob in rows:
+  assert int(gu)in [8,40]and int(d)in [8,40]
+  assert 0<=int(offset)<size and int(offset)+512*int(blob)<=size
+ return target
+
 def completed_input_matches(value,planned):
  actual=value.get('config',{})
  if not isinstance(actual,dict):return False
- for field in ['engine_binary_sha256','artifact_header_sha256','artifact_bytes','benchmark_environment_id','protocol','prompt_file','depth','generate','timed_tail','workload','sampling']:
+ for field in ['engine_binary_sha256','artifact_header_sha256','artifact_bytes','benchmark_environment_id','benchmark_memory_policy_id','protocol','prompt_file','depth','generate','timed_tail','workload','sampling']:
   if field in planned and actual.get(field)!=planned[field]:return False
  for field,value in planned.get('host_memory_policy',{}).items():
   if actual.get('host_memory_policy',{}).get(field)!=value:return False

@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "scope": "Existing Flash identities unchanged; Python and JavaScript signatures distinguish an explicit hybrid RAM policy. No inference launched.",
+  "python": {
+    "long": {
+      "unchanged_identity": "35b46ec69f83",
+      "memory_policy_identity": "67cd693c196f"
+    },
+    "short": {
+      "unchanged_identity": "b880f20a9748",
+      "memory_policy_identity": "2a257f5f4177"
+    }
+  },
+  "javascript": {
+    "distinct": true,
+    "legacySignature": "[[\"taskset\",\"-c\",\"0-21\",\"/fixture\"],[],[[\"--spec\",\"8\"]],\"a\",\"b\",\"performance\"]"
+  }
+}

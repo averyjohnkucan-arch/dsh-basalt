@@ -1,7 +1,7 @@
 {
   "status": "passed",
   "scope": "Actual run() and input-matching functions extracted without importing the GPU harness; only the worker and power checks are simulated. Files, archives and resume paths are real NVMe scratch operations.",
-  "source_sha256": "3415276623b6428e111f168d6a1942a110ac0aea6e61c678de3d1ab6755265d7",
+  "source_sha256": "20040b91c1aa845383ec66b8f9cd6a280961a4a9881ab5bcf315202e798ddd4b",
   "current": {
     "pre_launch_failure": {
       "stale_success_left_active": false,
@@ -35,38 +35,6 @@
       "original_bytes_preserved": true
     }
   },
-  "legacy_bug_reproduced": {
-    "pre_launch_failure": {
-      "stale_success_left_active": true,
-      "relaunched": false,
-      "recovered_input_matches": false,
-      "prior_success_preserved": true
-    },
-    "post_run_failure": {
-      "stored_status": "ok",
-      "disqualified": false,
-      "relaunched": false,
-      "measurement_preserved": true
-    },
-    "interrupted_legacy_attempt": {
-      "relaunched": false,
-      "recovered_input_matches": false
-    },
-    "valid_owned_profile_cache": {
-      "reused": true,
-      "same_result": true,
-      "owned_profile_differs_from_planned": true
-    },
-    "malformed_result": {
-      "raised_parse_error": true,
-      "relaunched": false,
-      "original_bytes_preserved": false
-    },
-    "malformed_input": {
-      "raised_parse_error": true,
-      "relaunched": false,
-      "original_bytes_preserved": false
-    }
-  },
-  "legacy_source_sha256": "05585feca4db799730029b1ae52079a8642cd1b11711cc9989b774d7c90cc12d"
+  "legacy_bug_reproduced": null,
+  "legacy_source_sha256": null
 }

@@ -1,0 +1,59 @@
+{
+  "status": "passed",
+  "scope": "Scratch-only layout and table-bounds validation; not a complete inference or throughput qualification",
+  "overlay": "/mnt/media/scratch/dsh-inference-tuning-20261115/packs/strata-flash-hybrid-overlay/pack",
+  "parts": [
+    {
+      "name": "dense.bin",
+      "target": "/mnt/media/AI/Models/Scratch models/Maximilian228/Qwen3.8-Flash-Next-NVFP4-GPTQ-Strata/pack/dense.bin",
+      "bytes": 1538035200,
+      "symlink": true
+    },
+    {
+      "name": "experts.bin",
+      "target": "/mnt/media/AI/Models/Scratch models/Maximilian228/Qwen3.8-Flash-Next-NVFP4-Q8-Mix-Strata/pack/experts.bin",
+      "bytes": 110729789440,
+      "symlink": true
+    },
+    {
+      "name": "index.txt",
+      "target": "/mnt/media/AI/Models/Scratch models/Maximilian228/Qwen3.8-Flash-Next-NVFP4-GPTQ-Strata/pack/index.txt",
+      "bytes": 93663,
+      "symlink": true
+    },
+    {
+      "name": "native_experts.txt",
+      "target": "/mnt/media/AI/Models/Scratch models/Maximilian228/Qwen3.8-Flash-Next-NVFP4-Q8-Mix-Strata/pack/native_experts.txt",
+      "bytes": 1541,
+      "symlink": true
+    },
+    {
+      "name": "tokenizer",
+      "target": "/mnt/media/AI/Models/Scratch models/Maximilian228/Qwen3.8-Flash-Next-NVFP4-GPTQ-Strata/pack/tokenizer",
+      "bytes": 4096,
+      "symlink": true
+    }
+  ],
+  "layers": 48,
+  "independent_gu_d_types": [
+    [
+      8,
+      8
+    ],
+    [
+      8,
+      40
+    ],
+    [
+      40,
+      8
+    ],
+    [
+      40,
+      40
+    ]
+  ],
+  "all_components_on_nvme": "/dev/md127 mounted at /mnt/media",
+  "original_files_modified": false,
+  "source_sha256": "20040b91c1aa845383ec66b8f9cd6a280961a4a9881ab5bcf315202e798ddd4b"
+}

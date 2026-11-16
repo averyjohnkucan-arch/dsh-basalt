@@ -5,7 +5,14 @@ opt(base,'--pool-workers',21)
 old=read(W/('quiet-gyro-old-90.json'if model=='gyro'else'quiet-flash-int8-old-90.json'))
 if model.startswith('hybrid'):
  for c in [base,old]:
-  opt(c,'--pack','/mnt/media/AI/Models/Scratch models/Maximilian228/Qwen3.8-Flash-Next-NVFP4-Q8-Mix-Strata/pack');opt(c,'--resident-budget-gib',96);opt(c,'--vram-reserve-mib',1200)
+  opt(c,'--pack',hybrid_strata_pack());opt(c,'--resident-budget-gib',96);opt(c,'--vram-reserve-mib',1200)
+if model.startswith('hybrid')and(O/'hybrid-memory-fit-basalt-high104.json').exists():
+ memory_policy=read(O/'hybrid-memory-fit-basalt-high104.json');assert memory_policy['status']=='complete'
+ for target in [base,old]:
+  target['benchmark_memory_policy_id']=memory_policy['benchmark_memory_policy_id'];target['host_memory_policy']=memory_policy['host_memory_policy']
+if model.startswith('hybrid')and(O/'hybrid-memory-fit-strata-high104.json').exists():
+ fit=read(O/'hybrid-memory-fit-strata-high104.json');assert fit['status']=='complete'
+ opt(base,'--resident-budget-gib',fit['selected_budget_gib'])
 if model.endswith('fp16'):
  selected_state=read(O/'range-selections.json');parent=model.removesuffix('_fp16')+'_strata_long'
  if parent in selected_state:base=read(R/'bench'/selected_state[parent]['selected']/'result.json')['config']

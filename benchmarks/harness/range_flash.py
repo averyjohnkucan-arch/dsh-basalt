@@ -5,11 +5,15 @@ base=latest(read(W/'quiet-flash-int8-basalt-90.json'),'basalt');opt(base,'--pool
 old=read(W/'quiet-flash-int8-old-90.json')
 if model.startswith('hybrid'):
  opt(base,'--model',R/'packs/qwen-nvfp4-q8-hybrid.basalt');opt(base,'--resident-budget-gib',96)
- fit_path=O/'hybrid-memory-fit-basalt.json'
+ fit_path=O/'hybrid-memory-fit-basalt-high104.json'
+ if not fit_path.exists():fit_path=O/'hybrid-memory-fit-basalt.json'
  if fit_path.exists():
   memory_fit=read(fit_path);assert memory_fit['status']=='complete','Hybrid fit must finish before tuning resumes'
   opt(base,'--resident-budget-gib',memory_fit['selected_budget_gib'])
- opt(old,'--pack','/mnt/media/AI/Models/Scratch models/Maximilian228/Qwen3.8-Flash-Next-NVFP4-Q8-Mix-Strata/pack');opt(old,'--resident-budget-gib',96);opt(old,'--vram-reserve-mib',1200)
+  if memory_fit.get('benchmark_memory_policy_id'):
+   for target in [base,old]:
+    target['benchmark_memory_policy_id']=memory_fit['benchmark_memory_policy_id'];target['host_memory_policy']=memory_fit['host_memory_policy']
+ opt(old,'--pack',hybrid_strata_pack());opt(old,'--resident-budget-gib',96);opt(old,'--vram-reserve-mib',1200)
 if model.endswith('fp16'):
  parent=model.removesuffix('_fp16')+'_basalt_long'
  selected_state=read(O/'range-selections.json')
