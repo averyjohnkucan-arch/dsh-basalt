@@ -7,12 +7,12 @@ const root='/mnt/media/scratch/dsh-inference-tuning-20261115',out=join(root,'out
 const seenConfigurations=new Set();
 const get=async p=>JSON.parse(await readFile(p,'utf8')),s=await get(join(root,'outputs/range-selections.json')),profiles=[],inventories=new Map();
 const control=join(root,'runtimes/strata-control-0.1.59.1'),python=join(control,'python/bin/python3'),round=x=>Number(x).toFixed(1).replace(/\.0$/,'');
-for(const [key,label]of [['flash_strata','Qwen3.8 Flash Next NVFP4 GPTQ INT8'],['hybrid_strata','Qwen3.8 Flash Next NVFP4 Q8 Hybrid INT8'],['flash_fp16_strata','Qwen3.8 Flash Next NVFP4 GPTQ FP16'],['hybrid_fp16_strata','Qwen3.8 Flash Next NVFP4 Q8 Hybrid FP16'],['gyro_strata','Qwen3.8 Flash Next Gyro S FP16'],['deepseek_strata','DeepSeek V4.1 Flash IQ2_XXS GSQ-RCO']])for(const kind of ['long','short']){
+for(const [key,label]of [['flash_strata','Qwen3.8 Flash Next NVFP4 GPTQ INT8'],['hybrid_strata','Qwen3.8 Flash Next NVFP4 Q8 Hybrid INT8'],['flash_fp16_strata','Qwen3.8 Flash Next NVFP4 GPTQ FP16'],['hybrid_fp16_strata','Qwen3.8 Flash Next NVFP4 Q8 Hybrid FP16'],['gyro_strata','Qwen3.8 Flash Next Gyro S FP16'],['deepseek_strata','DeepSeek V4.1 Flash IQ2_XXS GSQ-RCO'],['deepseek_xs_strata','DeepSeek V4.1 Flash IQ2_XS GSQ-RCO']])for(const kind of ['long','short']){
  if(!await performanceQualified(root,key,s))continue;
  const metrics=s[key+'_'+kind+'_metrics'],selection=s[key+'_'+kind];if(!metrics||!selection)continue;
  const c=await get(join(root,'work',selection.selected+'.json')),a=c.command,option=n=>a.includes('--'+n)?a[a.indexOf('--'+n)+1]:undefined;
  const signature=nativeSignature(c);if(kind==='short'&&seenConfigurations.has(signature))continue;
- const deepseek=key.startsWith('deepseek'),native=option('native')||'/mnt/media/AI/Models/DeepSeek-V4.1-Flash-1017-GSQ-RCO-GGUF/DeepSeek-V4.1-Flash-1017-GSQ-RCO-IQ2_XXS-00001-of-00004.gguf';
+ const deepseek=key.startsWith('deepseek'),native=option('native')||c.deepseek_storage_evidence?.expert_files?.[0]?.path||'/mnt/media/AI/Models/DeepSeek-V4.1-Flash-1017-GSQ-RCO-GGUF/DeepSeek-V4.1-Flash-1017-GSQ-RCO-IQ2_XXS-00001-of-00004.gguf';
  if(!inventories.has(native)){
   const raw=execFileSync('taskset',['-c','22',python,'-B',join(root,'work/dsh-strata/python/scanner.py'),dirname(native),'--files',native],{encoding:'utf8',maxBuffer:16*1024*1024,env:{...process.env,TMPDIR:join(root,'tmp')}});
   const data=JSON.parse(raw),model=data.models.find(m=>m.files.some(f=>f.path===native));if(!model)throw Error('Model header was not found by inventory');inventories.set(native,model);

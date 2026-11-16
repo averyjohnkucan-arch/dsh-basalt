@@ -20,6 +20,7 @@ def verified(metrics):
   return {**metrics,'high':{**high,'prefill_range':[min(x['prefill']for x in cases),max(x['prefill']for x in cases)],'decode_range':[min(x['decode']for x in cases),max(x['decode']for x in cases)]}}
  except(FileNotFoundError,KeyError,json.JSONDecodeError):return None
 labels={
+ 'deepseek_xs_basalt':'DeepSeek V4.1 Flash\nIQ2_XS larger quant / native mixed KV',
  'deepseek_basalt':'DeepSeek V4.1 Flash\nIQ2_XXS / native mixed KV',
  'flash_basalt':'Flash Next NVFP4 GPTQ\nINT8 KV',
  'flash_fp16_basalt':'Flash Next NVFP4 GPTQ\nFP16 KV',

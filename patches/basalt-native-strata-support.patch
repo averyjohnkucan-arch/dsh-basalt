@@ -165,6 +165,18 @@ index 61263d8..eacb99e 100644
  
  // NVFP4 row . Q8_0 row in plain C: the reference for the SIMD vec_dot (ggml_quants.c).
  void ggml_vec_dot_nvfp4_q8_0_ref(int n, float* GGML_RESTRICT s, const void* GGML_RESTRICT x, const void* GGML_RESTRICT y);
+diff --git a/include/basalt/model/adapter.hpp b/include/basalt/model/adapter.hpp
+index 0f0f1f5..9796e80 100644
+--- a/include/basalt/model/adapter.hpp
++++ b/include/basalt/model/adapter.hpp
+@@ -73,6 +73,7 @@ struct Result {
+ };
+ 
+ struct LoadRequest {
++    std::string deepseek_engram_gguf;  ///< optional separately streamed DeepSeek table
+     std::vector<std::string> paths;   ///< pack or GGUF shards
+     std::string diag_dump;            ///< diagnostic: directory for per-layer tensor dumps (empty = off)
+     int diag_tier_ram = -1;           ///< diagnostic: fixed RAM-tier experts per layer (-1 = sized from free memory)
 diff --git a/include/basalt/prefill/bf16_gemm.hpp b/include/basalt/prefill/bf16_gemm.hpp
 new file mode 100644
 index 0000000..0661814
@@ -195,6 +207,18 @@ index 0000000..0661814
 +    void* workspace_ = nullptr;
 +};
 +}
+diff --git a/include/basalt/program/options.hpp b/include/basalt/program/options.hpp
+index 368d9b2..b81ca17 100644
+--- a/include/basalt/program/options.hpp
++++ b/include/basalt/program/options.hpp
+@@ -18,6 +18,7 @@ inline constexpr int64_t kDefaultContext = 8192;
+ /// The flags every model takes.
+ struct CommonOptions {
+     virtual ~CommonOptions() = default;
++    std::string deepseek_engram_gguf;  ///< optional original Engram on a separate drive
+     std::string model;                ///< --model: the .basalt file every loader reads from
+     std::vector<int64_t> tokens;      // the prompt, PRE-TOKENIZED
+     int64_t max_new = 16;
 diff --git a/src/dense/forward.cpp b/src/dense/forward.cpp
 index f23ac36..a04aa9e 100644
 --- a/src/dense/forward.cpp
@@ -401,6 +425,138 @@ index c3f5374..32abeaa 100644
      return L;
  }
  
+diff --git a/src/models/deepseek41/adapter.cpp b/src/models/deepseek41/adapter.cpp
+index a9428d3..721d9fb 100644
+--- a/src/models/deepseek41/adapter.cpp
++++ b/src/models/deepseek41/adapter.cpp
+@@ -39,7 +39,7 @@ public:
+         if (req.paths.empty()) return {model::Status::Error, "deepseek41: no model path"};
+         auto m = std::make_unique<DsModel>();
+         std::string err;
+-        if (!m->load(req.paths.front(), err)) return {model::Status::Error, "deepseek41: " + err};
++        if (!m->load(req.paths.front(), err, req.deepseek_engram_gguf)) return {model::Status::Error, "deepseek41: " + err};
+         CacheFormat fmt = CacheFormat::Fp8;
+         if (!req.kv.empty() && !ctxp::cache_format(req.kv, fmt)) return {model::Status::Error, "deepseek41: --kv " + req.kv + ": fp8 or fp16"};
+         m->set_cache_format(fmt);
+@@ -87,7 +87,8 @@ public:
+ 
+     bool parse_flag(const std::string& a, model::FlagArgs& args, program::CommonOptions& o, int& code) const override {
+         (void) code;
+-        if (a == "--no-prompt-skip") o.no_prompt_skip = true;
++        if (a == "--deepseek-engram-gguf") o.deepseek_engram_gguf = args.next("--deepseek-engram-gguf");
++        else if (a == "--no-prompt-skip") o.no_prompt_skip = true;
+         else if (a == "--spec") { o.spec = std::atoi(args.next("--spec")); o.spec_given = true; }
+         else if (a == "--spec-oracle") o.spec_oracle = args.next("--spec-oracle");
+         else if (a == "--kv") o.kv = args.next("--kv");
+diff --git a/src/models/deepseek41/engram_external.hpp b/src/models/deepseek41/engram_external.hpp
+new file mode 100644
+index 0000000..cf66e76
+--- /dev/null
++++ b/src/models/deepseek41/engram_external.hpp
+@@ -0,0 +1,46 @@
++// Optional external DeepSeek Engram: validate the original adjacent GGUF table views.
++#pragma once
++#include "basalt/artifact/gguf_reader.hpp"
++#include <cstdint>
++#include <limits>
++#include <string>
++#include <vector>
++
++namespace basalt::models::deepseek41 {
++inline bool external_engram_offset(const std::string& path, uint64_t rows, uint32_t row_bytes,
++                                  int row_values, int type, const std::vector<int>& layers,
++                                  uint64_t& offset, std::string& err) {
++    try {
++        GgufFile file(path);
++        if (rows == 0 || row_bytes == 0 || row_values != 256 ||
++            (type != 20 && type != 39) || file.tensors().size() != layers.size() || layers.empty()) {
++            err = "external Engram: incompatible table geometry";
++            return false;
++        }
++        uint64_t covered = 0, bytes = 0;
++        for (size_t i = 0; i < layers.size(); ++i) {
++            const auto& t = file.tensors()[i];
++            if (t.name != "blk." + std::to_string(layers[i]) + ".engram_embd.weight" ||
++                t.type != static_cast<uint32_t>(type) || t.shape.size() != 2 ||
++                t.shape[0] != static_cast<uint64_t>(row_values) || t.shape[1] == 0 ||
++                covered > rows || t.shape[1] > rows - covered || t.offset != bytes ||
++                t.shape[1] > (std::numeric_limits<uint64_t>::max() - bytes) / row_bytes) {
++                err = "external Engram: wrong layers, type, rows or nonadjacent table offsets";
++                return false;
++            }
++            covered += t.shape[1];
++            bytes += t.shape[1] * row_bytes;
++        }
++        if (covered != rows || file.data_start() > file.file_size() ||
++            bytes != file.file_size() - file.data_start()) {
++            err = "external Engram: incomplete table or unexpected trailing payload";
++            return false;
++        }
++        offset = file.data_start();
++        return true;
++    } catch (const std::exception& e) {
++        err = std::string("external Engram: ") + e.what();
++        return false;
++    }
++}
++} // namespace basalt::models::deepseek41
+diff --git a/src/models/deepseek41/model.cpp b/src/models/deepseek41/model.cpp
+index f294a14..4b4f776 100644
+--- a/src/models/deepseek41/model.cpp
++++ b/src/models/deepseek41/model.cpp
+@@ -3,6 +3,7 @@
+ #include "basalt/core/load_progress.hpp"
+ #include "basalt/log.hpp"
+ #include "models/deepseek41/model.hpp"
++#include "models/deepseek41/engram_external.hpp"
+ 
+ #include "basalt/artifact/dequant.hpp"
+ #include "basalt/ggml/ggml.h"
+@@ -26,8 +27,15 @@ DsModel::~DsModel() {
+     if (experts_fd_ >= 0) platform::close_fd(experts_fd_);
+ }
+ 
+-bool DsModel::load(const std::string& path, std::string& err) {
++bool DsModel::load(const std::string& path, std::string& err, const std::string& external_engram) {
+     if (!open_pack(path, pack_, err)) return false;
++    uint64_t external_offset = 0;
++    if (!external_engram.empty()) {
++        const EngramInfo& e = pack_.engram;
++        if (!e.present) { err = "--deepseek-engram-gguf: model has no Engram table"; return false; }
++        if (!external_engram_offset(external_engram, e.rows, e.row_bytes, e.row_values, e.type,
++                                    e.layers, external_offset, err)) return false;
++    }
+     path_ = path;
+     cudaGetDevice(&device_);
+     const Geometry& g = pack_.geo;
+@@ -112,7 +120,13 @@ bool DsModel::load(const std::string& path, std::string& err) {
+     if (pack_.engram.present) {
+         engram_ = std::make_unique<ngram::PleReader>();
+         const EngramInfo& e = pack_.engram;
+-        if (!engram_->open(path, e.file_offset, e.rows, 64, 1 << 16, err, e.row_bytes)) return false;
++        const std::string& table_path = external_engram.empty() ? path : external_engram;
++        const uint64_t table_offset = external_engram.empty() ? e.file_offset : external_offset;
++        if (!engram_->open(table_path, table_offset, e.rows, 64, 1 << 16, err, e.row_bytes)) return false;
++        if (!external_engram.empty())
++            basalt::log::info("basalt deepseek41", "external Engram: %s at %llu, %llu rows of %u bytes",
++                             table_path.c_str(), (unsigned long long) table_offset,
++                             (unsigned long long) e.rows, e.row_bytes);
+     }
+     return true;
+ }
+diff --git a/src/models/deepseek41/model.hpp b/src/models/deepseek41/model.hpp
+index 701c531..cd2aaa1 100644
+--- a/src/models/deepseek41/model.hpp
++++ b/src/models/deepseek41/model.hpp
+@@ -38,7 +38,7 @@ class DsModel final : public model::LoadedModel {
+ public:
+     ~DsModel() override;
+     /// Reads the pack and uploads every dense tensor except the token embedding (read per token from the file).
+-    bool load(const std::string& path, std::string& err);
++    bool load(const std::string& path, std::string& err, const std::string& external_engram = {});
+ 
+     const model::ModelDesc& desc() const override { return desc_; }
+     int64_t context() const override { return ctx_ ? ctx_ : ctxp_default(); }
 diff --git a/src/models/deepseek41/tier.cpp b/src/models/deepseek41/tier.cpp
 index 5a9a526..18c5754 100644
 --- a/src/models/deepseek41/tier.cpp
@@ -644,6 +800,18 @@ index 0000000..1c653a7
 +    product(handle_, x, w, y, T, N, K, N);
 +}
 +}
+diff --git a/src/program/generate/adapter.cpp b/src/program/generate/adapter.cpp
+index a3666f0..fd7aa18 100644
+--- a/src/program/generate/adapter.cpp
++++ b/src/program/generate/adapter.cpp
+@@ -352,6 +352,7 @@ int run_session_model(basalt::program::CommonOptions& o, const basalt::model::Mo
+             uint64_t bytes = 0;
+             if (!key.empty() && basalt::platform::file_size(prof, bytes) && bytes > 0) lreq.expert_profile = prof;
+         }
++        lreq.deepseek_engram_gguf = o.deepseek_engram_gguf;
+         lreq.expert_cache = o.expert_cache;
+         lreq.resident_budget = o.resident_budget;
+         lreq.pool_workers = o.pool_workers;
 diff --git a/tests/cuda/prefill_mmq_nvfp4_test.cpp b/tests/cuda/prefill_mmq_nvfp4_test.cpp
 index a942910..9107e8c 100644
 --- a/tests/cuda/prefill_mmq_nvfp4_test.cpp

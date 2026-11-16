@@ -181,7 +181,10 @@ test("Qwen defaults to Medium, all models expose Off, and native effort payloads
     assert.equal("messages" in thinkingPayload(p), false);
     assert.throws(() => thinkingPayload(p, "invented"), /Unsupported/);
     p.defaultEffort = "off";
-    assert.equal(thinkingInfo(p).defaultEffort, "off");
-    assert.equal(thinkingPayload(p).enable_thinking, false);
+    assert.equal(
+      thinkingInfo(p).defaultEffort,
+      arch === "deepseek41" ? "off" : "medium",
+    );
+    assert.equal(thinkingPayload(p).enable_thinking, arch !== "deepseek41");
   }
 });

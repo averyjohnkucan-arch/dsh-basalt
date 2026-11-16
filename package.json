@@ -1,6 +1,6 @@
 {
   "name": "dsh-basalt",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Basalt Blackwell model provider for DSH: native model packs, saved profiles, reasoning controls, CPU reservation and shared GPU scheduling.",
   "type": "module",
   "license": "MIT",

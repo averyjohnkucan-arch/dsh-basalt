@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "scope": "Actual downloader disk/phase guards, HTTP range validation, and actual migration loop on file-backed NVMe fixtures. Fresh/resumed partial bytes and hash state preserved; common originals unchanged. No network/GPU.",
+  "migration_cases": [
+    "fresh",
+    "resume"
+  ],
+  "source_sha256": {
+    "download_iq2_xs.py": "fcc6776c3437a6bd01bb88db2bc05022bbc4c7e57b0ef7b73cd4b0f6d3e6329e",
+    "relocate_iq2xs_download.py": "a592141d62c18a2e291fca000b855da777c34823b7181c9f50e3bb25e5d7e906"
+  }
+}

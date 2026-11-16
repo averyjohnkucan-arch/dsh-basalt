@@ -1,7 +1,7 @@
 {
   "status": "passed",
   "scope": "Actual quality batch --plan AST with only scratch-root literal redirected to controlled receipts; full14-family, distinct-peak, partial and modified-controls cases. GPU launches explicitly forbidden. No real model qualification is claimed.",
-  "source_sha256": "3e6a47bf26c157cd73598554f7972ca19f4b9ba028e9b830e6910830131ea0f8",
+  "source_sha256": "6388fd23a55944aad47725bc08117ced3b081bf537d20746bc966f36c02b63e5",
   "checks": {
     "partial": {
       "exit_code": 1,

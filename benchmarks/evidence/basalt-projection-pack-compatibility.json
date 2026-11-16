@@ -1,0 +1,21 @@
+{
+  "status": "header-and-asset-verified",
+  "models": [
+    {
+      "name": "Qwen3.8 Flash Next NVFP4 GPTQ",
+      "path": "/mnt/media/scratch/dsh-inference-tuning-20261115/packs/qwen-nvfp4-gptq.basalt",
+      "layerCount": 48,
+      "embeddingLength": 2560,
+      "supported": true
+    },
+    {
+      "name": "Qwen3.8 Flash Next mixed NVFP4 Q8 original projections",
+      "path": "/mnt/media/scratch/dsh-inference-tuning-20261115/packs/qwen-nvfp4-q8-hybrid.basalt",
+      "layerCount": 48,
+      "embeddingLength": 2560,
+      "supported": true
+    }
+  ],
+  "vector": "/mnt/media/scratch/dsh-inference-tuning-20261115/outputs/dsh-basalt-range-state/assets/flash-next-refusal-direction.gguf",
+  "scope": "Actual NVFP4 GPTQ and NVFP4/Q8 mixed pack metadata; pinned direction checksum verified. GPU mode validation still pending."
+}

@@ -1,0 +1,20 @@
+{
+  "status": "active-work-authorized",
+  "updated_unix": 1794820268.32379,
+  "goal_tracker_status": "paused; user must use Resume control; job resumption authorized in chat",
+  "completion_requirements": [
+    "Full measured before/after table for every requested model/engine family, including DeepSeek V4.1 Flash 1017 IQ2_XXS and larger IQ2_XS; explicit unsupported cases",
+    "Low-context native-chat code and 80% context text/chat/story, 8192 generated/final4096 timed, paired prefill/decode, ranges and executable generated-code QA",
+    "Decode-first per-genre 5% floor; maximize prefill only within that floor",
+    "XXS and XS expert weights stream from internal system NVMe; shared Engram remains on the other drive by latest user instruction; disclose and test any engine layout limitation",
+    "Demonstrate actual DeepSeek on-the-fly refusal projection with controlled off/on/off requests and benign control, or document exact verified source/runtime/vector limitation; no claimed success from flag parsing or different outputs alone",
+    "Preserve prior reasoning selector requirements and verify plugin wiring on real GPU",
+    "Profile/model names contain matched low/high P/D; final chart, reproducible settings and authorized GitHub publication",
+    "IQ2_XS tuning is the final model stage; do not delete either quantization before completed comparison"
+  ],
+  "must_not_mark_complete_until_all_requirements_satisfied": true,
+  "shared_engram_reason": "User suggested separate-drive Engram to reduce simultaneous I/O contention; benefit remains to be measured",
+  "optional_engine_scope": "Separate custom Basalt runtime adds explicit external Engram path, no DeepSeek projection implementation",
+  "deepseek_abliteration_current_finding": "Published dsv41 vector checksum-pinned; stock released Strata flag rejected; Basalt hooks are Qwen-only with 4096-width kernel versus DeepSeek5120. Exact current limitations documented; no behavioral success claimed.",
+  "engram_validation": "Actual direct SSD row reader tested independently, with GPU frozen-placement parity still mandatory"
+}

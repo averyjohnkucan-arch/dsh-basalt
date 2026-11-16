@@ -1,0 +1,8 @@
+{
+  "status": "passed",
+  "scope": "Actual C++ GGUF header validator, ten synthetic/fault cases plus actual direct SSD first/last/middle/page-straddling rows versus buffered ground truth, cache off/on; no GPU output parity or speed claim",
+  "stdout": "PASS direct SSD rows versus independent buffered reads, first/last/mid/page-straddles, cache off/on; ten geometry/fault cases and actual shared Engram header: rows=768022850 offset=416 bytes=110595290816",
+  "header_sha256": "58484c6eafc2525f88787ed67968bb32060bda0dd35556b7ed4d5e774e7c4384",
+  "updated_unix": 1794820232.0116227,
+  "native_server_flag_translation": "passed with actual new binary flag set"
+}

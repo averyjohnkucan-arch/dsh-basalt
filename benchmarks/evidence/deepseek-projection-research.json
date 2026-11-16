@@ -1,0 +1,40 @@
+{
+  "status": "vector-acquired-runtime-support-not-demonstrated",
+  "updated_unix": 1794818951.7938168,
+  "vector": {
+    "repository": "cjxzdzh/DeepSeek-V4.1-Flash-1017-refusal-direction-dsv41-cvec",
+    "revision": "b5bebf266173778e5990e3839818e6b5fac04a39",
+    "sha256": "8a57fb31fb0af2c29fe8fbdb75de61df581aaaa6ea25715c075035f8f1819a39",
+    "path": "/mnt/media/scratch/dsh-inference-tuning-20261115/validation/deepseek-projection/cvec-q0.gguf",
+    "expected_hidden_width": 5120,
+    "layers": 40,
+    "publisher_claims": "32 directions, layers1..32; publisher reports behavioral tests, not independently reproduced here"
+  },
+  "installed_strata": {
+    "binary": "/mnt/media/scratch/dsh-inference-tuning-20261115/runtimes/deepseek-engine/0.1.59-linux-x86_64-cuda-cuda13/strata-dsv41",
+    "flag_probe_returncode": 2,
+    "flag_probe": "unknown option --control-vector-scaled",
+    "conclusion": "Installed released DeepSeek runtime does not implement this flag"
+  },
+  "current_basalt": {
+    "deepseek_flag_parser": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/basalt-latest/src/models/deepseek41/adapter.cpp",
+    "qwen_kernel": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/basalt-latest/src/models/qwen4exp/kernels/cvec.cu",
+    "qwen_projection_max_width": 4096,
+    "deepseek_width": 5120,
+    "conclusion": "Qwen hooks are not DeepSeek hooks; cannot enable by forwarding the request boolean",
+    "engram_source": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/basalt-latest/src/models/deepseek41/model.cpp",
+    "engram_limitation": "Current DeepSeek loader opens Engram from the same converted pack path, so an external Engram hook is required for matched split-drive layout"
+  },
+  "required_validation": [
+    "Architecture-aware loader validating dsv41 40x5120 and per-stream projection semantics",
+    "All prefill, decode and speculative verify paths must apply the same intervention",
+    "Explicit per-request off/on/off control and projection-aware prompt/checkpoint identity",
+    "Unsteered fixed-placement output parity, benign control quality and refusal-changing challenge; do not equate output differences with refusal removal",
+    "GPU test raw prompt/response ephemeral and deleted; retain only controls, hashes and classifications"
+  ],
+  "other_adapter_limit": "apetersson DS41DIR branch is Metal-only, exact full-file Q2 digest bound; CUDA, speculative modes and these IQ2 split files are unsupported by its published deployment contract",
+  "sources": [
+    "https://huggingface.co/cjxzdzh/DeepSeek-V4.1-Flash-1017-refusal-direction-dsv41-cvec",
+    "https://huggingface.co/apetersson/DeepSeek-V4.1-Flash-Abliteration-Adapter"
+  ]
+}

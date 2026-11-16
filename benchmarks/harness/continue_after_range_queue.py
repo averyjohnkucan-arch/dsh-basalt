@@ -27,4 +27,6 @@ for key in ['deepseek_basalt','deepseek_strata']:
   configs[key+'-'+kind]=dict(config=str(W/(s[key+'_'+kind]['selected']+'.json')),family='deepseek')
 path=W/'range-deepseek-selected-functional-configs.json';path.write_text(json.dumps(configs,indent=2))
 subprocess.run([sys.executable,str(W/'code_function_eval.py'),str(path)],check=True)
-print('DEEPSEEK RANGE AND PLUGIN STAGE COMPLETE; FINAL PACKAGING, PUBLICATION AND REPORT REMAIN REQUIRED',flush=True)
+with(W/'range-deepseek-xs.progress').open('a')as log:
+ subprocess.run([sys.executable,str(W/'range_deepseek_xs.py')],stdout=log,stderr=subprocess.STDOUT,check=True)
+print('BOTH DEEPSEEK QUANTIZATION RANGE AND PLUGIN STAGE COMPLETE; FINAL PACKAGING, PUBLICATION AND REPORT REMAIN REQUIRED',flush=True)

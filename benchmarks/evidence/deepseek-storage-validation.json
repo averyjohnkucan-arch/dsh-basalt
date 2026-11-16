@@ -1,0 +1,47 @@
+{
+  "status": "passed",
+  "scope": "All original Strata tensor paths resolved: four expert shards and draft on system NVMe; Engram on media; original config unmodified",
+  "evidence": {
+    "quantization": "IQ2_XXS",
+    "expert_storage": "internal-system-NVMe",
+    "expert_files": [
+      {
+        "path": "/home/user/Desktop/DeepSeek-IQ2_XXS/DeepSeek-V4.1-Flash-1017-GSQ-RCO-IQ2_XXS-00001-of-00004.gguf",
+        "bytes": 39075725728,
+        "sha256": "2dfe9711eac1f7814aa59154d11e8f27739f8b96875dc1e667eac9f8c756e1fe",
+        "device": 66306
+      },
+      {
+        "path": "/home/user/Desktop/DeepSeek-IQ2_XXS/DeepSeek-V4.1-Flash-1017-GSQ-RCO-IQ2_XXS-00002-of-00004.gguf",
+        "bytes": 39388449504,
+        "sha256": "cec1b2c3da429dc768b8bb9bc4dc4403d81f74d34db660a6a34ee3e555bf2c70",
+        "device": 66306
+      },
+      {
+        "path": "/home/user/Desktop/DeepSeek-IQ2_XXS/DeepSeek-V4.1-Flash-1017-GSQ-RCO-IQ2_XXS-00003-of-00004.gguf",
+        "bytes": 39246891616,
+        "sha256": "9d9c2140fcb134a0b9a74dedd0e5167e68077af6d08ce7f856bce112f0a35dd3",
+        "device": 66306
+      },
+      {
+        "path": "/home/user/Desktop/DeepSeek-IQ2_XXS/DeepSeek-V4.1-Flash-1017-GSQ-RCO-IQ2_XXS-00004-of-00004.gguf",
+        "bytes": 20527837312,
+        "sha256": "9b790a2297ed3cdede379fc984f4a52bb95f3b23724c797af11d1fa6a69db059",
+        "device": 66306
+      }
+    ],
+    "shared_engram": "/mnt/media/AI/Models/DeepSeek-V4.1-Flash-1017-GSQ-RCO-GGUF/DeepSeek-V4.1-Flash-Engram-IQ4_NL.gguf",
+    "shared_engram_device": 2431,
+    "draft": "/home/user/Desktop/DeepSeek-shared/support/dspark-DeepSeek-V4.1-Flash-1017-Q8_0.gguf",
+    "internal_device": 66306,
+    "layout": "Experts and draft on system SSD; shared Engram on media",
+    "strata_tensor_files": [
+      "/home/user/Desktop/DeepSeek-IQ2_XXS/DeepSeek-V4.1-Flash-1017-GSQ-RCO-IQ2_XXS-00001-of-00004.gguf",
+      "/home/user/Desktop/DeepSeek-IQ2_XXS/DeepSeek-V4.1-Flash-1017-GSQ-RCO-IQ2_XXS-00002-of-00004.gguf",
+      "/home/user/Desktop/DeepSeek-IQ2_XXS/DeepSeek-V4.1-Flash-1017-GSQ-RCO-IQ2_XXS-00003-of-00004.gguf",
+      "/home/user/Desktop/DeepSeek-IQ2_XXS/DeepSeek-V4.1-Flash-1017-GSQ-RCO-IQ2_XXS-00004-of-00004.gguf",
+      "/mnt/media/AI/Models/DeepSeek-V4.1-Flash-1017-GSQ-RCO-GGUF/DeepSeek-V4.1-Flash-Engram-IQ4_NL.gguf",
+      "/home/user/Desktop/DeepSeek-shared/support/dspark-DeepSeek-V4.1-Flash-1017-Q8_0.gguf"
+    ]
+  }
+}

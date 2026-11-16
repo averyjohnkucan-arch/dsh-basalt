@@ -1,1098 +1,1121 @@
 {
-  "at": "2026-11-15T23:42:01.654864-08:00",
+  "at": "2026-11-16T01:15:47.697392-08:00",
   "status": "passed",
-  "prepared_from_base_commit": "56b98cd26c1f802de641e4cc2e41d93faf4dcdeb",
-  "manifest_sha256": "8554303d4f42882c9cb6b5d98b2a1acc83c24539ca570d2cbeafe8aaa4b8332b",
-  "scope": "Current Python AST local imports and existing literal script references, plus prior dependency paths and required user RAM policy evidence verified. Documented sibling layout; dynamic imports, weights, model fixtures and external package reconstruction excluded.",
-  "source_count": 57,
-  "prior_dependency_paths_revalidated": 175,
-  "user_memory_policy_published": true,
+  "prepared_from_base_commit": "2b037731fde37e254363753ea92c0b97dff71b82",
+  "manifest_sha256": "3dc50e40389f9ccb7b20994c1f830cdb976bc31fe360b74d319739182d8c60a1",
+  "source_count": 66,
+  "scope": "Current Python AST local imports and existing flat literal py/mjs/txt/cpp/hpp sibling references checked against current manifest. External engine/plugin clone layout remains required; dynamic references, packages, weights and fixtures excluded.",
   "checks": [
     {
-      "source": "test_nonworker_memory_budget.py",
+      "source": "range_deepseek_xs.py",
+      "dependency": "range_tuner.py",
+      "kind": "local import",
+      "passed": true
+    },
+    {
+      "source": "range_deepseek_xs.py",
+      "dependency": "deepseek_storage.py",
+      "kind": "local import",
+      "passed": true
+    },
+    {
+      "source": "range_deepseek_xs.py",
       "dependency": "benchmark_memory_guard.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
-      "source": "test_nonworker_memory_budget.py",
-      "dependency": "range_common.py",
-      "passed": true,
-      "kind": "local harness"
-    },
-    {
-      "source": "test_nonworker_memory_budget.py",
-      "dependency": "benchmark_memory_guard.py",
-      "passed": true,
-      "kind": "local harness"
-    },
-    {
-      "source": "test_nonworker_memory_budget.py",
-      "dependency": "range_common.py",
-      "passed": true,
-      "kind": "local harness"
-    },
-    {
-      "source": "test_joint_feedback.py",
+      "source": "range_deepseek_xs.py",
       "dependency": "range_repeatability.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
-      "source": "test_joint_feedback.py",
+      "source": "range_deepseek_xs.py",
       "dependency": "range_low_peak.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
-      "source": "test_joint_feedback.py",
-      "dependency": "range_joint_refine.py",
-      "passed": true,
-      "kind": "local harness"
+      "source": "range_deepseek_xs.py",
+      "dependency": "range_repeatability.py",
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
-      "source": "test_joint_feedback.py",
-      "dependency": "range_low_peak.py",
-      "passed": true,
-      "kind": "local harness"
+      "source": "range_deepseek_xs.py",
+      "dependency": "code_function_eval.py",
+      "kind": "existing literal sibling",
+      "passed": true
+    },
+    {
+      "source": "range_deepseek_xs.py",
+      "dependency": "range_progress_report.py",
+      "kind": "existing literal sibling",
+      "passed": true
+    },
+    {
+      "source": "range_deepseek_xs.py",
+      "dependency": "range_plugin_gpu_gate.py",
+      "kind": "existing literal sibling",
+      "passed": true
+    },
+    {
+      "source": "test_external_engram.py",
+      "dependency": "test_external_engram.cpp",
+      "kind": "existing literal sibling",
+      "passed": true
+    },
+    {
+      "source": "test_nonworker_memory_budget.py",
+      "dependency": "benchmark_memory_guard.py",
+      "kind": "local import",
+      "passed": true
+    },
+    {
+      "source": "test_nonworker_memory_budget.py",
+      "dependency": "range_common.py",
+      "kind": "local import",
+      "passed": true
+    },
+    {
+      "source": "test_nonworker_memory_budget.py",
+      "dependency": "benchmark_memory_guard.py",
+      "kind": "existing literal sibling",
+      "passed": true
+    },
+    {
+      "source": "test_nonworker_memory_budget.py",
+      "dependency": "range_common.py",
+      "kind": "existing literal sibling",
+      "passed": true
+    },
+    {
+      "source": "hybrid_candidate_progress.py",
+      "dependency": "range_identity.py",
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "test_benchmark_end_policy.py",
       "dependency": "http_bench.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "test_benchmark_end_policy.py",
       "dependency": "audit_range_outputs.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "test_benchmark_end_policy.py",
       "dependency": "http_bench.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "test_benchmark_end_policy.py",
       "dependency": "audit_range_outputs.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "test_soft_pressure_refinement.py",
       "dependency": "range_tuner.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "test_soft_pressure_refinement.py",
       "dependency": "range_identity.py",
-      "passed": true,
-      "kind": "local harness"
-    },
-    {
-      "source": "test_soft_pressure_refinement.py",
-      "dependency": "range_joint_refine.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "test_confirmation_diversity.py",
       "dependency": "range_tuner.py",
-      "passed": true,
-      "kind": "local harness"
-    },
-    {
-      "source": "test_confirmation_diversity.py",
-      "dependency": "range_tuner.py",
-      "passed": true,
-      "kind": "local harness"
-    },
-    {
-      "source": "test_decode_screen_recovery.py",
-      "dependency": "range_common.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "test_draft_log_recovery.py",
       "dependency": "draft_log_diagnostics.py",
-      "passed": true,
-      "kind": "local harness"
-    },
-    {
-      "source": "test_draft_log_recovery.py",
-      "dependency": "native_bench.py",
-      "passed": true,
-      "kind": "local harness"
-    },
-    {
-      "source": "test_draft_log_recovery.py",
-      "dependency": "draft-log-recovery-fixture.txt",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "functional_benchmark_recovery.py",
       "dependency": "benchmark_environment.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "functional_benchmark_recovery.py",
       "dependency": "range_common.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "functional_benchmark_recovery.py",
       "dependency": "http_bench.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "functional_benchmark_recovery.py",
       "dependency": "native_bench.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "test_functional_recovery.py",
       "dependency": "functional_benchmark_recovery.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "test_quality_batch_plan.py",
       "dependency": "benchmark_environment.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "test_quality_batch_plan.py",
       "dependency": "range_identity.py",
-      "passed": true,
-      "kind": "local harness"
-    },
-    {
-      "source": "test_quality_batch_plan.py",
-      "dependency": "quality_range_selected.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "range_model_progress.py",
       "dependency": "benchmark_environment.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "range_model_progress.py",
       "dependency": "range_progress_report.py",
-      "passed": true,
-      "kind": "local harness"
-    },
-    {
-      "source": "test_hybrid_sustained_fit.py",
-      "dependency": "range_flash.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "resume_hybrid_pipeline.py",
       "dependency": "fit_hybrid_memory.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "resume_hybrid_pipeline.py",
       "dependency": "performance_range_pipeline.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "refresh_range_metrics.py",
       "dependency": "range_common.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "refresh_range_metrics.py",
       "dependency": "range_identity.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "fit_hybrid_memory.py",
       "dependency": "range_common.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "benchmark_resume_validity_test.py",
       "dependency": "range_common.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "calibrate_performance_ninfer.py",
       "dependency": "benchmark_environment.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "calibrate_performance_ninfer.py",
       "dependency": "benchmark_memory_guard.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "performance_range_pipeline.py",
       "dependency": "benchmark_environment.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "performance_range_pipeline.py",
       "dependency": "range_queue.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "performance_range_pipeline.py",
       "dependency": "range_flash.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "range_queue.py",
       "dependency": "benchmark_environment.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "range_queue.py",
       "dependency": "range_flash.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "range_queue.py",
       "dependency": "range_strata.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "range_queue.py",
       "dependency": "range_flash.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "range_queue.py",
       "dependency": "range_strata.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "range_queue.py",
       "dependency": "range_ninfer.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "range_queue.py",
       "dependency": "range_27b_basalt.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "range_queue.py",
       "dependency": "range_ninfer.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "range_queue.py",
       "dependency": "quality_range_selected.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "range_queue.py",
       "dependency": "range_repeatability.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "range_queue.py",
       "dependency": "range_low_peak.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "range_queue.py",
       "dependency": "range_repeatability.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "range_queue.py",
       "dependency": "calibrate_performance_ninfer.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "continue_after_range_queue.py",
       "dependency": "range_deepseek.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "continue_after_range_queue.py",
       "dependency": "range_repeatability.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "continue_after_range_queue.py",
       "dependency": "range_low_peak.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "continue_after_range_queue.py",
       "dependency": "range_repeatability.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "continue_after_range_queue.py",
       "dependency": "code_function_eval.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
+    },
+    {
+      "source": "continue_after_range_queue.py",
+      "dependency": "range_deepseek_xs.py",
+      "kind": "existing literal sibling",
+      "passed": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "move_deepseek_internal.py",
+      "kind": "existing literal sibling",
+      "passed": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "deepseek_storage.py",
+      "kind": "existing literal sibling",
+      "passed": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "range_deepseek_xs.py",
+      "kind": "existing literal sibling",
+      "passed": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "finish_split_engram_build.py",
+      "kind": "existing literal sibling",
+      "passed": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "test_external_engram.cpp",
+      "kind": "existing literal sibling",
+      "passed": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "test_external_engram.py",
+      "kind": "existing literal sibling",
+      "passed": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "download_iq2_xs.py",
+      "kind": "existing literal sibling",
+      "passed": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "relocate_iq2xs_download.py",
+      "kind": "existing literal sibling",
+      "passed": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "test_iq2xs_download.py",
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "test_nonworker_memory_budget.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "test_joint_feedback.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "hybrid_candidate_progress.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "test_benchmark_end_policy.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "test_soft_pressure_refinement.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "test_confirmation_diversity.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "test_decode_screen_recovery.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "draft_log_diagnostics.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "test_draft_log_recovery.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "draft-log-recovery-fixture.txt",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "functional_benchmark_recovery.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "test_functional_recovery.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "test_functional_export.mjs",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "test_quality_batch_plan.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "range_model_progress.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "test_hybrid_sustained_fit.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "resume_hybrid_pipeline.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "refresh_range_metrics.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "fit_hybrid_memory.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "benchmark_resume_validity_test.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "range_objective.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "calibrate_performance_ninfer.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "benchmark_environment.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "performance_range_pipeline.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "range_queue.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "continue_after_range_queue.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "prepare_benchmark_publication.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "native_bench.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "http_bench.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "benchmark_prompts.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "benchmark_memory_guard.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "range_common.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "range_identity.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "range_tuner.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "range_repeatability.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "range_low_peak.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "range_joint_refine.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "range_flash.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "range_strata.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "range_ninfer.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "range_27b_basalt.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "range_deepseek.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "mark_performance_qualified.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "range_plugin_gpu_gate.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "range_plugin_adapter_smoke.mjs",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "profile_measurement_helpers.mjs",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "export_range_basalt.mjs",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "export_range_ninfer.mjs",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "export_range_strata.mjs",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "range_progress_report.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "range_progress_chart.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "prepare_range_fixtures.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "audit_range_outputs.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "quality_range_selected.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "code_function_eval.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "latest80_common.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "tune80_common.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "native_bench.py",
       "dependency": "benchmark_prompts.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "native_bench.py",
       "dependency": "benchmark_memory_guard.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "native_bench.py",
       "dependency": "benchmark_environment.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "native_bench.py",
       "dependency": "draft_log_diagnostics.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "http_bench.py",
       "dependency": "benchmark_memory_guard.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "http_bench.py",
       "dependency": "benchmark_environment.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "http_bench.py",
       "dependency": "benchmark_prompts.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "range_common.py",
       "dependency": "latest80_common.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "range_common.py",
       "dependency": "benchmark_memory_guard.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "range_common.py",
       "dependency": "benchmark_environment.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "range_common.py",
       "dependency": "http_bench.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "range_common.py",
       "dependency": "native_bench.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "range_identity.py",
       "dependency": "range_common.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "range_tuner.py",
       "dependency": "range_common.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "range_tuner.py",
       "dependency": "range_identity.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "range_repeatability.py",
       "dependency": "range_common.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "range_repeatability.py",
       "dependency": "range_objective.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "range_repeatability.py",
       "dependency": "range_identity.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "range_repeatability.py",
       "dependency": "range_joint_refine.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "range_repeatability.py",
       "dependency": "range_low_peak.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "range_repeatability.py",
       "dependency": "mark_performance_qualified.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "range_low_peak.py",
       "dependency": "range_tuner.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "range_low_peak.py",
       "dependency": "range_identity.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "range_low_peak.py",
       "dependency": "range_joint_refine.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "range_joint_refine.py",
       "dependency": "range_tuner.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "range_joint_refine.py",
       "dependency": "range_identity.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "range_joint_refine.py",
       "dependency": "range_repeatability.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "range_joint_refine.py",
       "dependency": "range_repeatability.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "range_flash.py",
       "dependency": "range_common.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "range_flash.py",
       "dependency": "range_tuner.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "range_strata.py",
       "dependency": "range_tuner.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "range_ninfer.py",
       "dependency": "range_tuner.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "range_27b_basalt.py",
       "dependency": "range_tuner.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "range_deepseek.py",
       "dependency": "range_tuner.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "range_deepseek.py",
       "dependency": "benchmark_memory_guard.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "range_deepseek.py",
-      "dependency": "basalt-latest/tools/convert/convert.py",
-      "passed": true,
-      "kind": "sibling checkout"
-    },
-    {
-      "source": "range_deepseek.py",
-      "dependency": "basalt-latest/tools/convert/convert.py",
-      "passed": true,
-      "kind": "sibling checkout"
+      "dependency": "deepseek_storage.py",
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "range_deepseek.py",
       "dependency": "native_bench.py",
-      "passed": true,
-      "kind": "local harness"
-    },
-    {
-      "source": "range_deepseek.py",
-      "dependency": "basalt-latest/tools/convert/convert.py",
-      "passed": true,
-      "kind": "sibling checkout"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "mark_performance_qualified.py",
       "dependency": "range_identity.py",
-      "passed": true,
-      "kind": "local harness"
-    },
-    {
-      "source": "mark_performance_qualified.py",
-      "dependency": "refresh_range_metrics.py",
-      "passed": true,
-      "kind": "local harness"
-    },
-    {
-      "source": "mark_performance_qualified.py",
-      "dependency": "range_progress_report.py",
-      "passed": true,
-      "kind": "local harness"
-    },
-    {
-      "source": "mark_performance_qualified.py",
-      "dependency": "range_model_progress.py",
-      "passed": true,
-      "kind": "local harness"
-    },
-    {
-      "source": "mark_performance_qualified.py",
-      "dependency": "range_plugin_gpu_gate.py",
-      "passed": true,
-      "kind": "local harness"
-    },
-    {
-      "source": "mark_performance_qualified.py",
-      "dependency": "audit_range_outputs.py",
-      "passed": true,
-      "kind": "local harness"
-    },
-    {
-      "source": "mark_performance_qualified.py",
-      "dependency": "range_progress_chart.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "range_plugin_gpu_gate.py",
       "dependency": "benchmark_memory_guard.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "range_plugin_gpu_gate.py",
       "dependency": "range_plugin_adapter_smoke.mjs",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
+    },
+    {
+      "source": "range_plugin_gpu_gate.py",
+      "dependency": "range_plugin_adapter_smoke.mjs",
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "range_progress_report.py",
       "dependency": "benchmark_environment.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "range_progress_chart.py",
       "dependency": "benchmark_environment.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "range_progress_chart.py",
       "dependency": "range_identity.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "audit_range_outputs.py",
       "dependency": "prepare_range_fixtures.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "quality_range_selected.py",
       "dependency": "range_identity.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "quality_range_selected.py",
       "dependency": "benchmark_environment.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "quality_range_selected.py",
       "dependency": "code_function_eval.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
+    },
+    {
+      "source": "quality_range_selected.py",
+      "dependency": "range_plugin_gpu_gate.py",
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "code_function_eval.py",
       "dependency": "functional_benchmark_recovery.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "code_function_eval.py",
       "dependency": "prepare_range_fixtures.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "latest80_common.py",
       "dependency": "tune80_common.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "latest80_common.py",
       "dependency": "benchmark_environment.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "local import",
+      "passed": true
     },
     {
       "source": "latest80_common.py",
       "dependency": "http_bench.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "latest80_common.py",
       "dependency": "native_bench.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "tune80_common.py",
       "dependency": "http_bench.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     },
     {
       "source": "tune80_common.py",
       "dependency": "native_bench.py",
-      "passed": true,
-      "kind": "local harness"
+      "kind": "existing literal sibling",
+      "passed": true
     }
-  ]
+  ],
+  "user_memory_policy_published": true
 }

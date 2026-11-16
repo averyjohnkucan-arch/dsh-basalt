@@ -25,6 +25,9 @@ if '--plan'in sys.argv:print(json.dumps(plan,indent=2));raise SystemExit(0)
 p=W/'range-selected-functional-configs.json';p.write_text(json.dumps(configs,indent=2))
 receipt=O/'selected-code-quality-completion.json';state={**plan,'status':'running','started_unix':time.time()};receipt.write_text(json.dumps(state,indent=2)+'\n')
 try:
+ state['phase']='current-plugin-and-mode-validation';receipt.write_text(json.dumps(state,indent=2)+'\n')
+ for model_key,_ in models:subprocess.run([sys.executable,str(W/'range_plugin_gpu_gate.py'),model_key],check=True)
+ state['phase']='generated-functions';state['current_plugin_sources_revalidated']=True;receipt.write_text(json.dumps(state,indent=2)+'\n')
  subprocess.run([sys.executable,str(W/'code_function_eval.py'),str(p)],check=True)
  rows=json.loads((O/('code-functional-'+p.stem+'.json')).read_text())
  assert {(row['model'],row['function'])for row in rows}=={(label,task)for label in configs for task in plan['functions']}
