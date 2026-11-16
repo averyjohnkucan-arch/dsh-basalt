@@ -33,8 +33,8 @@
     },
     {
       "path": "harness/prepare_benchmark_publication.py",
-      "sha256": "67bbdd3701625d3f1661d7c6c7e77e58e4060abc2f3df17d88f48a3e6716d644",
-      "bytes": 2676
+      "sha256": "9f4be914448cb398e2c15addc895156da0e4d8532dac7f62fd9213f853092e30",
+      "bytes": 2744
     },
     {
       "path": "harness/native_bench.py",
@@ -153,8 +153,8 @@
     },
     {
       "path": "harness/range_progress_chart.py",
-      "sha256": "1046035b16f7a8bab32d333be7ca6a76120ba0f0bd208c184a08e69bf1f8284f",
-      "bytes": 4785
+      "sha256": "fe2e3e8dc8873829035ba09a7d840865ed3fe5a809ca6b88b2adc78469a71165",
+      "bytes": 4799
     },
     {
       "path": "harness/prepare_range_fixtures.py",

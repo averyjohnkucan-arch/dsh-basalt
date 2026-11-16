@@ -1,0 +1,85 @@
+{
+  "at": "2026-11-15T17:16:52.562821-08:00",
+  "scope": "Source audit of the frozen latest NInfer softmax-attention paths. This does not assert which runtime route wins pending performance-cohort calibration and benchmarks, and does not describe GDN recurrent-state precision.",
+  "answer": "NVFP4 specifies the stored KV representation; attention math is route-dependent, not universally BF16.",
+  "paths": [
+    {
+      "route": "NVFP4 small-T decode/verification (up to 48 query rows)",
+      "persistent_KV": "Group-16 NVFP4",
+      "QK_operands": "FP16, widened from BF16 Q / represented NVFP4 K",
+      "QK_accumulation": "FP32",
+      "PV_operands": "FP16, with represented NVFP4 V widened to FP16",
+      "PV_accumulation": "FP32",
+      "normalization_and_split_merge": "FP32"
+    },
+    {
+      "route": "NVFP4 standard tiled prefill",
+      "persistent_KV": "Group-16 NVFP4",
+      "QK_operands": "BF16 (unquantized Q, K widened from NVFP4)",
+      "QK_accumulation": "FP32",
+      "PV_operands": "FP16",
+      "PV_accumulation": "FP32"
+    },
+    {
+      "route": "Blackwell NVFP4 fast prefill, conditional on selected fast-kernel policy, single batch row, more than 2048 visible keys",
+      "persistent_KV": "Group-16 NVFP4",
+      "QK_operands": "Block-scaled FP4 Tensor Cores; Q represented by two NVFP4 terms",
+      "QK_accumulation": "FP32",
+      "PV_operands": "FP16, V widened from NVFP4",
+      "PV_accumulation": "FP16 within each 64-key tile, promoted to FP32 per tile",
+      "output": "BF16 after FP32 normalization/inverse rotation"
+    }
+  ],
+  "builds": {
+    "compatible_NINFER_SM120_NATIVE": false,
+    "native_NINFER_SM120_NATIVE": true,
+    "both_cuda_architectures": "120a",
+    "both_include_blackwell_NVFP4_units": true
+  },
+  "basalt_dense_limit": "Current Qwen35 Basalt accepts FP16 and INT8 KV only. NVFP4-full describes imported weights and is not a claim of NVFP4 KV support.",
+  "strata": "No unsupported compute-precision claim is made for its closed native runtime.",
+  "source_evidence": [
+    {
+      "source": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/ninfer-latest/src/ops/softmax_attention/dense/causal_cache/nvfp4/small_t.cuh",
+      "line": 3,
+      "sha256": "725fa3fa6229cb501ec955ef8b357f1a954bb16dadb702f0619ecec7abb91954",
+      "upstream_reference": "https://github.com/iamwavecut/ninfer-all/blob/40d913db2e87e2211fce4089c0c7920480a5e7a0/src/ops/softmax_attention/dense/causal_cache/nvfp4/small_t.cuh#L3"
+    },
+    {
+      "source": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/ninfer-latest/src/ops/softmax_attention/dense/causal_cache/nvfp4/prompt.cuh",
+      "line": 3,
+      "sha256": "43e8ff5a140d9464797e1b2df4b2be50acfbea118d63c9b9cae5620a211dc30f",
+      "upstream_reference": "https://github.com/iamwavecut/ninfer-all/blob/40d913db2e87e2211fce4089c0c7920480a5e7a0/src/ops/softmax_attention/dense/causal_cache/nvfp4/prompt.cuh#L3"
+    },
+    {
+      "source": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/ninfer-latest/src/ops/softmax_attention/dense/causal_cache/nvfp4/prompt_fast.cuh",
+      "line": 3,
+      "sha256": "7ee973bfa97151d016dc698b616f3d8709c5c701b928411c1265ff5ac2b9f5cf",
+      "upstream_reference": "https://github.com/iamwavecut/ninfer-all/blob/40d913db2e87e2211fce4089c0c7920480a5e7a0/src/ops/softmax_attention/dense/causal_cache/nvfp4/prompt_fast.cuh#L3"
+    },
+    {
+      "source": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/ninfer-latest/src/ops/softmax_attention/dense/causal_cache/causal_softmax_attention.cpp",
+      "line": 68,
+      "sha256": "e71eb8518062f65e52711b3fe996a821b975e158c0f3e2d6d9e346f807ef98a7",
+      "upstream_reference": "https://github.com/iamwavecut/ninfer-all/blob/40d913db2e87e2211fce4089c0c7920480a5e7a0/src/ops/softmax_attention/dense/causal_cache/causal_softmax_attention.cpp#L68"
+    },
+    {
+      "source": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/ninfer-latest/src/ops/softmax_attention/dense/causal_cache/nvfp4/prompt_fast_plan.h",
+      "line": 100,
+      "sha256": "791d7f146c34634e4dd7c6f119aee166e17769b96a06c49500d7cbac520c6868",
+      "upstream_reference": "https://github.com/iamwavecut/ninfer-all/blob/40d913db2e87e2211fce4089c0c7920480a5e7a0/src/ops/softmax_attention/dense/causal_cache/nvfp4/prompt_fast_plan.h#L100"
+    },
+    {
+      "source": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/ninfer-latest/src/ops/common/mma.cuh",
+      "line": 81,
+      "sha256": "05e0e11ddd4f4540925e2dbac48f0c3c1742541027e89e2f0673adefa3710277",
+      "upstream_reference": "https://github.com/iamwavecut/ninfer-all/blob/40d913db2e87e2211fce4089c0c7920480a5e7a0/src/ops/common/mma.cuh#L81"
+    },
+    {
+      "source": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/ninfer-latest/CMakeLists.txt",
+      "line": 152,
+      "sha256": "9eb5d3566bbcc1bb10968aeb95b7fd204df49a0d1e18c65762cbfff8732f6a88",
+      "upstream_reference": "https://github.com/iamwavecut/ninfer-all/blob/40d913db2e87e2211fce4089c0c7920480a5e7a0/CMakeLists.txt#L152"
+    }
+  ]
+}

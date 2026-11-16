@@ -46,6 +46,6 @@ if rows:axes[0].legend(frameon=False,fontsize=8)
 else:
  for ax in axes:ax.text(.5,.5,'New performance cohort measuring…',ha='center',va='center',transform=ax.transAxes);ax.set_yticks([])
 fig.suptitle('Flash Next INT8 KV: matched long-context progress',fontsize=16,fontweight='bold',y=.98)
-fig.text(.06,.06,'209,715 input tokens • 8,192 generated • 95 W requested (dynamic cap) • thinking off • isolated worker RAM',fontsize=10)
+fig.text(.06,.06,'209,715 input tokens • 8,192 generated • 95 W default / 110 W maximum (dynamic cap) • thinking off • isolated worker RAM',fontsize=10)
 fig.text(.06,.015,'Medians shown; repetitive free continuations remain included. '+('Performance gate passed; plugin and quality qualification are separate.'if q else'PROVISIONAL: current candidate is not the final tuned maximum.'),fontsize=9,color='#555555')
 fig.tight_layout(rect=[0,.1,1,.91]);fig.savefig(O/'range-progress.png',dpi=160);print('Saved range-progress.png with',len(rows),'guarded genre measurements')
