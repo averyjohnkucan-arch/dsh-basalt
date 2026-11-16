@@ -1,0 +1,22 @@
+{
+  "status": "preliminary",
+  "scope": "Completed low8192-code input/full8192 generation; final4096 timed. Saved Strata controls versus current spec8 Basalt candidate; engine-and-settings comparison. Full peak-code repeatability and high-context qualification remain pending.",
+  "rows": [
+    {
+      "case": "range-perf-hybrid-old-code",
+      "prefill": 1639.0556222488995,
+      "decode": 32.228616000254895,
+      "engine_binary_sha256": "cee93d26f710d3685ccf3541a95054dc193e63b239650a9d7122b4b938ad9193",
+      "result_sha256": "a3ac47ed6c89f743450e6b23471518762e81d69b0ac0dcd436e3a765d3f80e7d"
+    },
+    {
+      "case": "range-perf-hybrid-basalt-low-confirm-spec8",
+      "prefill": 1918.7258461178124,
+      "decode": 35.95033877676457,
+      "engine_binary_sha256": "a2bb78bc53910cb738395d5582ab048c1ffc3aa7a0bd95838fcd31e4bf5ebeb0",
+      "result_sha256": "90b6ee4159d12e7bd75d2d656c0cc20a625643ecf09362e948b51f680b935120"
+    }
+  ],
+  "prefill_change_percent": 17.062887925986647,
+  "decode_change_percent": 11.547882715411163
+}

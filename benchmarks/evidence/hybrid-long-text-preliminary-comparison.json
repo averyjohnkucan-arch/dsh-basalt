@@ -1,0 +1,21 @@
+{
+  "status": "preliminary",
+  "scope": "Same209715native input tokens,8192generated, final4096timed; saved Strata vs current Basalt long-preset candidate. Engine-and-settings comparison, not isolated engine causality. Chat/story baselines and final repeated optimization pending.",
+  "prompt_sha256": "ca18fd8bf7f2b57fa2569e163fbf4929fc5acf7712be1eff6df2ebe015cb9e42",
+  "rows": [
+    {
+      "case": "range-perf-hybrid-old-text",
+      "prefill": 1639.648669610578,
+      "decode": 37.76414051977547,
+      "result_sha256": "15db63af08acdd6b12a013c71805f0d6dc7eaeebbc0ecb71fdccf8805350ba2e"
+    },
+    {
+      "case": "range-perf-hybrid-basalt-final-text",
+      "prefill": 2193.839069301317,
+      "decode": 48.55351292432234,
+      "result_sha256": "48994fc0987e7ec08badd5de06499af0a5d04be3240767d217192c0b0d033f3c"
+    }
+  ],
+  "prefill_change_percent": 33.79933823398649,
+  "decode_change_percent": 28.570416951226374
+}

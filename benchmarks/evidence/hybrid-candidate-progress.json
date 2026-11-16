@@ -1,0 +1,69 @@
+{
+  "status": "preliminary",
+  "scope": "Separate candidate progress only; not qualified-profile or final maximum claims.",
+  "rows": [
+    {
+      "workload": "8K code",
+      "measurements": {
+        "Saved Strata": {
+          "case": "range-perf-hybrid-old-code",
+          "prefill": 1639.0556222488995,
+          "decode": 32.228616000254895,
+          "prompt_sha256": "527eb6c5fb97c60fa633020e21df4d725bb6c869c9322a14cd2a668725b01c6c",
+          "result_sha256": "a3ac47ed6c89f743450e6b23471518762e81d69b0ac0dcd436e3a765d3f80e7d"
+        },
+        "Basalt candidate": {
+          "case": "range-perf-hybrid-basalt-low-confirm-spec8",
+          "prefill": 1918.7258461178124,
+          "decode": 35.95033877676457,
+          "prompt_sha256": "527eb6c5fb97c60fa633020e21df4d725bb6c869c9322a14cd2a668725b01c6c",
+          "result_sha256": "90b6ee4159d12e7bd75d2d656c0cc20a625643ecf09362e948b51f680b935120"
+        }
+      }
+    },
+    {
+      "workload": "209K text",
+      "measurements": {
+        "Saved Strata": {
+          "case": "range-perf-hybrid-old-text",
+          "prefill": 1639.648669610578,
+          "decode": 37.76414051977547,
+          "prompt_sha256": "ca18fd8bf7f2b57fa2569e163fbf4929fc5acf7712be1eff6df2ebe015cb9e42",
+          "result_sha256": "15db63af08acdd6b12a013c71805f0d6dc7eaeebbc0ecb71fdccf8805350ba2e"
+        },
+        "Basalt candidate": {
+          "case": "range-perf-hybrid-basalt-final-text",
+          "prefill": 2193.839069301317,
+          "decode": 48.55351292432234,
+          "prompt_sha256": "ca18fd8bf7f2b57fa2569e163fbf4929fc5acf7712be1eff6df2ebe015cb9e42",
+          "result_sha256": "48994fc0987e7ec08badd5de06499af0a5d04be3240767d217192c0b0d033f3c"
+        }
+      }
+    },
+    {
+      "workload": "209K chat",
+      "measurements": {
+        "Basalt candidate": {
+          "case": "range-perf-hybrid-basalt-confirm-resident131k",
+          "prefill": 2132.817100369479,
+          "decode": 36.35427937437292,
+          "prompt_sha256": "726c24a280a169b405f1e77982f7d3cd56733cdc50c0082669e1ab944f2e6f95",
+          "result_sha256": "803e5cbc623d2f06a44bb31e10f926e605026afd864faa6342ca8a0b7ba0850b"
+        }
+      }
+    },
+    {
+      "workload": "209K story",
+      "measurements": {
+        "Basalt candidate": {
+          "case": "range-perf-hybrid-basalt-final-story",
+          "prefill": 2107.413101805794,
+          "decode": 37.97404778940219,
+          "prompt_sha256": "1f733598f0bb8a2f81e1ee86df9f1a622c3b4149446280729821aad32375b984",
+          "result_sha256": "e5ab2940bd875a539e6dd9280a8fe12bbde6537102533e05e39f1dba4b8d5cfe"
+        }
+      }
+    }
+  ],
+  "png_sha256": "a5ccc92eaa1ec692f018e71c70de122f54132cf830dbd133a566a970daa10416"
+}

@@ -2,6 +2,11 @@
   "scope": "Exact harness snapshot; scratch paths and sibling clone layout retained for audit. No weights, generated answers, credentials, or token-ID fixtures included.",
   "files": [
     {
+      "path": "harness/hybrid_candidate_progress.py",
+      "sha256": "d439b781688bd7c5a8af3165b4eb221888a9702c99fde318aaa4f8f3b873b063",
+      "bytes": 3317
+    },
+    {
       "path": "harness/test_benchmark_end_policy.py",
       "sha256": "b3994b18dde544228016f23477c147b709fd35bf2261eaff850a8a1325c4a6ff",
       "bytes": 2320
@@ -118,8 +123,8 @@
     },
     {
       "path": "harness/prepare_benchmark_publication.py",
-      "sha256": "c6831ecaaad814592558ede78dc7c7c8002719c863164a7427e5263682d9b4f7",
-      "bytes": 4482
+      "sha256": "dbc7b6a9082b943f010e7759e0d960eb00a3f3719efbbe0988a523e835ad9ad8",
+      "bytes": 4639
     },
     {
       "path": "harness/native_bench.py",

@@ -1,964 +1,941 @@
 {
-  "at": "2026-11-15T20:52:30.696128-08:00",
+  "at": "2026-11-15T21:54:42.961115-08:00",
   "status": "passed",
-  "prepared_from_base_commit": "cf8845fe242607194918f135560346e7c0e8a0dc",
-  "manifest_sha256": "1b40ff619f2683313b6c351c17219f65a2c23f14451f40fcc2cb1d8ec4bf137c",
-  "scope": "Static local imports and literal script references; sibling engine/plugin references verified in documented checkout layout. Includes malformed timing fixture. Dynamic imports, model fixtures, weights and external package reconstruction excluded.",
-  "source_count": 54,
+  "prepared_from_base_commit": "474e963a38e6fdc5c44e3110b379a24be03bd2d1",
+  "manifest_sha256": "ae4fdb3737730eb69968b38ffcb43eb66cc57ddb2b3f0831f1f2ae835ba11a06",
+  "scope": "Current Python AST local imports and existing literal file references, plus every earlier dependency path revalidated; documented sibling checkout layout. Dynamic imports, model fixtures, weights and external package reconstruction excluded.",
+  "source_count": 55,
+  "prior_dependency_paths_revalidated": 159,
   "checks": [
     {
       "source": "test_benchmark_end_policy.py",
       "dependency": "http_bench.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "test_benchmark_end_policy.py",
       "dependency": "audit_range_outputs.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "test_benchmark_end_policy.py",
       "dependency": "http_bench.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "test_benchmark_end_policy.py",
       "dependency": "audit_range_outputs.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
+    },
+    {
+      "source": "test_soft_pressure_refinement.py",
+      "dependency": "range_tuner.py",
+      "passed": true,
+      "kind": "local harness"
+    },
+    {
+      "source": "test_soft_pressure_refinement.py",
+      "dependency": "range_identity.py",
+      "passed": true,
+      "kind": "local harness"
     },
     {
       "source": "test_confirmation_diversity.py",
       "dependency": "range_tuner.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "test_draft_log_recovery.py",
       "dependency": "draft_log_diagnostics.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "functional_benchmark_recovery.py",
       "dependency": "benchmark_environment.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "functional_benchmark_recovery.py",
       "dependency": "range_common.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "functional_benchmark_recovery.py",
       "dependency": "http_bench.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "functional_benchmark_recovery.py",
       "dependency": "native_bench.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "test_functional_recovery.py",
       "dependency": "functional_benchmark_recovery.py",
       "passed": true,
-      "kind": "local import"
-    },
-    {
-      "source": "test_functional_export.mjs",
-      "dependency": "./profile_measurement_helpers.mjs",
-      "passed": true,
-      "kind": "relative JavaScript or sibling plugin"
+      "kind": "local harness"
     },
     {
       "source": "test_quality_batch_plan.py",
       "dependency": "benchmark_environment.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "test_quality_batch_plan.py",
       "dependency": "range_identity.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "range_model_progress.py",
       "dependency": "benchmark_environment.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "range_model_progress.py",
       "dependency": "range_progress_report.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "resume_hybrid_pipeline.py",
       "dependency": "fit_hybrid_memory.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "resume_hybrid_pipeline.py",
       "dependency": "performance_range_pipeline.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "refresh_range_metrics.py",
       "dependency": "range_common.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "refresh_range_metrics.py",
       "dependency": "range_identity.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "fit_hybrid_memory.py",
       "dependency": "range_common.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "benchmark_resume_validity_test.py",
       "dependency": "range_common.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "calibrate_performance_ninfer.py",
       "dependency": "benchmark_environment.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "calibrate_performance_ninfer.py",
       "dependency": "benchmark_memory_guard.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "performance_range_pipeline.py",
       "dependency": "benchmark_environment.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "performance_range_pipeline.py",
       "dependency": "range_queue.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "performance_range_pipeline.py",
       "dependency": "range_flash.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "range_queue.py",
       "dependency": "benchmark_environment.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "range_queue.py",
       "dependency": "range_flash.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "range_queue.py",
       "dependency": "range_strata.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "range_queue.py",
       "dependency": "range_flash.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "range_queue.py",
       "dependency": "range_strata.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "range_queue.py",
       "dependency": "range_ninfer.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "range_queue.py",
       "dependency": "range_27b_basalt.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "range_queue.py",
       "dependency": "range_ninfer.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "range_queue.py",
       "dependency": "quality_range_selected.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "range_queue.py",
       "dependency": "range_repeatability.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "range_queue.py",
       "dependency": "range_low_peak.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "range_queue.py",
       "dependency": "range_repeatability.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "range_queue.py",
       "dependency": "calibrate_performance_ninfer.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "continue_after_range_queue.py",
       "dependency": "range_deepseek.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "continue_after_range_queue.py",
       "dependency": "range_repeatability.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "continue_after_range_queue.py",
       "dependency": "range_low_peak.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "continue_after_range_queue.py",
       "dependency": "range_repeatability.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "continue_after_range_queue.py",
       "dependency": "code_function_eval.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "hybrid_candidate_progress.py",
+      "passed": true,
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "test_benchmark_end_policy.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "test_soft_pressure_refinement.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "test_confirmation_diversity.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "test_decode_screen_recovery.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "draft_log_diagnostics.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "test_draft_log_recovery.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "draft-log-recovery-fixture.txt",
+      "passed": true,
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "functional_benchmark_recovery.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "test_functional_recovery.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "test_functional_export.mjs",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "test_quality_batch_plan.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "range_model_progress.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "test_hybrid_sustained_fit.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "resume_hybrid_pipeline.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "refresh_range_metrics.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "fit_hybrid_memory.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "benchmark_resume_validity_test.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "range_objective.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "calibrate_performance_ninfer.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "benchmark_environment.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "performance_range_pipeline.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "range_queue.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "continue_after_range_queue.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "prepare_benchmark_publication.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "native_bench.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "http_bench.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "benchmark_prompts.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "benchmark_memory_guard.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "range_common.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "range_identity.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "range_tuner.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "range_repeatability.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "range_low_peak.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "range_joint_refine.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "range_flash.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "range_strata.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "range_ninfer.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "range_27b_basalt.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "range_deepseek.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "mark_performance_qualified.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "range_plugin_gpu_gate.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "range_plugin_adapter_smoke.mjs",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "profile_measurement_helpers.mjs",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "export_range_basalt.mjs",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "export_range_ninfer.mjs",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "export_range_strata.mjs",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "range_progress_report.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "range_progress_chart.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "prepare_range_fixtures.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "audit_range_outputs.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "quality_range_selected.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "code_function_eval.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "latest80_common.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "prepare_benchmark_publication.py",
       "dependency": "tune80_common.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "native_bench.py",
       "dependency": "benchmark_prompts.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "native_bench.py",
       "dependency": "benchmark_memory_guard.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "native_bench.py",
       "dependency": "benchmark_environment.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "native_bench.py",
       "dependency": "draft_log_diagnostics.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "http_bench.py",
       "dependency": "benchmark_memory_guard.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "http_bench.py",
       "dependency": "benchmark_environment.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "http_bench.py",
       "dependency": "benchmark_prompts.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "range_common.py",
       "dependency": "latest80_common.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "range_common.py",
       "dependency": "benchmark_environment.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "range_common.py",
       "dependency": "http_bench.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "range_common.py",
       "dependency": "native_bench.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "range_identity.py",
       "dependency": "range_common.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "range_tuner.py",
       "dependency": "range_common.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "range_tuner.py",
       "dependency": "range_identity.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "range_repeatability.py",
       "dependency": "range_common.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "range_repeatability.py",
       "dependency": "range_objective.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "range_repeatability.py",
       "dependency": "range_identity.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "range_repeatability.py",
       "dependency": "mark_performance_qualified.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "range_low_peak.py",
       "dependency": "range_tuner.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "range_low_peak.py",
       "dependency": "range_identity.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "range_low_peak.py",
       "dependency": "range_joint_refine.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "range_joint_refine.py",
       "dependency": "range_tuner.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "range_joint_refine.py",
       "dependency": "range_identity.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "range_joint_refine.py",
       "dependency": "range_repeatability.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
+    },
+    {
+      "source": "range_joint_refine.py",
+      "dependency": "range_repeatability.py",
+      "passed": true,
+      "kind": "local harness"
     },
     {
       "source": "range_flash.py",
       "dependency": "range_common.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "range_flash.py",
       "dependency": "range_tuner.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "range_strata.py",
       "dependency": "range_tuner.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "range_ninfer.py",
       "dependency": "range_tuner.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "range_27b_basalt.py",
       "dependency": "range_tuner.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "range_deepseek.py",
       "dependency": "range_tuner.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "range_deepseek.py",
       "dependency": "benchmark_memory_guard.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "range_deepseek.py",
       "dependency": "basalt-latest/tools/convert/convert.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "sibling checkout"
     },
     {
       "source": "range_deepseek.py",
       "dependency": "basalt-latest/tools/convert/convert.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "sibling checkout"
     },
     {
       "source": "range_deepseek.py",
       "dependency": "native_bench.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "range_deepseek.py",
       "dependency": "basalt-latest/tools/convert/convert.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "sibling checkout"
     },
     {
       "source": "mark_performance_qualified.py",
       "dependency": "range_identity.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "range_plugin_gpu_gate.py",
       "dependency": "benchmark_memory_guard.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "range_plugin_gpu_gate.py",
       "dependency": "range_plugin_adapter_smoke.mjs",
       "passed": true,
-      "kind": "literal script or sibling engine"
-    },
-    {
-      "source": "export_range_basalt.mjs",
-      "dependency": "./profile_measurement_helpers.mjs",
-      "passed": true,
-      "kind": "relative JavaScript or sibling plugin"
-    },
-    {
-      "source": "export_range_basalt.mjs",
-      "dependency": "./dsh-basalt/lib/models.js",
-      "passed": true,
-      "kind": "relative JavaScript or sibling plugin"
-    },
-    {
-      "source": "export_range_basalt.mjs",
-      "dependency": "./dsh-basalt/lib/runtime.js",
-      "passed": true,
-      "kind": "relative JavaScript or sibling plugin"
-    },
-    {
-      "source": "export_range_ninfer.mjs",
-      "dependency": "./profile_measurement_helpers.mjs",
-      "passed": true,
-      "kind": "relative JavaScript or sibling plugin"
-    },
-    {
-      "source": "export_range_ninfer.mjs",
-      "dependency": "./dsh-ninfer/lib/profiles.js",
-      "passed": true,
-      "kind": "relative JavaScript or sibling plugin"
-    },
-    {
-      "source": "export_range_ninfer.mjs",
-      "dependency": "./dsh-ninfer/lib/reasoning.js",
-      "passed": true,
-      "kind": "relative JavaScript or sibling plugin"
-    },
-    {
-      "source": "export_range_strata.mjs",
-      "dependency": "./profile_measurement_helpers.mjs",
-      "passed": true,
-      "kind": "relative JavaScript or sibling plugin"
-    },
-    {
-      "source": "export_range_strata.mjs",
-      "dependency": "./dsh-strata/lib/profiles.js",
-      "passed": true,
-      "kind": "relative JavaScript or sibling plugin"
+      "kind": "local harness"
     },
     {
       "source": "range_progress_report.py",
       "dependency": "benchmark_environment.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "range_progress_chart.py",
       "dependency": "benchmark_environment.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "range_progress_chart.py",
       "dependency": "range_identity.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "audit_range_outputs.py",
       "dependency": "prepare_range_fixtures.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "quality_range_selected.py",
       "dependency": "range_identity.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "quality_range_selected.py",
       "dependency": "benchmark_environment.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "quality_range_selected.py",
       "dependency": "code_function_eval.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "code_function_eval.py",
       "dependency": "functional_benchmark_recovery.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "code_function_eval.py",
       "dependency": "prepare_range_fixtures.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "latest80_common.py",
       "dependency": "tune80_common.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "latest80_common.py",
       "dependency": "benchmark_environment.py",
       "passed": true,
-      "kind": "local import"
+      "kind": "local harness"
     },
     {
       "source": "latest80_common.py",
       "dependency": "http_bench.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "latest80_common.py",
       "dependency": "native_bench.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "tune80_common.py",
       "dependency": "http_bench.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     },
     {
       "source": "tune80_common.py",
       "dependency": "native_bench.py",
       "passed": true,
-      "kind": "literal script or sibling engine"
+      "kind": "local harness"
     }
   ]
 }
