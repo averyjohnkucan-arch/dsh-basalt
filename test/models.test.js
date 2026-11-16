@@ -50,6 +50,7 @@ test("tuned native options preserve values and reject flags belonging to another
     "expert-profile": join(root, "ranking.prof"),
     "kv-resident": 65536,
     "prefill-cpu-share": 0.6,
+    "adapt-swaps": 16,
   };
   const entry = serverConfig(p, 18081, root).models[0];
   for (const [key, value] of Object.entries(p.engineOptions))
@@ -58,6 +59,10 @@ test("tuned native options preserve values and reject flags belonging to another
     { model: "/tmp/other" },
     { host: "0.0.0.0" },
     { "prefill-cpu-share": NaN },
+    { "adapt-swaps": -1 },
+    { "adapt-swaps": 1.5 },
+    { "adapt-swaps": 97 },
+    { "adapt-swaps": Infinity },
     { spec: 17 },
     { spec: 9 },
     { "kv-resident": 999999 },
@@ -70,6 +75,10 @@ test("tuned native options preserve values and reject flags belonging to another
   ]) {
     p.engineOptions = options;
     assert.throws(() => validateProfile(p), /native engine option/);
+  }
+  for (const swaps of [0, 16, 32, 96]) {
+    p.engineOptions = { "adapt-swaps": swaps };
+    assert.equal(serverConfig(p, 18081, root).models[0]["adapt-swaps"], swaps);
   }
   p.engineOptions = {};
   p.defaultEffort = "off";
@@ -98,6 +107,7 @@ test("tuned native options preserve values and reject flags belonging to another
     { "kv-resident": p.context + 1 },
     { prefill: 2048 },
     { "pool-workers": 14 },
+    { "adapt-swaps": 16 },
   ]) {
     p.engineOptions = options;
     assert.throws(() => validateProfile(p), /native engine option/);

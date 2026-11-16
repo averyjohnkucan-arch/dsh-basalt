@@ -19,7 +19,7 @@ for(const [key,label]of [['flash_basalt','Flash Next NVFP4 GPTQ INT8'],['hybrid_
   await verifyPack(c);
   const p=newProfile(model),name=`${label} ${kind==='short'?'peak code':'long decode'} - p${round(metrics.low.prefill)}/d${round(metrics.low.decode)} - p${round(high.prefill)}/d${round(high.decode)}`;
   Object.assign(p,{id:`scratch-range-${key.replaceAll('_','-')}-${kind}`,name,context:Number(option('max-context')),kv:option('kv'),diskCacheMiB:0,ramCacheMiB:0,vision:false,defaultEffort:'off',engineOptions:{}});p.model={...model,name};
-  const numeric=model.architecture==='qwen35'?['spec','kv-resident']:['spec','pool-workers','resident-budget-gib','kv-resident','prefill-cpu-share','draft-experts'];
+  const numeric=model.architecture==='qwen35'?['spec','kv-resident']:['spec','pool-workers','resident-budget-gib','kv-resident','prefill-cpu-share','draft-experts','adapt-swaps'];
   const textual=model.architecture==='qwen35'?[]:['pool-affinity','prefill','expert-profile'];
   for(const n of numeric)if(option(n)!==undefined)p.engineOptions[n]=Number(option(n));
   for(const n of textual)if(option(n)!==undefined)p.engineOptions[n]=n==='prefill'&&/^\d+$/.test(option(n))?Number(option(n)):option(n);

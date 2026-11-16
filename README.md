@@ -4,7 +4,7 @@ Run [Basalt](https://github.com/jesdga95/basalt) models from DSH's model picker.
 
 ## Install
 
-Install the `dsh-basalt-0.1.0.tgz` asset from this repository's releases using DSH's plugin installer. The package includes the built settings interface; installation needs no frontend build.
+Install a published `dsh-basalt-<version>.tgz` package using DSH's plugin installer. Source-preview tarballs remain previews until release qualification finishes. The package includes the built settings interface; installation needs no frontend build.
 
 Requires DSH **0.2.2-rc.1**, Node **24.9+**, Linux x64 with AVX2, Python **3.12+**, an NVIDIA Blackwell GPU and NVIDIA driver **580.95.05+**. Managed engine preparation installs Basalt **0.4.0**, its pinned Python dependencies, and private NVIDIA CUDA 13 runtime/cuBLAS libraries. It does not change system CUDA or another provider's environment. Allow at least 1.5 GiB free during setup, plus model storage.
 
@@ -79,3 +79,5 @@ the native model entry in server configuration. Dense Qwen35 profiles also accep
 runtime folders are kept separately from installed DSH state; importing them remains a separate operation.
 
 The experimental NInfer v3 dense import and its NVFP4 DFlash2 drafter require `qwen35-bf16-projections` and `qwen35-nvfp4-dflash2` as applicable. Its target attention projections remain BF16; Basalt dense KV remains INT8/FP16. See [custom source scope and build instructions](custom-engine/README.md).
+
+Qwen Flash-Next profiles can retain an optional **Expert swaps per update** setting (`adapt-swaps`, 0–96). An empty field uses the native default; zero disables adaptive GPU expert swaps. Lower swap counts are experimental tuning candidates for mixed NVFP4/Q8 packs, not assumed to be faster. Exported winning profiles preserve the measured value exactly.

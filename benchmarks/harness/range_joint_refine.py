@@ -28,6 +28,8 @@ if key.endswith('_basalt'):
  # This control affects prefill expert placement; verify sustained decode too.
  if'fp16'not in key:variants += [(f'prefill-cpu-share-{share}',{'--prefill-cpu-share':share})for share in [0,.3,1]]
  variants.append(('saved-ranking',{'--expert-profile':W/'saved-expert-profiles/flash-basalt.prof'}))
+if key.startswith('hybrid')and key.endswith('_basalt'):
+ variants += [(f'adapt-swaps-{count}',{'--adapt-swaps':count})for count in [0,16,32]]
 plan=repeatability_plan(key);data=read(plan);known={config_id(read(R/'bench'/x['case']/'result.json')['config'])for x in data['selection']['candidates']}
 configured=[]
 for label,changes in variants:

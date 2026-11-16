@@ -160,7 +160,18 @@ function Profile({ profile, architectures, busy, act }) {
         placeholder: "Automatic",
         onChange: (e) => editEngine("pool-workers", e.target.value)
       }
-    )), /* @__PURE__ */ import_react.default.createElement("label", { className: "basalt-checkbox" }, /* @__PURE__ */ import_react.default.createElement(
+    )), p.model.architecture === "qwen4exp" && /* @__PURE__ */ import_react.default.createElement("label", null, "Expert swaps per update", /* @__PURE__ */ import_react.default.createElement(
+      "input",
+      {
+        type: "number",
+        min: "0",
+        max: "96",
+        step: "1",
+        value: p.engineOptions?.["adapt-swaps"] ?? "",
+        placeholder: "Native default",
+        onChange: (e) => editEngine("adapt-swaps", e.target.value)
+      }
+    ), /* @__PURE__ */ import_react.default.createElement("small", null, "0 keeps the GPU expert cache fixed.")), /* @__PURE__ */ import_react.default.createElement("label", { className: "basalt-checkbox" }, /* @__PURE__ */ import_react.default.createElement(
       "input",
       {
         type: "checkbox",

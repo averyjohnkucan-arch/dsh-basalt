@@ -160,6 +160,21 @@ function Profile({ profile, architectures, busy, act }) {
               />
             </label>
           )}
+          {p.model.architecture === "qwen4exp" && (
+            <label>
+              Expert swaps per update
+              <input
+                type="number"
+                min="0"
+                max="96"
+                step="1"
+                value={p.engineOptions?.["adapt-swaps"] ?? ""}
+                placeholder="Native default"
+                onChange={(e) => editEngine("adapt-swaps", e.target.value)}
+              />
+              <small>0 keeps the GPU expert cache fixed.</small>
+            </label>
+          )}
           <label className="basalt-checkbox">
             <input
               type="checkbox"
