@@ -1,6 +1,6 @@
 """Mandatory final model stage: larger IQ2_XS under the same measured protocol."""
 from range_tuner import *
-from deepseek_storage import internal_artifact,storage_config,raw_storage_evidence,ENGRAM,DESKTOP
+from deepseek_storage import internal_artifact,storage_config,raw_storage_evidence,ENGRAM,DESKTOP,xs_pack_command,validate_xs_pack
 from benchmark_memory_guard import MemoryGuard
 import os,time,shutil
 
@@ -41,8 +41,8 @@ if __name__=='__main__' and '--plan' not in sys.argv:
         raw_storage_evidence('XS');state.update(status='preparing');stage.write_text(json.dumps(state,indent=2)+'\n')
         source=DESKTOP/'DeepSeek-IQ2_XS';draft=DESKTOP/'DeepSeek-shared/support/dspark-DeepSeek-V4.1-Flash-1017-Q8_0.gguf'
         pack=R/'strata-deepseek-xs/data/packs/deepseek-v4.1-flash-iq2-xs'
-        tool=W/'dsh-strata/vendor/gyro-l-control/tools/dsv41/pack_gguf.py'
-        guarded(['taskset','-c','22',sys.executable,str(tool),'--model',str(source),'--out',str(pack),'--dspark-gguf',str(draft)],'deepseek-xs-strata-pack',W)
+        guarded(xs_pack_command(sys.executable,pack),'deepseek-xs-strata-pack',W)
+        validate_xs_pack(pack)
         artifact=internal_artifact('XS')
         if not artifact.exists():
             assert shutil.disk_usage(artifact.parent).free>275*2**30,'Preserve internal SSD conversion headroom; no automatic source deletion'

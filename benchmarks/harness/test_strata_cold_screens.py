@@ -11,7 +11,16 @@ for model in ['flash','hybrid','gyro','flash_fp16','hybrid_fp16']:
  assert len(captured)==1;args,kw=captured[0];assert kw['cache'] is False
  for tag,c in [('base',args[1]),*args[3]]:
   check_engine_flags(c['command'][4:],flags,model+'/'+tag)
- records.append(dict(model=model,planned_candidates=len(args[3]),cold_screens=True,native_flag_vocabulary='passed'))
+  assert int(c['command'][c['command'].index('--spec')+1])>=2,(model,tag)
+ records.append(dict(model=model,planned_candidates=len(args[3]),cold_screens=True,native_flag_vocabulary='passed',native_iq_minimum_window=2))
+# Exercise the actual joint-stage MTP2 planner with a DFlash starting preset.
+joint=ast.parse((W/'range_joint_refine.py').read_text())
+node=next(n for n in joint.body if isinstance(n,ast.If) and ast.unparse(n.test)=="key.endswith('_strata')")
+ns=dict(range_tuner.__dict__);ns.update(key='flash_strata',base=range_tuner.changed(c,{'--draft':'dflash2','--draft-model':'/fixture','--draft-cap':8,'--draft-conf':.55}),configured=[])
+exec(compile(ast.Module(body=[node],type_ignores=[]),'actual-joint-plan','exec'),ns)
+assert len(ns['configured'])==1
+_,mtp2=ns['configured'][0];assert mtp2['command'][mtp2['command'].index('--spec')+1]=='2'
+assert not any(x in mtp2['command']for x in ['--draft','--draft-model','--draft-cap','--draft-conf'])
 for name in ['range_deepseek.py','range_deepseek_xs.py']:
  tree=ast.parse((W/name).read_text())
  for node in ast.walk(tree):

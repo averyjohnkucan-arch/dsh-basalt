@@ -1,38 +1,43 @@
 {
   "status": "passed",
-  "updated_unix": 1794839351.4119813,
+  "updated_unix": 1794841060.7511497,
   "scope": "Actual five-model Strata planner executed with tune replaced by capture-only spy; every base/candidate checked against installed native binary flags; all DeepSeek tune calls explicitly cold. No GPU processes launched.",
-  "source_sha256": "24bbf226bbf21e95b94660b703875261e21927c674975960c74cb57916543616",
+  "source_sha256": "17c33c904bb8be5ebcd9b7e0bbb91c8880208dd812522853f1f947546df48596",
   "models": [
     {
       "model": "flash",
       "planned_candidates": 11,
       "cold_screens": true,
-      "native_flag_vocabulary": "passed"
+      "native_flag_vocabulary": "passed",
+      "native_iq_minimum_window": 2
     },
     {
       "model": "hybrid",
       "planned_candidates": 11,
       "cold_screens": true,
-      "native_flag_vocabulary": "passed"
+      "native_flag_vocabulary": "passed",
+      "native_iq_minimum_window": 2
     },
     {
       "model": "gyro",
       "planned_candidates": 10,
       "cold_screens": true,
-      "native_flag_vocabulary": "passed"
+      "native_flag_vocabulary": "passed",
+      "native_iq_minimum_window": 2
     },
     {
       "model": "flash_fp16",
       "planned_candidates": 11,
       "cold_screens": true,
-      "native_flag_vocabulary": "passed"
+      "native_flag_vocabulary": "passed",
+      "native_iq_minimum_window": 2
     },
     {
       "model": "hybrid_fp16",
       "planned_candidates": 11,
       "cold_screens": true,
-      "native_flag_vocabulary": "passed"
+      "native_flag_vocabulary": "passed",
+      "native_iq_minimum_window": 2
     }
   ]
 }

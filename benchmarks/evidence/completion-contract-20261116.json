@@ -1,7 +1,7 @@
 {
   "status": "active-work-authorized",
-  "updated_unix": 1794820268.32379,
-  "goal_tracker_status": "paused; user must use Resume control; job resumption authorized in chat",
+  "updated_unix": 1794840817.0076442,
+  "goal_tracker_status": "active",
   "completion_requirements": [
     "Full measured before/after table for every requested model/engine family, including DeepSeek V4.1 Flash 1017 IQ2_XXS and larger IQ2_XS; explicit unsupported cases",
     "Low-context native-chat code and 80% context text/chat/story, 8192 generated/final4096 timed, paired prefill/decode, ranges and executable generated-code QA",
@@ -18,5 +18,6 @@
   "deepseek_abliteration_current_finding": "Published dsv41 vector checksum-pinned; stock released Strata flag rejected; Basalt hooks are Qwen-only with 4096-width kernel versus DeepSeek5120. Exact current limitations documented; no behavioral success claimed.",
   "engram_validation": "Actual direct SSD row reader tested independently, with GPU frozen-placement parity still mandatory",
   "flash_next_projection_observation": "Actual Medium off/on/off challenge: refusal, quoted requested term, identical refusal. Same prompt and native process, adapt-swaps=0 diagnostic placement, raw cleanup verified. This is one Flash Next challenge, not DeepSeek evidence.",
-  "strata_cache_screen_policy": "Cold prefixes for released Strata and DeepSeek screens; fixed unsupported Basalt-only disk-cache flags; five real Strata planners/candidates validated against installed flag vocabulary"
+  "strata_cache_screen_policy": "Cold prefixes for released Strata and DeepSeek screens; fixed unsupported Basalt-only disk-cache flags; five real Strata planners/candidates validated against installed flag vocabulary",
+  "goal_tracker_requires_user_resume": false
 }

@@ -1,0 +1,61 @@
+{
+  "status": "passed",
+  "scope": "Metadata-only; no XS inference. Exact shared tokenizer, geometry, Engram lookup bytes and original integer tensor payloads; indexed files on required drives.",
+  "files_sha256": {
+    "engram.bin": "08d55d6433f389b14aa115f4ea4eb31d6a2d63df1ae40821f03facf4c2d49142",
+    "tokenizer/vocab.json": "2f0bf5b31f4aa191d5d0d78291927a4f28c9ceb498a5e345b97e926c4cb99c1a",
+    "tokenizer/merges.txt": "547bace837acea98652eef5669c9b01cee1c73ad1d2a44d6fdce9e6a81c22147",
+    "tokenizer/token_type.json": "0a61021438e5ce6041133495f18fc360a6587aea748b17d953f552d2119ba51e",
+    "tokenizer/tokenizer.json": "5a47981b685b75154e29bfb0299584c9b3a4a28679585e86d524c34c065d037f",
+    "tokenizer/chat_template.jinja": "4d61d22c90ea0cdf15c7e298f7215f23eeffd20f8eed8fb517fda5fb64693d99"
+  },
+  "source_integer_tensors_sha256": {
+    "engram_token_map.weight": "c60a86322ec17b4142bfef3c57a8d81fb428550cdf487f88a4320cb59fe46481",
+    "engram_primes.weight": "ed542f58c4b3593c4120e899620231785b695dfc61bcc3d04b61b113abd9cf9e",
+    "engram_offsets.weight": "edf229962df441c86f9c20cbc126579dd548421e231250b146ee6f5bea0b2f8b",
+    "engram_multipliers.weight": "7345f44ec93e965df6581af59c78a5dd6efba7be2e855486450a6594d7ebd7c6"
+  },
+  "storage": {
+    "quantization": "IQ2_XS",
+    "expert_storage": "internal-system-NVMe",
+    "expert_files": [
+      {
+        "path": "/home/user/Desktop/DeepSeek-IQ2_XS/DeepSeek-V4.1-Flash-1017-GSQ-RCO-IQ2_XS-00001-of-00004.gguf",
+        "bytes": 39535788064,
+        "sha256": "d9b949d55e27242b8afc7c2928749b888372d4c39682f9a131670d1c2555155e",
+        "device": 66306
+      },
+      {
+        "path": "/home/user/Desktop/DeepSeek-IQ2_XS/DeepSeek-V4.1-Flash-1017-GSQ-RCO-IQ2_XS-00002-of-00004.gguf",
+        "bytes": 39494617536,
+        "sha256": "933461a974fcccee741bf2f9798201e72ab4aa3f8a952be56f849896ca6ea30e",
+        "device": 66306
+      },
+      {
+        "path": "/home/user/Desktop/DeepSeek-IQ2_XS/DeepSeek-V4.1-Flash-1017-GSQ-RCO-IQ2_XS-00003-of-00004.gguf",
+        "bytes": 39423838496,
+        "sha256": "bbf91fa346a85ebaf32dd4fd5c456b534d780d381e54f46ac90783a481373240",
+        "device": 66306
+      },
+      {
+        "path": "/home/user/Desktop/DeepSeek-IQ2_XS/DeepSeek-V4.1-Flash-1017-GSQ-RCO-IQ2_XS-00004-of-00004.gguf",
+        "bytes": 36771591232,
+        "sha256": "e5b2f8781fab688cd4bc3bc7a69651b5dbb90ed94965657c6bead8bb4774f3cf",
+        "device": 66306
+      }
+    ],
+    "shared_engram": "/mnt/media/AI/Models/DeepSeek-V4.1-Flash-1017-GSQ-RCO-GGUF/DeepSeek-V4.1-Flash-Engram-IQ4_NL.gguf",
+    "shared_engram_device": 2431,
+    "draft": "/home/user/Desktop/DeepSeek-shared/support/dspark-DeepSeek-V4.1-Flash-1017-Q8_0.gguf",
+    "internal_device": 66306,
+    "layout": "Experts and draft on system SSD; shared Engram on media",
+    "strata_tensor_files": [
+      "/home/user/Desktop/DeepSeek-IQ2_XS/DeepSeek-V4.1-Flash-1017-GSQ-RCO-IQ2_XS-00001-of-00004.gguf",
+      "/home/user/Desktop/DeepSeek-IQ2_XS/DeepSeek-V4.1-Flash-1017-GSQ-RCO-IQ2_XS-00002-of-00004.gguf",
+      "/home/user/Desktop/DeepSeek-IQ2_XS/DeepSeek-V4.1-Flash-1017-GSQ-RCO-IQ2_XS-00003-of-00004.gguf",
+      "/home/user/Desktop/DeepSeek-IQ2_XS/DeepSeek-V4.1-Flash-1017-GSQ-RCO-IQ2_XS-00004-of-00004.gguf",
+      "/mnt/media/AI/Models/DeepSeek-V4.1-Flash-1017-GSQ-RCO-GGUF/DeepSeek-V4.1-Flash-Engram-IQ4_NL.gguf",
+      "/home/user/Desktop/DeepSeek-shared/support/dspark-DeepSeek-V4.1-Flash-1017-Q8_0.gguf"
+    ]
+  }
+}

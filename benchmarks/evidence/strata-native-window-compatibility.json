@@ -1,0 +1,7 @@
+{
+  "status": "native-limitation-verified",
+  "engine": "Strata0.1.59",
+  "source_case": "range-perf-flash_strata-screen-spec0",
+  "observed_error": "Native IQ pack requires --native, --spec T with T >= 2, and --prefill",
+  "action": "Replace spec0 with smallest supported MTP window2; strip DFlash controls for independent MTP trials; current Flash includes this in its next joint stage; no inference results fabricated"
+}

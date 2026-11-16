@@ -30,7 +30,7 @@ if not key.endswith('_ninfer'):
  if family=='qwen':
   if key.endswith('_basalt'):
    ranking=W/'saved-expert-profiles/flash-basalt.prof';ranked=changed(base,{'--expert-profile':ranking,'--kv-resident':20480});ranked['expert_profile_source']=str(ranking);add(ranked)
-  for spec in [4,6,8]:add(changed(base,{'--kv-resident':20480,'--spec':spec}))
+  for spec in ([2,4,6,8]if key.endswith('_strata')else[4,6,8]):add(changed(base,{'--kv-resident':20480,'--spec':spec}))
   for workers in [14,8]:add(changed(base,{'--kv-resident':20480,'--pool-workers':workers}))
   add(changed(base,{'--kv-resident':20480,'--vram-reserve-mib':256}))
   add(changed(base,{'--kv-resident':20480,'--vram-reserve-mib':256,'--pool-workers':14}))
@@ -39,10 +39,10 @@ if not key.endswith('_ninfer'):
    if not key.startswith('gyro'):
     mtp=copy.deepcopy(base)
     for flag in ['--draft','--draft-model','--draft-fallback','--draft-cap','--draft-conf']:opt(mtp,flag,None)
-    add(changed(mtp,{'--kv-resident':20480,'--spec':6}))
+    for spec in [2,6]:add(changed(mtp,{'--kv-resident':20480,'--spec':spec}))
     add(changed(base,{'--kv-resident':20480,'--draft':'dflash2','--draft-model':R/'packs/flash-dflash2.pack','--draft-fallback':'none','--spec':8,'--draft-cap':8,'--draft-conf':.55}))
  elif family=='qwen27b':
-  for spec in [4,6,8]:add(changed(base,{'--kv-resident':20480,'--spec':spec}))
+  for spec in ([2,4,6,8]if key.endswith('_strata')else[4,6,8]):add(changed(base,{'--kv-resident':20480,'--spec':spec}))
  elif family=='deepseek':
   for spec in [0,4,6]:
    if key.endswith('_basalt'):add(changed(base,{'--spec':spec}))

@@ -49,6 +49,12 @@ for label,changes in variants:
  c=changed(base,changes)
  if label=='saved-ranking':c['expert_profile_source']=str(W/'saved-expert-profiles/flash-basalt.prof')
  configured.append((label,c))
+if key.endswith('_strata'):
+ # Native IQ packs reject spec0/1. Try their smallest supported MTP window,
+ # stripping any DFlash-specific controls from the measured starting preset.
+ mtp2=changed(base,{'--spec':2})
+ for flag in ['--draft','--draft-model','--draft-fallback','--draft-cap','--draft-conf']:opt(mtp2,flag,None)
+ configured.append(('native-mtp2',mtp2))
 if key.startswith('hybrid')and key.endswith('_basalt'):
  failed_case=case_name(key.removesuffix('_basalt')+'-basalt-confirm-workers14');folder=R/'bench'/failed_case
  failed=read_case_mapping(folder/'result.json');telemetry_path=folder/'telemetry.json'
