@@ -1,0 +1,22 @@
+{
+  "code10": {
+    "status": "failed",
+    "error": "engine exited: None",
+    "prefill_tok_s": null,
+    "decode_tok_s": null,
+    "tail_decode_tok_s": null,
+    "generated": null,
+    "reused_tokens": null,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/basalt27-resident128k-code10"
+  },
+  "chat90": {
+    "status": "failed",
+    "error": "engine exited: None",
+    "prefill_tok_s": null,
+    "decode_tok_s": null,
+    "tail_decode_tok_s": null,
+    "generated": null,
+    "reused_tokens": null,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/basalt27-resident128k-chat90"
+  }
+}

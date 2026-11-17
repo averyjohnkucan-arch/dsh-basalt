@@ -1,3 +1,11 @@
+## Current protocol and status — November 17
+
+The measured-inference-comparison.md table is the current result summary. Older sections below document historical experiments; their exhaustive 8192-output qualification and unused-RAM reserve rules are superseded by the user's later bounded tests and memory policy.
+
+The latest completed 27B Basalt test uses 112K resident KV, DFlash2, 512 generated tokens and the final 256 for decode. Exact prompt depths are 26,214 code tokens and 235,929 chat/prose tokens. It measured P3794.79/D75.30 and P1563.24/D4.40 respectively. A 128K resident attempt failed startup due to insufficient working VRAM. Long-context performance remains a limitation, not a finished optimization success. Prior/latest NInfer checks using those same prompt IDs are queued after the latest source build and K7 validation; no results are claimed yet. Basalt and NInfer stop-token handling differs.
+
+The DeepSeek drive smoke test is complete: four-minute XXS story generations in ABBA order, beginning with a fresh 43-token prompt. Final-minute averages were 30.075 tok/s on system NVMe and 30.6833 on RAID0, with shared Engram placement unchanged. This is a roughly 2% advantage in this small test, not a general storage-performance guarantee.
+
 # Inference tuning protocol and source snapshot
 
 Current RAM policy follows the user clarification:12GiB is physical capacity for the OS/other processes, including RAM they use, rather than12GiB that must remain unused. `outputs/user-host-memory-policy.json` activates this rule; the published copy is in `evidence/`. Copy that file to the scratch outputs directory when reconstructing this run. Worker hard max remains108GiB on this122GiB host, leaving roughly14GiB outside it; smaller hosts cap the worker at physical RAM minus12GiB. Fixed minimum-free checks are disabled, while the cgroup, worker swap cap and sustained-pressure watchdog remain. Earlier successful measurements under the stricter free-RAM rule are reusable only with unchanged native controls and cgroup limits. Older evidence retains its historical scope.

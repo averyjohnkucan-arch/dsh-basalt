@@ -465,6 +465,31 @@
       "path": "harness/ninfer_after_build.py",
       "sha256": "3c3492bba57ccdaee3e15a73ebba41987e472194b8ef943e39881c03341b8429",
       "bytes": 2161
+    },
+    {
+      "path": "evidence/basalt27-resident112k-depths.json",
+      "sha256": "77613a266f3c7c1c94c3343a4a4504f4569e57a4cb23d7480e62057a229d5e5e",
+      "bytes": 655
+    },
+    {
+      "path": "evidence/basalt27-resident128k-depths.json",
+      "sha256": "7e31d4be9b7884667c4ecbbb89a141531aca6efa2d7afe1b4b76ba2b7492c068",
+      "bytes": 625
+    },
+    {
+      "path": "harness/basalt27_resident112k.py",
+      "sha256": "07bde4cd47a5266b539166d1aea6cecf1d33bbcedcec55a09eb420628e184992",
+      "bytes": 1479
+    },
+    {
+      "path": "harness/basalt27_resident112k.sh",
+      "sha256": "00c82d202fc00e348544f3e98090954f74ae03f77decc599fc707e7910a26800",
+      "bytes": 273
+    },
+    {
+      "path": "harness/ninfer_matched_depths.py",
+      "sha256": "d0cf2a857b85d74af46eebeabda1826aa14369b4b536390b818f7fe866977a69",
+      "bytes": 2223
     }
   ]
 }

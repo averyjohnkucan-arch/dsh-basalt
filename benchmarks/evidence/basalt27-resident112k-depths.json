@@ -1,0 +1,22 @@
+{
+  "code10": {
+    "status": "ok",
+    "error": null,
+    "prefill_tok_s": 3794.7856801632915,
+    "decode_tok_s": 68.74882509332116,
+    "tail_decode_tok_s": 75.30060583538241,
+    "generated": 512,
+    "reused_tokens": 0,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/basalt27-resident112k-code10"
+  },
+  "chat90": {
+    "status": "ok",
+    "error": null,
+    "prefill_tok_s": 1563.2398221345836,
+    "decode_tok_s": 4.243293193326759,
+    "tail_decode_tok_s": 4.397062962240637,
+    "generated": 512,
+    "reused_tokens": 0,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/basalt27-resident112k-chat90"
+  }
+}
