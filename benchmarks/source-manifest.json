@@ -493,8 +493,8 @@
     },
     {
       "path": "measured-inference-comparison.md",
-      "sha256": "330b8fbc29aa29fea6264ef8a395dcbefc89e57f620c8d61f49e4313d7f075a4",
-      "bytes": 7640
+      "sha256": "e6a26dd4a988386636a1bb823065288584a9b1d5a5eb56163bae102314f54767",
+      "bytes": 8630
     },
     {
       "path": "range-comparison-progress.csv",
@@ -625,6 +625,21 @@
       "path": "matched-depth-comparison.png",
       "sha256": "c94fe8a53e33760c42a8ac74cea0b8d7a314d5aed68ef4dedbddd0954c11abf4",
       "bytes": 161698
+    },
+    {
+      "path": "evidence/latest-remaining-models.json",
+      "sha256": "847a09b93ab90fd7263321ce40c3e8611bb92d698e95f1078263a95a35e46002",
+      "bytes": 2959
+    },
+    {
+      "path": "evidence/decode-first-receipt-audit.json",
+      "sha256": "327c043c364f8b5eea7bb72ed5fe8953b23d8db6c451327e6e5f21dcd814c873",
+      "bytes": 6075
+    },
+    {
+      "path": "harness/audit_range_receipts.py",
+      "sha256": "7f63ad54454b1e387ab059c7ade2fa9af95f7ce2540730d1daa8451b67808f72",
+      "bytes": 2006
     }
   ]
 }

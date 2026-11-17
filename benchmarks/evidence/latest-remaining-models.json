@@ -1,0 +1,79 @@
+{
+  "gyro-10": {
+    "status": "ok",
+    "error": null,
+    "prefill_tok_s": 2220.396408605794,
+    "decode_tok_s": 90.45456954578378,
+    "tail_decode_tok_s": 88.15338786175393,
+    "generated": 4096,
+    "reused_tokens": 0,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/latest-remaining-gyro-10",
+    "binary_sha256": "5f474a3de9264853ca58179b447facf84d10543d03be10a0e3e765c842dc7b6e"
+  },
+  "gyro-90": {
+    "status": "ok",
+    "error": null,
+    "prefill_tok_s": 2129.8209599536353,
+    "decode_tok_s": 83.31350162823384,
+    "tail_decode_tok_s": 84.32541370039614,
+    "generated": 4096,
+    "reused_tokens": 0,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/latest-remaining-gyro-90",
+    "binary_sha256": "5f474a3de9264853ca58179b447facf84d10543d03be10a0e3e765c842dc7b6e"
+  },
+  "huihui-int8-10": {
+    "status": "ok",
+    "error": null,
+    "prefill_tok_s": 1291.0407351728838,
+    "decode_tok_s": 59.5144695363294,
+    "tail_decode_tok_s": 68.99330768816576,
+    "generated": 1024,
+    "reused_tokens": 0,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/latest-remaining-huihui-int8-10",
+    "binary_sha256": "678580a7ccc535ce6a646ed09b050011db8902be1c9d6a5e549ffb70642a7e1b"
+  },
+  "huihui-int8-90": {
+    "status": "ok",
+    "error": null,
+    "prefill_tok_s": 874.4819212925972,
+    "decode_tok_s": 43.682716935969275,
+    "tail_decode_tok_s": 45.10868786538959,
+    "generated": 1024,
+    "reused_tokens": 0,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/latest-remaining-huihui-int8-90",
+    "binary_sha256": "678580a7ccc535ce6a646ed09b050011db8902be1c9d6a5e549ffb70642a7e1b"
+  },
+  "huihui-fp8-10": {
+    "status": "ok",
+    "error": null,
+    "prefill_tok_s": 1151.0212592569264,
+    "decode_tok_s": 60.80673478361446,
+    "tail_decode_tok_s": 65.29121501536801,
+    "generated": 1024,
+    "reused_tokens": 0,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/latest-remaining-huihui-fp8-10",
+    "binary_sha256": "678580a7ccc535ce6a646ed09b050011db8902be1c9d6a5e549ffb70642a7e1b"
+  },
+  "huihui-fp8-90": {
+    "status": "ok",
+    "error": null,
+    "prefill_tok_s": 505.6932008008523,
+    "decode_tok_s": 41.21592881422128,
+    "tail_decode_tok_s": 41.02193989607802,
+    "generated": 1024,
+    "reused_tokens": 0,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/latest-remaining-huihui-fp8-90",
+    "binary_sha256": "678580a7ccc535ce6a646ed09b050011db8902be1c9d6a5e549ffb70642a7e1b"
+  },
+  "huihui-nvfp4-10": {
+    "status": "ok",
+    "error": null,
+    "prefill_tok_s": 1270.7389536904266,
+    "decode_tok_s": 61.96225376665525,
+    "tail_decode_tok_s": 68.31909134822057,
+    "generated": 1024,
+    "reused_tokens": 0,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/latest-remaining-huihui-nvfp4-10",
+    "binary_sha256": "678580a7ccc535ce6a646ed09b050011db8902be1c9d6a5e549ffb70642a7e1b"
+  }
+}

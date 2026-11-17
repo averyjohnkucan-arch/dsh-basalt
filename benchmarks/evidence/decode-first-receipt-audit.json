@@ -1,0 +1,199 @@
+{
+  "flash_basalt_long": {
+    "status": "verified",
+    "scope": "Recorded complete 80% genre candidates;8192 output, no prefix reuse; not a global maximum or latest-release proof",
+    "peak": {
+      "identity": "93fa8edb055c",
+      "genres": {
+        "text": {
+          "decode": 66.26403189313031,
+          "prefill": 3214.7127352995276,
+          "cases": [
+            "range-perf-flash-basalt-final-text"
+          ]
+        },
+        "chat": {
+          "decode": 68.50096333723353,
+          "prefill": 3259.511279247242,
+          "cases": [
+            "range-perf-flash-basalt-confirm-workers14"
+          ]
+        },
+        "story": {
+          "decode": 65.28390071076302,
+          "prefill": 3229.974881126414,
+          "cases": [
+            "range-perf-flash-basalt-final-story",
+            "range-perf-flash_basalt-range-repeat-93fa8edb055c-story"
+          ]
+        }
+      },
+      "decode": 65.28390071076302,
+      "prefill": 3214.7127352995276
+    },
+    "selected": {
+      "identity": "35b46ec69f83",
+      "genres": {
+        "text": {
+          "decode": 68.74248037832974,
+          "prefill": 3243.0990489445603,
+          "cases": [
+            "range-perf-flash_basalt-range-check-35b46ec69f83-text"
+          ]
+        },
+        "chat": {
+          "decode": 71.58039230973564,
+          "prefill": 3226.4094339187227,
+          "cases": [
+            "range-perf-flash_basalt-range-check-35b46ec69f83-chat"
+          ]
+        },
+        "story": {
+          "decode": 63.52614330082735,
+          "prefill": 3228.7742297103914,
+          "cases": [
+            "range-perf-flash_basalt-joint-35b46ec69f83-story",
+            "range-perf-flash_basalt-range-repeat-35b46ec69f83-story"
+          ]
+        }
+      },
+      "decode": 63.52614330082735,
+      "prefill": 3226.4094339187227
+    },
+    "prefill_winner": "35b46ec69f83",
+    "complete_candidates": 7,
+    "eligible_candidates": 5
+  },
+  "hybrid_basalt_long": {
+    "status": "verified",
+    "scope": "Recorded complete 80% genre candidates;8192 output, no prefix reuse; not a global maximum or latest-release proof",
+    "peak": {
+      "identity": "9e82bc86386d",
+      "genres": {
+        "text": {
+          "decode": 43.75708894285641,
+          "prefill": 2198.088418254673,
+          "cases": [
+            "range-perf-hybrid_basalt-range-check-9e82bc86386d-text"
+          ]
+        },
+        "chat": {
+          "decode": 40.11968623668042,
+          "prefill": 2182.5010693178115,
+          "cases": [
+            "range-perf-hybrid_basalt-policy-prefill-9e82bc86386d-chat"
+          ]
+        },
+        "story": {
+          "decode": 39.41372551821617,
+          "prefill": 2194.1999609538625,
+          "cases": [
+            "range-perf-hybrid_basalt-range-repeat-9e82bc86386d-story",
+            "range-perf-hybrid_basalt-range-check-9e82bc86386d-story"
+          ]
+        }
+      },
+      "decode": 39.41372551821617,
+      "prefill": 2182.5010693178115
+    },
+    "selected": {
+      "identity": "9e82bc86386d",
+      "genres": {
+        "text": {
+          "decode": 43.75708894285641,
+          "prefill": 2198.088418254673,
+          "cases": [
+            "range-perf-hybrid_basalt-range-check-9e82bc86386d-text"
+          ]
+        },
+        "chat": {
+          "decode": 40.11968623668042,
+          "prefill": 2182.5010693178115,
+          "cases": [
+            "range-perf-hybrid_basalt-policy-prefill-9e82bc86386d-chat"
+          ]
+        },
+        "story": {
+          "decode": 39.41372551821617,
+          "prefill": 2194.1999609538625,
+          "cases": [
+            "range-perf-hybrid_basalt-range-repeat-9e82bc86386d-story",
+            "range-perf-hybrid_basalt-range-check-9e82bc86386d-story"
+          ]
+        }
+      },
+      "decode": 39.41372551821617,
+      "prefill": 2182.5010693178115
+    },
+    "prefill_winner": "9e82bc86386d",
+    "complete_candidates": 5,
+    "eligible_candidates": 2
+  },
+  "flash_strata_long": {
+    "status": "verified",
+    "scope": "Recorded complete 80% genre candidates;8192 output, no prefix reuse; not a global maximum or latest-release proof",
+    "peak": {
+      "identity": "d570e314cdb3",
+      "genres": {
+        "text": {
+          "decode": 60.94104431141315,
+          "prefill": 2308.2573621300867,
+          "cases": [
+            "range-perf-flash_strata-range-repeat-d570e314cdb3-text",
+            "range-perf-flash_strata-range-check-d570e314cdb3-text"
+          ]
+        },
+        "chat": {
+          "decode": 67.51308132896273,
+          "prefill": 2309.8977943618547,
+          "cases": [
+            "range-perf-flash_strata-range-repeat-d570e314cdb3-chat",
+            "range-perf-flash_strata-range-check-d570e314cdb3-chat"
+          ]
+        },
+        "story": {
+          "decode": 62.58213159164319,
+          "prefill": 2293.1024868049426,
+          "cases": [
+            "range-perf-flash_strata-joint-d570e314cdb3-story"
+          ]
+        }
+      },
+      "decode": 60.94104431141315,
+      "prefill": 2293.1024868049426
+    },
+    "selected": {
+      "identity": "d570e314cdb3",
+      "genres": {
+        "text": {
+          "decode": 60.94104431141315,
+          "prefill": 2308.2573621300867,
+          "cases": [
+            "range-perf-flash_strata-range-repeat-d570e314cdb3-text",
+            "range-perf-flash_strata-range-check-d570e314cdb3-text"
+          ]
+        },
+        "chat": {
+          "decode": 67.51308132896273,
+          "prefill": 2309.8977943618547,
+          "cases": [
+            "range-perf-flash_strata-range-repeat-d570e314cdb3-chat",
+            "range-perf-flash_strata-range-check-d570e314cdb3-chat"
+          ]
+        },
+        "story": {
+          "decode": 62.58213159164319,
+          "prefill": 2293.1024868049426,
+          "cases": [
+            "range-perf-flash_strata-joint-d570e314cdb3-story"
+          ]
+        }
+      },
+      "decode": 60.94104431141315,
+      "prefill": 2293.1024868049426
+    },
+    "prefill_winner": "d570e314cdb3",
+    "complete_candidates": 4,
+    "eligible_candidates": 1
+  }
+}
