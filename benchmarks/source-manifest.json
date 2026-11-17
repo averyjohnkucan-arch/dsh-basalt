@@ -743,8 +743,8 @@
     },
     {
       "path": "evidence/measured-profile-snapshot.json",
-      "sha256": "093ff37ac4183a94e3a6261eda18ff457f9bf9a103b26ee2639e1f852c92f3e1",
-      "bytes": 234725
+      "sha256": "865c094f688df4d0069920db58111caf5bcda632904251fa9cfe5706125ca4d6",
+      "bytes": 242612
     }
   ]
 }

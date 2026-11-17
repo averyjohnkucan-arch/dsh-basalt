@@ -5698,6 +5698,186 @@
             "tests": []
           }
         }
+      },
+      {
+        "id": "scratch-measured-gyro-strata",
+        "name": "Gyro S Strata FP16 p2220/d88 p2130/d84",
+        "model": {
+          "id": "7ab47743d3270a9024518bf3",
+          "name": "Gyro S Strata FP16 p2220/d88 p2130/d84",
+          "architecture": "qwen4exp",
+          "files": [
+            {
+              "path": "/mnt/media/AI/Models/Qwen3.8-Flash-Next/agentionai/Gyro-S-TQ1_0/Qwen3.8-Flash-Next-Gyro-S-TQ1_0.gguf",
+              "name": "Qwen3.8-Flash-Next-Gyro-S-TQ1_0.gguf",
+              "bytes": 58487015808,
+              "architecture": "qwen4exp",
+              "modelName": "Qwen3.8-Flash-Next Gyro-S",
+              "group": "Qwen3.8-Flash-Next-Gyro-S-TQ1_0",
+              "index": 1,
+              "count": 1,
+              "role": "Model",
+              "tensors": {
+                "Model": 1072,
+                "Engram": 7,
+                "Embeddings": 1,
+                "Experts": 144
+              },
+              "encodings": {
+                "0": 340,
+                "1": 1,
+                "8": 144,
+                "13": 324,
+                "14": 196,
+                "20": 3,
+                "30": 72,
+                "145": 96,
+                "146": 48
+              },
+              "metadata": {
+                "general.architecture": "qwen4exp",
+                "general.type": "model",
+                "general.sampling.top_k": 20,
+                "general.sampling.top_p": 0.949999988079071,
+                "general.sampling.temp": 1,
+                "general.name": "Qwen3.8-Flash-Next Gyro-S",
+                "general.description": "A Preview of the Qwen4 Architecture",
+                "general.size_label": "512x56B",
+                "qwen4exp.block_count": 48,
+                "qwen4exp.context_length": 262144,
+                "qwen4exp.embedding_length": 2560,
+                "qwen4exp.expert_count": 512,
+                "general.quantized_by": "Agention",
+                "general.repo_url": "https://huggingface.co/agentionai",
+                "general.tags": null,
+                "general.quantization_version": 2,
+                "general.file_type": 25,
+                "general.basename": "Qwen3.8-Flash-Next",
+                "general.base_model.count": 1,
+                "general.base_model.0.name": "Qwen3.8 Flash Next",
+                "general.base_model.0.organization": "Qwen",
+                "general.base_model.0.repo_url": "https://huggingface.co/Qwen/Qwen3.8-Flash-Next"
+              },
+              "roleEvidence": "tensor names and metadata"
+            }
+          ],
+          "role": "Model",
+          "expected": 1,
+          "missing": [],
+          "duplicates": [],
+          "status": "complete",
+          "bytes": 58487015808,
+          "components": [],
+          "warnings": [],
+          "setupIssue": null
+        },
+        "context": 262144,
+        "port": 18502,
+        "gpu": 0,
+        "kv": "FP16/FP16",
+        "projector": "",
+        "mtp": "/mnt/media/AI/Models/Qwen3.8-Flash-Next/Strata/runtime-packs/674cb5da21c4",
+        "vision": "off",
+        "extraArgs": [],
+        "environment": {
+          "LD_LIBRARY_PATH": "/mnt/media/scratch/dsh-inference-tuning-20261115/runtimes/strata-engine-0.1.60"
+        },
+        "tune": {
+          "mode": "thorough"
+        },
+        "applyPreset": false,
+        "runtime": {
+          "controlDir": "/mnt/media/scratch/dsh-inference-tuning-20261115/runtimes/strata-control-0.1.59.1",
+          "python": "/mnt/media/scratch/dsh-inference-tuning-20261115/runtimes/strata-control-0.1.59.1/python/bin/python3",
+          "executable": "/mnt/media/scratch/dsh-inference-tuning-20261115/runtimes/strata-engine-0.1.60/strata",
+          "tqp": false
+        },
+        "config": {
+          "exe": "/mnt/media/scratch/dsh-inference-tuning-20261115/runtimes/strata-engine-0.1.60/strata",
+          "cwd": "/mnt/media/scratch/dsh-inference-tuning-20261115/runtimes/strata-control-0.1.59.1",
+          "arch": "qwen4exp",
+          "model_name": "scratch-measured-gyro-strata",
+          "host": "127.0.0.1",
+          "port": 18502,
+          "gpu": 0,
+          "tokenizer": "/mnt/media/scratch/dsh-inference-tuning-20261115/packs/gyro-strata/tokenizer",
+          "open_browser": false,
+          "lib_dirs": [
+            "/mnt/media/scratch/dsh-inference-tuning-20261115/runtimes/strata-engine-0.1.60"
+          ],
+          "env": {
+            "LD_LIBRARY_PATH": "/mnt/media/scratch/dsh-inference-tuning-20261115/runtimes/strata-engine-0.1.60"
+          },
+          "args": [
+            "--pack",
+            "/mnt/media/scratch/dsh-inference-tuning-20261115/packs/gyro-strata",
+            "--native",
+            "/mnt/media/AI/Models/Qwen3.8-Flash-Next/agentionai/Gyro-S-TQ1_0/Qwen3.8-Flash-Next-Gyro-S-TQ1_0.gguf",
+            "--mtp",
+            "/mnt/media/AI/Models/Qwen3.8-Flash-Next/Strata/runtime-packs/674cb5da21c4",
+            "--expert-profile",
+            "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/latest-remaining-gyro-90/input-expert-profile.bin",
+            "--max-context",
+            "262144",
+            "--kv",
+            "fp16",
+            "--spec",
+            "2",
+            "--prefill",
+            "auto:32768",
+            "--kv-resident",
+            "65536",
+            "--vram-reserve-mib",
+            "1200"
+          ]
+        },
+        "cpuSet": "0-21",
+        "portableTuning": {},
+        "measuredPerformance": {
+          "protocol": "10%/90% saved fixtures;4096 output,final2048 decode; thinking off during timing",
+          "low": {
+            "status": "ok",
+            "error": null,
+            "prefill_tok_s": 2220.396408605794,
+            "decode_tok_s": 90.45456954578378,
+            "tail_decode_tok_s": 88.15338786175393,
+            "generated": 4096,
+            "reused_tokens": 0,
+            "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/latest-remaining-gyro-10",
+            "binary_sha256": "5f474a3de9264853ca58179b447facf84d10543d03be10a0e3e765c842dc7b6e"
+          },
+          "high": {
+            "status": "ok",
+            "error": null,
+            "prefill_tok_s": 2129.8209599536353,
+            "decode_tok_s": 83.31350162823384,
+            "tail_decode_tok_s": 84.32541370039614,
+            "generated": 4096,
+            "reused_tokens": 0,
+            "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/latest-remaining-gyro-90",
+            "binary_sha256": "5f474a3de9264853ca58179b447facf84d10543d03be10a0e3e765c842dc7b6e"
+          }
+        },
+        "qualification": "Measured Strata0.1.60 settings; actual adapter GPU launch/native controls verified; Basalt Hadamard unsupported",
+        "selectionReason": "Latest Strata90% prefill+17.9%,decode-2.8%; short decode-7.8%",
+        "pluginValidation": {
+          "status": "passed",
+          "receipt": "/mnt/media/scratch/dsh-inference-tuning-20261115/validation/gyro-measured-plugin/adapter-result.json",
+          "sha256": "098cb05322f083874698bcb37dd94f700d2c5ed6fdfb0819103f40989f0f1a21",
+          "nativeControls": {
+            "--pack": "/mnt/media/scratch/dsh-inference-tuning-20261115/packs/gyro-strata",
+            "--native": "/mnt/media/AI/Models/Qwen3.8-Flash-Next/agentionai/Gyro-S-TQ1_0/Qwen3.8-Flash-Next-Gyro-S-TQ1_0.gguf",
+            "--mtp": "/mnt/media/AI/Models/Qwen3.8-Flash-Next/Strata/runtime-packs/674cb5da21c4",
+            "--expert-profile": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/latest-remaining-gyro-90/input-expert-profile.bin",
+            "--max-context": "262144",
+            "--kv": "fp16",
+            "--spec": "2",
+            "--prefill": "auto:32768",
+            "--kv-resident": "65536",
+            "--vram-reserve-mib": "1200"
+          },
+          "scope": "Actual Strata adapter GPU launch and arithmetic sanity; not a throughput rerun"
+        }
       }
     ],
     "settings": {
