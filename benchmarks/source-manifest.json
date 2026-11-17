@@ -8,13 +8,13 @@
     },
     {
       "path": "harness/deepseek_comparison.py",
-      "sha256": "93d0e8af050468343f7c2c2f28c707237d2d86f3ffc8f9c9f39f8c4639d1dd8e",
-      "bytes": 4057
+      "sha256": "f89e16a4f437183ab713b093dafa439a18e93b1a527c5df73f650b8da1e28d71",
+      "bytes": 3923
     },
     {
       "path": "harness/range_percent_check.py",
-      "sha256": "0f66e87353dc8e7dc47439c06fed8f3e5632766e0c6ca6fcab59de4a53bb1bda",
-      "bytes": 4909
+      "sha256": "8979b4c8e309c438bbe3788193bebab5574b359b213af20b34ecfed551118c7f",
+      "bytes": 4935
     },
     {
       "path": "harness/test_ninfer_planner.py",
@@ -43,8 +43,8 @@
     },
     {
       "path": "harness/range_deepseek_xs.py",
-      "sha256": "b0ba5603c6732efd5587b1eacbe766862377181b2d03457919da60d6e5813d1e",
-      "bytes": 7814
+      "sha256": "e2b9a2b2cb07c0598b35e9d4ebd1eb5d8029c865669e4fd25aa6451e2844d33a",
+      "bytes": 6646
     },
     {
       "path": "harness/finish_split_engram_build.py",
@@ -323,8 +323,8 @@
     },
     {
       "path": "harness/range_progress_report.py",
-      "sha256": "41679e1a288efc067a711ea6fe3dcbbae7571419795da036885490cb971811af",
-      "bytes": 9894
+      "sha256": "41488c2c77baece41568bbdab2051bde9979ee8381354bedfb8baa4c8b4258f0",
+      "bytes": 9910
     },
     {
       "path": "harness/range_progress_chart.py",

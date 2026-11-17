@@ -22,7 +22,7 @@ QWEN_FAMILIES = [
 STAGES = {
     'qwen': QWEN_FAMILIES,
     'xxs': [(key, 'deepseek_basalt', 'deepseek') for key in ('deepseek_basalt', 'deepseek_strata')],
-    'xs': [(key, 'deepseek_xs_basalt', 'deepseek') for key in ('deepseek_xs_basalt', 'deepseek_xs_strata')],
+    'xs': [('deepseek_xs_basalt', None, 'deepseek')],
 }
 
 
@@ -35,16 +35,19 @@ def make_plan(stage):
     for key, baseline, family in STAGES[stage]:
         marker = read(O / 'performance-qualified' / (key + '.json'))
         assert marker['performance_qualified'] and marker['benchmark_environment_id'] == environment_id
-        old_case = selections[baseline + '_old_metrics']['low']['case']
-        base = read(R / 'bench' / old_case / 'result.json')
-        assert base['status'] == 'ok' and base['config'].get('benchmark_environment_id', 'legacy') == environment_id
+        saved = []
+        if baseline:
+            old_case = selections[baseline + '_old_metrics']['low']['case']
+            base = read(R / 'bench' / old_case / 'result.json')
+            assert base['status'] == 'ok' and base['config'].get('benchmark_environment_id', 'legacy') == environment_id
+            saved = [('old-' + baseline, old_case, base['config'])]
         for kind, workload in [('short', 'code10'), ('long', 'chat90')]:
             fixture = next(f for f in fixtures if f['family'] == family and f['workload'] == workload)
             selected = marker[kind + '_selection']
             assert selected == selections[key + '_' + kind]['selected']
             result = read(R / 'bench' / selected / 'result.json')
             assert result['status'] == 'ok' and config_id(result['config']) == marker[kind + '_identity']
-            for label, source, config in [('old-' + baseline, old_case, base['config']), ('tuned-' + key, selected, result['config'])]:
+            for label, source, config in [*saved, ('tuned-' + key, selected, result['config'])]:
                 args = config['command']
                 assert int(args[args.index('--max-context') + 1]) == fixture['capacity']
                 case = 'percent-' + label + '-' + workload
