@@ -1,0 +1,44 @@
+[
+  {
+    "model": "huihui-latest-nvfp4-k7",
+    "function": "merge_intervals",
+    "status": "ok",
+    "case": "quality-huihui-latest-nvfp4-k7-merge_intervals",
+    "passed": true,
+    "grade_schema": 2,
+    "generation_reused": false,
+    "functional_attempt_id": "1794911598034102465",
+    "generation_prompt_sha256": "ef278805126b7c52eb99215edc79bf25a6797a4d833b0a7e67254a546e0397ab",
+    "generation_token_sha256": "aaa0ca13abafd6bd0d4cfbb6fbbec55e9a7275c4d8e4e21ffc74837b9aef0655",
+    "functional_checks_sha256": "5e51b2fd8751eb2dc00043ab83717f957dfbef573767ea13f5a3e8029065be1e",
+    "returncode": 0
+  },
+  {
+    "model": "huihui-latest-nvfp4-k7",
+    "function": "lru_trace",
+    "status": "ok",
+    "case": "quality-huihui-latest-nvfp4-k7-lru_trace",
+    "passed": false,
+    "grade_schema": 2,
+    "generation_reused": false,
+    "functional_attempt_id": "1794911607052244586",
+    "generation_prompt_sha256": "4179fe93a15c6aaee519690480cd8e891e4c7dfec874115d44fdce22b127a1e4",
+    "generation_token_sha256": "dd7c64a25f0f1274e28f473924c84097b005980c01f356bdb9de7a98cdbe1001",
+    "functional_checks_sha256": "6afc05accbf365a1289db7f82d13bf3fcec375023fa111afc86ee854bd354892",
+    "returncode": 1
+  },
+  {
+    "model": "huihui-latest-nvfp4-k7",
+    "function": "verify_draft",
+    "status": "ok",
+    "case": "quality-huihui-latest-nvfp4-k7-verify_draft",
+    "passed": true,
+    "grade_schema": 2,
+    "generation_reused": false,
+    "functional_attempt_id": "1794911615919291803",
+    "generation_prompt_sha256": "c74123d850421042286f32d3ef871cdcc30750a5f9f7266704e23f411060f6e7",
+    "generation_token_sha256": "a494daddbf3cba113c0f18c1ae4bf66ce91607f1e043685446a64e134ddb369d",
+    "functional_checks_sha256": "6fb53f3e24e999534dd831d4a936e2e77f6c8166a815dfeb3974e01a2842b5c2",
+    "returncode": 0
+  }
+]

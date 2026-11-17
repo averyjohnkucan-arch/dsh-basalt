@@ -1,0 +1,15 @@
+{
+  "flash-basalt-measured": {
+    "config": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/functional-remaining-base-flash-basalt-measured.json",
+    "family": "qwen"
+  },
+  "hybrid-basalt-measured": {
+    "config": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/functional-remaining-base-hybrid-basalt-measured.json",
+    "family": "qwen"
+  },
+  "gyro-strata-measured": {
+    "config": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/functional-remaining-base-gyro-strata-measured.json",
+    "family": "qwen",
+    "tokenizer_gguf": "/mnt/media/AI/Models/Qwen3.8-Flash-Next/agentionai/Gyro-S-TQ1_0/Qwen3.8-Flash-Next-Gyro-S-TQ1_0.gguf"
+  }
+}

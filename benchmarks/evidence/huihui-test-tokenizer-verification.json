@@ -1,0 +1,10 @@
+{
+  "source": "/mnt/media/AI/Models/Qwen3.8-27B-abliterated/huihui-ai/GSQ-RCO-IQ3_S-MTP/huihui-qwen3_8-27b-iq3s-vision-mtp-dflash2.ninfer",
+  "tokenizer_sha256": "0997f410c57a1f4e53b09e4be8f4a172d90edd9564368fb0847030937229b9f3",
+  "token_count": 248077,
+  "all_actual_ids_match_reference": true,
+  "bpe_ranks_match": true,
+  "template_source": "packed artifact",
+  "removed_reference_only_tokens": 243,
+  "metadata": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/huihui-test-tokenizer-metadata.json"
+}

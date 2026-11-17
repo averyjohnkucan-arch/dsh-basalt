@@ -1,7 +1,7 @@
 """Independent generated-function checks; generated code runs only inside bwrap."""
 import json,pathlib,subprocess,sys,copy,re,time,hashlib
 from functional_benchmark_recovery import run_functional_worker
-from prepare_range_fixtures import framing,tokenizer_for
+from prepare_range_fixtures import framing,tokenizer_for,GGUFFile,Tokenizer
 R=pathlib.Path('/mnt/media/scratch/dsh-inference-tuning-20261115');W=R/'work';O=R/'outputs'
 TASKS={
  'merge_intervals':('Implement def merge_intervals(intervals): for a list of integer (start,end) pairs with start<=end. Return sorted disjoint intervals as a list of tuples, merging overlaps and touching endpoints. Do not mutate input.', 'assert f([])==[]\nassert f([(5,7),(1,3),(3,6),(10,10)])==[(1,7),(10,10)]\nassert f([(2,2),(2,2),(-4,-1)])==[(-4,-1),(2,2)]\nassert f([(0,100),(2,3)])==[(0,100)]'),
@@ -9,7 +9,12 @@ TASKS={
  'verify_draft':('Implement def verify_draft(target, draft): target and draft are lists of integers. Count the longest matching prefix k, stopping at either list end or first mismatch. Return (k, emitted). emitted starts with draft[:k]. If target has token target[k], append that one target token; otherwise append nothing. No mutation or imports.', 'assert f([1,2,3],[1,9])==(1,[1,2])\nassert f([1,2,3],[1,2])==(2,[1,2,3])\nassert f([1],[1,2])==(1,[1])\nassert f([],[])==(0,[])\nassert f([4],[])==(0,[4])\nassert f([1],[9])==(0,[1])')}
 configs=json.loads(pathlib.Path(sys.argv[1]).read_text());rows=[]
 for label,item in configs.items():
- cbase=json.loads(pathlib.Path(item['config']).read_text());tok,metadata=tokenizer_for(item.get('family','qwen27b'))
+ cbase=json.loads(pathlib.Path(item['config']).read_text())
+ if item.get('tokenizer_metadata'):
+  metadata=json.loads(pathlib.Path(item['tokenizer_metadata']).read_text());tok=Tokenizer.from_metadata(metadata)
+ elif item.get('tokenizer_gguf'):
+  metadata=GGUFFile(item['tokenizer_gguf']).metadata;tok=Tokenizer.from_metadata(metadata)
+ else:tok,metadata=tokenizer_for(item.get('family','qwen27b'))
  for function,(task,checks)in TASKS.items():
   name='quality-'+label+'-'+function;out=R/'bench'/name;out.mkdir(parents=True,exist_ok=True);c=copy.deepcopy(cbase)
   prompt=task+' Output only the Python function implementation. No Markdown, no examples, no tests, no imports, and no prose. Stop after the function.'

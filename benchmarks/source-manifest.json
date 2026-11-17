@@ -368,8 +368,8 @@
     },
     {
       "path": "harness/code_function_eval.py",
-      "sha256": "13f095e7aae28da5bbf42dcc6261021eadb27784fc4c1f2ad6ace3de78175970",
-      "bytes": 5820
+      "sha256": "00163f108aa2f5cdcc3ef73c4798882f9c5363532c417c897abd3b26b8570e64",
+      "bytes": 6120
     },
     {
       "path": "harness/latest80_common.py",
@@ -493,8 +493,8 @@
     },
     {
       "path": "measured-inference-comparison.md",
-      "sha256": "be45fe8b887d78fed30b3a088ff6bd962435e41066caf74e1cba5c2b6ea54505",
-      "bytes": 10715
+      "sha256": "01d04b96f3ef4874d63f0bb1a00789fc03a71eb9402b4672022f4ec8100bd766",
+      "bytes": 11511
     },
     {
       "path": "range-comparison-progress.csv",
@@ -705,6 +705,46 @@
       "path": "harness/gyro_measured_adapter_smoke.mjs",
       "sha256": "2c061c172fcfd055267a0e24ec8671c6ba7d6e111eb04f013b4e9ea131b66a53",
       "bytes": 9276
+    },
+    {
+      "path": "evidence/code-functional-remaining-artifact-functional-configs.json",
+      "sha256": "6fcab532ec78ebd3cc1f661a0734e436b5ee87cd80c48262fd9d17d06af3a1f5",
+      "bytes": 5817
+    },
+    {
+      "path": "evidence/code-functional-huihui-functional-configs.json",
+      "sha256": "9cf0cdce605d823f90c485fff10fd9c7079d41e8fded34abbe1d038b9ca9290e",
+      "bytes": 1818
+    },
+    {
+      "path": "evidence/huihui-test-tokenizer-verification.json",
+      "sha256": "4069061431e60f58a6dbf57292198b33e5e57355e98bf4d2c40940dec525392d",
+      "bytes": 512
+    },
+    {
+      "path": "harness/extract_huihui_test_tokenizer.py",
+      "sha256": "a33c5919cdbfbb730468c6103c2825c1f986099a7e3228e4a264324f51988299",
+      "bytes": 2386
+    },
+    {
+      "path": "harness/remaining-artifact-functional-configs.json",
+      "sha256": "72d4fc2bd1843fe738260e357b1bccdd6610f947417dac8a72f5c5fec617825e",
+      "bytes": 666
+    },
+    {
+      "path": "harness/huihui-functional-configs.json",
+      "sha256": "8b37814996dfe96da68f7c90f7a219cef9117d14684273f0b88e3f0f52507ed2",
+      "bytes": 265
+    },
+    {
+      "path": "harness/validate_huihui_code_wait.py",
+      "sha256": "cd7c8efee629bc3425ccb6644bb5e52430e3594a6efad3d16fd6b1fe70db67f8",
+      "bytes": 435
+    },
+    {
+      "path": "evidence/measured-profile-snapshot.json",
+      "sha256": "093ff37ac4183a94e3a6261eda18ff457f9bf9a103b26ee2639e1f852c92f3e1",
+      "bytes": 234725
     }
   ]
 }

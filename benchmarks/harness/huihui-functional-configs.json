@@ -1,0 +1,6 @@
+{
+  "huihui-latest-nvfp4-k7": {
+    "config": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/latest-remaining-huihui-nvfp4-10.json",
+    "tokenizer_metadata": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/huihui-test-tokenizer-metadata.json"
+  }
+}
