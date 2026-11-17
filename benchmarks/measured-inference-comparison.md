@@ -10,13 +10,15 @@ P and D are prefill and decode in tokens/s. Rows state their workload. Pending c
 | Flash Next NVFP4 GPTQ / FP16 KV | Earlier saved-profile tests: 10% P1681.5/D49.5; 90% P1695.9/D48.6 | Historical Basalt: 10% P2680.8/D49.7; 90% P2342.2/D53.2. Matched old prompt hashes; binary hashes absent. Latest-build tuning pending. |
 | Flash Next NVFP4 Q8 hybrid / INT8 KV | 8K code P1,639.1/D32.2; 80% P1,636.3–1,639.6, D31.7–37.8 | Long preset: 8K code P1,987.9/D37.6; 80% P2,182.5–2,199.3, D38.9–43.8 |
 | Flash Next NVFP4 Q8 hybrid / FP16 KV | Pending matched measurements | In progress: long-context and peak-code qualification |
-| 27B NVFP4-full / old NVFP4 KV; Basalt INT8 KV | Earlier saved-profile tests: 10% P2668.5/D79.9; 90% P1189.9/D53.5 | 112K resident KV / DFlash2: 10% code P3794.8/D75.3; 90% prose P1563.2/D4.40. Different prompt from saved NInfer baseline; long-context speed remains poor. |
+| 27B NVFP4-full / old NVFP4 KV; Basalt INT8 KV | Prior NInfer, matched prompts: 10% code P2979.3/D100.8; 90% prose P1390.6/D43.73. NVFP4 KV; different stop handling from Basalt. | 112K resident KV / DFlash2: 10% code P3794.8/D75.3; 90% prose P1563.2/D4.40. Same prompt IDs as prior NInfer; INT8 KV and different stop handling; long-context speed remains poor. |
 | 27B IQ3_S Huihui / INT8 KV | Earlier saved-profile tests: 10% P1193.1/D53.8; 90% P745.7/D54.6 | No Basalt measurement: this mixed GGUF IQ3 artifact is outside the finite import/kernel support |
 | 27B IQ3_S Huihui / FP8 KV | Earlier saved-profile tests: 10% P1120.8/D58.6; 90% P451.8/D40.0 | No Basalt measurement: this mixed GGUF IQ3 artifact is outside the finite import/kernel support |
 | 27B IQ3_S Huihui / NVFP4 KV | Earlier saved-profile tests: 10% P1201.4/D57.3; 90% P766.4/D46.2 | No Basalt measurement: this mixed GGUF IQ3 artifact is outside the finite import/kernel support |
 | Gyro S / saved FP16 KV | Earlier saved-profile tests: 10% P1933.8/D95.6; 90% P1806.0/D86.7 | Kept on Strata; Basalt Hadamard expert support is unavailable |
 
 ## Validation and limits
+
+Latest NInfer matched comparison completed on the same prompts and settings: 10% code P2965.47/D104.08 versus prior P2979.30/D100.84; 90% prose P1409.76/D43.55 versus prior P1390.56/D43.73. D is final256 of512 output tokens, with no prompt reuse. Long-context decode changed by -0.4% and prefill by +1.4% in this single comparison; no meaningful long-context speed gain is established. Raw receipts: ninfer-matched-depths.json. Latest source a3171940 and DFlash2 NVFP4 routes passed; generated-code quality remains separately qualified by the earlier tests.
 
 The 27B NVFP4 pack passed the recorded tensor import checks. Basalt DFlash2 and NInfer native K7 each passed merge_intervals and verify_draft and failed lru_trace. The non-speculative Basalt import also failed lru_trace. These receipts do not establish full generated-code correctness.
 

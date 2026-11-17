@@ -493,13 +493,13 @@
     },
     {
       "path": "measured-inference-comparison.md",
-      "sha256": "b881ec2fc7541871279dc32392edfc64394860ddebeb7236b4722ef7639be297",
-      "bytes": 4680
+      "sha256": "8ebf7ceb845b08c70cf7ad10fc8ee73909b203c4fe148650cebae4092c2cd08d",
+      "bytes": 5327
     },
     {
       "path": "range-comparison-progress.csv",
-      "sha256": "f72e08294c4b362d9b3a040d460f60ef1843098618a39a8cbd5cb3e15cd454d3",
-      "bytes": 2178
+      "sha256": "36cf6b75f002a8d062490a99891db45c81dc3de25d2d5b20a4d6e1e36786521e",
+      "bytes": 2268
     },
     {
       "path": "evidence/flash-fp16-historical-matched.json",
@@ -520,6 +520,16 @@
       "path": "harness/basalt_stock041_smoke.py",
       "sha256": "313ae5cd95e0778fa68417334187c39d7c9772ba61fd59f01c6743e17db714be",
       "bytes": 2724
+    },
+    {
+      "path": "evidence/ninfer1616-recovery-validation.json",
+      "sha256": "ff783183b4c6009b765b62ae9018f1e50ba4074260357889af5dc6c507a67d2f",
+      "bytes": 384
+    },
+    {
+      "path": "evidence/ninfer-matched-depths.json",
+      "sha256": "2421f826e8401016b6d6ed20c167682c189099edd1a02fe22e1696f41a80b201",
+      "bytes": 2046
     }
   ]
 }

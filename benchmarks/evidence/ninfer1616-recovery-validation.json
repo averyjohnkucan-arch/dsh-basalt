@@ -1,0 +1,10 @@
+{
+  "status": "ok",
+  "source_revision": "a3171940a3574cda4d4f3bc3000df7c0944e8ad8",
+  "binary_sha256": "678580a7ccc535ce6a646ed09b050011db8902be1c9d6a5e549ffb70642a7e1b",
+  "route_test_exit": 0,
+  "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/ninfer1616-native-k7-probe",
+  "prefill_tok_s": 3486.955711779221,
+  "decode_tok_s": 93.14447526579707,
+  "error": null
+}

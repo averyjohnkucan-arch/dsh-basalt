@@ -1,0 +1,50 @@
+{
+  "prior-code10": {
+    "status": "ok",
+    "error": null,
+    "prefill_tok_s": 2979.3008379277812,
+    "decode_tok_s": 110.60058065850274,
+    "tail_decode_tok_s": 100.83629842531894,
+    "generated": 512,
+    "reused_tokens": 0,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/ninfer-matched-prior-code10",
+    "binary_sha256": "c0778296bca33c1303bf1fbcd3ef9c8d27c306d50c4c8ab5af4a8addbb9002b5",
+    "prompt_sha256": "441a3bb4164bf04b7bda5d3cd3ec593bd094f56c6bc7c4fb36e6b2b37b5f744e"
+  },
+  "prior-chat90": {
+    "status": "ok",
+    "error": null,
+    "prefill_tok_s": 1390.557795213372,
+    "decode_tok_s": 43.5791645633146,
+    "tail_decode_tok_s": 43.727348000206284,
+    "generated": 512,
+    "reused_tokens": 0,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/ninfer-matched-prior-chat90",
+    "binary_sha256": "c0778296bca33c1303bf1fbcd3ef9c8d27c306d50c4c8ab5af4a8addbb9002b5",
+    "prompt_sha256": "63afd9312f8afcc63d393eea375a8421b53f58786f0aec2062446e151e4cace8"
+  },
+  "latest-code10": {
+    "status": "ok",
+    "error": null,
+    "prefill_tok_s": 2965.4721035208822,
+    "decode_tok_s": 113.98228519577573,
+    "tail_decode_tok_s": 104.08015371030537,
+    "generated": 512,
+    "reused_tokens": 0,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/ninfer-matched-latest-code10",
+    "binary_sha256": "678580a7ccc535ce6a646ed09b050011db8902be1c9d6a5e549ffb70642a7e1b",
+    "prompt_sha256": "441a3bb4164bf04b7bda5d3cd3ec593bd094f56c6bc7c4fb36e6b2b37b5f744e"
+  },
+  "latest-chat90": {
+    "status": "ok",
+    "error": null,
+    "prefill_tok_s": 1409.7634433215433,
+    "decode_tok_s": 43.42378276170631,
+    "tail_decode_tok_s": 43.54589832309944,
+    "generated": 512,
+    "reused_tokens": 0,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/ninfer-matched-latest-chat90",
+    "binary_sha256": "678580a7ccc535ce6a646ed09b050011db8902be1c9d6a5e549ffb70642a7e1b",
+    "prompt_sha256": "63afd9312f8afcc63d393eea375a8421b53f58786f0aec2062446e151e4cace8"
+  }
+}
