@@ -493,13 +493,13 @@
     },
     {
       "path": "measured-inference-comparison.md",
-      "sha256": "94010defd37ccc85343f5ec6cb7f5e913c8bf185bb7e53927e1b65c4e388352c",
-      "bytes": 6110
+      "sha256": "330b8fbc29aa29fea6264ef8a395dcbefc89e57f620c8d61f49e4313d7f075a4",
+      "bytes": 7640
     },
     {
       "path": "range-comparison-progress.csv",
-      "sha256": "4d4eb471c78999c528fe26c78d349317709421d4f5afbd472303ce23a28544e1",
-      "bytes": 2357
+      "sha256": "7c421252a979e776cce8d7af0b041657d28ee96ebded8875cd64c5943e8138fc",
+      "bytes": 2273
     },
     {
       "path": "evidence/flash-fp16-historical-matched.json",
@@ -555,6 +555,76 @@
       "path": "harness/stock041_warm_wait.py",
       "sha256": "8df3900fe4beda1052b03c5d5eb2edc2e63515bffc33342ff3f766034c99c357",
       "bytes": 456
+    },
+    {
+      "path": "evidence/flash-int8-matched-depths.json",
+      "sha256": "0e53b2867a11bd5eda87cca214cdfd95759bb3f2bb1ede2e8d147218bb1783c8",
+      "bytes": 4158
+    },
+    {
+      "path": "evidence/flash-fp16-retry-depths.json",
+      "sha256": "243d67e2f49106b0d96daa3e0950db4d7ca1ffcd164864ee41380ad1f36a338b",
+      "bytes": 1027
+    },
+    {
+      "path": "evidence/code-functional-ninfer1616-functional-configs.json",
+      "sha256": "d9c5b48bfbc5876c341a38ef96e18163a0fe23dec48fb16c34f165028b446f1d",
+      "bytes": 1788
+    },
+    {
+      "path": "evidence/basalt-stock041-warm-summary.json",
+      "sha256": "26f4ebbca7e3e23d786d4c17064712b055ef193fd030d583d5188aa16e4545cc",
+      "bytes": 1241
+    },
+    {
+      "path": "harness/export_measured_fp16.mjs",
+      "sha256": "9eebf334c6ed5223c55ad87f3676b512e4461d8d3357ad51e135c05e9e1f7659",
+      "bytes": 2108
+    },
+    {
+      "path": "harness/export_measured_ninfer.mjs",
+      "sha256": "09becd9f4f11b83eecce88bdf8621b793cbebd6022b80f512df73ff263c64959",
+      "bytes": 2043
+    },
+    {
+      "path": "harness/flash_int8_matched.py",
+      "sha256": "cf8e1f04487e91c8a852897cc8758b8c8cb6268e27460b258d33a1a60275ae4c",
+      "bytes": 2647
+    },
+    {
+      "path": "harness/remaining_release_checks.py",
+      "sha256": "0c38c17b6484c70f88eac51205fd39504157c5c24703287fcd9d0797336ae383",
+      "bytes": 2241
+    },
+    {
+      "path": "harness/matched_depth_chart.py",
+      "sha256": "31cb678cf5d2dad85205b16c839a3020e6b7189e303ff43342901b1610561b95",
+      "bytes": 1876
+    },
+    {
+      "path": "harness/fp16_plugin_adapter_smoke.mjs",
+      "sha256": "3461ebfa0efa0059589c71447fcd707035c7b0086b4040d9ebc58f17f950bc8c",
+      "bytes": 9287
+    },
+    {
+      "path": "harness/fp16_plugin_wait.py",
+      "sha256": "c73a4dd541cee91a12013901bca447ccfd61bfe3bd368140e9a0d889b3fa9938",
+      "bytes": 629
+    },
+    {
+      "path": "harness/ninfer_measured_adapter_smoke.mjs",
+      "sha256": "55b56ba00449ded272026e69a8496baf08e879dea8bfba144c5cfed9c30a6dfa",
+      "bytes": 9282
+    },
+    {
+      "path": "harness/ninfer_measured_plugin_wait.py",
+      "sha256": "778133d2c4e317643cb59956f517e90a9bc83c0c45addd11687f51e3a7fa3f39",
+      "bytes": 635
+    },
+    {
+      "path": "matched-depth-comparison.png",
+      "sha256": "c94fe8a53e33760c42a8ac74cea0b8d7a314d5aed68ef4dedbddd0954c11abf4",
+      "bytes": 161698
     }
   ]
 }

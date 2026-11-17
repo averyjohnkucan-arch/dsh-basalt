@@ -1,0 +1,21 @@
+import {readFile,writeFile,mkdir} from 'node:fs/promises';
+import {freshProfile,normalizeProfile,ninferArgs} from './dsh-ninfer/lib/profiles.js';
+import {qwen38Reasoning} from './dsh-ninfer/lib/reasoning.js';
+const r='/mnt/media/scratch/dsh-inference-tuning-20261115',out=r+'/outputs/dsh-ninfer-measured-state';
+await mkdir(out,{recursive:true});
+const rows=JSON.parse(await readFile(r+'/outputs/ninfer-matched-depths.json','utf8'));
+const low=rows['latest-code10'],high=rows['latest-chat90'];
+if(low.status!=='ok'||high.status!=='ok')throw Error('Incomplete measurements');
+const c=JSON.parse(await readFile(high.case+'/result.json','utf8')).config,a=c.command,options={};
+for(let i=5;i<a.length;){const key=a[i++];if(!key.startsWith('--'))throw Error('Unexpected argument');options[key]=i<a.length&&!a[i].startsWith('--')?a[i++]:true;}
+const p=freshProfile('ninfer'),id='scratch-measured-27b-ninfer1616';
+Object.assign(p,{id,name:`27B NVFP4-all NInfer NVFP4 KV p${Math.round(low.prefill_tok_s)}/d${Math.round(low.tail_decode_tok_s)} p${Math.round(high.prefill_tok_s)}/d${Math.round(high.tail_decode_tok_s)}`,modelPath:a[4],executable:a[3],context:262144,port:18400,options,locks:[],environment:c.env||{}});
+for(const key of ['--host','--port','--max-context'])delete options[key];options['--model-id']=id;
+p.reasoning=qwen38Reasoning();p.reasoning.defaultEffort='medium';
+p.measuredPerformance={protocol:'10% code and90% prose;512 output; final256 decode; thinking off during timing',low,high};
+p.codeFunctionalEvidence=JSON.parse(await readFile(r+'/outputs/code-functional-ninfer1616-functional-configs.json','utf8'));
+p.qualification='Measured current settings;2/3 generated-function checks passed; latest plugin GPU launch pending; no maximum claim';
+const normalized=normalizeProfile(p,'ninfer');const args=ninferArgs(normalized);
+await writeFile(out+'/profiles.json',JSON.stringify({version:2,profiles:[normalized]},null,2)+'\n');
+await writeFile(out+'/launch-args.json',JSON.stringify(args,null,2)+'\n');
+console.log(normalized.name);

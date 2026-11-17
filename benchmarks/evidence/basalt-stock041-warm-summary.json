@@ -1,0 +1,42 @@
+{
+  "status": "ok",
+  "error": null,
+  "generated": 3986,
+  "decode_windows_tok_s": {
+    "0-30": 22.2,
+    "60-90": 16.366666666666667,
+    "120-180": 15.583333333333334,
+    "180-240": 15.766666666666667
+  },
+  "load_s": 25.35530374199152,
+  "ttft_s": 1.011602581012994,
+  "storage_io_counters": {
+    "at_engine_ready": {
+      "native_process": {
+        "read_bytes": 119052664832,
+        "write_bytes": 16384
+      }
+    },
+    "before_measured_request": {
+      "native_process": {
+        "read_bytes": 119052664832,
+        "write_bytes": 16384
+      }
+    },
+    "first_token": {
+      "native_process": {
+        "read_bytes": 121219411968,
+        "write_bytes": 20480
+      }
+    },
+    "timed_stop": {
+      "native_process": {
+        "read_bytes": 138188718080,
+        "write_bytes": 151552
+      }
+    }
+  },
+  "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/stock041-deepseek-warm240",
+  "comparison_limit": "Same43-token ABBA story prompt and fixed expert controls, but official0.4.1 embedded Engram vs custom0.4.0 external Engram. Runtime and storage layout effects are confounded; not isolated release regression.",
+  "selection": "Retain measured custom split runtime for current DeepSeek profiles"
+}

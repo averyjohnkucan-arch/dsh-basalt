@@ -1,0 +1,98 @@
+{
+  "flash-old-code10": {
+    "status": "ok",
+    "error": null,
+    "prefill_tok_s": 1907.9574650819184,
+    "decode_tok_s": 71.06077639449833,
+    "tail_decode_tok_s": 68.57677067764132,
+    "generated": 512,
+    "reused_tokens": 0,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/int8-matched-flash-old-code10",
+    "binary_sha256": "cee93d26f710d3685ccf3541a95054dc193e63b239650a9d7122b4b938ad9193",
+    "prompt_sha256": "441a3bb4164bf04b7bda5d3cd3ec593bd094f56c6bc7c4fb36e6b2b37b5f744e"
+  },
+  "flash-old-chat90": {
+    "status": "ok",
+    "error": null,
+    "prefill_tok_s": 2002.4477954987383,
+    "decode_tok_s": 30.30356836354812,
+    "tail_decode_tok_s": 28.083568637217073,
+    "generated": 512,
+    "reused_tokens": 0,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/int8-matched-flash-old-chat90",
+    "binary_sha256": "cee93d26f710d3685ccf3541a95054dc193e63b239650a9d7122b4b938ad9193",
+    "prompt_sha256": "63afd9312f8afcc63d393eea375a8421b53f58786f0aec2062446e151e4cace8"
+  },
+  "flash-basalt-code10": {
+    "status": "ok",
+    "error": null,
+    "prefill_tok_s": 3296.487720224846,
+    "decode_tok_s": 72.59528130671507,
+    "tail_decode_tok_s": 58.073177297023655,
+    "generated": 512,
+    "reused_tokens": 0,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/int8-matched-flash-basalt-code10",
+    "binary_sha256": "a2bb78bc53910cb738395d5582ab048c1ffc3aa7a0bd95838fcd31e4bf5ebeb0",
+    "prompt_sha256": "441a3bb4164bf04b7bda5d3cd3ec593bd094f56c6bc7c4fb36e6b2b37b5f744e"
+  },
+  "flash-basalt-chat90": {
+    "status": "ok",
+    "error": null,
+    "prefill_tok_s": 3241.3885011485663,
+    "decode_tok_s": 54.27178291286835,
+    "tail_decode_tok_s": 59.057156278580095,
+    "generated": 512,
+    "reused_tokens": 0,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/int8-matched-flash-basalt-chat90",
+    "binary_sha256": "a2bb78bc53910cb738395d5582ab048c1ffc3aa7a0bd95838fcd31e4bf5ebeb0",
+    "prompt_sha256": "63afd9312f8afcc63d393eea375a8421b53f58786f0aec2062446e151e4cace8"
+  },
+  "hybrid-old-code10": {
+    "status": "ok",
+    "error": null,
+    "prefill_tok_s": 1511.4247660560773,
+    "decode_tok_s": 35.81195923591828,
+    "tail_decode_tok_s": 39.28577714406736,
+    "generated": 512,
+    "reused_tokens": 0,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/int8-matched-hybrid-old-code10",
+    "binary_sha256": "cee93d26f710d3685ccf3541a95054dc193e63b239650a9d7122b4b938ad9193",
+    "prompt_sha256": "441a3bb4164bf04b7bda5d3cd3ec593bd094f56c6bc7c4fb36e6b2b37b5f744e"
+  },
+  "hybrid-old-chat90": {
+    "status": "ok",
+    "error": null,
+    "prefill_tok_s": 1599.886346760374,
+    "decode_tok_s": 22.45308751880227,
+    "tail_decode_tok_s": 23.24764065072469,
+    "generated": 512,
+    "reused_tokens": 0,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/int8-matched-hybrid-old-chat90",
+    "binary_sha256": "cee93d26f710d3685ccf3541a95054dc193e63b239650a9d7122b4b938ad9193",
+    "prompt_sha256": "63afd9312f8afcc63d393eea375a8421b53f58786f0aec2062446e151e4cace8"
+  },
+  "hybrid-basalt-code10": {
+    "status": "ok",
+    "error": null,
+    "prefill_tok_s": 1982.889690698255,
+    "decode_tok_s": 34.12014021245119,
+    "tail_decode_tok_s": 36.397957569455805,
+    "generated": 512,
+    "reused_tokens": 0,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/int8-matched-hybrid-basalt-code10",
+    "binary_sha256": "a2bb78bc53910cb738395d5582ab048c1ffc3aa7a0bd95838fcd31e4bf5ebeb0",
+    "prompt_sha256": "441a3bb4164bf04b7bda5d3cd3ec593bd094f56c6bc7c4fb36e6b2b37b5f744e"
+  },
+  "hybrid-basalt-chat90": {
+    "status": "ok",
+    "error": null,
+    "prefill_tok_s": 2447.2718710356007,
+    "decode_tok_s": 29.721649783763386,
+    "tail_decode_tok_s": 30.601528175146072,
+    "generated": 512,
+    "reused_tokens": 0,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/int8-matched-hybrid-basalt-chat90",
+    "binary_sha256": "a2bb78bc53910cb738395d5582ab048c1ffc3aa7a0bd95838fcd31e4bf5ebeb0",
+    "prompt_sha256": "63afd9312f8afcc63d393eea375a8421b53f58786f0aec2062446e151e4cace8"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "flash-old-code10": {
+    "status": "ok",
+    "error": null,
+    "prefill_tok_s": 1667.0482295482295,
+    "decode_tok_s": 61.75743320668235,
+    "tail_decode_tok_s": 53.8738018570492,
+    "generated": 512,
+    "reused_tokens": 0,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/fp16-retry-flash-old-code10",
+    "binary_sha256": "cee93d26f710d3685ccf3541a95054dc193e63b239650a9d7122b4b938ad9193",
+    "prompt_sha256": "441a3bb4164bf04b7bda5d3cd3ec593bd094f56c6bc7c4fb36e6b2b37b5f744e"
+  },
+  "flash-old-chat90": {
+    "status": "ok",
+    "error": null,
+    "prefill_tok_s": 1741.211982553119,
+    "decode_tok_s": 36.95016779128929,
+    "tail_decode_tok_s": 43.24378065684113,
+    "generated": 512,
+    "reused_tokens": 0,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/fp16-retry-flash-old-chat90",
+    "binary_sha256": "cee93d26f710d3685ccf3541a95054dc193e63b239650a9d7122b4b938ad9193",
+    "prompt_sha256": "63afd9312f8afcc63d393eea375a8421b53f58786f0aec2062446e151e4cace8"
+  }
+}
