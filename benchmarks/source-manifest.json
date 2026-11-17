@@ -493,8 +493,8 @@
     },
     {
       "path": "measured-inference-comparison.md",
-      "sha256": "81f33aab0fe51230df2153e12f3f48c6266773d0d154a99f4f64f0a0395d2714",
-      "bytes": 9684
+      "sha256": "be45fe8b887d78fed30b3a088ff6bd962435e41066caf74e1cba5c2b6ea54505",
+      "bytes": 10715
     },
     {
       "path": "range-comparison-progress.csv",
@@ -613,8 +613,8 @@
     },
     {
       "path": "harness/ninfer_measured_adapter_smoke.mjs",
-      "sha256": "55b56ba00449ded272026e69a8496baf08e879dea8bfba144c5cfed9c30a6dfa",
-      "bytes": 9282
+      "sha256": "d94be6a7f22d9c4c26789ce46ec2b29143a7688f623e32e3eca1ec4ab5ed74ef",
+      "bytes": 10210
     },
     {
       "path": "harness/ninfer_measured_plugin_wait.py",
@@ -660,6 +660,51 @@
       "path": "harness/combine_basalt_profiles.mjs",
       "sha256": "3c1f5661c3bffb558954ba1836a9a557896322c89a45996934a957ec0ec671a0",
       "bytes": 1627
+    },
+    {
+      "path": "evidence/huihui-profile-launch-validation.json",
+      "sha256": "454485671c94db01f81e8e4ef9f24f9dd996a6cc872e4baba3b968ea23948046",
+      "bytes": 4181
+    },
+    {
+      "path": "evidence/gyro-profile-launch-validation.json",
+      "sha256": "0b00a2012d8b7f87c4f1d8ee02e56619eaf8afe16f43d1945d0fc381e5eb73af",
+      "bytes": 932
+    },
+    {
+      "path": "evidence/huihui-profile-export.json",
+      "sha256": "68d144f27b5cffff853aa5ecbbcf654bfda746bb84e39e613568ff2336434d73",
+      "bytes": 1032
+    },
+    {
+      "path": "evidence/ninfer-strata-live-install.json",
+      "sha256": "9cef6da6e8e61c377902ed122d75bf8ada9ba79760c0cf913718bf806c7e710c",
+      "bytes": 765
+    },
+    {
+      "path": "harness/export_huihui_measured.mjs",
+      "sha256": "eee28f8831a59dc86d565faad02658cfc09f1b26984c31f1dadbfb6cfc263b72",
+      "bytes": 2738
+    },
+    {
+      "path": "harness/export_gyro_measured.mjs",
+      "sha256": "b54eac468c14c895db4512f4f32c509bb2643b50cf3115f1086e7ff2ffe53dc4",
+      "bytes": 2410
+    },
+    {
+      "path": "harness/validate_huihui_profiles.py",
+      "sha256": "fecbe7ca59d63fba6ba3a947a58ae926d6797c363209480b990fc8c85a565056",
+      "bytes": 419
+    },
+    {
+      "path": "harness/validate_gyro_profile.py",
+      "sha256": "18fcdba89fa9817f0a8a47acc74e665001864374456f0a7b53fbcfa1186ee750",
+      "bytes": 523
+    },
+    {
+      "path": "harness/gyro_measured_adapter_smoke.mjs",
+      "sha256": "2c061c172fcfd055267a0e24ec8671c6ba7d6e111eb04f013b4e9ea131b66a53",
+      "bytes": 9276
     }
   ]
 }

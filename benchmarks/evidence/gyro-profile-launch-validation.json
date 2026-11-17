@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "receipt": "/mnt/media/scratch/dsh-inference-tuning-20261115/validation/gyro-measured-plugin/adapter-result.json",
+  "sha256": "098cb05322f083874698bcb37dd94f700d2c5ed6fdfb0819103f40989f0f1a21",
+  "nativeControls": {
+    "--pack": "/mnt/media/scratch/dsh-inference-tuning-20261115/packs/gyro-strata",
+    "--native": "/mnt/media/AI/Models/Qwen3.8-Flash-Next/agentionai/Gyro-S-TQ1_0/Qwen3.8-Flash-Next-Gyro-S-TQ1_0.gguf",
+    "--mtp": "/mnt/media/AI/Models/Qwen3.8-Flash-Next/Strata/runtime-packs/674cb5da21c4",
+    "--expert-profile": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/latest-remaining-gyro-90/input-expert-profile.bin",
+    "--max-context": "262144",
+    "--kv": "fp16",
+    "--spec": "2",
+    "--prefill": "auto:32768",
+    "--kv-resident": "65536",
+    "--vram-reserve-mib": "1200"
+  },
+  "scope": "Actual Strata adapter GPU launch and arithmetic sanity; not a throughput rerun"
+}

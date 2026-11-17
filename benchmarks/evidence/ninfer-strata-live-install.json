@@ -1,0 +1,20 @@
+{
+  "status": "installed-and-configured",
+  "method": "DSH plugin --profile web add local tarballs",
+  "packages": [
+    "dsh-ninfer@0.4.5",
+    "dsh-strata@0.8.3"
+  ],
+  "states": {
+    "ninfer": "/mnt/media/scratch/dsh-inference-tuning-20261115/outputs/dsh-ninfer-measured-state",
+    "strata": "/mnt/media/scratch/dsh-inference-tuning-20261115/outputs/dsh-strata-range-state"
+  },
+  "live_browser_visibility": "unverified; browser control disabled",
+  "remaining_profiles": [],
+  "backup": "/mnt/media/scratch/dsh-inference-tuning-20261115/outputs/live-install-backup/before-ninfer-strata",
+  "profile_launch_evidence": [
+    "huihui-profile-launch-validation.json",
+    "gyro-profile-launch-validation.json",
+    "measured-profile-launch-validation.json"
+  ]
+}

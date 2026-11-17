@@ -24,13 +24,26 @@ function nativeOptions(args){
 }
 async function verifyNativeCommand(profile){
  const selected=JSON.parse(await readFile(join(profile.measuredPerformance.high.case,'result.json'),'utf8')).config;
- const expectedExe=await realpath(selected.command[3]);
+ const launcher=await realpath(selected.command[3]);
+ let expectedExe=launcher,wrappedBinary=null,wrappedLibrary=null;
+ if(launcher===root+'/runtimes/ninfer/bin/ninfer-serve'){
+  const wrapper=await readFile(launcher,'utf8');
+  if(!wrapper.includes('exec "$directory/compat/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2" --library-path "$directory/compat/usr/lib/x86_64-linux-gnu" "$directory/ninfer-serve.bin" "$@"'))throw Error('Unrecognized saved runtime wrapper');
+  wrappedLibrary=root+'/runtimes/ninfer/bin/compat/usr/lib/x86_64-linux-gnu';
+  expectedExe=await realpath(wrappedLibrary+'/ld-linux-x86-64.so.2');
+  wrappedBinary=await realpath(root+'/runtimes/ninfer/bin/ninfer-serve.bin');
+ }
  const ownCgroup=(await readFile('/proc/self/cgroup','utf8')).trim().split('\n').find(x=>x.startsWith('0::')).slice(3);
  if(!ownCgroup.endsWith('.scope'))throw Error('GPU validation requires an explicitly owned systemd scope');
  const pids=(await readFile('/sys/fs/cgroup'+ownCgroup+'/cgroup.procs','utf8')).trim().split(/\s+/),matches=[];
  for(const pid of pids){
   try{if(await realpath('/proc/'+pid+'/exe')!==expectedExe)continue;
-   const args=(await readFile('/proc/'+pid+'/cmdline','utf8')).split('\0').filter(Boolean);matches.push({pid:Number(pid),args});
+   let args=(await readFile('/proc/'+pid+'/cmdline','utf8')).split('\0').filter(Boolean);
+   if(wrappedBinary){
+    if(args[1]!=='--library-path'||args[2]!==wrappedLibrary||await realpath(args[3])!==wrappedBinary)continue;
+    args=args.slice(3);
+   }
+   matches.push({pid:Number(pid),args});
   }catch(error){if(error.code!=='ENOENT')throw error;}
  }
  if(matches.length!==1)throw Error('Expected exactly one selected native engine in the owned validation scope');
@@ -52,7 +65,7 @@ async function verifyNativeCommand(profile){
  const reading=(label,optional=false)=>{const line=power.split(String.fromCharCode(10)).find(x=>x.trim().startsWith(label));const value=line?Number(line.slice(line.indexOf(':')+1).trim().split(' ')[0]):NaN;if(!Number.isFinite(value)){if(optional)return null;throw Error('Missing GPU power reading: '+label);}return value;};
  const requested=reading('Requested Power Limit',true),enforced=reading('Current Power Limit'),defaultLimit=reading('Default Power Limit');
  const maximum=reading('Max Power Limit');if(defaultLimit!==95||maximum!==110||enforced<=0||enforced>maximum+.5)throw Error('GPU default/maximum power policy changed from the qualified setup');
- return {status:'ok',pid:actual.pid,executable:expectedExe,args,checkedControls:checked,cgroup:ownCgroup,gpuProcess:gpuProcess.trim(),requestedPowerLimitW:requested,observedEnforcedPowerLimitW:enforced,defaultPowerLimitW:defaultLimit,maximumPowerLimitW:maximum};
+ return {status:'ok',pid:actual.pid,executable:expectedExe,launcher,wrappedBinary,engineSha256:createHash('sha256').update(await readFile(wrappedBinary||expectedExe)).digest('hex'),args,checkedControls:checked,cgroup:ownCgroup,gpuProcess:gpuProcess.trim(),requestedPowerLimitW:requested,observedEnforcedPowerLimitW:enforced,defaultPowerLimitW:defaultLimit,maximumPowerLimitW:maximum};
 }
 if(engine==='ninfer'){
  const {Runtime}=await import('./dsh-ninfer/lib/runtime.js');

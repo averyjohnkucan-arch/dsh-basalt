@@ -1,0 +1,15 @@
+import {readFile,writeFile,copyFile} from 'node:fs/promises';
+import {dirname} from 'node:path';
+import {execFileSync} from 'node:child_process';
+import {createProfile,validateProfile,runConfig} from './dsh-strata/lib/profiles.js';
+const r='/mnt/media/scratch/dsh-inference-tuning-20261115',file=r+'/outputs/dsh-strata-range-state/profiles.json';
+const profiles=JSON.parse(await readFile(file,'utf8')),rows=JSON.parse(await readFile(r+'/outputs/latest-remaining-models.json','utf8')),low=rows['gyro-10'],high=rows['gyro-90'];
+if(low.status!=='ok'||high.status!=='ok')throw Error('Missing measurements');
+const c=JSON.parse(await readFile(high.case+'/result.json','utf8')).config,a=c.command,option=n=>a[a.indexOf('--'+n)+1],native=option('native');
+const control=r+'/runtimes/strata-control-0.1.59.1',python=control+'/python/bin/python3';
+const scan=JSON.parse(execFileSync(python,['-B',r+'/work/dsh-strata/python/scanner.py',dirname(native),'--files',native],{encoding:'utf8',maxBuffer:16*1024*1024}));
+const model=scan.models.find(m=>m.files.some(f=>f.path===native));if(!model)throw Error('Gyro header missing');
+const p=createProfile(model,18502),id='scratch-measured-gyro-strata';if(profiles.some(p=>p.id===id))throw Error('Existing profile');
+const args=a.slice(4).filter(x=>x!=='--serve');
+Object.assign(p,{id,name:`Gyro S Strata FP16 p${Math.round(low.prefill_tok_s)}/d${Math.round(low.tail_decode_tok_s)} p${Math.round(high.prefill_tok_s)}/d${Math.round(high.tail_decode_tok_s)}`,context:262144,kv:'FP16/FP16',gpu:0,cpuSet:'0-21',mtp:option('mtp'),vision:'off',extraArgs:[],environment:c.env||{},applyPreset:false,portableTuning:{},runtime:{controlDir:control,python,executable:a[3],tqp:false},config:{exe:a[3],cwd:control,arch:'qwen4exp',model_name:id,host:'127.0.0.1',port:18502,gpu:0,tokenizer:option('pack')+'/tokenizer',open_browser:false,lib_dirs:[dirname(a[3])],env:c.env||{},args},measuredPerformance:{protocol:'10%/90% saved fixtures;4096 output,final2048 decode; thinking off during timing',low,high},qualification:'Measured native settings; actual exported adapter GPU launch pending',selectionReason:'Latest Strata90% prefill+17.9%,decode-2.8%; short decode-7.8%'});p.model.name=p.name;
+const validated=validateProfile(p);runConfig(validated);profiles.push(validated);await copyFile(file,file+'.before-gyro');await writeFile(file,JSON.stringify(profiles,null,2)+'\n');console.log(p.name);

@@ -1,0 +1,23 @@
+{
+  "status": "schema-validated",
+  "profiles": [
+    {
+      "id": "scratch-measured-huihui-int8",
+      "name": "Huihui IQ3_S INT8 KV p1193/d54 p746/d55",
+      "executable": "/mnt/media/scratch/dsh-inference-tuning-20261115/runtimes/ninfer/bin/ninfer-serve",
+      "selectionReason": "Retain saved engine/settings: latest candidate lost17.4% long decode"
+    },
+    {
+      "id": "scratch-measured-huihui-fp8",
+      "name": "Huihui IQ3_S FP8 KV p1151/d65 p506/d41",
+      "executable": "/mnt/media/scratch/dsh-inference-tuning-20261115/build/ninfer-20261116-custom/apps/ninfer-serve",
+      "selectionReason": "Latest candidate improved long prefill11.9% and decode2.5%"
+    },
+    {
+      "id": "scratch-measured-huihui-nvfp4",
+      "name": "Huihui IQ3_S NVFP4 KV p1271/d68 p870/d44",
+      "executable": "/mnt/media/scratch/dsh-inference-tuning-20261115/build/ninfer-20261116-custom/apps/ninfer-serve",
+      "selectionReason": "Latest candidate improves long prefill13.5%, costs4.8% decode in single comparison"
+    }
+  ]
+}

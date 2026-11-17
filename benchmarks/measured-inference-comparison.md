@@ -1,11 +1,11 @@
 # Measured inference comparison
 
-P and D are prefill and decode in tokens/s. Rows state their workload. Pending cells remain unverified. DeepSeek uses the final short counting and 90% prose protocol requested by the user. Flash rows retain their earlier code and 80% prose protocol.
+P and D are prefill and decode in tokens/s. Rows state their workload. Pending cells remain unverified. DeepSeek uses the final short counting and 90% prose protocol requested by the user. Flash and hybrid table rows use matched 10% code and 90% prose prompts,512 output tokens,and final256 decode. The independently audited80% sweeps are separate evidence.
 
 | Model name | Old settings speed | Current measured Basalt speed |
 | --- | --- | --- |
 | DeepSeek V4.1 Flash IQ2_XXS / Basalt FP8 KV | Saved old engine: 10% P669.8/D13.8; 90% P525.6/D14.5 | Warm counting D43.20; 90% prose P575.21/D21.56. Different workload from saved baseline. |
-| DeepSeek V4.1 Flash IQ2_XS / Basalt FP8 KV | New quant; no saved old profile | Warm counting D40.54; 90% prose P698.45/D13.21. Different workload from saved baseline. |
+| DeepSeek V4.1 Flash IQ2_XS / Basalt FP8 KV | New quant; no saved old profile | Warm counting D40.54; 90% prose P698.45/D13.21. New quant; no old baseline exists. |
 | Flash Next NVFP4 GPTQ / INT8 KV | Matched saved Strata: 10% code P1908.0/D68.58; 90% prose P2002.4/D28.08. | Matched Basalt: 10% code P3296.5/D58.07; 90% prose P3241.4/D59.06. |
 | Flash Next NVFP4 GPTQ / FP16 KV | Matched saved Strata: 10% code P1667.0/D53.87; 90% prose P1741.2/D43.24. | Current Basalt candidate: 10% code P2613.7/D83.1; 90% prose P2550.1/D47.93. Matched prompt IDs; 512 output, final256 decode. |
 | Flash Next NVFP4 Q8 hybrid / INT8 KV | Matched saved Strata: 10% code P1511.4/D39.29; 90% prose P1599.9/D23.25. | Matched Basalt: 10% code P1982.9/D36.40; 90% prose P2447.3/D30.60. |
@@ -49,3 +49,7 @@ Independent receipt audit verified the recorded80% decode-first selections for F
 Huihui NVFP4 latest NInfer completed10% P1270.74/D68.32 and90% P870.11/D43.99, compared with saved10% P1201.44/D57.31 and90% P766.39/D46.21. Same configured fixture/depth,1024 output/final512 decode. Near-full prefill improved13.5%; decode fell4.8%, narrowly within the5% threshold in this single comparison. Both engine and prefill chunk differ from saved settings, so this is not an isolated release comparison. All eight latest Gyro/Huihui checks completed successfully; actual plugin validation follows.
 
 Actual DSH adapter validation passed for Flash FP16,hybrid FP16,and latest NInfer27B. Each matched the measured native executable and expected flags,appeared as the owned GPU PID,and streamed the arithmetic sanity response. Both Basalt profiles passed default/low/medium/xhigh/uncensored projection-mode routing with unchanged conversation text. Exported profile metadata now binds the validation receipt SHA256. Evidence: measured-profile-launch-validation.json. This is launch/routing validation,not a new throughput or general quality test.
+
+All three Huihui exported profiles passed actual NInfer adapter GPU launch,measured-native-control and arithmetic sanity checks. INT8 retains the faster saved engine/settings; its private glibc loader and actual engine binary are checked explicitly. FP8/NVFP4 use the latest measured build. Profile names contain the measured10/90 P/D pairs. Evidence: huihui-profile-launch-validation.json. This does not replace generated-function correctness tests.
+
+Gyro S and all three Huihui profiles now have measured speed names and passed actual adapter/native-control launch checks. Basalt0.1.3,NInfer0.4.5,and Strata0.8.3 are installed through DSH plugin commands and point to scratch profile states. Seven Basalt,four NInfer,and three Strata profiles are saved. Running UI visibility remains unverified because local browser control is disabled. NInfer final package tests:84 JS and11 Python passed;Strata:88 JS and43 Python passed.
