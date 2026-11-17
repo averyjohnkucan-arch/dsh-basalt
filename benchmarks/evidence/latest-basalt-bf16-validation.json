@@ -1,0 +1,17 @@
+[
+  {
+    "test": "bf16_gemm_test",
+    "returncode": 0,
+    "seconds": 0.6805667877197266
+  },
+  {
+    "test": "qwen35_linear_types_test",
+    "returncode": 0,
+    "seconds": 0.0018086433410644531
+  },
+  {
+    "test": "window_gemm_parity",
+    "returncode": 0,
+    "seconds": 9.908364295959473
+  }
+]

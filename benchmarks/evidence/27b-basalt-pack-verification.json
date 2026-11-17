@@ -1,0 +1,31 @@
+{
+  "status": "passed",
+  "artifact": "/mnt/media/scratch/dsh-inference-tuning-20261115/packs/qwen27b-nvfp4full-experimental.basalt",
+  "source": "/mnt/media/AI/Models/Qwen3.8-27B/DSH-import/ninfer/qwen3.8-27b-nvfp4full/qwen3_8_27b_nvfp4full.ninfer",
+  "metadata_sha256": "8dd52fc07a77f766439c7e46ce044349c934f8ff731756c5f44656fc2a44006c",
+  "header_sha256": "a002f25515f5d35970123692ff37f1c2f5abdcc9869966089e913af1eddefc2c",
+  "tensor_count": 1365,
+  "checked_samples": {
+    "target NVFP4_PLANES": 678,
+    "target BF16": 42,
+    "DFlash2 NVFP4_PLANES": 135,
+    "target Q8 head": 3
+  },
+  "previous_gpu_probe": {
+    "path": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/latest-27b-basalt-dflash-probe/result.json",
+    "prompt_tokens": 8192,
+    "generated": 256,
+    "drafts_accepted": 187,
+    "drafts_offered": 325
+  },
+  "scope": "Actual pack metadata and sampled unpermuted target/drafter weight bytes; numerical transform tests are separate. Historical GPU smoke is compatibility evidence. Full benchmark timing and generated-code grading are separate.",
+  "kv_support": [
+    "INT8",
+    "FP16"
+  ],
+  "excluded": [
+    "Vision",
+    "Source MTP",
+    "NVFP4 KV"
+  ]
+}

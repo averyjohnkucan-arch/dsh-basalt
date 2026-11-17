@@ -1,9 +1,9 @@
 {
-  "at": "2026-11-16T18:14:24.228690-08:00",
+  "at": "2026-11-16T18:16:12.499785-08:00",
   "status": "passed",
-  "prepared_from_base_commit": "f4d143f",
-  "manifest_sha256": "6b806e05f7d0e95a6af932e430846e7bf04ebf945fc86a04344222e30b3d8eec",
-  "source_count": 71,
+  "prepared_from_base_commit": "bd9a93f",
+  "manifest_sha256": "2ffc0403d6b6d7059863b3f7c21da1dc91fef99a8a982638ace7afa8221e59aa",
+  "source_count": 72,
   "scope": "Python AST local imports and existing flat literal py/mjs/txt/cpp/hpp sibling references checked against the exact source manifest. External engine/plugin clone layout remains required; dynamic references, packages, weights and fixtures excluded.",
   "checks": [
     {
@@ -459,6 +459,12 @@
     {
       "source": "continue_after_range_queue.py",
       "dependency": "range_deepseek_xs.py",
+      "kind": "existing literal sibling",
+      "passed": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "audit_27b_weight_import.py",
       "kind": "existing literal sibling",
       "passed": true
     },

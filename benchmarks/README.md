@@ -26,6 +26,9 @@ The search also compares the user's saved expert ranking against Basalt's shippe
 
 ## Evidence and profile labels
 
+The experimental 27B run uses the text weights from the exact saved NInfer v3 artifact through the custom Basalt converter. `audit_27b_weight_import.py` checks every tensor descriptor and samples the real packed target and drafter NVFP4 codes and scales, unchanged BF16 projections, and losslessly repacked Q8 output head. Its separate GPU smoke generated 256 tokens and accepted 187 of 325 proposals. Basalt uses INT8 or FP16 KV on this path. The saved NInfer profile uses NVFP4 KV, so the comparison includes the difference in cache precision. Vision and source MTP are outside this conversion.
+
+
 The model and profile names use `... - pLOW/dLOW - pHIGH/dHIGH`. Each pair comes from the same actual measurement. The high pair comes from the slowest actual selected-settings genre/repeat, rather than combining the fastest prefill from one run with decode from another. The metadata retains the complete measured range, native configuration, binary and artifact fingerprints, and host-memory evidence.
 
 Performance qualification, actual DSH-adapter GPU serving, generated-code quality and source/binary publication are separate gates. A native timing receipt alone does not prove plugin functionality or answer quality. The main comparison has exactly three columns: model name, old settings speed, current Basalt speed. NInfer and Strata results stay in separate comparisons. Unsupported Basalt artifacts are labeled explicitly.
