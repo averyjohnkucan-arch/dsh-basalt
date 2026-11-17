@@ -1,0 +1,534 @@
+{
+  "chat-paging-XXS": {
+    "status": "ok",
+    "error": null,
+    "chat_turns": [
+      {
+        "turn": 1,
+        "prompt": 27,
+        "generated": 256,
+        "reused_tokens": 0,
+        "ttft_s": 5.608929832000285,
+        "decode_tok_s": 6.132120631987497
+      },
+      {
+        "turn": 2,
+        "prompt": 313,
+        "generated": 256,
+        "reused_tokens": 282,
+        "ttft_s": 2.2317025720258243,
+        "decode_tok_s": 5.858782869679229
+      },
+      {
+        "turn": 3,
+        "prompt": 597,
+        "generated": 256,
+        "reused_tokens": 568,
+        "ttft_s": 1.987470549007412,
+        "decode_tok_s": 6.18108995684384
+      },
+      {
+        "turn": 4,
+        "prompt": 878,
+        "generated": 256,
+        "reused_tokens": 852,
+        "ttft_s": 1.8361854109971318,
+        "decode_tok_s": 6.350361030780985
+      },
+      {
+        "turn": 5,
+        "prompt": 1161,
+        "generated": 256,
+        "reused_tokens": 1133,
+        "ttft_s": 1.8996864490036387,
+        "decode_tok_s": 7.19519446750466
+      },
+      {
+        "turn": 6,
+        "prompt": 1443,
+        "generated": 256,
+        "reused_tokens": 1416,
+        "ttft_s": 1.7995122359716333,
+        "decode_tok_s": 7.535001906382989
+      },
+      {
+        "turn": 7,
+        "prompt": 1728,
+        "generated": 256,
+        "reused_tokens": 1698,
+        "ttft_s": 2.018396881991066,
+        "decode_tok_s": 7.735999089220009
+      },
+      {
+        "turn": 8,
+        "prompt": 2009,
+        "generated": 256,
+        "reused_tokens": 1983,
+        "ttft_s": 1.753315209003631,
+        "decode_tok_s": 7.671472330167634
+      }
+    ],
+    "chat_plateau": true,
+    "prefill_tok_s": 15.074211502782932,
+    "tail_decode_tok_s": 8.22606283463522,
+    "reused_tokens": 0
+  },
+  "paging-XXS": {
+    "status": "ok",
+    "error": null,
+    "finish": "timed_stop",
+    "ttft_s": 27.233366358996136,
+    "decode_observed_s": 240.03988749199198,
+    "decode_windows_tok_s": {
+      "0-30": 7.8,
+      "60-90": 7.466666666666667,
+      "120-180": 7.916666666666667,
+      "180-240": 7.433333333333334
+    },
+    "generated": 1819,
+    "storage_io_counters": {
+      "at_engine_ready": {
+        "native_process": {
+          "read_bytes": 9137188864,
+          "write_bytes": 12288
+        }
+      },
+      "before_measured_request": {
+        "native_process": {
+          "read_bytes": 9137188864,
+          "write_bytes": 12288
+        }
+      },
+      "first_token": {
+        "native_process": {
+          "read_bytes": 119201501184,
+          "write_bytes": 20480
+        }
+      },
+      "timed_stop": {
+        "native_process": {
+          "read_bytes": 128534691840,
+          "write_bytes": 94208
+        }
+      }
+    },
+    "model_fds": [
+      {
+        "fd": "17",
+        "flags_octal": "0100000",
+        "direct": false
+      },
+      {
+        "fd": "18",
+        "flags_octal": "0100000",
+        "direct": false
+      }
+    ],
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/deepseek-warm-240-paging-xxs",
+    "engine_exit": 0,
+    "engine_storage": [
+      "basalt deepseek41: RAM expert tier 0.0 GiB (0 of 384 experts per layer) loaded in 3.4 s",
+      "basalt deepseek41: VRAM expert tier 44 of 384 experts per layer (10 beside the prompt workspaces)",
+      "basalt deepseek41: expert homes of 384 per layer: main card 10, second card 0, RAM 0, file 374; main card copies 34",
+      "basalt deepseek41: VRAM expert tier 3.20 GiB, 10 of 384 experts per layer (3%); CPU pool 21 workers",
+      "basalt deepseek41: VRAM expert tier 44 of 384 experts per layer (10 beside the prompt workspaces)"
+    ]
+  },
+  "chat-paging-XS": {
+    "status": "ok",
+    "error": null,
+    "chat_turns": [
+      {
+        "turn": 1,
+        "prompt": 27,
+        "generated": 256,
+        "reused_tokens": 0,
+        "ttft_s": 5.9988670960010495,
+        "decode_tok_s": 5.533885755175146
+      },
+      {
+        "turn": 2,
+        "prompt": 313,
+        "generated": 256,
+        "reused_tokens": 282,
+        "ttft_s": 2.706837765988894,
+        "decode_tok_s": 7.312237076156533
+      },
+      {
+        "turn": 3,
+        "prompt": 597,
+        "generated": 256,
+        "reused_tokens": 568,
+        "ttft_s": 2.3198208670073655,
+        "decode_tok_s": 7.7168036193065115
+      },
+      {
+        "turn": 4,
+        "prompt": 878,
+        "generated": 256,
+        "reused_tokens": 852,
+        "ttft_s": 2.0412427489936817,
+        "decode_tok_s": 7.740879074688055
+      },
+      {
+        "turn": 5,
+        "prompt": 1161,
+        "generated": 256,
+        "reused_tokens": 1133,
+        "ttft_s": 2.16366317201755,
+        "decode_tok_s": 7.781771793766651
+      }
+    ],
+    "chat_plateau": true,
+    "prefill_tok_s": 11.982671213936767,
+    "tail_decode_tok_s": 8.604528182162278,
+    "reused_tokens": 0
+  },
+  "paging-XS": {
+    "status": "ok",
+    "error": null,
+    "finish": "timed_stop",
+    "ttft_s": 28.73833902401384,
+    "decode_observed_s": 240.0808784700057,
+    "decode_windows_tok_s": {
+      "0-30": 7.433333333333334,
+      "60-90": 7.566666666666666,
+      "120-180": 8.0,
+      "180-240": 7.633333333333334
+    },
+    "generated": 1855,
+    "storage_io_counters": {
+      "at_engine_ready": {
+        "native_process": {
+          "read_bytes": 8953319424,
+          "write_bytes": 8192
+        }
+      },
+      "before_measured_request": {
+        "native_process": {
+          "read_bytes": 8953319424,
+          "write_bytes": 8192
+        }
+      },
+      "first_token": {
+        "native_process": {
+          "read_bytes": 134208585728,
+          "write_bytes": 20480
+        }
+      },
+      "timed_stop": {
+        "native_process": {
+          "read_bytes": 170876329984,
+          "write_bytes": 94208
+        }
+      }
+    },
+    "model_fds": [
+      {
+        "fd": "17",
+        "flags_octal": "0100000",
+        "direct": false
+      },
+      {
+        "fd": "18",
+        "flags_octal": "0100000",
+        "direct": false
+      }
+    ],
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/deepseek-warm-240-paging-xs",
+    "engine_exit": 0,
+    "engine_storage": [
+      "basalt deepseek41: RAM expert tier 0.0 GiB (0 of 384 experts per layer) loaded in 3.7 s",
+      "basalt deepseek41: VRAM expert tier 39 of 384 experts per layer (8 beside the prompt workspaces)",
+      "basalt deepseek41: expert homes of 384 per layer: main card 8, second card 0, RAM 0, file 376; main card copies 31",
+      "basalt deepseek41: VRAM expert tier 2.89 GiB, 8 of 384 experts per layer (2%); CPU pool 21 workers",
+      "basalt deepseek41: VRAM expert tier 38 of 384 experts per layer (8 beside the prompt workspaces)"
+    ]
+  },
+  "chat-fixed-XXS": {
+    "status": "ok",
+    "error": null,
+    "chat_turns": [
+      {
+        "turn": 1,
+        "prompt": 27,
+        "generated": 256,
+        "reused_tokens": 0,
+        "ttft_s": 0.843082109990064,
+        "decode_tok_s": 31.141586691666777
+      },
+      {
+        "turn": 2,
+        "prompt": 313,
+        "generated": 256,
+        "reused_tokens": 282,
+        "ttft_s": 0.6857952330028638,
+        "decode_tok_s": 30.582873521139295
+      },
+      {
+        "turn": 3,
+        "prompt": 597,
+        "generated": 243,
+        "reused_tokens": 568,
+        "ttft_s": 0.9857606470177416,
+        "decode_tok_s": 26.840256948523578
+      },
+      {
+        "turn": 4,
+        "prompt": 864,
+        "generated": 256,
+        "reused_tokens": 839,
+        "ttft_s": 1.468037081998773,
+        "decode_tok_s": 29.716615248855838
+      },
+      {
+        "turn": 5,
+        "prompt": 1147,
+        "generated": 256,
+        "reused_tokens": 1119,
+        "ttft_s": 1.5404716699849814,
+        "decode_tok_s": 30.2562316362823
+      },
+      {
+        "turn": 6,
+        "prompt": 1429,
+        "generated": 256,
+        "reused_tokens": 1402,
+        "ttft_s": 1.5038821790076327,
+        "decode_tok_s": 31.46649737294195
+      },
+      {
+        "turn": 7,
+        "prompt": 1714,
+        "generated": 256,
+        "reused_tokens": 1684,
+        "ttft_s": 1.8541498869890347,
+        "decode_tok_s": 29.3733203827174
+      },
+      {
+        "turn": 8,
+        "prompt": 1995,
+        "generated": 256,
+        "reused_tokens": 1969,
+        "ttft_s": 1.593327935988782,
+        "decode_tok_s": 29.943044029979834
+      },
+      {
+        "turn": 9,
+        "prompt": 2276,
+        "generated": 256,
+        "reused_tokens": 2250,
+        "ttft_s": 1.5286833259742707,
+        "decode_tok_s": 30.560073295436645
+      }
+    ],
+    "chat_plateau": true,
+    "prefill_tok_s": 14.771048744460856,
+    "tail_decode_tok_s": 40.896826063650096,
+    "reused_tokens": 0
+  },
+  "fixed-XXS": {
+    "status": "ok",
+    "error": null,
+    "finish": "timed_stop",
+    "ttft_s": 12.799928595981328,
+    "decode_observed_s": 240.01788265199866,
+    "decode_windows_tok_s": {
+      "0-30": 25.033333333333335,
+      "60-90": 29.566666666666666,
+      "120-180": 25.033333333333335,
+      "180-240": 25.916666666666668
+    },
+    "generated": 6340,
+    "storage_io_counters": {
+      "at_engine_ready": {
+        "native_process": {
+          "read_bytes": 119043203072,
+          "write_bytes": 16384
+        }
+      },
+      "before_measured_request": {
+        "native_process": {
+          "read_bytes": 119043203072,
+          "write_bytes": 16384
+        }
+      },
+      "first_token": {
+        "native_process": {
+          "read_bytes": 132751466496,
+          "write_bytes": 24576
+        }
+      },
+      "timed_stop": {
+        "native_process": {
+          "read_bytes": 158510858240,
+          "write_bytes": 217088
+        }
+      }
+    },
+    "model_fds": [
+      {
+        "fd": "17",
+        "flags_octal": "0100000",
+        "direct": false
+      },
+      {
+        "fd": "18",
+        "flags_octal": "0100000",
+        "direct": false
+      },
+      {
+        "fd": "41",
+        "flags_octal": "02140000",
+        "direct": true
+      }
+    ],
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/deepseek-warm-240-fixed-xxs",
+    "engine_exit": 0,
+    "engine_storage": [
+      "basalt deepseek41: RAM expert tier 102.2 GiB (319 of 384 experts per layer) loaded in 22.0 s",
+      "basalt deepseek41: VRAM expert tier 43 of 384 experts per layer (10 beside the prompt workspaces)",
+      "basalt deepseek41: expert homes of 384 per layer: main card 10, second card 0, RAM 319, file 55; main card copies 33",
+      "basalt deepseek41: VRAM expert tier 3.20 GiB, 10 of 384 experts per layer (3%); CPU pool 21 workers",
+      "basalt deepseek41: VRAM expert tier 43 of 384 experts per layer (10 beside the prompt workspaces)"
+    ]
+  },
+  "chat-fixed-XS": {
+    "status": "ok",
+    "error": null,
+    "chat_turns": [
+      {
+        "turn": 1,
+        "prompt": 27,
+        "generated": 256,
+        "reused_tokens": 0,
+        "ttft_s": 1.1917158139985986,
+        "decode_tok_s": 23.03312572436135
+      },
+      {
+        "turn": 2,
+        "prompt": 313,
+        "generated": 256,
+        "reused_tokens": 282,
+        "ttft_s": 1.005926832993282,
+        "decode_tok_s": 16.926036169651844
+      },
+      {
+        "turn": 3,
+        "prompt": 597,
+        "generated": 256,
+        "reused_tokens": 568,
+        "ttft_s": 1.3877073029871099,
+        "decode_tok_s": 20.58320298666254
+      },
+      {
+        "turn": 4,
+        "prompt": 878,
+        "generated": 256,
+        "reused_tokens": 852,
+        "ttft_s": 1.5171794570051134,
+        "decode_tok_s": 20.45134620272114
+      },
+      {
+        "turn": 5,
+        "prompt": 1161,
+        "generated": 256,
+        "reused_tokens": 1133,
+        "ttft_s": 1.4884002490143757,
+        "decode_tok_s": 20.725098369131477
+      }
+    ],
+    "chat_plateau": true,
+    "prefill_tok_s": 13.832730368163439,
+    "tail_decode_tok_s": 35.32733702684825,
+    "reused_tokens": 0
+  },
+  "fixed-XS": {
+    "status": "ok",
+    "error": null,
+    "finish": "timed_stop",
+    "ttft_s": 17.358899749000557,
+    "decode_observed_s": 240.13489151300746,
+    "decode_windows_tok_s": {
+      "0-30": 14.533333333333333,
+      "60-90": 17.333333333333332,
+      "120-180": 21.483333333333334,
+      "180-240": 19.9
+    },
+    "generated": 4536,
+    "storage_io_counters": {
+      "at_engine_ready": {
+        "native_process": {
+          "read_bytes": 118435106816,
+          "write_bytes": 16384
+        }
+      },
+      "before_measured_request": {
+        "native_process": {
+          "read_bytes": 118435106816,
+          "write_bytes": 16384
+        }
+      },
+      "first_token": {
+        "native_process": {
+          "read_bytes": 148279840768,
+          "write_bytes": 24576
+        }
+      },
+      "timed_stop": {
+        "native_process": {
+          "read_bytes": 231530926080,
+          "write_bytes": 167936
+        }
+      }
+    },
+    "model_fds": [
+      {
+        "fd": "17",
+        "flags_octal": "0100000",
+        "direct": false
+      },
+      {
+        "fd": "18",
+        "flags_octal": "0100000",
+        "direct": false
+      },
+      {
+        "fd": "41",
+        "flags_octal": "02140000",
+        "direct": true
+      }
+    ],
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/deepseek-warm-240-fixed-xs",
+    "engine_exit": 0,
+    "engine_storage": [
+      "basalt deepseek41: RAM expert tier 101.9 GiB (282 of 384 experts per layer) loaded in 19.9 s",
+      "basalt deepseek41: VRAM expert tier 38 of 384 experts per layer (8 beside the prompt workspaces)",
+      "basalt deepseek41: expert homes of 384 per layer: main card 8, second card 0, RAM 282, file 94; main card copies 30",
+      "basalt deepseek41: VRAM expert tier 2.89 GiB, 8 of 384 experts per layer (2%); CPU pool 21 workers",
+      "basalt deepseek41: VRAM expert tier 38 of 384 experts per layer (8 beside the prompt workspaces)"
+    ]
+  },
+  "final-chat90-XXS": {
+    "status": "ok",
+    "error": null,
+    "prefill_tok_s": 575.2100006735137,
+    "decode_tok_s": 21.56488629997936,
+    "ttft_s": 1640.867893194023,
+    "reused_tokens": 0,
+    "generated": 512,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/deepseek-final-chat90-xxs",
+    "selected_mode": "fixed"
+  },
+  "final-chat90-XS": {
+    "status": "ok",
+    "error": null,
+    "prefill_tok_s": 698.4529602716847,
+    "decode_tok_s": 13.208233476164557,
+    "ttft_s": 1351.8037646400044,
+    "reused_tokens": 0,
+    "generated": 512,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/deepseek-final-chat90-xs",
+    "selected_mode": "fixed"
+  }
+}

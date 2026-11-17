@@ -1,0 +1,276 @@
+{
+  "evidence": {
+    "logical_size": 257274786862,
+    "ondisk_bytes": 146679517184,
+    "unused_embedded_engram_hole": [
+      138697244672,
+      110595290400
+    ],
+    "hashed_ranges": [
+      [
+        0,
+        138697244672
+      ],
+      [
+        249292535072,
+        257274786862
+      ]
+    ],
+    "matching_sha256s": [
+      "5bec444f3439bb58113b27f8e778d361f9990d3091b9b2e4bc627e0819b2bff8",
+      "84d2e70e615300573a17eebb9d59b0af48f6eb8ef259270b76452f7ba24962a8"
+    ],
+    "shared_engram": "/mnt/media/AI/Models/DeepSeek-V4.1-Flash-1017-GSQ-RCO-GGUF/DeepSeek-V4.1-Flash-Engram-IQ4_NL.gguf",
+    "order": [
+      "A1-system-nvme",
+      "B1-raid0",
+      "B2-raid0",
+      "A2-system-nvme"
+    ],
+    "initial_prompt_tokens": 43
+  },
+  "A1-system-nvme": {
+    "status": "ok",
+    "error": null,
+    "ttft_s": 1.003134497004794,
+    "load_s": 25.079310160013847,
+    "decode_windows_tok_s": {
+      "0-30": 31.033333333333335,
+      "60-90": 29.966666666666665,
+      "120-180": 30.833333333333332,
+      "180-240": 30.083333333333332
+    },
+    "storage_io_counters": {
+      "at_engine_ready": {
+        "native_process": {
+          "read_bytes": 119092387840,
+          "write_bytes": 16384
+        }
+      },
+      "before_measured_request": {
+        "native_process": {
+          "read_bytes": 119092387840,
+          "write_bytes": 16384
+        }
+      },
+      "first_token": {
+        "native_process": {
+          "read_bytes": 121342246912,
+          "write_bytes": 20480
+        }
+      },
+      "timed_stop": {
+        "native_process": {
+          "read_bytes": 144032485376,
+          "write_bytes": 245760
+        }
+      }
+    },
+    "generated": 7351,
+    "model_fds": [
+      {
+        "fd": "17",
+        "flags_octal": "0100000",
+        "direct": false
+      },
+      {
+        "fd": "18",
+        "flags_octal": "0100000",
+        "direct": false
+      },
+      {
+        "fd": "41",
+        "flags_octal": "02140000",
+        "direct": true
+      }
+    ],
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/deepseek-four-minute-storage-A1-system-nvme",
+    "path": "/home/user/Desktop/DeepSeek-benchmark-scratch/packs/deepseek-gsq-rco-iq2xxs.basalt"
+  },
+  "B1-raid0": {
+    "status": "ok",
+    "error": null,
+    "ttft_s": 0.9286276200145949,
+    "load_s": 22.281475665979087,
+    "decode_windows_tok_s": {
+      "0-30": 29.7,
+      "60-90": 29.666666666666668,
+      "120-180": 31.333333333333332,
+      "180-240": 30.7
+    },
+    "storage_io_counters": {
+      "at_engine_ready": {
+        "native_process": {
+          "read_bytes": 118903111680,
+          "write_bytes": 16384
+        }
+      },
+      "before_measured_request": {
+        "native_process": {
+          "read_bytes": 118903111680,
+          "write_bytes": 16384
+        }
+      },
+      "first_token": {
+        "native_process": {
+          "read_bytes": 121104003072,
+          "write_bytes": 20480
+        }
+      },
+      "timed_stop": {
+        "native_process": {
+          "read_bytes": 143838834688,
+          "write_bytes": 245760
+        }
+      }
+    },
+    "generated": 7374,
+    "model_fds": [
+      {
+        "fd": "17",
+        "flags_octal": "0100000",
+        "direct": false
+      },
+      {
+        "fd": "18",
+        "flags_octal": "0100000",
+        "direct": false
+      },
+      {
+        "fd": "41",
+        "flags_octal": "02140000",
+        "direct": true
+      }
+    ],
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/deepseek-four-minute-storage-B1-raid0",
+    "path": "/mnt/media/scratch/dsh-inference-tuning-20261115/packs/deepseek-gsq-rco-iq2xxs-external-engram-raid-baseline.basalt"
+  },
+  "B2-raid0": {
+    "status": "ok",
+    "error": null,
+    "ttft_s": 0.956518517981749,
+    "load_s": 24.227777685999172,
+    "decode_windows_tok_s": {
+      "0-30": 29.066666666666666,
+      "60-90": 29.033333333333335,
+      "120-180": 31.05,
+      "180-240": 30.666666666666668
+    },
+    "storage_io_counters": {
+      "at_engine_ready": {
+        "native_process": {
+          "read_bytes": 114101764096,
+          "write_bytes": 16384
+        }
+      },
+      "before_measured_request": {
+        "native_process": {
+          "read_bytes": 114101764096,
+          "write_bytes": 16384
+        }
+      },
+      "first_token": {
+        "native_process": {
+          "read_bytes": 116347699200,
+          "write_bytes": 20480
+        }
+      },
+      "timed_stop": {
+        "native_process": {
+          "read_bytes": 138878291968,
+          "write_bytes": 241664
+        }
+      }
+    },
+    "generated": 7263,
+    "model_fds": [
+      {
+        "fd": "17",
+        "flags_octal": "0100000",
+        "direct": false
+      },
+      {
+        "fd": "18",
+        "flags_octal": "0100000",
+        "direct": false
+      },
+      {
+        "fd": "41",
+        "flags_octal": "02140000",
+        "direct": true
+      }
+    ],
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/deepseek-four-minute-storage-B2-raid0",
+    "path": "/mnt/media/scratch/dsh-inference-tuning-20261115/packs/deepseek-gsq-rco-iq2xxs-external-engram-raid-baseline.basalt"
+  },
+  "A2-system-nvme": {
+    "status": "ok",
+    "error": null,
+    "ttft_s": 1.067039115994703,
+    "load_s": 25.281949797994457,
+    "decode_windows_tok_s": {
+      "0-30": 28.033333333333335,
+      "60-90": 29.0,
+      "120-180": 30.283333333333335,
+      "180-240": 30.066666666666666
+    },
+    "storage_io_counters": {
+      "at_engine_ready": {
+        "native_process": {
+          "read_bytes": 118993444864,
+          "write_bytes": 16384
+        }
+      },
+      "before_measured_request": {
+        "native_process": {
+          "read_bytes": 118993444864,
+          "write_bytes": 16384
+        }
+      },
+      "first_token": {
+        "native_process": {
+          "read_bytes": 121254621184,
+          "write_bytes": 20480
+        }
+      },
+      "timed_stop": {
+        "native_process": {
+          "read_bytes": 143531081728,
+          "write_bytes": 237568
+        }
+      }
+    },
+    "generated": 7094,
+    "model_fds": [
+      {
+        "fd": "17",
+        "flags_octal": "0100000",
+        "direct": false
+      },
+      {
+        "fd": "18",
+        "flags_octal": "0100000",
+        "direct": false
+      },
+      {
+        "fd": "41",
+        "flags_octal": "02140000",
+        "direct": true
+      }
+    ],
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/deepseek-four-minute-storage-A2-system-nvme",
+    "path": "/home/user/Desktop/DeepSeek-benchmark-scratch/packs/deepseek-gsq-rco-iq2xxs.basalt"
+  },
+  "ABBA_comparison": {
+    "system-nvme": {
+      "mean_load_s": 25.180629979004152,
+      "mean_ttft_s": 1.0350868064997485,
+      "mean_decode_180_to_240_tok_s": 30.075
+    },
+    "raid0": {
+      "mean_load_s": 23.25462667598913,
+      "mean_ttft_s": 0.942573068998172,
+      "mean_decode_180_to_240_tok_s": 30.683333333333334
+    }
+  }
+}

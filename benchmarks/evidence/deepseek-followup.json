@@ -1,0 +1,332 @@
+{
+  "count90-xxs": {
+    "status": "ok",
+    "error": null,
+    "generated": 512,
+    "prompt_tokens": 943718,
+    "reused_tokens": 0,
+    "prefill_tok_s": 595.6399883487289,
+    "decode_tok_s": 31.640289459210603,
+    "tail_decode_tok_s": 33.07090708625348,
+    "ttft_s": 1584.6001782580279,
+    "warm_replay_series": null
+  },
+  "count90-xs": {
+    "status": "ok",
+    "error": null,
+    "generated": 512,
+    "prompt_tokens": 943718,
+    "reused_tokens": 0,
+    "prefill_tok_s": 599.0887701596637,
+    "decode_tok_s": 25.089307152902666,
+    "tail_decode_tok_s": null,
+    "ttft_s": 1575.5194326849887,
+    "warm_replay_series": null
+  },
+  "deepseek-count-tweak-xxs-fixed-control": {
+    "status": "ok",
+    "error": null,
+    "generated": 1000,
+    "prompt_tokens": 26,
+    "reused_tokens": 25,
+    "prefill_tok_s": null,
+    "decode_tok_s": 43.412010366788074,
+    "tail_decode_tok_s": 43.20409998492905,
+    "ttft_s": 0.05561157499323599,
+    "warm_replay_series": [
+      {
+        "done_raw": "DONE 1000 26 667.8 24742.8 length 0 0 0 216769 216997 0 214 0.0 26 23003",
+        "wall_s": 25.41131345301983,
+        "mode": "same worker and identical prompt replay",
+        "storage_before": {
+          "native_process": {
+            "read_bytes": 119083675648,
+            "write_bytes": 16384
+          }
+        },
+        "storage_done": {
+          "native_process": {
+            "read_bytes": 122249084928,
+            "write_bytes": 49152
+          }
+        },
+        "tail_decode_tok_s": 40.57956874694488,
+        "decode_32_to_256_tok_s": 40.459493840373476
+      },
+      {
+        "done_raw": "DONE 1000 26 0.2 23288.5 length 0 0 25 217204 217231 0 20 0.0 1 22769",
+        "wall_s": 23.289570121007273,
+        "mode": "same worker and identical prompt replay",
+        "storage_before": {
+          "native_process": {
+            "read_bytes": 122249084928,
+            "write_bytes": 49152
+          }
+        },
+        "storage_done": {
+          "native_process": {
+            "read_bytes": 122452582400,
+            "write_bytes": 77824
+          }
+        },
+        "tail_decode_tok_s": 43.085846816046164,
+        "decode_32_to_256_tok_s": 42.07217233465233
+      }
+    ]
+  },
+  "deepseek-count-tweak-xxs-extra-2gib": {
+    "status": "ok",
+    "error": null,
+    "generated": 1000,
+    "prompt_tokens": 26,
+    "reused_tokens": 25,
+    "prefill_tok_s": null,
+    "decode_tok_s": 43.500578557694816,
+    "tail_decode_tok_s": 43.43212597373513,
+    "ttft_s": 0.05618611100362614,
+    "warm_replay_series": [
+      {
+        "done_raw": "DONE 1000 26 630.6 24604.6 length 0 0 0 216900 217061 0 146 0.0 26 22939",
+        "wall_s": 25.235824659001082,
+        "mode": "same worker and identical prompt replay",
+        "storage_before": {
+          "native_process": {
+            "read_bytes": 120952365056,
+            "write_bytes": 16384
+          }
+        },
+        "storage_done": {
+          "native_process": {
+            "read_bytes": 123296317440,
+            "write_bytes": 49152
+          }
+        },
+        "tail_decode_tok_s": 40.871301787950706,
+        "decode_32_to_256_tok_s": 40.68133290306752
+      },
+      {
+        "done_raw": "DONE 1000 26 0.2 23381.5 length 0 0 25 217238 217267 0 20 0.0 1 22733",
+        "wall_s": 23.38246374198934,
+        "mode": "same worker and identical prompt replay",
+        "storage_before": {
+          "native_process": {
+            "read_bytes": 123296317440,
+            "write_bytes": 49152
+          }
+        },
+        "storage_done": {
+          "native_process": {
+            "read_bytes": 123499175936,
+            "write_bytes": 77824
+          }
+        },
+        "tail_decode_tok_s": 43.21715034065284,
+        "decode_32_to_256_tok_s": 41.578569960035814
+      }
+    ]
+  },
+  "deepseek-count-tweak-xxs-workers-16": {
+    "status": "ok",
+    "error": null,
+    "generated": 1000,
+    "prompt_tokens": 26,
+    "reused_tokens": 25,
+    "prefill_tok_s": null,
+    "decode_tok_s": 43.364946379243804,
+    "tail_decode_tok_s": 43.152913616239424,
+    "ttft_s": 0.052401971974177286,
+    "warm_replay_series": [
+      {
+        "done_raw": "DONE 1000 26 590.5 24655.4 length 0 0 0 216769 216997 0 214 0.0 26 23003",
+        "wall_s": 25.246428993996233,
+        "mode": "same worker and identical prompt replay",
+        "storage_before": {
+          "native_process": {
+            "read_bytes": 118931558400,
+            "write_bytes": 16384
+          }
+        },
+        "storage_done": {
+          "native_process": {
+            "read_bytes": 122089291776,
+            "write_bytes": 49152
+          }
+        },
+        "tail_decode_tok_s": 40.5965502095516,
+        "decode_32_to_256_tok_s": 40.73177347724215
+      },
+      {
+        "done_raw": "DONE 1000 26 0.2 23360.6 length 0 0 25 217204 217231 0 20 0.0 1 22769",
+        "wall_s": 23.36173056298867,
+        "mode": "same worker and identical prompt replay",
+        "storage_before": {
+          "native_process": {
+            "read_bytes": 122089291776,
+            "write_bytes": 49152
+          }
+        },
+        "storage_done": {
+          "native_process": {
+            "read_bytes": 122292785152,
+            "write_bytes": 77824
+          }
+        },
+        "tail_decode_tok_s": 43.104554019199036,
+        "decode_32_to_256_tok_s": 41.9430384596572
+      }
+    ]
+  },
+  "deepseek-count-tweak-xs-fixed-control": {
+    "status": "ok",
+    "error": null,
+    "generated": 1000,
+    "prompt_tokens": 26,
+    "reused_tokens": 25,
+    "prefill_tok_s": null,
+    "decode_tok_s": 40.51322148983321,
+    "tail_decode_tok_s": 40.538095700117864,
+    "ttft_s": 0.08435893198475242,
+    "warm_replay_series": [
+      {
+        "done_raw": "DONE 1000 26 869.8 26774.2 length 0 0 0 210346 210931 0 568 0.0 26 29069",
+        "wall_s": 27.64497125701746,
+        "mode": "same worker and identical prompt replay",
+        "storage_before": {
+          "native_process": {
+            "read_bytes": 118340407296,
+            "write_bytes": 16384
+          }
+        },
+        "storage_done": {
+          "native_process": {
+            "read_bytes": 126740938752,
+            "write_bytes": 49152
+          }
+        },
+        "tail_decode_tok_s": 37.62805038622222,
+        "decode_32_to_256_tok_s": 37.06763876917225
+      },
+      {
+        "done_raw": "DONE 1000 26 0.7 25115.4 length 0 0 25 210407 210479 0 49 0.0 1 29521",
+        "wall_s": 25.1181532079936,
+        "mode": "same worker and identical prompt replay",
+        "storage_before": {
+          "native_process": {
+            "read_bytes": 126740938752,
+            "write_bytes": 49152
+          }
+        },
+        "storage_done": {
+          "native_process": {
+            "read_bytes": 127253078016,
+            "write_bytes": 77824
+          }
+        },
+        "tail_decode_tok_s": 39.83364178038986,
+        "decode_32_to_256_tok_s": 39.54003923165395
+      }
+    ]
+  },
+  "deepseek-count-tweak-xs-extra-2gib": {
+    "status": "ok",
+    "error": null,
+    "generated": 1000,
+    "prompt_tokens": 26,
+    "reused_tokens": 25,
+    "prefill_tok_s": null,
+    "decode_tok_s": 40.52964135320367,
+    "tail_decode_tok_s": 40.35036130919874,
+    "ttft_s": 0.08403355898917653,
+    "warm_replay_series": [
+      {
+        "done_raw": "DONE 1000 26 901.0 26363.1 length 0 0 0 210475 210962 0 471 0.0 26 29038",
+        "wall_s": 27.265560603002086,
+        "mode": "same worker and identical prompt replay",
+        "storage_before": {
+          "native_process": {
+            "read_bytes": 120728633344,
+            "write_bytes": 16384
+          }
+        },
+        "storage_done": {
+          "native_process": {
+            "read_bytes": 127850655744,
+            "write_bytes": 49152
+          }
+        },
+        "tail_decode_tok_s": 38.61660339083432,
+        "decode_32_to_256_tok_s": 37.23840806333491
+      },
+      {
+        "done_raw": "DONE 1000 26 0.8 25206.8 length 0 0 25 210419 210512 0 65 0.0 1 29488",
+        "wall_s": 25.2100701330055,
+        "mode": "same worker and identical prompt replay",
+        "storage_before": {
+          "native_process": {
+            "read_bytes": 127850655744,
+            "write_bytes": 49152
+          }
+        },
+        "storage_done": {
+          "native_process": {
+            "read_bytes": 128531664896,
+            "write_bytes": 77824
+          }
+        },
+        "tail_decode_tok_s": 40.25710918391344,
+        "decode_32_to_256_tok_s": 39.33768376075745
+      }
+    ]
+  },
+  "deepseek-count-tweak-xs-workers-16": {
+    "status": "ok",
+    "error": null,
+    "generated": 1000,
+    "prompt_tokens": 26,
+    "reused_tokens": 25,
+    "prefill_tok_s": null,
+    "decode_tok_s": 40.572066132467796,
+    "tail_decode_tok_s": 40.608586741476635,
+    "ttft_s": 0.0876731549797114,
+    "warm_replay_series": [
+      {
+        "done_raw": "DONE 1000 26 889.6 26629.1 length 0 0 0 210346 210931 0 568 0.0 26 29069",
+        "wall_s": 27.519503280025674,
+        "mode": "same worker and identical prompt replay",
+        "storage_before": {
+          "native_process": {
+            "read_bytes": 118330380288,
+            "write_bytes": 16384
+          }
+        },
+        "storage_done": {
+          "native_process": {
+            "read_bytes": 126729740288,
+            "write_bytes": 49152
+          }
+        },
+        "tail_decode_tok_s": 37.96381545057419,
+        "decode_32_to_256_tok_s": 37.183240067512614
+      },
+      {
+        "done_raw": "DONE 1000 26 0.7 25068.5 length 0 0 25 210407 210479 0 49 0.0 1 29521",
+        "wall_s": 25.071895395987667,
+        "mode": "same worker and identical prompt replay",
+        "storage_before": {
+          "native_process": {
+            "read_bytes": 126729740288,
+            "write_bytes": 49152
+          }
+        },
+        "storage_done": {
+          "native_process": {
+            "read_bytes": 127241879552,
+            "write_bytes": 77824
+          }
+        },
+        "tail_decode_tok_s": 40.03040140213202,
+        "decode_32_to_256_tok_s": 39.57715368291113
+      }
+    ]
+  }
+}

@@ -380,6 +380,46 @@
       "path": "harness/tune80_common.py",
       "sha256": "5a6544972cfba423b556e51c233b9cf1463c3b7e96150c92b9bbd496780e346c",
       "bytes": 2691
+    },
+    {
+      "path": "harness/deepseek_chat_turns.py",
+      "sha256": "081c25423a7bff2e68d7e47d6a8c03445a0d6c6d3c774799da3b1424048387a2",
+      "bytes": 3741
+    },
+    {
+      "path": "harness/native_warm_240.py",
+      "sha256": "9240d642f656ff450540813fbf36e9cf780e61bed7498e594c062cdc93d81e48",
+      "bytes": 13499
+    },
+    {
+      "path": "harness/deepseek_warm_240.py",
+      "sha256": "f15fc46c5523dec37ca229aba71c83a58b8a4733651f125a623f009185a5bd56",
+      "bytes": 5736
+    },
+    {
+      "path": "harness/deepseek_followup.py",
+      "sha256": "e0ec5cdcb2d88f342b44f906578ddb4c56dcaf144c32e6d5a79855a09b284317",
+      "bytes": 3063
+    },
+    {
+      "path": "harness/prepare_deepseek_count90.py",
+      "sha256": "fb09102e002ba56be9d6e98cc3887118411e2ebffb53837e9c5f24dd90754dac",
+      "bytes": 1391
+    },
+    {
+      "path": "harness/export_deepseek_measured_profiles.py",
+      "sha256": "a547124e6040bfa347dee81fb158c730ac288521382294cc32694f1c92c856e3",
+      "bytes": 2035
+    },
+    {
+      "path": "harness/deepseek_raid_compare.py",
+      "sha256": "98673eeb190233162d36f7ca8c0757336ef43441817a9b6c797dc68a640c8ed9",
+      "bytes": 5524
+    },
+    {
+      "path": "harness/deepseek_buffered_io_test.c",
+      "sha256": "1f7736e37df05681c6eab5708ec020c403a8d9874f06666c2c37bc553da1ded9",
+      "bytes": 967
     }
   ]
 }

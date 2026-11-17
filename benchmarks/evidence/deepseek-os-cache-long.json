@@ -1,0 +1,77 @@
+{
+  "XXS": {
+    "status": "ok",
+    "error": null,
+    "reused_tokens": 8191,
+    "tail_decode_tok_s": 7.577561185225508,
+    "ttft_s": 0.13782226899638772,
+    "storage_io_counters": {
+      "at_engine_ready": {
+        "native_process": {
+          "read_bytes": 9283915776,
+          "write_bytes": 12288
+        }
+      },
+      "before_measured_request": {
+        "native_process": {
+          "read_bytes": 126802481152,
+          "write_bytes": 98304
+        }
+      },
+      "first_token": {
+        "native_process": {
+          "read_bytes": 126802526208,
+          "write_bytes": 106496
+        }
+      },
+      "request_done": {
+        "native_process": {
+          "read_bytes": 126834778112,
+          "write_bytes": 147456
+        }
+      }
+    },
+    "warm_replay_series": [
+      {
+        "done_raw": "DONE 1024 8192 26992.4 144683.7 length 0 0 0 23363 245760 0 222397 0.0 8192 0",
+        "wall_s": 171.67775593302213,
+        "mode": "same worker and identical prompt replay",
+        "storage_before": {
+          "native_process": {
+            "read_bytes": 9283915776,
+            "write_bytes": 12288
+          }
+        },
+        "storage_done": {
+          "native_process": {
+            "read_bytes": 126769274880,
+            "write_bytes": 57344
+          }
+        },
+        "tail_decode_tok_s": 6.476527292194873,
+        "decode_32_to_256_tok_s": 9.971579061887326
+      },
+      {
+        "done_raw": "DONE 1024 8192 0.5 144171.4 length 0 0 8191 23363 245760 0 222397 0.0 1 0",
+        "wall_s": 144.17653221799992,
+        "mode": "same worker and identical prompt replay",
+        "storage_before": {
+          "native_process": {
+            "read_bytes": 126769274880,
+            "write_bytes": 57344
+          }
+        },
+        "storage_done": {
+          "native_process": {
+            "read_bytes": 126802481152,
+            "write_bytes": 98304
+          }
+        },
+        "tail_decode_tok_s": 7.096016875286376,
+        "decode_32_to_256_tok_s": 7.078988433821449
+      }
+    ],
+    "buffered_verified": false,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/deepseek-os-cache-long-xxs"
+  }
+}
