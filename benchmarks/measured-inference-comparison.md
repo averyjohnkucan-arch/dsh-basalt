@@ -24,6 +24,6 @@ The measured Basalt Flash Next projection challenge used one process and off/on/
 
 DeepSeek fixed residency is 102.3 GiB with 21 workers. The short extra-RAM and worker-count changes differed by less than 1%. The ABBA drive test measured 30.08 tok/s on system NVMe and 30.68 on RAID0 during the final minute of four-minute near-empty-context story generations.
 
-The DeepSeek profile JSON files are native scratch benchmark records. Installation into the live DSH cart remains pending. Latest-source full GPU coverage, incomplete model rows, the progress visualization refresh, and GitHub publication also remain pending. Local commit 7705533 contains the latest DeepSeek harness and evidence. The push failed because Git credentials were unavailable.
+DeepSeek DSH profiles passed actual plugin GPU launch validation. Basalt 0.1.3 is installed in the web profile and points to those scratch profiles. Configuration and startup checks passed; visibility in the running browser remains unverified. Latest-source full GPU coverage, incomplete model rows, and GitHub publication remain pending. The completed DeepSeek chart is available in deepseek-completed-progress.png. Local commit 7705533 contains the latest DeepSeek harness and evidence. The push failed because Git credentials were unavailable.
 
 Raw evidence is in deepseek-warm-240.json, deepseek-followup.json, deepseek-raid-comparison.json, code-functional-27b-dflash-functional-configs.json, code-functional-27b-quality-configs.json, and flash-next-refusal-toggle-test.json.
