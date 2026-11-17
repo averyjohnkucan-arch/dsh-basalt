@@ -420,6 +420,51 @@
       "path": "harness/deepseek_buffered_io_test.c",
       "sha256": "1f7736e37df05681c6eab5708ec020c403a8d9874f06666c2c37bc553da1ded9",
       "bytes": 967
+    },
+    {
+      "path": "harness/export_deepseek_dsh.mjs",
+      "sha256": "bf442f2e78252ba67c69475087dfd3ec24a009332ecf30cae88bb1d6eb45bcbb",
+      "bytes": 2315
+    },
+    {
+      "path": "harness/deepseek_plugin_adapter_smoke.mjs",
+      "sha256": "c7062326a62b2286eb5cd64dde6abcee447d4b4dc70bbc9b96d725840ecaef18",
+      "bytes": 9294
+    },
+    {
+      "path": "harness/deepseek_progress_chart.py",
+      "sha256": "5fdee0449c159b5cbfb154bd31f12cd1dd7e8492f8a1bb8b5235532905ec6a85",
+      "bytes": 2163
+    },
+    {
+      "path": "harness/strata060_matched.py",
+      "sha256": "015e8545fe12231452d66243b8aed47d8a7d6ffb90f5a74f749cd9b2f0df7a2d",
+      "bytes": 1551
+    },
+    {
+      "path": "harness/strata060_quiet.py",
+      "sha256": "d54593092d99d5317c573afc32846f6dccdc856469751008aa56fc3d03d6098d",
+      "bytes": 1575
+    },
+    {
+      "path": "harness/strata060_long.py",
+      "sha256": "2b4ccd65e448f7e6ae0a9532e61ae5989d7463ce8f5db6b2c9ec26b6f8844af9",
+      "bytes": 1822
+    },
+    {
+      "path": "harness/strata060_quiet.sh",
+      "sha256": "2bd6bd058b12c46f89478f92117a58676416b0d83e68b2f106d86037c47c52d0",
+      "bytes": 267
+    },
+    {
+      "path": "harness/strata060_long.sh",
+      "sha256": "f426eb0bdd79a18ac94a3ceda9c8b2022cebc45fafd564af578b07ab15ba8136",
+      "bytes": 266
+    },
+    {
+      "path": "harness/ninfer_after_build.py",
+      "sha256": "3c3492bba57ccdaee3e15a73ebba41987e472194b8ef943e39881c03341b8429",
+      "bytes": 2161
     }
   ]
 }

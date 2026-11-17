@@ -1,0 +1,28 @@
+{
+  "0.1.59": {
+    "status": "ok",
+    "error": null,
+    "prefill_tok_s": 2298.0954676952747,
+    "tail_decode_tok_s": 42.425710473419535,
+    "generated": 512,
+    "reused_tokens": 0,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/strata-release-quiet-long-0.1.59"
+  },
+  "0.1.60": {
+    "status": "ok",
+    "error": null,
+    "prefill_tok_s": 2427.9735338554783,
+    "tail_decode_tok_s": 50.02708897502199,
+    "generated": 512,
+    "reused_tokens": 0,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/strata-release-quiet-long-0.1.60"
+  },
+  "selection": {
+    "long_context_preference": "0.1.60",
+    "short_code_preference": "0.1.59",
+    "scope": "Single matched 80% chat screen, 512 generated, final256 timed; no multi-genre peak claim",
+    "prefill_gain_percent": 5.651552252111447,
+    "decode_gain_percent": 17.91691504227102,
+    "compiler_state": "frozen throughout both runs; resumed afterward"
+  }
+}

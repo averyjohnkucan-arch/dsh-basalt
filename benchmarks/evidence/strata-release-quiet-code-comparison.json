@@ -1,0 +1,32 @@
+{
+  "0.1.59": {
+    "status": "ok",
+    "error": null,
+    "prefill_tok_s": 2034.6728925537727,
+    "tail_decode_tok_s": 84.15949628851963,
+    "generated": 1024,
+    "reused_tokens": 0,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/strata-release-quiet-code-0.1.59",
+    "token_sha256": "0edf473b41209956f899b7420a8970f2f834631e799ca856283df56a6b148e59",
+    "binary_sha256": "0ba914b28df1c8e09c0b5209c2ca6040c75fb650a7408ff3d9ef3ad159a13eb9",
+    "compiler_state": "frozen for both cases"
+  },
+  "0.1.60": {
+    "status": "ok",
+    "error": null,
+    "prefill_tok_s": 2207.729208214305,
+    "tail_decode_tok_s": 57.03916344489609,
+    "generated": 1024,
+    "reused_tokens": 0,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/strata-release-quiet-code-0.1.60",
+    "token_sha256": "4478939c038981aed8aba00ad6449a2abcc239929fb0e5276e9b64911655827a",
+    "binary_sha256": "5f474a3de9264853ca58179b447facf84d10543d03be10a0e3e765c842dc7b6e",
+    "compiler_state": "frozen for both cases"
+  },
+  "selection": {
+    "retained_version": "0.1.59",
+    "reason": "0.1.60 short-code decode is below the 95% decode floor of the 0.1.59 result. Latest version compatibility passed; no long-context maximum claim.",
+    "prefill_change_percent": 8.505363014067813,
+    "decode_change_percent": -32.2249229613356
+  }
+}

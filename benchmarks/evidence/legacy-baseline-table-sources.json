@@ -1,0 +1,17 @@
+{
+  "scope": "Earlier saved-profile measurements, not claims of latest-version validation",
+  "sources": [
+    "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/quiet-flash-fp16-old-10/result.json",
+    "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/quiet-flash-fp16-old-90/result.json",
+    "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/quiet-ninfer-nvfp4full-old-10/result.json",
+    "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/quiet-ninfer-nvfp4full-old-90/result.json",
+    "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/quiet-ninfer-huihui-int8-old-10/result.json",
+    "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/quiet-ninfer-huihui-int8-old-90/result.json",
+    "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/quiet-ninfer-huihui-fp8-old-10/result.json",
+    "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/quiet-ninfer-huihui-fp8-old-90/result.json",
+    "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/quiet-ninfer-huihui-nvfp4-old-10/result.json",
+    "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/quiet-ninfer-huihui-nvfp4-old-90/result.json",
+    "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/quiet-gyro-old-10/result.json",
+    "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/quiet-gyro-old-90/result.json"
+  ]
+}

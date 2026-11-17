@@ -1,0 +1,208 @@
+{
+  "schemaVersion": 2,
+  "engine": "basalt",
+  "profile": "scratch-deepseek-iq2-xxs",
+  "status": "ok",
+  "qualification": "Actual DSH adapter stream and plugin-owned GPU worker; tiny arithmetic sanity, not a model-quality or throughput benchmark",
+  "profileName": "DeepSeek V4.1 Flash 1017 IQ2_XXS p15/d41 p575/d22",
+  "savedContext": 1048576,
+  "savedVerification": {
+    "sourceConfig": "deepseek-final-chat90-xxs",
+    "protocol": "Latest user protocol: 90% prose, 512 output; legacy verifier field name"
+  },
+  "savedProfile": {
+    "id": "scratch-deepseek-iq2-xxs",
+    "name": "DeepSeek V4.1 Flash 1017 IQ2_XXS p15/d41 p575/d22",
+    "model": {
+      "path": "/home/user/Desktop/DeepSeek-benchmark-scratch/packs/deepseek-gsq-rco-iq2xxs.basalt",
+      "size": 257274786862,
+      "architecture": "deepseek41",
+      "name": "DeepSeek V4.1 Flash 1017 IQ2_XXS p15/d41 p575/d22",
+      "vision": false,
+      "sections": [
+        "tokenizer/chat_template.jinja",
+        "tokenizer/merges.txt",
+        "tokenizer/token_type.json",
+        "tokenizer/tokenizer.json",
+        "tokenizer/vocab.json",
+        "dense",
+        "dense.index",
+        "experts",
+        "experts.layout",
+        "gguf",
+        "engram",
+        "dspark/gguf",
+        "meta"
+      ],
+      "requiredEngineFeatures": []
+    },
+    "context": 1048576,
+    "kv": "fp8",
+    "gpu": "0",
+    "vision": false,
+    "diskCacheMiB": 0,
+    "ramCacheMiB": 0,
+    "vramReserveMiB": 700,
+    "answerRoom": 0,
+    "defaultEffort": "off",
+    "runtimeDir": "/mnt/media/scratch/dsh-inference-tuning-20261115/runtimes/basalt-deepseek-split",
+    "engineOptions": {
+      "spec": 0,
+      "pool-workers": 21,
+      "resident-budget-gib": 102.3,
+      "expert-profile": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/final-deepseek-basalt-fast-10/input-expert-profile.bin",
+      "deepseek-engram-gguf": "/mnt/media/AI/Models/DeepSeek-V4.1-Flash-1017-GSQ-RCO-GGUF/DeepSeek-V4.1-Flash-Engram-IQ4_NL.gguf"
+    },
+    "measuredPerformance": {
+      "low": {
+        "workload": "warm counting, final 500 of 1000 output tokens",
+        "input_tokens": 26,
+        "prefill_tok_s": 14.771048744460856,
+        "decode_tok_s": 40.896826063650096
+      },
+      "high": {
+        "workload": "native chat prose at 90% context, 512 output tokens",
+        "input_tokens": 943718,
+        "prefill_tok_s": 575.2100006735137,
+        "decode_tok_s": 21.56488629997936
+      }
+    },
+    "qualification": "Measured native controls; DSH launch configuration validated, full plugin GPU launch pending",
+    "verification8192": {
+      "sourceConfig": "deepseek-final-chat90-xxs",
+      "protocol": "Latest user protocol: 90% prose, 512 output; legacy verifier field name"
+    }
+  },
+  "chunks": [
+    {
+      "type": "block-start",
+      "index": 0,
+      "blockType": "text"
+    },
+    {
+      "type": "text-delta",
+      "index": 0,
+      "text": "4"
+    },
+    {
+      "type": "block-end",
+      "index": 0,
+      "block": {
+        "type": "text",
+        "text": "4"
+      }
+    },
+    {
+      "type": "usage",
+      "usage": {
+        "inputTokens": 22,
+        "outputTokens": 2,
+        "totalTokens": 24
+      }
+    },
+    {
+      "type": "finish",
+      "reason": {
+        "kind": "stop"
+      },
+      "replayState": {
+        "response": {
+          "kind": "pi-ai",
+          "version": 2,
+          "api": "openai-completions",
+          "provider": "basalt",
+          "model": "scratch-deepseek-iq2-xxs",
+          "responseId": "chatcmpl-77a92d12301345638f720d6d",
+          "stopReason": "stop"
+        },
+        "blocks": [
+          {
+            "type": "text"
+          }
+        ]
+      }
+    }
+  ],
+  "text": "4",
+  "arithmeticSanity": true,
+  "finish": {
+    "type": "finish",
+    "reason": {
+      "kind": "stop"
+    },
+    "replayState": {
+      "response": {
+        "kind": "pi-ai",
+        "version": 2,
+        "api": "openai-completions",
+        "provider": "basalt",
+        "model": "scratch-deepseek-iq2-xxs",
+        "responseId": "chatcmpl-77a92d12301345638f720d6d",
+        "stopReason": "stop"
+      },
+      "blocks": [
+        {
+          "type": "text"
+        }
+      ]
+    }
+  },
+  "nativeCommandEvidence": {
+    "status": "ok",
+    "pid": 1113634,
+    "executable": "/mnt/media/scratch/dsh-inference-tuning-20261115/runtimes/basalt-deepseek-split/bin/basalt",
+    "args": [
+      "/mnt/media/scratch/dsh-inference-tuning-20261115/runtimes/basalt-deepseek-split/bin/basalt",
+      "--serve",
+      "--model",
+      "/home/user/Desktop/DeepSeek-benchmark-scratch/packs/deepseek-gsq-rco-iq2xxs.basalt",
+      "--kv",
+      "fp8",
+      "--max-context",
+      "1048576",
+      "--conversation-cache-disk-mib",
+      "0",
+      "--conversation-cache-mib",
+      "0",
+      "--conversation-cache-dir",
+      "/mnt/media/scratch/dsh-inference-tuning-20261115/outputs/dsh-basalt-deepseek-measured-state/cache/scratch-deepseek-iq2-xxs",
+      "--vram-reserve-mib",
+      "700",
+      "--spec",
+      "0",
+      "--pool-workers",
+      "21",
+      "--resident-budget-gib",
+      "102.3",
+      "--expert-profile",
+      "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/final-deepseek-basalt-fast-10/input-expert-profile.bin",
+      "--deepseek-engram-gguf",
+      "/mnt/media/AI/Models/DeepSeek-V4.1-Flash-1017-GSQ-RCO-GGUF/DeepSeek-V4.1-Flash-Engram-IQ4_NL.gguf",
+      "--gpu",
+      "0",
+      "--grammar",
+      "on"
+    ],
+    "checkedControls": {
+      "--model": "/home/user/Desktop/DeepSeek-benchmark-scratch/packs/deepseek-gsq-rco-iq2xxs.basalt",
+      "--kv": "fp8",
+      "--max-context": "1048576",
+      "--expert-profile": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/final-deepseek-basalt-fast-10/input-expert-profile.bin",
+      "--pool-workers": "21",
+      "--spec": "0",
+      "--resident-budget-gib": "102.3",
+      "--deepseek-engram-gguf": "/mnt/media/AI/Models/DeepSeek-V4.1-Flash-1017-GSQ-RCO-GGUF/DeepSeek-V4.1-Flash-Engram-IQ4_NL.gguf"
+    },
+    "cgroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-p1113598-i1128077.scope",
+    "gpuProcess": "1113634, GPU-da454f5d-9e1a-d9c6-1a8a-33799ded4ba9, 21712",
+    "requestedPowerLimitW": null,
+    "observedEnforcedPowerLimitW": 95,
+    "defaultPowerLimitW": 95,
+    "maximumPowerLimitW": 110
+  },
+  "projectionModes": {
+    "status": "not-applicable",
+    "cases": []
+  },
+  "elapsed_s": 30.769
+}
