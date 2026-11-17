@@ -2,9 +2,9 @@ Model name,Old settings speed,Current max settings speed on Basalt
 DeepSeek V4.1 Flash IQ2_XXS / Basalt FP8 KV,Saved old engine: 10% P669.8/D13.8; 90% P525.6/D14.5,Warm counting D43.20; 90% prose P575.21/D21.56. Different workload from saved baseline.
 DeepSeek V4.1 Flash IQ2_XS / Basalt FP8 KV,New quant; no saved old profile,Warm counting D40.54; 90% prose P698.45/D13.21. Different workload from saved baseline.
 Flash Next NVFP4 GPTQ / INT8 KV,"8K code P1,950.5/D47.3; 80% P2,022.0–2,023.4, D48.4–50.8","Long preset: 8K code P3,013.6/D55.6; 80% P3,226.4–3,243.1, D63.2–71.6 | Peak-code preset: 8K code P3,012.0/D57.2; 80% P3,223.2–3,256.8, D64.5–75.5"
-Flash Next NVFP4 GPTQ / FP16 KV,Earlier saved-profile tests: 10% P1681.5/D49.5; 90% P1695.9/D48.6,Historical Basalt: 10% P2680.8/D49.7; 90% P2342.2/D53.2. Matched old prompt hashes; binary hashes absent. Latest-build tuning pending.
+Flash Next NVFP4 GPTQ / FP16 KV,Earlier saved-profile tests: 10% P1681.5/D49.5; 90% P1695.9/D48.6,Current Basalt candidate: 10% code P2613.7/D83.1; 90% prose P2550.1/D47.93. Old matched retry pending; historical baseline prompt differs.
 Flash Next NVFP4 Q8 hybrid / INT8 KV,"8K code P1,639.1/D32.2; 80% P1,636.3–1,639.6, D31.7–37.8","Long preset: 8K code P1,987.9/D37.6; 80% P2,182.5–2,199.3, D38.9–43.8"
-Flash Next NVFP4 Q8 hybrid / FP16 KV,Pending matched measurements,In progress: long-context and peak-code qualification
+Flash Next NVFP4 Q8 hybrid / FP16 KV,Matched saved Strata: 10% code P1345.5/D32.4; 90% prose P1418.9/D23.97.,Matched Basalt: 10% code P1858.2/D33.08; 90% prose P2040.7/D34.01. 512 output; final256 decode.
 27B NVFP4-full / old NVFP4 KV; Basalt INT8 KV,"Prior NInfer, matched prompts: 10% code P2979.3/D100.8; 90% prose P1390.6/D43.73. NVFP4 KV; different stop handling from Basalt.",112K resident KV / DFlash2: 10% code P3794.8/D75.3; 90% prose P1563.2/D4.40. Same prompt IDs as prior NInfer; INT8 KV and different stop handling; long-context speed remains poor.
 27B IQ3_S Huihui / INT8 KV,Earlier saved-profile tests: 10% P1193.1/D53.8; 90% P745.7/D54.6,No Basalt measurement: this mixed GGUF IQ3 artifact is outside the finite import/kernel support
 27B IQ3_S Huihui / FP8 KV,Earlier saved-profile tests: 10% P1120.8/D58.6; 90% P451.8/D40.0,No Basalt measurement: this mixed GGUF IQ3 artifact is outside the finite import/kernel support

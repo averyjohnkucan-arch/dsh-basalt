@@ -248,8 +248,8 @@
     },
     {
       "path": "harness/benchmark_memory_guard.py",
-      "sha256": "7e3063d7117f4da3636f2ec38374ed3855bdb181fb5965b26ce157a6bf6c31f9",
-      "bytes": 4359
+      "sha256": "5ca1d22d4672669a6549927188462d315d826c0dff38a2f8c3867ae92912b41d",
+      "bytes": 4632
     },
     {
       "path": "harness/range_common.py",
@@ -493,13 +493,13 @@
     },
     {
       "path": "measured-inference-comparison.md",
-      "sha256": "8ebf7ceb845b08c70cf7ad10fc8ee73909b203c4fe148650cebae4092c2cd08d",
-      "bytes": 5327
+      "sha256": "94010defd37ccc85343f5ec6cb7f5e913c8bf185bb7e53927e1b65c4e388352c",
+      "bytes": 6110
     },
     {
       "path": "range-comparison-progress.csv",
-      "sha256": "36cf6b75f002a8d062490a99891db45c81dc3de25d2d5b20a4d6e1e36786521e",
-      "bytes": 2268
+      "sha256": "4d4eb471c78999c528fe26c78d349317709421d4f5afbd472303ce23a28544e1",
+      "bytes": 2357
     },
     {
       "path": "evidence/flash-fp16-historical-matched.json",
@@ -530,6 +530,31 @@
       "path": "evidence/ninfer-matched-depths.json",
       "sha256": "2421f826e8401016b6d6ed20c167682c189099edd1a02fe22e1696f41a80b201",
       "bytes": 2046
+    },
+    {
+      "path": "evidence/basalt-stock041-smoke.json",
+      "sha256": "252eea56522fef46b89a2e4bdf44b6ee5a88462aba8da200ce3002e118d97445",
+      "bytes": 1126
+    },
+    {
+      "path": "evidence/flash-fp16-matched-depths.json",
+      "sha256": "fe6e74583506be5b07c5b12bb7b30899883a75fa8f263500b8f26c8ebf7cf6be",
+      "bytes": 3669
+    },
+    {
+      "path": "harness/flash_fp16_retry.py",
+      "sha256": "43a4764aaccb350628d6357903543eea02a4e98d96af31d6e9225ef73956e713",
+      "bytes": 2462
+    },
+    {
+      "path": "harness/ninfer1616_functional_wait.py",
+      "sha256": "b7d3dd5f687df0cd7a6881d9dbad1a3fe474113cc6873ca1ddef96dfee500dca",
+      "bytes": 485
+    },
+    {
+      "path": "harness/stock041_warm_wait.py",
+      "sha256": "8df3900fe4beda1052b03c5d5eb2edc2e63515bffc33342ff3f766034c99c357",
+      "bytes": 456
     }
   ]
 }

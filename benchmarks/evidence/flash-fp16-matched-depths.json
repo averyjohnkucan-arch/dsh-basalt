@@ -1,0 +1,86 @@
+{
+  "flash-old-code10": {
+    "status": "failed",
+    "error": "RAM safety stop: available=61.2GiB, memory-pressure avg10=58.7%",
+    "prefill_tok_s": null,
+    "decode_tok_s": null,
+    "tail_decode_tok_s": null,
+    "generated": null,
+    "reused_tokens": null,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/fp16-matched-flash-old-code10",
+    "binary_sha256": "cee93d26f710d3685ccf3541a95054dc193e63b239650a9d7122b4b938ad9193",
+    "prompt_sha256": "441a3bb4164bf04b7bda5d3cd3ec593bd094f56c6bc7c4fb36e6b2b37b5f744e"
+  },
+  "flash-basalt-code10": {
+    "status": "ok",
+    "error": null,
+    "prefill_tok_s": 2613.741736711436,
+    "decode_tok_s": 90.76726705431852,
+    "tail_decode_tok_s": 83.10202490656195,
+    "generated": 512,
+    "reused_tokens": 0,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/fp16-matched-flash-basalt-code10",
+    "binary_sha256": "a2bb78bc53910cb738395d5582ab048c1ffc3aa7a0bd95838fcd31e4bf5ebeb0",
+    "prompt_sha256": "441a3bb4164bf04b7bda5d3cd3ec593bd094f56c6bc7c4fb36e6b2b37b5f744e"
+  },
+  "flash-basalt-chat90": {
+    "status": "ok",
+    "error": null,
+    "prefill_tok_s": 2550.076525318207,
+    "decode_tok_s": 49.5423141679407,
+    "tail_decode_tok_s": 47.929827877111975,
+    "generated": 512,
+    "reused_tokens": 0,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/fp16-matched-flash-basalt-chat90",
+    "binary_sha256": "a2bb78bc53910cb738395d5582ab048c1ffc3aa7a0bd95838fcd31e4bf5ebeb0",
+    "prompt_sha256": "63afd9312f8afcc63d393eea375a8421b53f58786f0aec2062446e151e4cace8"
+  },
+  "hybrid-old-code10": {
+    "status": "ok",
+    "error": null,
+    "prefill_tok_s": 1345.5497382198953,
+    "decode_tok_s": 32.57598411920774,
+    "tail_decode_tok_s": 32.4165201181522,
+    "generated": 512,
+    "reused_tokens": 0,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/fp16-matched-hybrid-old-code10",
+    "binary_sha256": "cee93d26f710d3685ccf3541a95054dc193e63b239650a9d7122b4b938ad9193",
+    "prompt_sha256": "441a3bb4164bf04b7bda5d3cd3ec593bd094f56c6bc7c4fb36e6b2b37b5f744e"
+  },
+  "hybrid-old-chat90": {
+    "status": "ok",
+    "error": null,
+    "prefill_tok_s": 1418.853822496082,
+    "decode_tok_s": 21.170584465256674,
+    "tail_decode_tok_s": 23.966864282988105,
+    "generated": 512,
+    "reused_tokens": 0,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/fp16-matched-hybrid-old-chat90",
+    "binary_sha256": "cee93d26f710d3685ccf3541a95054dc193e63b239650a9d7122b4b938ad9193",
+    "prompt_sha256": "63afd9312f8afcc63d393eea375a8421b53f58786f0aec2062446e151e4cace8"
+  },
+  "hybrid-basalt-code10": {
+    "status": "ok",
+    "error": null,
+    "prefill_tok_s": 1858.1868961459672,
+    "decode_tok_s": 32.986715115904495,
+    "tail_decode_tok_s": 33.07646717859159,
+    "generated": 512,
+    "reused_tokens": 0,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/fp16-matched-hybrid-basalt-code10",
+    "binary_sha256": "a2bb78bc53910cb738395d5582ab048c1ffc3aa7a0bd95838fcd31e4bf5ebeb0",
+    "prompt_sha256": "441a3bb4164bf04b7bda5d3cd3ec593bd094f56c6bc7c4fb36e6b2b37b5f744e"
+  },
+  "hybrid-basalt-chat90": {
+    "status": "ok",
+    "error": null,
+    "prefill_tok_s": 2040.7070583004793,
+    "decode_tok_s": 30.149925214052693,
+    "tail_decode_tok_s": 34.00837994779915,
+    "generated": 512,
+    "reused_tokens": 0,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/fp16-matched-hybrid-basalt-chat90",
+    "binary_sha256": "a2bb78bc53910cb738395d5582ab048c1ffc3aa7a0bd95838fcd31e4bf5ebeb0",
+    "prompt_sha256": "63afd9312f8afcc63d393eea375a8421b53f58786f0aec2062446e151e4cace8"
+  }
+}

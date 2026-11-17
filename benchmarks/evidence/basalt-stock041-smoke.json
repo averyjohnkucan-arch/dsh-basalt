@@ -1,0 +1,32 @@
+{
+  "hybrid": {
+    "status": "failed",
+    "error": "engine exited: None",
+    "prefill_tok_s": null,
+    "decode_tok_s": null,
+    "tail_decode_tok_s": null,
+    "generated": null,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/stock041-smoke-hybrid",
+    "binary_sha256": "5a15f95f8bf41fbd61c8e7299910d08049243eb32b26699b0b7a6f7976ad92e8"
+  },
+  "27b": {
+    "status": "failed",
+    "error": "engine exited: None",
+    "prefill_tok_s": null,
+    "decode_tok_s": null,
+    "tail_decode_tok_s": null,
+    "generated": null,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/stock041-smoke-27b",
+    "binary_sha256": "5a15f95f8bf41fbd61c8e7299910d08049243eb32b26699b0b7a6f7976ad92e8"
+  },
+  "deepseek-xxs": {
+    "status": "ok",
+    "error": null,
+    "prefill_tok_s": 454.7624598918607,
+    "decode_tok_s": 22.206993468021064,
+    "tail_decode_tok_s": 27.730982256700525,
+    "generated": 256,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/stock041-smoke-deepseek-xxs",
+    "binary_sha256": "5a15f95f8bf41fbd61c8e7299910d08049243eb32b26699b0b7a6f7976ad92e8"
+  }
+}

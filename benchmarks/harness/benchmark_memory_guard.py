@@ -5,6 +5,7 @@ GIB=1024**3
 USER_BUDGET_FILE=Path('/mnt/media/scratch/dsh-inference-tuning-20261115/outputs/user-host-memory-policy.json')
 def apply_user_host_budget(cfg,request=None,total_bytes=None):
  """Reserve capacity for other processes, including the RAM they already use."""
+ if request is None:request=cfg.get('user_host_budget_override')
  if request is None:
   if not USER_BUDGET_FILE.exists():return cfg
   request=json.loads(USER_BUDGET_FILE.read_text())
@@ -14,9 +15,12 @@ def apply_user_host_budget(cfg,request=None,total_bytes=None):
   total_bytes=int(next(line.split()[1]for line in Path('/proc/meminfo').read_text().splitlines()if line.startswith('MemTotal:')))*1024
  cap=math.floor(total_bytes/GIB-reserve);assert cap>0
  policy=dict(isolation='separate systemd user scope',memory_high_gib=96,memory_max_gib=108,swap_max_gib=1,minimum_host_available_gib=12,pressure_avg10_limit=40,pressure_grace_s=6)
+ if 'default_worker_max_gib' in request:
+  policy['memory_high_gib']=policy['memory_max_gib']=request['default_worker_max_gib']
  policy.update(cfg.get('host_memory_policy',{}));previous_max=policy['memory_max_gib']
  policy['memory_max_gib']=min(previous_max,cap);policy['memory_high_gib']=min(policy['memory_high_gib'],policy['memory_max_gib'])
  policy['minimum_host_available_gib']=0;policy['minimum_nonworker_budget_gib']=reserve
+ if request.get('disable_pressure_watchdog'):policy['pressure_avg10_limit']=100
  cfg['host_memory_policy']=policy
  if policy['memory_max_gib']!=previous_max:
   cfg['benchmark_memory_policy_id']=cfg.get('benchmark_memory_policy_id','default')+'-physical-cap'+str(policy['memory_max_gib'])
