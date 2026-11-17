@@ -1,0 +1,64 @@
+{
+  "status": "ok",
+  "source": "Installed DSH Basalt service plus validated scratch adapter source",
+  "dataDir": "/mnt/media/scratch/dsh-inference-tuning-20261115/outputs/dsh-basalt-combined-measured-state",
+  "models": [
+    {
+      "provider": "basalt",
+      "id": "scratch-deepseek-iq2-xxs",
+      "name": "DeepSeek V4.1 Flash 1017 IQ2_XXS p15/d41 p575/d22",
+      "inputModalities": [
+        "text"
+      ]
+    },
+    {
+      "provider": "basalt",
+      "id": "scratch-deepseek-iq2-xs",
+      "name": "DeepSeek V4.1 Flash 1017 IQ2_XS p14/d35 p698/d13",
+      "inputModalities": [
+        "text"
+      ]
+    },
+    {
+      "provider": "basalt",
+      "id": "scratch-range-flash-basalt-long",
+      "name": "Flash Next NVFP4 GPTQ INT8 long decode - p3013.6/d55.6 - p3227.8/d63.2",
+      "inputModalities": [
+        "text"
+      ]
+    },
+    {
+      "provider": "basalt",
+      "id": "scratch-range-flash-basalt-short",
+      "name": "Flash Next NVFP4 GPTQ INT8 peak code - p3012/d57.2 - p3237.7/d64.5",
+      "inputModalities": [
+        "text"
+      ]
+    },
+    {
+      "provider": "basalt",
+      "id": "scratch-range-hybrid-basalt-long",
+      "name": "Flash Next mixed NVFP4 Q8 INT8 long decode - p1987.9/d37.6 - p2189.1/d38.9",
+      "inputModalities": [
+        "text"
+      ]
+    },
+    {
+      "provider": "basalt",
+      "id": "scratch-measured-flash-fp16",
+      "name": "Flash Next NVFP4 GPTQ FP16 p2614/d83 p2550/d48",
+      "inputModalities": [
+        "text"
+      ]
+    },
+    {
+      "provider": "basalt",
+      "id": "scratch-measured-hybrid-fp16",
+      "name": "Flash Next NVFP4 Q8 hybrid FP16 p1858/d33 p2041/d34",
+      "inputModalities": [
+        "text"
+      ]
+    }
+  ],
+  "scope": "Installed adapter enumeration; running browser visibility not established"
+}

@@ -493,8 +493,8 @@
     },
     {
       "path": "measured-inference-comparison.md",
-      "sha256": "e6a26dd4a988386636a1bb823065288584a9b1d5a5eb56163bae102314f54767",
-      "bytes": 8630
+      "sha256": "81f33aab0fe51230df2153e12f3f48c6266773d0d154a99f4f64f0a0395d2714",
+      "bytes": 9684
     },
     {
       "path": "range-comparison-progress.csv",
@@ -598,8 +598,8 @@
     },
     {
       "path": "harness/matched_depth_chart.py",
-      "sha256": "31cb678cf5d2dad85205b16c839a3020e6b7189e303ff43342901b1610561b95",
-      "bytes": 1876
+      "sha256": "a4bf5231d067079cc1b47b3e984e0206d452af6dda3136ee0ac3b22de207d20d",
+      "bytes": 2072
     },
     {
       "path": "harness/fp16_plugin_adapter_smoke.mjs",
@@ -623,13 +623,13 @@
     },
     {
       "path": "matched-depth-comparison.png",
-      "sha256": "c94fe8a53e33760c42a8ac74cea0b8d7a314d5aed68ef4dedbddd0954c11abf4",
-      "bytes": 161698
+      "sha256": "91feadd0a271b85290275c51522629c113765eeacfc991d91223be303516bdec",
+      "bytes": 200077
     },
     {
       "path": "evidence/latest-remaining-models.json",
-      "sha256": "847a09b93ab90fd7263321ce40c3e8611bb92d698e95f1078263a95a35e46002",
-      "bytes": 2959
+      "sha256": "bbeb6de165888c32d48f2443e372b5394631fcd768336767bf5d1fc03e21780c",
+      "bytes": 3386
     },
     {
       "path": "evidence/decode-first-receipt-audit.json",
@@ -640,6 +640,26 @@
       "path": "harness/audit_range_receipts.py",
       "sha256": "7f63ad54454b1e387ab059c7ade2fa9af95f7ce2540730d1daa8451b67808f72",
       "bytes": 2006
+    },
+    {
+      "path": "evidence/measured-profile-launch-validation.json",
+      "sha256": "c277b1c0177b70cd2976af28a0890146984b9d5aa8b35b505b50241b43275f33",
+      "bytes": 2866
+    },
+    {
+      "path": "evidence/combined-basalt-list-validation.json",
+      "sha256": "a0e8e841dc2908fdc207a2a1db944b64aee743aebfe0ec4af2235dbf2cbd426f",
+      "bytes": 1793
+    },
+    {
+      "path": "harness/finalize_measured_profiles.py",
+      "sha256": "117a122beaec1188dbe1f81c7f649dc4a90ae99396a03c756ff2b494161240d6",
+      "bytes": 1740
+    },
+    {
+      "path": "harness/combine_basalt_profiles.mjs",
+      "sha256": "3c1f5661c3bffb558954ba1836a9a557896322c89a45996934a957ec0ec671a0",
+      "bytes": 1627
     }
   ]
 }

@@ -75,5 +75,16 @@
     "reused_tokens": 0,
     "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/latest-remaining-huihui-nvfp4-10",
     "binary_sha256": "678580a7ccc535ce6a646ed09b050011db8902be1c9d6a5e549ffb70642a7e1b"
+  },
+  "huihui-nvfp4-90": {
+    "status": "ok",
+    "error": null,
+    "prefill_tok_s": 870.111072529396,
+    "decode_tok_s": 42.01586080583726,
+    "tail_decode_tok_s": 43.99410688040103,
+    "generated": 1024,
+    "reused_tokens": 0,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/latest-remaining-huihui-nvfp4-90",
+    "binary_sha256": "678580a7ccc535ce6a646ed09b050011db8902be1c9d6a5e549ffb70642a7e1b"
   }
 }

@@ -1,0 +1,66 @@
+{
+  "scratch-measured-flash-fp16": {
+    "status": "passed",
+    "receipt": "/mnt/media/scratch/dsh-inference-tuning-20261115/validation/fp16-plugin-flash/adapter-result.json",
+    "sha256": "0e34e39e28a261e59b55efc323e6cb66fede8feffde84fb41aa106a1184fa98a",
+    "arithmeticSanity": true,
+    "nativeControls": {
+      "--model": "/mnt/media/scratch/dsh-inference-tuning-20261115/packs/qwen-nvfp4-gptq.basalt",
+      "--kv": "fp16",
+      "--max-context": "262144",
+      "--kv-resident": "65536",
+      "--spec": "8",
+      "--pool-workers": "14"
+    },
+    "projectionModes": "passed",
+    "scope": "Actual adapter GPU launch; exact measured native controls; not throughput remeasurement or general quality proof"
+  },
+  "scratch-measured-hybrid-fp16": {
+    "status": "passed",
+    "receipt": "/mnt/media/scratch/dsh-inference-tuning-20261115/validation/fp16-plugin-hybrid/adapter-result.json",
+    "sha256": "ea4dd972894f5e2a393136981c5c9cf39a0087066adb5d8465a5867ee986f9d1",
+    "arithmeticSanity": true,
+    "nativeControls": {
+      "--kv": "fp16",
+      "--max-context": "262144",
+      "--spec": "8",
+      "--pool-workers": "21",
+      "--model": "/mnt/media/scratch/dsh-inference-tuning-20261115/packs/qwen-nvfp4-q8-hybrid.basalt",
+      "--resident-budget-gib": "92",
+      "--kv-resident": "65536"
+    },
+    "projectionModes": "passed",
+    "scope": "Actual adapter GPU launch; exact measured native controls; not throughput remeasurement or general quality proof"
+  },
+  "scratch-measured-27b-ninfer1616": {
+    "status": "passed",
+    "receipt": "/mnt/media/scratch/dsh-inference-tuning-20261115/validation/ninfer1616-measured-plugin/adapter-result.json",
+    "sha256": "38a79ad95ab9798e31b470b4e62cf04ccb5c6796c6c5f24bf8632456ba667c01",
+    "arithmeticSanity": true,
+    "nativeControls": {
+      "--kv-capacity": "262144",
+      "--max-concurrency": "1",
+      "--kv-dtype": "nvfp4",
+      "--spec": "dflash2",
+      "--draft-tokens": "7",
+      "--gdn-state-fp16": true,
+      "--prefill-chunk": "512",
+      "--ngram-draft-tokens": "0",
+      "--vision": true,
+      "--vision-max-merged": "1024",
+      "--host-cache-mib": "16384",
+      "--preserve-thinking": true,
+      "--vision-residency": "resident",
+      "--embedding-residency": "device",
+      "--structured-output": true,
+      "--device-state-slots": "0",
+      "--no-cuda-graph": true,
+      "--full-draft-head": true,
+      "--chat-template": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/dsh-ninfer/assets/qwen3_8-cache.jinja",
+      "--max-context": "262144",
+      "--device-profile-path": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/ninfer-device-profile-latest-native.json"
+    },
+    "projectionModes": "not-applicable",
+    "scope": "Actual adapter GPU launch; exact measured native controls; not throughput remeasurement or general quality proof"
+  }
+}
