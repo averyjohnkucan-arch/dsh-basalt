@@ -44,7 +44,7 @@ def completed_input_matches(value,planned):
  # cgroup limits stay unchanged. Never reinterpret a larger old worker cap.
  for field in ['memory_high_gib','memory_max_gib','swap_max_gib']:
   if field in original_policy and original_policy[field]!=actual['host_memory_policy'][field]:return False
- for field in ['engine_binary_sha256','artifact_header_sha256','artifact_bytes','benchmark_environment_id','benchmark_memory_policy_id','protocol','prompt_file','depth','generate','timed_tail','workload','sampling']:
+ for field in ['engine_binary_sha256','artifact_header_sha256','artifact_bytes','benchmark_environment_id','benchmark_memory_policy_id','protocol','prompt_file','depth','generate','timed_tail','workload','sampling','warm_same_prompt']:
   if field in planned and actual.get(field)!=planned[field]:return False
  for field,value in planned.get('host_memory_policy',{}).items():
   if actual.get('host_memory_policy',{}).get(field)!=value:return False
@@ -63,7 +63,7 @@ def run(config,name,family,workload,n=8192,cache=None,reuse=False,role='qualifie
  if environment:c['benchmark_environment_id']=environment['id']
  if fixture is None:fixture=next(x for x in WORKLOADS['cases']if x['family']==family and x['workload']==workload)
  assert fixture['family']==family and fixture['workload']==workload
- c.update(output=str(out),prompt_file=fixture['prompt_file'],depth=fixture['depth'],generate=n,timed_tail=n//2,allow_reused=reuse,require_reuse_min=fixture['depth']-32 if reuse else 0,
+ c.update(output=str(out),prompt_file=fixture['prompt_file'],depth=fixture['depth'],generate=n,timed_tail=n//2,allow_reused=reuse,require_reuse_min=fixture['depth']-32 if reuse and not c.get('warm_same_prompt') else 0,
           workload=workload,measurement_role=role,engine_binary_sha256=digest(c['command'][3]),gpu_power_limit_w=95,framing='native-tokenizer-chat-template; thinking off')
  for flag in ['--conversation-cache-dir','--conversation-cache-disk-mib','--conversation-cache-mib','--prompt-cache']:opt(c,flag,None)
  if '--draft-log'in c['command']:opt(c,'--draft-log',out/'draft.log')

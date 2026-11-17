@@ -60,6 +60,17 @@ try:
  result['load_s']=time.monotonic()-start
  if cfg.get('pin_host') is not None:
   result['host_affinity_before']=sorted(os.sched_getaffinity(proc.pid));os.sched_setaffinity(proc.pid,{int(cfg['pin_host'])})
+ if cfg.get('warm_same_prompt'):
+  prime_started=time.monotonic()
+  proc.stdin.write('GEN 32 '+cfg.get('sampling','temperature=0 seed=42')+' '+','.join(map(str,ids))+'\n');proc.stdin.flush()
+  while True:
+   warm=line()
+   if warm.startswith('ERR'):raise RuntimeError(warm)
+   if warm.startswith('DONE '):
+    fields=warm.split()
+    if int(fields[2])!=depth or int(fields[1])!=32:raise RuntimeError('Incomplete warm-up request')
+    result['warmup']={'done_raw':warm,'wall_s':time.monotonic()-prime_started,'mode':'same worker and identical prompt replay'}
+    break
  request=time.monotonic();proc.stdin.write('GEN '+str(cfg.get('generate',8192))+' '+cfg.get('sampling','temperature=0 seed=42')+' '+','.join(map(str,ids))+'\n');proc.stdin.flush()
  arrivals=[];tokens=[];progress=0;last_prefill_report=0
  while True:
@@ -79,7 +90,12 @@ try:
    if prompt!=depth or (cached and not cfg.get('allow_reused')) or len(tokens)!=produced or (cfg.get('require_complete',True) and produced!=cfg.get('generate',8192)):raise RuntimeError('incomplete or unexpected cached benchmark')
    if cfg.get('require_reuse_min',0)>cached:raise RuntimeError('required cached prefix was not restored')
    result['cold_prefill_qualified']=cached==0
-   if cached:result['prefill_tok_s']=None;result['qualification']='Decode-only restored-prefix screening; not a cold prefill result.'
+   if cfg.get('warm_same_prompt'):
+    result['cold_prefill_qualified']=False
+    result['qualification']='Same-process replay; use TTFT, actual reused tokens and sustained decode'
+   if cached:
+    result['prefill_tok_s']=None
+    if not cfg.get('warm_same_prompt'):result['qualification']='Decode-only restored-prefix screening; not a cold prefill result.'
    break
   elif s.startswith('PP '):
    if cfg.get('require_reuse_min') and now-request>cfg.get('max_uncached_prefill_s',60) and not tokens:raise RuntimeError('cached screening attempted a cold prefill; stopped')

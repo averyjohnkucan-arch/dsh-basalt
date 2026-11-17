@@ -1,0 +1,8 @@
+{
+  "status": "passed",
+  "prime_tokens": 32,
+  "timed_tokens": 64,
+  "reused_tokens": 4,
+  "cold_prefill_qualified": false,
+  "scope": "Mock native worker; GPU replay pending"
+}

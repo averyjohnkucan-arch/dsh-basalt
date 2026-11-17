@@ -83,5 +83,15 @@ except BaseException as error:
 finally:receipt.write_text(json.dumps(state,indent=2)+'\n')
 
 # Confirm the saved and tuned presets at the original exact context percentages.
+# Replay the matched long chat prompt on each tuned hybrid engine within one worker.
+from range_common import run as run_range
+warm = {}
+for key in ['hybrid_basalt','hybrid_strata']:
+ native = json.loads((W/(s[key+'_long']['selected']+'.json')).read_text())
+ native['warm_same_prompt'] = True
+ result = run_range(native,key+'-warm-replay','qwen','chat',reuse=True,
+                    role='Warm replay on the already-loaded worker')
+ warm[key] = {field:result.get(field) for field in ['status','error','prefill_tok_s','ttft_s','reused_tokens','tail_decode_tok_s','warmup']}
+ (O/'hybrid-warm-replay.json').write_text(json.dumps(warm,indent=2)+'\n')
 subprocess.run([sys.executable,str(W/'range_percent_check.py'),'qwen'],check=True)
 subprocess.run([sys.executable,str(W/'range_progress_report.py')],check=True)
