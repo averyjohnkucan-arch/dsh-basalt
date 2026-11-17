@@ -1,0 +1,584 @@
+{
+  "model_key": "flash_strata",
+  "performance_qualified": true,
+  "qualified_at_unix": 1794880770.275549,
+  "scope": "Native throughput and paired metric labels only; separate generated-code, plugin GPU and final-publication gates remain",
+  "long_selection": "range-perf-flash_strata-range-check-d570e314cdb3-text",
+  "short_selection": "range-perf-flash_strata-peak-code-confirm-8829d2f16ee7-0",
+  "long_identity": "d570e314cdb3",
+  "short_identity": "8829d2f16ee7",
+  "long_metrics": {
+    "low": {
+      "case": "range-perf-flash_strata-repeat-final-code-d570e314cdb3",
+      "prefill": 1968.4736639753942,
+      "decode": 59.07238445134357
+    },
+    "low_cases": [
+      {
+        "case": "range-perf-flash_strata-peak-code-confirm-d570e314cdb3-1",
+        "prefill": 1974.6420479197802,
+        "decode": 61.459197423174565
+      },
+      {
+        "case": "range-perf-flash_strata-repeat-final-code-d570e314cdb3",
+        "prefill": 1968.4736639753942,
+        "decode": 59.07238445134357
+      }
+    ],
+    "high": {
+      "cases": [
+        {
+          "case": "range-perf-flash_strata-range-check-d570e314cdb3-text",
+          "workload": "text",
+          "prefill": 2313.078159243544,
+          "decode": 59.360603129030345
+        },
+        {
+          "case": "range-perf-flash_strata-range-repeat-d570e314cdb3-text",
+          "workload": "text",
+          "prefill": 2303.436565016629,
+          "decode": 62.52148549379595
+        },
+        {
+          "case": "range-perf-flash_strata-range-check-d570e314cdb3-chat",
+          "workload": "chat",
+          "prefill": 2313.8718667870044,
+          "decode": 60.76025264826975
+        },
+        {
+          "case": "range-perf-flash_strata-range-repeat-d570e314cdb3-chat",
+          "workload": "chat",
+          "prefill": 2305.9237219367055,
+          "decode": 74.26591000965571
+        },
+        {
+          "case": "range-perf-flash_strata-joint-d570e314cdb3-story",
+          "workload": "story",
+          "prefill": 2293.1024868049426,
+          "decode": 62.58213159164319
+        }
+      ],
+      "worst_case": "range-perf-flash_strata-range-check-d570e314cdb3-text",
+      "best_case": "range-perf-flash_strata-range-repeat-d570e314cdb3-chat",
+      "prefill_range": [
+        2293.1024868049426,
+        2313.8718667870044
+      ],
+      "decode_range": [
+        59.360603129030345,
+        74.26591000965571
+      ]
+    },
+    "repeatability": {
+      "objective": "First maximize the minimum genre-median long decode. Then maximize minimum cold prefill while retaining >=95% of EACH genre median from that peak-decode preset. Repeat absolute limiting genres and, when controls differ, the limiting relative genre for both presets.",
+      "selected": "range-perf-flash_strata-range-check-d570e314cdb3-text",
+      "peak_decode_tok_s": 60.94104431141315,
+      "decode_floor_tok_s": 57.89399209584249,
+      "peak_decode_identity": "d570e314cdb3",
+      "genre_decode_floor_tok_s": {
+        "text": 57.89399209584249,
+        "chat": 64.13742726251459,
+        "story": 59.453025012061026
+      },
+      "candidates": [
+        {
+          "identity": "54f7690558b8",
+          "complete": true,
+          "prefill": 2293.330710989495,
+          "decode": 47.6600421128596,
+          "worst_genre": "story",
+          "genres": {
+            "text": {
+              "prefill": 2293.330710989495,
+              "decode": 48.057163475420836,
+              "samples": 2,
+              "cases": [
+                "range-perf-flash_strata-base-text",
+                "range-perf-flash_strata-final-text"
+              ]
+            },
+            "chat": {
+              "prefill": 2318.6327568307433,
+              "decode": 48.36662786403879,
+              "samples": 1,
+              "cases": [
+                "range-perf-flash_strata-base-chat"
+              ]
+            },
+            "story": {
+              "prefill": 2313.938149556736,
+              "decode": 47.6600421128596,
+              "samples": 2,
+              "cases": [
+                "range-perf-flash_strata-base-story",
+                "range-perf-flash_strata-final-story"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "8826d641e341",
+          "complete": true,
+          "prefill": 2304.379452477725,
+          "decode": 54.50458538476799,
+          "worst_genre": "story",
+          "genres": {
+            "text": {
+              "prefill": 2323.5986278785304,
+              "decode": 55.87574080311382,
+              "samples": 1,
+              "cases": [
+                "range-perf-flash_strata-range-check-8826d641e341-text"
+              ]
+            },
+            "chat": {
+              "prefill": 2304.5446474633427,
+              "decode": 64.75563601027928,
+              "samples": 2,
+              "cases": [
+                "range-perf-flash_strata-range-repeat-8826d641e341-chat",
+                "range-perf-flash_strata-confirm-pcie75"
+              ]
+            },
+            "story": {
+              "prefill": 2304.379452477725,
+              "decode": 54.50458538476799,
+              "samples": 2,
+              "cases": [
+                "range-perf-flash_strata-range-repeat-8826d641e341-story",
+                "range-perf-flash_strata-range-check-8826d641e341-story"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "c89ec6858885",
+          "complete": false,
+          "prefill": 2287.0831034054054,
+          "decode": 47.8038489728485,
+          "worst_genre": "chat",
+          "genres": {
+            "chat": {
+              "prefill": 2287.0831034054054,
+              "decode": 47.8038489728485,
+              "samples": 1,
+              "cases": [
+                "range-perf-flash_strata-confirm-mtp6"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "029b433f551e",
+          "complete": false,
+          "prefill": 2304.097088167984,
+          "decode": 44.63483462065832,
+          "worst_genre": "chat",
+          "genres": {
+            "chat": {
+              "prefill": 2304.097088167984,
+              "decode": 44.63483462065832,
+              "samples": 1,
+              "cases": [
+                "range-perf-flash_strata-prefill-32k"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "b85c738c1306",
+          "complete": false,
+          "prefill": 1607.0693733797307,
+          "decode": 42.15133855512598,
+          "worst_genre": "chat",
+          "genres": {
+            "chat": {
+              "prefill": 1607.0693733797307,
+              "decode": 42.15133855512598,
+              "samples": 1,
+              "cases": [
+                "range-perf-flash_strata-prefill-4k"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "837892d2562c",
+          "complete": false,
+          "prefill": 2314.7964184481707,
+          "decode": 48.934268163497094,
+          "worst_genre": "story",
+          "genres": {
+            "story": {
+              "prefill": 2314.7964184481707,
+              "decode": 48.934268163497094,
+              "samples": 1,
+              "cases": [
+                "range-perf-flash_strata-joint-837892d2562c-story"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "021fb2767c15",
+          "complete": false,
+          "prefill": 2307.522182317524,
+          "decode": 58.68430226992663,
+          "worst_genre": "story",
+          "genres": {
+            "story": {
+              "prefill": 2307.522182317524,
+              "decode": 58.68430226992663,
+              "samples": 1,
+              "cases": [
+                "range-perf-flash_strata-joint-021fb2767c15-story"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "3e315c08c59d",
+          "complete": false,
+          "prefill": 2312.1090946375475,
+          "decode": 57.98859416890316,
+          "worst_genre": "story",
+          "genres": {
+            "story": {
+              "prefill": 2312.1090946375475,
+              "decode": 57.98859416890316,
+              "samples": 1,
+              "cases": [
+                "range-perf-flash_strata-joint-3e315c08c59d-story"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "adb871ef1743",
+          "complete": false,
+          "prefill": 2300.8588380890524,
+          "decode": 59.23001032074763,
+          "worst_genre": "story",
+          "genres": {
+            "story": {
+              "prefill": 2300.8588380890524,
+              "decode": 59.23001032074763,
+              "samples": 1,
+              "cases": [
+                "range-perf-flash_strata-joint-adb871ef1743-story"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "8f7be0d29843",
+          "complete": false,
+          "prefill": 2311.688569368845,
+          "decode": 47.82864097269969,
+          "worst_genre": "story",
+          "genres": {
+            "story": {
+              "prefill": 2311.688569368845,
+              "decode": 47.82864097269969,
+              "samples": 1,
+              "cases": [
+                "range-perf-flash_strata-joint-8f7be0d29843-story"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "ea06e486551a",
+          "complete": false,
+          "prefill": 2299.332616282321,
+          "decode": 45.77882263071535,
+          "worst_genre": "story",
+          "genres": {
+            "story": {
+              "prefill": 2299.332616282321,
+              "decode": 45.77882263071535,
+              "samples": 1,
+              "cases": [
+                "range-perf-flash_strata-joint-ea06e486551a-story"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "7047a2fa54b5",
+          "complete": false,
+          "prefill": 2297.760583241024,
+          "decode": 56.82651362531622,
+          "worst_genre": "story",
+          "genres": {
+            "story": {
+              "prefill": 2297.760583241024,
+              "decode": 56.82651362531622,
+              "samples": 1,
+              "cases": [
+                "range-perf-flash_strata-joint-7047a2fa54b5-story"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "d570e314cdb3",
+          "complete": true,
+          "prefill": 2293.1024868049426,
+          "decode": 60.94104431141315,
+          "worst_genre": "text",
+          "genres": {
+            "text": {
+              "prefill": 2308.2573621300867,
+              "decode": 60.94104431141315,
+              "samples": 2,
+              "cases": [
+                "range-perf-flash_strata-range-repeat-d570e314cdb3-text",
+                "range-perf-flash_strata-range-check-d570e314cdb3-text"
+              ]
+            },
+            "chat": {
+              "prefill": 2309.8977943618547,
+              "decode": 67.51308132896273,
+              "samples": 2,
+              "cases": [
+                "range-perf-flash_strata-range-repeat-d570e314cdb3-chat",
+                "range-perf-flash_strata-range-check-d570e314cdb3-chat"
+              ]
+            },
+            "story": {
+              "prefill": 2293.1024868049426,
+              "decode": 62.58213159164319,
+              "samples": 1,
+              "cases": [
+                "range-perf-flash_strata-joint-d570e314cdb3-story"
+              ]
+            }
+          }
+        },
+        {
+          "identity": "8829d2f16ee7",
+          "complete": true,
+          "prefill": 2302.0484240822925,
+          "decode": 59.72650528962285,
+          "worst_genre": "chat",
+          "genres": {
+            "text": {
+              "prefill": 2304.081899473626,
+              "decode": 67.38942703199176,
+              "samples": 1,
+              "cases": [
+                "range-perf-flash_strata-peak-code-profile-8829d2f16ee7-text"
+              ]
+            },
+            "chat": {
+              "prefill": 2302.0484240822925,
+              "decode": 59.72650528962285,
+              "samples": 1,
+              "cases": [
+                "range-perf-flash_strata-peak-code-profile-8829d2f16ee7-chat"
+              ]
+            },
+            "story": {
+              "prefill": 2306.9129837900628,
+              "decode": 62.62714282905198,
+              "samples": 1,
+              "cases": [
+                "range-perf-flash_strata-peak-code-profile-8829d2f16ee7-story"
+              ]
+            }
+          }
+        }
+      ],
+      "original_selection": {
+        "objective": "Maximize cold prefill subject to sustained late decode >=95% of the fastest qualified 8192-output result on the same workload",
+        "peak_decode_tok_s": 48.36662786403879,
+        "decode_floor_tok_s": 45.94829647083685,
+        "selected": "range-perf-flash_strata-base-chat",
+        "candidates": [
+          {
+            "case": "range-perf-flash_strata-base-chat",
+            "prefill": 2318.6327568307433,
+            "decode": 48.36662786403879
+          },
+          {
+            "case": "range-perf-flash_strata-confirm-pcie75",
+            "prefill": 2308.561099840052,
+            "decode": 47.86436606940592
+          },
+          {
+            "case": "range-perf-flash_strata-confirm-mtp6",
+            "prefill": 2287.0831034054054,
+            "decode": 47.8038489728485
+          },
+          {
+            "case": "range-perf-flash_strata-prefill-32k",
+            "prefill": 2304.097088167984,
+            "decode": 44.63483462065832
+          },
+          {
+            "case": "range-perf-flash_strata-prefill-4k",
+            "prefill": 1607.0693733797307,
+            "decode": 42.15133855512598
+          },
+          {
+            "case": "range-perf-flash_strata-joint-837892d2562c-story",
+            "prefill": 2314.7964184481707,
+            "decode": 48.934268163497094,
+            "source": "joint reserve/CPU/KV or explicitly guarded soft-limit refinement",
+            "refinement": "reserve256"
+          },
+          {
+            "case": "range-perf-flash_strata-joint-021fb2767c15-story",
+            "prefill": 2307.522182317524,
+            "decode": 58.68430226992663,
+            "source": "joint reserve/CPU/KV or explicitly guarded soft-limit refinement",
+            "refinement": "reserve256-workers14"
+          },
+          {
+            "case": "range-perf-flash_strata-joint-3e315c08c59d-story",
+            "prefill": 2312.1090946375475,
+            "decode": 57.98859416890316,
+            "source": "joint reserve/CPU/KV or explicitly guarded soft-limit refinement",
+            "refinement": "reserve256-resident96k"
+          },
+          {
+            "case": "range-perf-flash_strata-joint-adb871ef1743-story",
+            "prefill": 2300.8588380890524,
+            "decode": 59.23001032074763,
+            "source": "joint reserve/CPU/KV or explicitly guarded soft-limit refinement",
+            "refinement": "native-mtp2"
+          },
+          {
+            "case": "range-perf-flash_strata-joint-8f7be0d29843-story",
+            "prefill": 2311.688569368845,
+            "decode": 47.82864097269969,
+            "source": "joint reserve/CPU/KV or explicitly guarded soft-limit refinement",
+            "refinement": "dflash-cap6-conf10"
+          },
+          {
+            "case": "range-perf-flash_strata-joint-ea06e486551a-story",
+            "prefill": 2299.332616282321,
+            "decode": 45.77882263071535,
+            "source": "joint reserve/CPU/KV or explicitly guarded soft-limit refinement",
+            "refinement": "dflash-cap8-conf10"
+          },
+          {
+            "case": "range-perf-flash_strata-joint-7047a2fa54b5-story",
+            "prefill": 2297.760583241024,
+            "decode": 56.82651362531622,
+            "source": "joint reserve/CPU/KV or explicitly guarded soft-limit refinement",
+            "refinement": "dflash-cap4-conf90"
+          },
+          {
+            "case": "range-perf-flash_strata-joint-d570e314cdb3-story",
+            "prefill": 2293.1024868049426,
+            "decode": 62.58213159164319,
+            "source": "joint reserve/CPU/KV or explicitly guarded soft-limit refinement",
+            "refinement": "dflash-k7-conf75-full"
+          },
+          {
+            "case": "range-perf-flash_strata-peak-code-confirm-8829d2f16ee7-0",
+            "prefill": 1983.631168579592,
+            "decode": 61.1238192998186,
+            "source": "qualified peak-code preset with its own high-context genre matrix"
+          }
+        ]
+      },
+      "free_generation_variation": "Continuations can change draft acceptance. Final name uses the slowest actual paired measurement across all selected-setting genres and repeats; selection floors use per-genre medians. Cold process/prefix does not imply globally dropped OS file cache."
+    }
+  },
+  "short_metrics": {
+    "low": {
+      "case": "range-perf-flash_strata-peak-code-confirm-8829d2f16ee7-0",
+      "prefill": 1983.631168579592,
+      "decode": 61.1238192998186
+    },
+    "low_cases": [
+      {
+        "case": "range-perf-flash_strata-peak-code-confirm-8829d2f16ee7-0",
+        "prefill": 1983.631168579592,
+        "decode": 61.1238192998186
+      },
+      {
+        "case": "range-perf-flash_strata-peak-code-confirm-8829d2f16ee7-1",
+        "prefill": 1976.6908766257268,
+        "decode": 64.47550113594613
+      }
+    ],
+    "high": {
+      "cases": [
+        {
+          "case": "range-perf-flash_strata-peak-code-profile-8829d2f16ee7-text",
+          "workload": "text",
+          "prefill": 2304.081899473626,
+          "decode": 67.38942703199176
+        },
+        {
+          "case": "range-perf-flash_strata-peak-code-profile-8829d2f16ee7-chat",
+          "workload": "chat",
+          "prefill": 2302.0484240822925,
+          "decode": 59.72650528962285
+        },
+        {
+          "case": "range-perf-flash_strata-peak-code-profile-8829d2f16ee7-story",
+          "workload": "story",
+          "prefill": 2306.9129837900628,
+          "decode": 62.62714282905198
+        }
+      ],
+      "worst_case": "range-perf-flash_strata-peak-code-profile-8829d2f16ee7-chat",
+      "best_case": "range-perf-flash_strata-peak-code-profile-8829d2f16ee7-text",
+      "prefill_range": [
+        2302.0484240822925,
+        2306.9129837900628
+      ],
+      "decode_range": [
+        59.72650528962285,
+        67.38942703199176
+      ]
+    },
+    "peak_code_selection": {
+      "objective": "Maximize confirmed median sustained code decode at 8192 input tokens, with full model context still configured; prefill reported without sacrificing peak-code decode",
+      "selected": "range-perf-flash_strata-peak-code-confirm-8829d2f16ee7-0",
+      "selected_median_decode": 62.79966021788236,
+      "candidates": [
+        {
+          "identity": "d570e314cdb3",
+          "median_decode": 60.26579093725907,
+          "cases": [
+            "range-perf-flash_strata-repeat-final-code-d570e314cdb3",
+            "range-perf-flash_strata-peak-code-confirm-d570e314cdb3-1"
+          ]
+        },
+        {
+          "identity": "0b2ad03eef71",
+          "median_decode": 61.03037639896891,
+          "cases": [
+            "range-perf-flash_strata-peak-code-confirm-0b2ad03eef71-0",
+            "range-perf-flash_strata-peak-code-confirm-0b2ad03eef71-1"
+          ]
+        },
+        {
+          "identity": "8829d2f16ee7",
+          "median_decode": 62.79966021788236,
+          "cases": [
+            "range-perf-flash_strata-peak-code-confirm-8829d2f16ee7-0",
+            "range-perf-flash_strata-peak-code-confirm-8829d2f16ee7-1"
+          ]
+        }
+      ],
+      "screened_candidates": 18
+    }
+  },
+  "peak_long_minimum_median_decode": 60.94104431141315,
+  "selected_long_minimum_median_decode": 60.94104431141315,
+  "decode_floor": 57.89399209584249,
+  "peak_code_median_decode": 62.79966021788236,
+  "benchmark_environment_id": "performance-powerd-20261115",
+  "genre_decode_floor_tok_s": {
+    "text": 57.89399209584249,
+    "chat": 64.13742726251459,
+    "story": 59.453025012061026
+  }
+}

@@ -1,7 +1,7 @@
 {
   "status": "passed",
-  "scope": "Actual quality batch --plan AST with only scratch-root literal redirected to controlled receipts; full14-family, distinct-peak, partial and modified-controls cases. GPU launches explicitly forbidden. No real model qualification is claimed.",
-  "source_sha256": "6388fd23a55944aad47725bc08117ced3b081bf537d20746bc966f36c02b63e5",
+  "scope": "Actual quality batch --plan AST with only scratch-root literal redirected to controlled receipts; Full 14-family, distinct-peak, partial, modified controls, selected K7 and unselected K7 with wrong-width and mismatched-input decoys. GPU launches explicitly forbidden. No real model qualification is claimed.",
+  "source_sha256": "044e10d8d1a18f9ccd3430b279df2c62ce9d9440cbf8846c3a060ba33a74393b",
   "checks": {
     "partial": {
       "exit_code": 1,
@@ -45,6 +45,13 @@
       "missing": [
         "flash_basalt"
       ],
+      "gpu_workers": 0
+    },
+    "speculative": {
+      "exit_code": 0,
+      "status": "ready",
+      "planned_presets": 15,
+      "missing": [],
       "gpu_workers": 0
     }
   }

@@ -1,0 +1,18 @@
+{
+  "model_key": "flash_strata",
+  "status": "ok",
+  "plugin_source_sha256": "3a815b68a0848acf8ce8c45f452edbcdb79e0785019a9cedb40721de373a97a4",
+  "benchmark_environment_id": "performance-powerd-20261115",
+  "receipts": [
+    {
+      "profile": "scratch-range-flash-strata-long",
+      "status": "ok",
+      "receipt": "/mnt/media/scratch/dsh-inference-tuning-20261115/validation/range-plugin-gpu/scratch-range-flash-strata-long/adapter-result.json"
+    },
+    {
+      "profile": "scratch-range-flash-strata-short",
+      "status": "ok",
+      "receipt": "/mnt/media/scratch/dsh-inference-tuning-20261115/validation/range-plugin-gpu/scratch-range-flash-strata-short/adapter-result.json"
+    }
+  ]
+}

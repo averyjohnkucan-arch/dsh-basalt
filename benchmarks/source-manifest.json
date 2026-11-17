@@ -128,8 +128,8 @@
     },
     {
       "path": "harness/test_quality_batch_plan.py",
-      "sha256": "e8ea2e26834b062a21b0a16aa06d6eb04627832ddd7493384b0e13caa2e68029",
-      "bytes": 3654
+      "sha256": "a01841a77a4d3c5be67627a94bd5e5368b86b1988b6e8302df514f3a0f7e510f",
+      "bytes": 4965
     },
     {
       "path": "harness/range_model_progress.py",
@@ -303,8 +303,8 @@
     },
     {
       "path": "harness/export_range_strata.mjs",
-      "sha256": "a79c8e37edcf84df37a2db0599153de603590a455dbc0f7ef1c9ff2356c71ccd",
-      "bytes": 5250
+      "sha256": "52f4ce9ea5a3fe63d620d4617dba023102953a59fa4eb16e35fbe8cecb3d8e7f",
+      "bytes": 6907
     },
     {
       "path": "harness/range_progress_report.py",
@@ -328,8 +328,8 @@
     },
     {
       "path": "harness/quality_range_selected.py",
-      "sha256": "6388fd23a55944aad47725bc08117ced3b081bf537d20746bc966f36c02b63e5",
-      "bytes": 4147
+      "sha256": "044e10d8d1a18f9ccd3430b279df2c62ce9d9440cbf8846c3a060ba33a74393b",
+      "bytes": 6478
     },
     {
       "path": "harness/code_function_eval.py",

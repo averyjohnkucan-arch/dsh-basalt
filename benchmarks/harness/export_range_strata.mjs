@@ -1,5 +1,6 @@
 import {nativeSignature,memoryEvidence,verifyPack,performanceQualified,codeFunctionalEvidence} from './profile_measurement_helpers.mjs';
-import {readFile,writeFile,mkdir} from 'node:fs/promises';
+import {readFile,writeFile,mkdir,stat,mkdtemp,rename,rm} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
 import {join,dirname} from 'node:path';
 import {execFileSync} from 'node:child_process';
 import {createProfile,validateProfile,runConfig} from './dsh-strata/lib/profiles.js';
@@ -7,6 +8,35 @@ const root='/mnt/media/scratch/dsh-inference-tuning-20261115',out=join(root,'out
 const seenConfigurations=new Set();
 const get=async p=>JSON.parse(await readFile(p,'utf8')),s=await get(join(root,'outputs/range-selections.json')),profiles=[],inventories=new Map();
 const control=join(root,'runtimes/strata-control-0.1.59.1'),python=join(control,'python/bin/python3'),round=x=>Number(x).toFixed(1).replace(/\.0$/,'');
+const tokenizerFiles=['vocab.json','merges.txt','token_type.json','tokenizer.json','chat_template.jinja'];
+async function completeTokenizer(dir){
+ const files=await Promise.all(tokenizerFiles.map(file=>stat(join(dir,file)).catch(error=>{
+  if(error.code!=='ENOENT')throw error;
+  return null;
+ })));
+ return files.every(file=>file?.isFile()&&file.size>0);
+}
+async function tokenizerForLaunch(pack,native){
+ const existing=join(pack,'tokenizer');
+ if(await completeTokenizer(existing))return existing;
+ const base=join(root,'packs','strata-http-tokenizers');
+ const source=await stat(native,{bigint:true});
+ const tool=join(control,'tools','strata_tokenizer.py');
+ const hash=createHash('sha256').update(JSON.stringify([native,String(source.ino),String(source.size),String(source.mtimeNs)])).update(await readFile(tool)).digest('hex');
+ const target=join(base,hash),tokenizer=join(target,'tokenizer');
+ if(await completeTokenizer(tokenizer))return tokenizer;
+ await mkdir(base,{recursive:true});
+ const temp=await mkdtemp(join(base,'.extract-'));
+ try{
+  execFileSync('taskset',['-c','22',python,'-B',tool,'--gguf',native,'--out',temp,'--check'],{encoding:'utf8',env:{...process.env,TMPDIR:join(root,'tmp')}});
+  if(!await completeTokenizer(join(temp,'tokenizer')))throw Error('Native GGUF did not supply a complete Strata HTTP tokenizer: '+native);
+  try{await rename(temp,target);}catch(error){
+   if(!['EEXIST','ENOTEMPTY'].includes(error.code)||!await completeTokenizer(tokenizer))throw error;
+  }
+  return tokenizer;
+ }finally{await rm(temp,{recursive:true,force:true});}
+}
+
 for(const [key,label]of [['flash_strata','Qwen3.8 Flash Next NVFP4 GPTQ INT8'],['hybrid_strata','Qwen3.8 Flash Next NVFP4 Q8 Hybrid INT8'],['flash_fp16_strata','Qwen3.8 Flash Next NVFP4 GPTQ FP16'],['hybrid_fp16_strata','Qwen3.8 Flash Next NVFP4 Q8 Hybrid FP16'],['gyro_strata','Qwen3.8 Flash Next Gyro S FP16'],['deepseek_strata','DeepSeek V4.1 Flash IQ2_XXS GSQ-RCO'],['deepseek_xs_strata','DeepSeek V4.1 Flash IQ2_XS GSQ-RCO']])for(const kind of ['long','short']){
  if(!await performanceQualified(root,key,s))continue;
  const metrics=s[key+'_'+kind+'_metrics'],selection=s[key+'_'+kind];if(!metrics||!selection)continue;
@@ -21,7 +51,7 @@ for(const [key,label]of [['flash_strata','Qwen3.8 Flash Next NVFP4 GPTQ INT8'],[
  const p=createProfile(model,18500+profiles.length),id=`scratch-range-${key.replaceAll('_','-')}-${kind}`,name=`${key==='gyro_strata'?label.replace(' FP16','')+' '+(option('kv')||'fp16').toUpperCase():label} ${kind==='short'?'peak code':'long decode'} - p${round(metrics.low.prefill)}/d${round(metrics.low.decode)} - p${round(high.prefill)}/d${round(high.decode)}`;
  const args=[];for(let i=4;i<a.length;i++){if(a[i]==='--serve'||a[i]==='--stop-eos')continue;if(['--eos','--eos-ids','--draft-log','--conversation-cache-dir','--conversation-cache-disk-mib','--conversation-cache-mib','--prompt-cache'].includes(a[i])){i++;continue;}args.push(a[i]);}
  let kv=option('kv')||'engine';if(kv==='int8')kv='Q8/Q8';if(kv==='fp16')kv='FP16/FP16';
- Object.assign(p,{id,name,context:Number(option('max-context')),kv,gpu:0,cpuSet:'0-21',mtp:option('mtp')||'',vision:'off',extraArgs:[],environment:c.env||{},applyPreset:false,portableTuning:{},runtime:{controlDir:control,python,executable:a[3],tqp:false},config:{exe:a[3],cwd:control,arch:deepseek?'deepseek41':'qwen4exp',model_name:id,host:'127.0.0.1',port:18500+profiles.length,gpu:0,tokenizer:join(option('pack'),'tokenizer'),open_browser:false,lib_dirs:[dirname(a[3])],env:c.env||{},args}});p.model.name=name;
+ Object.assign(p,{id,name,context:Number(option('max-context')),kv,gpu:0,cpuSet:'0-21',mtp:option('mtp')||'',vision:'off',extraArgs:[],environment:c.env||{},applyPreset:false,portableTuning:{},runtime:{controlDir:control,python,executable:a[3],tqp:false},config:{exe:a[3],cwd:control,arch:deepseek?'deepseek41':'qwen4exp',model_name:id,host:'127.0.0.1',port:18500+profiles.length,gpu:0,tokenizer:await tokenizerForLaunch(option('pack'),native),open_browser:false,lib_dirs:[dirname(a[3])],env:c.env||{},args}});p.model.name=name;
  p.verification8192={protocol:'8192 generated; final 4096 timed',referenceProtocol:'8192-token code input; floor(80% native context) text/chat/story input; native chat template; thinking off',pairedQualified:true,answerQualityTested:false,qualityQualification:'See separate small generated-function receipts; no BF16-reference perplexity qualification',namePairMeaning:'First pair: low code; second pair: paired P/D of slowest high-context genre',metrics,selection,engineBinarySha256:c.engine_binary_sha256,gpuPowerLimitW:95,gpuPowerLimitMeaning:"Requested/default; actual enforced limit is dynamic and may be lower under load",kvCache:p.kv,benchmarkEnvironmentId:c.benchmark_environment_id||'legacy',sourceConfig:selection.selected};
  p.verification8192.hostMemoryEvidence=await memoryEvidence(root,metrics);
  p.verification8192.codeFunctionalEvidence=await codeFunctionalEvidence(root,c);

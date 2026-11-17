@@ -20,7 +20,52 @@ for key,family in models:
  if ids['short']!=ids['long']:configs[key.replace('_','-')+'-peak-code']=dict(config=str(paths['short']),family=family)
 if missing:
  print(json.dumps(dict(status='not-ready',missing_qualified_families=missing,scope='No functional generations launched; partial matrices cannot satisfy the complete selected-family code gate'),indent=2));raise SystemExit(1)
-plan=dict(status='ready',benchmark_environment_id=environment_id,selections=bindings,configs=configs,functions=['merge_intervals','lru_trace','verify_draft'])
+def is_dflash_k7(config,key):
+ args=config['command']
+ def option(name):
+  return args[args.index(name)+1] if name in args and args.index(name)+1<len(args) else None
+ if key.endswith('_strata'):
+  return option('--draft')=='dflash2' and option('--draft-fallback')=='none' and option('--spec')=='8' and option('--draft-cap')=='8'
+ if key.endswith('_ninfer'):
+  return option('--spec')=='dflash2' and option('--draft-tokens')=='7'
+ # This packed model's only speculative backend is its embedded DFlash2 drafter.
+ return key=='27b_basalt' and option('--spec')=='8' and Path(option('--model') or '').name=='qwen27b-nvfp4full-experimental.basalt'
+
+def add_dflash_code_trials():
+ evidence={}
+ for key,family in models:
+  if not (key.endswith('_ninfer') or key in ['27b_basalt','flash_strata','hybrid_strata','flash_fp16_strata','hybrid_fp16_strata']):continue
+  label=key.replace('_','-')
+  for selected_label in [label,label+'-peak-code']:
+   if selected_label not in configs:continue
+   path=Path(configs[selected_label]['config'])
+   config=json.loads(path.read_text())
+   if is_dflash_k7(config,key):
+    evidence[key]=dict(status='selected',label=selected_label,source_case=path.stem,identity=config_id(config))
+    break
+  if key in evidence:continue
+  prefix='range-perf-' if environment else 'range-'
+  eligible=[]
+  for path in (R/'bench').glob(prefix+key+'-*/result.json'):
+   result=json.loads(path.read_text());c=result.get('config',{})
+   if result.get('status')!='ok' or c.get('workload')!='code' or c.get('benchmark_environment_id','legacy')!=environment_id:continue
+   if not is_dflash_k7(c,key):continue
+   source=W/(path.parent.name+'.json')
+   if not source.is_file():continue
+   planned=json.loads(source.read_text())
+   if config_id(planned)!=config_id(c):continue
+   eligible.append((result['tail_decode_tok_s'],path.parent.name,source,c))
+  if not eligible:
+   evidence[key]=dict(status='no-successful-matched-k7-code-run')
+   continue
+  _,case,source,c=max(eligible,key=lambda row:(row[0],row[1]))
+  label+='-dflash-k7'
+  configs[label]=dict(config=str(source),family=family)
+  evidence[key]=dict(status='added',label=label,source_case=case,identity=config_id(c))
+ return evidence
+
+dflash_code_trials=add_dflash_code_trials()
+plan=dict(status='ready',benchmark_environment_id=environment_id,selections=bindings,configs=configs,dflash_code_trials=dflash_code_trials,functions=['merge_intervals','lru_trace','verify_draft'])
 if '--plan'in sys.argv:print(json.dumps(plan,indent=2));raise SystemExit(0)
 p=W/'range-selected-functional-configs.json';p.write_text(json.dumps(configs,indent=2))
 receipt=O/'selected-code-quality-completion.json';state={**plan,'status':'running','started_unix':time.time()};receipt.write_text(json.dumps(state,indent=2)+'\n')
@@ -32,7 +77,7 @@ try:
  rows=json.loads((O/('code-functional-'+p.stem+'.json')).read_text())
  assert {(row['model'],row['function'])for row in rows}=={(label,task)for label in configs for task in plan['functions']}
  assert len(rows)==len(configs)*3 and all(row['status']=='ok'and row.get('grade_schema')==2 and row.get('functional_attempt_id')for row in rows)
- state.update(status='complete',completed_unix=time.time(),all_generations_completed=True,all_independent_functions_passed=all(row['passed']for row in rows),passed=sum(row['passed']for row in rows),total=len(rows),quality_receipt='code-functional-'+p.stem+'.json',scope='All selected long/distinct-peak-code controls generated and independently tested; genuine semantic failures retained separately from completed generation')
+ state.update(status='complete',completed_unix=time.time(),all_generations_completed=True,all_independent_functions_passed=all(row['passed']for row in rows),passed=sum(row['passed']for row in rows),total=len(rows),quality_receipt='code-functional-'+p.stem+'.json',scope='All selected long/distinct-peak-code controls and available matched DFlash2 K7 code candidates generated and independently tested; genuine semantic failures retained separately from completed generation')
 except BaseException as error:
  state.update(status='failed',error=str(error),failed_unix=time.time());raise
 finally:receipt.write_text(json.dumps(state,indent=2)+'\n')
