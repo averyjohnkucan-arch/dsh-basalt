@@ -25,6 +25,27 @@ from benchmark_memory_guard import MemoryGuard
 from benchmark_environment import power_snapshot
 guard=MemoryGuard(cfg,root)
 q=queue.Queue();stop=threading.Event();telemetry=[]
+def storage_counters():
+ # Preserve per-device counts: a stacked block device can duplicate lower-layer I/O.
+ try:
+  rows={}
+  for line in (guard.cgroup/'io.stat').read_text().splitlines():
+   device,*fields=line.split()
+   rows[device]={k:int(v)for k,v in (field.split('=',1)for field in fields)}
+  return {'block_devices':rows}
+ except (AttributeError,OSError,ValueError):
+  pass
+ try:
+  expected=Path(cfg['command'][3]).resolve()
+  for pid in (guard.cgroup/'cgroup.procs').read_text().split():
+   process=Path('/proc')/pid
+   if (process/'exe').resolve()!=expected:continue
+   values=dict(line.split(':',1)for line in(process/'io').read_text().splitlines())
+   return {'native_process':{key:int(values[key])for key in ('read_bytes','write_bytes')}}
+ except (AttributeError,OSError,ValueError,KeyError,IndexError):
+  pass
+ return None
+
 def monitor():
  while not stop.is_set():
   entry={'time':time.monotonic()};telemetry.append(entry)
@@ -58,6 +79,7 @@ try:
   if s.startswith('ERR'):raise RuntimeError(s)
   if s.startswith('READY'):break
  result['load_s']=time.monotonic()-start
+ result['storage_io_counters']={'at_engine_ready':storage_counters()}
  if cfg.get('pin_host') is not None:
   result['host_affinity_before']=sorted(os.sched_getaffinity(proc.pid));os.sched_setaffinity(proc.pid,{int(cfg['pin_host'])})
  if cfg.get('warm_same_prompt'):
@@ -71,14 +93,17 @@ try:
     if int(fields[2])!=depth or int(fields[1])!=32:raise RuntimeError('Incomplete warm-up request')
     result['warmup']={'done_raw':warm,'wall_s':time.monotonic()-prime_started,'mode':'same worker and identical prompt replay'}
     break
+ result['storage_io_counters']['before_measured_request']=storage_counters()
  request=time.monotonic();proc.stdin.write('GEN '+str(cfg.get('generate',8192))+' '+cfg.get('sampling','temperature=0 seed=42')+' '+','.join(map(str,ids))+'\n');proc.stdin.flush()
  arrivals=[];tokens=[];progress=0;last_prefill_report=0
  while True:
   s=line();now=time.monotonic()
   if s.startswith('T '):
    tokens.append(int(s.split()[1]));arrivals.append(now)
+   if len(tokens)==1:result['storage_io_counters']['first_token']=storage_counters()
    if len(tokens)//1024>progress:progress=len(tokens)//1024;print(json.dumps({'output':str(root),'generated':len(tokens),'elapsed':round(now-request,1)}),flush=True)
   elif s.startswith('DONE'):
+   result['storage_io_counters']['request_done']=storage_counters()
    result['done_raw']=s;f=s.split();produced=int(f[1]);prompt=int(f[2]);pp=float(f[3]);dec=float(f[4]);cached=int(f[8])if len(f)>8 else 0
    result.update(status='ok',prompt_tokens=prompt,reused_tokens=cached,prefill_ms=pp,prefill_tok_s=(prompt-cached)/(pp/1000)if pp else 0,decode_ms=dec,decode_tok_s=produced/(dec/1000)if dec else 0,generated=produced,finish=f[5],wall_s=now-request,ttft_s=arrivals[0]-request if arrivals else None)
    tail=cfg.get('timed_tail',4096)

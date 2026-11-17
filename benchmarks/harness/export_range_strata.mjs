@@ -16,7 +16,7 @@ async function completeTokenizer(dir){
  })));
  return files.every(file=>file?.isFile()&&file.size>0);
 }
-async function tokenizerForLaunch(pack,native){
+async function tokenizerForLaunch(pack,native,control,python){
  const existing=join(pack,'tokenizer');
  if(await completeTokenizer(existing))return existing;
  const base=join(root,'packs','strata-http-tokenizers');
@@ -41,6 +41,8 @@ for(const [key,label]of [['flash_strata','Qwen3.8 Flash Next NVFP4 GPTQ INT8'],[
  if(!await performanceQualified(root,key,s))continue;
  const metrics=s[key+'_'+kind+'_metrics'],selection=s[key+'_'+kind];if(!metrics||!selection)continue;
  const c=await get(join(root,'work',selection.selected+'.json')),a=c.command,option=n=>a.includes('--'+n)?a[a.indexOf('--'+n)+1]:undefined;
+ const runtimeControl=a[3].includes('/strata-engine-0.1.60/')?join(root,'runtimes/strata-control-0.1.61'):control;
+ const runtimePython=join(runtimeControl,'python/bin/python3');
  const signature=nativeSignature(c);if(kind==='short'&&seenConfigurations.has(signature))continue;
  const deepseek=key.startsWith('deepseek'),native=option('native')||c.deepseek_storage_evidence?.expert_files?.[0]?.path||'/mnt/media/AI/Models/DeepSeek-V4.1-Flash-1017-GSQ-RCO-GGUF/DeepSeek-V4.1-Flash-1017-GSQ-RCO-IQ2_XXS-00001-of-00004.gguf';
  if(!inventories.has(native)){
@@ -51,7 +53,7 @@ for(const [key,label]of [['flash_strata','Qwen3.8 Flash Next NVFP4 GPTQ INT8'],[
  const p=createProfile(model,18500+profiles.length),id=`scratch-range-${key.replaceAll('_','-')}-${kind}`,name=`${key==='gyro_strata'?label.replace(' FP16','')+' '+(option('kv')||'fp16').toUpperCase():label} ${kind==='short'?'peak code':'long decode'} - p${round(metrics.low.prefill)}/d${round(metrics.low.decode)} - p${round(high.prefill)}/d${round(high.decode)}`;
  const args=[];for(let i=4;i<a.length;i++){if(a[i]==='--serve'||a[i]==='--stop-eos')continue;if(['--eos','--eos-ids','--draft-log','--conversation-cache-dir','--conversation-cache-disk-mib','--conversation-cache-mib','--prompt-cache'].includes(a[i])){i++;continue;}args.push(a[i]);}
  let kv=option('kv')||'engine';if(kv==='int8')kv='Q8/Q8';if(kv==='fp16')kv='FP16/FP16';
- Object.assign(p,{id,name,context:Number(option('max-context')),kv,gpu:0,cpuSet:'0-21',mtp:option('mtp')||'',vision:'off',extraArgs:[],environment:c.env||{},applyPreset:false,portableTuning:{},runtime:{controlDir:control,python,executable:a[3],tqp:false},config:{exe:a[3],cwd:control,arch:deepseek?'deepseek41':'qwen4exp',model_name:id,host:'127.0.0.1',port:18500+profiles.length,gpu:0,tokenizer:await tokenizerForLaunch(option('pack'),native),open_browser:false,lib_dirs:[dirname(a[3])],env:c.env||{},args}});p.model.name=name;
+ Object.assign(p,{id,name,context:Number(option('max-context')),kv,gpu:0,cpuSet:'0-21',mtp:option('mtp')||'',vision:'off',extraArgs:[],environment:c.env||{},applyPreset:false,portableTuning:{},runtime:{controlDir:runtimeControl,python:runtimePython,executable:a[3],tqp:false},config:{exe:a[3],cwd:runtimeControl,arch:deepseek?'deepseek41':'qwen4exp',model_name:id,host:'127.0.0.1',port:18500+profiles.length,gpu:0,tokenizer:await tokenizerForLaunch(option('pack'),native,runtimeControl,runtimePython),open_browser:false,lib_dirs:[dirname(a[3])],env:c.env||{},args}});p.model.name=name;
  p.verification8192={protocol:'8192 generated; final 4096 timed',referenceProtocol:'8192-token code input; floor(80% native context) text/chat/story input; native chat template; thinking off',pairedQualified:true,answerQualityTested:false,qualityQualification:'See separate small generated-function receipts; no BF16-reference perplexity qualification',namePairMeaning:'First pair: low code; second pair: paired P/D of slowest high-context genre',metrics,selection,engineBinarySha256:c.engine_binary_sha256,gpuPowerLimitW:95,gpuPowerLimitMeaning:"Requested/default; actual enforced limit is dynamic and may be lower under load",kvCache:p.kv,benchmarkEnvironmentId:c.benchmark_environment_id||'legacy',sourceConfig:selection.selected};
  p.verification8192.hostMemoryEvidence=await memoryEvidence(root,metrics);
  p.verification8192.codeFunctionalEvidence=await codeFunctionalEvidence(root,c);

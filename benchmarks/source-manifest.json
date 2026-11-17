@@ -208,13 +208,13 @@
     },
     {
       "path": "harness/prepare_benchmark_publication.py",
-      "sha256": "b5aa18df04d3f4edbb5dfe96e3f525ba552377677f8e913456726c05c2021a30",
-      "bytes": 6516
+      "sha256": "f46900aea03909ef83664d5b8ca0669b24a639124fe3571dc1f95a6448d9203e",
+      "bytes": 6547
     },
     {
       "path": "harness/native_bench.py",
-      "sha256": "da381da7c606e7c896b290bbc8e45760bb5d1f302a9ba827557c7450d66e7bf0",
-      "bytes": 8634
+      "sha256": "51ac088f4ac863ba178d7da00bbfe39a4caf660cf97d4597690680b6a70bef32",
+      "bytes": 9772
     },
     {
       "path": "harness/http_bench.py",
@@ -268,8 +268,8 @@
     },
     {
       "path": "harness/range_strata.py",
-      "sha256": "17c33c904bb8be5ebcd9b7e0bbb91c8880208dd812522853f1f947546df48596",
-      "bytes": 2574
+      "sha256": "c59e03d0b54d4fac167eee162267c6f9809c5b3411ba1868710c2fd4a30f35b5",
+      "bytes": 3106
     },
     {
       "path": "harness/range_ninfer.py",
@@ -318,13 +318,13 @@
     },
     {
       "path": "harness/export_range_strata.mjs",
-      "sha256": "52f4ce9ea5a3fe63d620d4617dba023102953a59fa4eb16e35fbe8cecb3d8e7f",
-      "bytes": 6907
+      "sha256": "36080fd890dbbbe392f841692a7e7c2374b7c3a01be2f0bf3db96f4bd2f2b255",
+      "bytes": 7158
     },
     {
       "path": "harness/range_progress_report.py",
-      "sha256": "41488c2c77baece41568bbdab2051bde9979ee8381354bedfb8baa4c8b4258f0",
-      "bytes": 9910
+      "sha256": "38bf6ddd48fa2ab14d5a3527ec0635d7315d09ace84e9b9ace0b789b27b00d21",
+      "bytes": 9880
     },
     {
       "path": "harness/range_progress_chart.py",
@@ -343,8 +343,8 @@
     },
     {
       "path": "harness/quality_range_selected.py",
-      "sha256": "f7f01e05a8f02575bc969eb5bb9b7aa3b71b3eabad4cf382e98d50100535bf2b",
-      "bytes": 7370
+      "sha256": "9fada8894a023e6a470e9c54d00c731787467a9af7eb93edf51924eb5d610882",
+      "bytes": 7392
     },
     {
       "path": "harness/code_function_eval.py",

@@ -17,6 +17,15 @@ if model.endswith('fp16'):
  selected_state=read(O/'range-selections.json');parent=model.removesuffix('_fp16')+'_strata_long'
  if parent in selected_state:base=read(R/'bench'/selected_state[parent]['selected']/'result.json')['config']
  opt(base,'--kv','fp16')
+# The in-flight INT8 hybrid cohort remains pinned. New families use the
+# released engine after the exact executable has passed the CLI preflight.
+if model in ('gyro','flash_fp16','hybrid_fp16'):
+ proof=read(O/'strata060-cli-preflight.json')
+ binary=R/'runtimes/strata-engine-0.1.60/strata'
+ assert proof['status']=='passed-cli-no-inference' and digest(binary)==proof['engine_sha256']
+ base['command'][3]=str(binary)
+ base['env']={**base.get('env',{}),'LD_LIBRARY_PATH':str(binary.parent)}
+ base['engine_channel']='official-0.1.60'
 candidates=[]
 for tag,changes in [('mtp6',{'--spec':6}),('mtp4',{'--spec':4}),('mtp2',{'--spec':2}),('pcie55',{'--pcie-frac':.55}),('pcie75',{'--pcie-frac':.75}),('workers14',{'--pool-workers':14}),('resident131k',{'--kv-resident':131072})]:
  c=copy.deepcopy(base)

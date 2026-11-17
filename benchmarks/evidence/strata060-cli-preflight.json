@@ -1,0 +1,12 @@
+{
+  "status": "passed-cli-no-inference",
+  "engine": "/mnt/media/scratch/dsh-inference-tuning-20261115/runtimes/strata-engine-0.1.60/strata",
+  "engine_sha256": "5f474a3de9264853ca58179b447facf84d10543d03be10a0e3e765c842dc7b6e",
+  "engine_version": "0.1.60",
+  "control_version": "0.1.61",
+  "checks": {
+    "range-perf-flash_strata-range-check-d570e314cdb3-text": "All native arguments parsed before intentional sentinel failure",
+    "range-perf-hybrid_strata-base-text": "All native arguments parsed before intentional sentinel failure"
+  },
+  "scope": "Argument acceptance only. Preserved active 0.1.59 benchmark and selected controls; no runtime parity or performance conclusion."
+}
