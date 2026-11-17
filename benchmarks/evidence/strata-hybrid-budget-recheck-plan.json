@@ -1,0 +1,17 @@
+{
+  "status": "queued",
+  "scope": "Original fit receipts show early free-RAM stops; the actual upcoming joint planner changes only resident-cache budget. Existing 108GiB cap, 12GiB outside cap and pressure watchdog retained. No GPU runs launched by this check.",
+  "candidates": [
+    {
+      "label": "resident-budget-92",
+      "budget_gib": 92,
+      "prior_stop": "RAM safety stop: available=11.9GiB, memory-pressure avg10=0.4%"
+    },
+    {
+      "label": "resident-budget-96",
+      "budget_gib": 96,
+      "prior_stop": "RAM safety stop: available=11.3GiB, memory-pressure avg10=1.7%"
+    }
+  ],
+  "source_sha256": "b2402462a67265bf0cd28d91ed74c617999b691be7a80337cb7f12c534e59b76"
+}

@@ -43,6 +43,11 @@ if key.endswith('_basalt'):
  variants.append(('saved-ranking',{'--expert-profile':W/'saved-expert-profiles/flash-basalt.prof'}))
 if key.startswith('hybrid')and key.endswith('_basalt'):
  variants += [(f'adapt-swaps-{count}',{'--adapt-swaps':count})for count in [0,16,32]]
+if key=='hybrid_strata':
+ # The 92/96GiB probes were cut short by the superseded minimum-unused-RAM rule.
+ # Retest placement under the active 108GiB worker cap and pressure watchdog.
+ variants += [(f'resident-budget-{budget}',{'--resident-budget-gib':budget})for budget in [92,96]]
+
 plan=repeatability_plan(key);data=read(plan);known={config_id(read(R/'bench'/x['case']/'result.json')['config'])for x in data['selection']['candidates']}
 configured=[]
 for label,changes in variants:

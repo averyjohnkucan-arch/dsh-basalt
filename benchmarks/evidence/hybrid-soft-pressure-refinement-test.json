@@ -1,7 +1,7 @@
 {
   "status": "passed",
   "scope": "Actual pure refinement gate; only demonstrated full-run soft-limit pressure with host reserve intact and no hard/OOM events permits104\u2192106GiB. Native arguments,108GiB hard max,12GiB reserve, swap cap and pressure watchdog are unchanged. GPU experiment remains queued; no speed claim.",
-  "source_sha256": "10df5ea81f0ad80c1da310d3f7edb018e2438780a3ad5b05c4aa1e1fb8e80e88",
+  "source_sha256": "b2402462a67265bf0cd28d91ed74c617999b691be7a80337cb7f12c534e59b76",
   "positive_trial_memory_policy": {
     "memory_high_gib": 106,
     "memory_max_gib": 108,

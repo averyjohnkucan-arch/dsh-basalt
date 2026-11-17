@@ -1,8 +1,8 @@
 {
-  "at": "2026-11-16T18:07:41.860813-08:00",
+  "at": "2026-11-16T18:11:34.594909-08:00",
   "status": "passed",
-  "prepared_from_base_commit": "f88cfa2",
-  "manifest_sha256": "3c40e056da0735cea23e49a7a10564017274372b98a3b8b78a4cf4dc5a583f97",
+  "prepared_from_base_commit": "7778717",
+  "manifest_sha256": "97fc7dc905c9ae0e4129ce9e2f2d3b3751b1e965e95c6794df9d78b5742ca776",
   "source_count": 70,
   "scope": "Python AST local imports and existing flat literal py/mjs/txt/cpp/hpp sibling references checked against the exact source manifest. External engine/plugin clone layout remains required; dynamic references, packages, weights and fixtures excluded.",
   "checks": [
