@@ -1,0 +1,22 @@
+{
+  "status": "A/B/A complete; faster candidate changes output repetition",
+  "scope": "Descriptive repetition check,not a semantic quality grade",
+  "observations": {
+    "saved": {
+      "words": 3240,
+      "unique_fourgram_fraction": 0.9499536607970342,
+      "maximum_fourgram_count": 6
+    },
+    "prefill2048": {
+      "words": 3463,
+      "unique_fourgram_fraction": 0.7644508670520231,
+      "maximum_fourgram_count": 18
+    },
+    "saved-repeat": {
+      "words": 3240,
+      "unique_fourgram_fraction": 0.9499536607970342,
+      "maximum_fourgram_count": 6
+    }
+  },
+  "next": "No further variants; preserve saved default"
+}

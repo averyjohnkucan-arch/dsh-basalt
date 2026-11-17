@@ -493,8 +493,8 @@
     },
     {
       "path": "measured-inference-comparison.md",
-      "sha256": "01d04b96f3ef4874d63f0bb1a00789fc03a71eb9402b4672022f4ec8100bd766",
-      "bytes": 11511
+      "sha256": "2d5c2eea0bcbedbae106811e588a705ed20b68edd243178b247b63f2523a3fc3",
+      "bytes": 12383
     },
     {
       "path": "range-comparison-progress.csv",
@@ -743,8 +743,33 @@
     },
     {
       "path": "evidence/measured-profile-snapshot.json",
-      "sha256": "865c094f688df4d0069920db58111caf5bcda632904251fa9cfe5706125ca4d6",
-      "bytes": 242612
+      "sha256": "a2fc2a93e6211a133c00aa66e88c4ad9f673d2f6d6b96035993d0a99c27fef17",
+      "bytes": 244504
+    },
+    {
+      "path": "evidence/bounded-remaining80-results.json",
+      "sha256": "8aa632c98eaa6f7a7962e9a2cfd09ec82c8b6223772c40edc222623eac566fd9",
+      "bytes": 2410
+    },
+    {
+      "path": "evidence/bounded-remaining80-selection.json",
+      "sha256": "a5837e5be4cb59eb494b150155fc9a65140e395b534a9a13669b37eecce99622",
+      "bytes": 1631
+    },
+    {
+      "path": "evidence/ninfer80-output-repetition.json",
+      "sha256": "f791a52e34f4d34bd1256dbd05f03fa77e333adf0cb06f40ef9d8dd0209aa58d",
+      "bytes": 637
+    },
+    {
+      "path": "harness/bounded_remaining_80.py",
+      "sha256": "0cb32925273f12c1483f6cb33449562a09c428f8a6c22f41075003f1dfea7e4c",
+      "bytes": 2845
+    },
+    {
+      "path": "harness/repeat_ninfer80_saved.py",
+      "sha256": "480c94b0a4ae79cdcb6072d991a98343c213596986d60f9cdbed379b267db3dc",
+      "bytes": 680
     }
   ]
 }

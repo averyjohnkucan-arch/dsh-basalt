@@ -3853,6 +3853,29 @@
           },
           "projectionModes": "not-applicable",
           "scope": "Actual adapter GPU launch; exact measured native controls; not throughput remeasurement or general quality proof"
+        },
+        "bounded80Selection": {
+          "scope": "Three-or-fewer distinct configurations on one matched80% chat workload;not all-genre or global maximum proof",
+          "peak_decode": 84.18521744578064,
+          "decode_floor": 79.9759565734916,
+          "selected": {
+            "status": "ok",
+            "error": null,
+            "generated": 4096,
+            "prefill_tok_s": 1465.6087693625025,
+            "tail_decode_tok_s": 84.18521744578064,
+            "reused_tokens": 0,
+            "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/bounded80-ninfer27-prefill2048",
+            "config": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/bounded80-ninfer27-prefill2048.json",
+            "variant": "prefill2048"
+          },
+          "trials": 2,
+          "promotion": {
+            "status": "not promoted",
+            "retained": "saved",
+            "reason": "Prefill2048 output is materially more repetitive; its throughput increase is not established for comparable prose. Saved A/A decode57.62/57.25 repeats closely.",
+            "runs": 3
+          }
         }
       },
       {
@@ -5877,6 +5900,23 @@
             "--vram-reserve-mib": "1200"
           },
           "scope": "Actual Strata adapter GPU launch and arithmetic sanity; not a throughput rerun"
+        },
+        "bounded80Selection": {
+          "scope": "Three-or-fewer distinct configurations on one matched80% chat workload;not all-genre or global maximum proof",
+          "peak_decode": 82.39908423811082,
+          "decode_floor": 78.27913002620527,
+          "selected": {
+            "status": "ok",
+            "error": null,
+            "generated": 4096,
+            "prefill_tok_s": 2153.204369347216,
+            "tail_decode_tok_s": 82.39908423811082,
+            "reused_tokens": 0,
+            "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/bounded80-gyro-saved",
+            "config": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/bounded80-gyro-saved.json",
+            "variant": "saved"
+          },
+          "trials": 3
         }
       }
     ],

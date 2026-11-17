@@ -1,0 +1,67 @@
+{
+  "ninfer27-saved": {
+    "status": "ok",
+    "error": null,
+    "generated": 4096,
+    "prefill_tok_s": 1462.7121641319998,
+    "tail_decode_tok_s": 57.620131079247095,
+    "reused_tokens": 0,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/bounded80-ninfer27-saved",
+    "config": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/bounded80-ninfer27-saved.json",
+    "variant": "saved"
+  },
+  "ninfer27-prefill2048": {
+    "status": "ok",
+    "error": null,
+    "generated": 4096,
+    "prefill_tok_s": 1465.6087693625025,
+    "tail_decode_tok_s": 84.18521744578064,
+    "reused_tokens": 0,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/bounded80-ninfer27-prefill2048",
+    "config": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/bounded80-ninfer27-prefill2048.json",
+    "variant": "prefill2048"
+  },
+  "gyro-saved": {
+    "status": "ok",
+    "error": null,
+    "generated": 4096,
+    "prefill_tok_s": 2153.204369347216,
+    "tail_decode_tok_s": 82.39908423811082,
+    "reused_tokens": 0,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/bounded80-gyro-saved",
+    "config": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/bounded80-gyro-saved.json",
+    "variant": "saved"
+  },
+  "gyro-spec0": {
+    "status": "failed",
+    "error": "engine exited: None",
+    "generated": null,
+    "prefill_tok_s": null,
+    "tail_decode_tok_s": null,
+    "reused_tokens": null,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/bounded80-gyro-spec0",
+    "config": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/bounded80-gyro-spec0.json",
+    "variant": "spec0"
+  },
+  "gyro-spec4": {
+    "status": "ok",
+    "error": null,
+    "generated": 4096,
+    "prefill_tok_s": 2136.0474235834545,
+    "tail_decode_tok_s": 77.18306466724579,
+    "reused_tokens": 0,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/bounded80-gyro-spec4",
+    "config": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/bounded80-gyro-spec4.json",
+    "variant": "spec4"
+  },
+  "ninfer27-saved-repeat": {
+    "status": "ok",
+    "error": null,
+    "generated": 4096,
+    "prefill_tok_s": 1494.2908160595516,
+    "tail_decode_tok_s": 57.24782192363012,
+    "reused_tokens": 0,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/bounded80-ninfer27-saved-repeat",
+    "variant": "saved-repeat"
+  }
+}
