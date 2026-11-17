@@ -490,6 +490,36 @@
       "path": "harness/ninfer_matched_depths.py",
       "sha256": "d0cf2a857b85d74af46eebeabda1826aa14369b4b536390b818f7fe866977a69",
       "bytes": 2223
+    },
+    {
+      "path": "measured-inference-comparison.md",
+      "sha256": "b881ec2fc7541871279dc32392edfc64394860ddebeb7236b4722ef7639be297",
+      "bytes": 4680
+    },
+    {
+      "path": "range-comparison-progress.csv",
+      "sha256": "f72e08294c4b362d9b3a040d460f60ef1843098618a39a8cbd5cb3e15cd454d3",
+      "bytes": 2178
+    },
+    {
+      "path": "evidence/flash-fp16-historical-matched.json",
+      "sha256": "70b669a593730bab9a614a4621e03a8f1699f758a78e07363a8ccd40828467e9",
+      "bytes": 2453
+    },
+    {
+      "path": "evidence/deepseek-projection-research.json",
+      "sha256": "f6848d5a5e5a82f1dc26d901922caf6b03c1a2925370202d893ee6f87aa74560",
+      "bytes": 3912
+    },
+    {
+      "path": "harness/flash_fp16_matched.py",
+      "sha256": "394bbd9b1dd24c5d80c28e9cf08a39004106e0843dc74d9c43c912e912a62cd9",
+      "bytes": 2703
+    },
+    {
+      "path": "harness/basalt_stock041_smoke.py",
+      "sha256": "313ae5cd95e0778fa68417334187c39d7c9772ba61fd59f01c6743e17db714be",
+      "bytes": 2724
     }
   ]
 }

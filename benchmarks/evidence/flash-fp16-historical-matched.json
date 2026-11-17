@@ -1,0 +1,53 @@
+{
+  "scope": "Historical matched fixtures, 1024 output and configured final512 decode. Binary hashes absent: not latest-runtime validation or current maximum.",
+  "cases": {
+    "old-10": {
+      "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/quiet-flash-fp16-old-10",
+      "result_sha256": "5323194990c82e05ee66b51d3c1b04efcbc7f45617df020391c0f692a05d9223",
+      "prompt": {
+        "tokens": 26214,
+        "sha256": "0d547bc49c24fc7c6307f1b252040d1979d915cc47a7696cf03fcca7dd37b6c0",
+        "fixture": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/matched-qwen.ids"
+      },
+      "prefill_tok_s": 1681.4624759461194,
+      "tail_decode_tok_s": 49.50455321986369,
+      "binary_hash_recorded": false
+    },
+    "basalt-10": {
+      "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/quiet-flash-fp16-basalt-10",
+      "result_sha256": "8340e7743c31629aa14cc5b71a2961afda4d6fd254ea2672f4d9f363c6dfc69e",
+      "prompt": {
+        "tokens": 26214,
+        "sha256": "0d547bc49c24fc7c6307f1b252040d1979d915cc47a7696cf03fcca7dd37b6c0",
+        "fixture": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/matched-qwen.ids"
+      },
+      "prefill_tok_s": 2680.806675938804,
+      "tail_decode_tok_s": 49.676076981659364,
+      "binary_hash_recorded": false
+    },
+    "old-90": {
+      "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/quiet-flash-fp16-old-90",
+      "result_sha256": "a086cbe3fb350eefa4ca9db5d930d56294344738c44bf0366bf7f6c575a99395",
+      "prompt": {
+        "tokens": 235929,
+        "sha256": "8a9130797702db41eb08120b984bf2b00b2a2e2b614f3012587f6127f264f2fa",
+        "fixture": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/matched-qwen.ids"
+      },
+      "prefill_tok_s": 1695.8680965124329,
+      "tail_decode_tok_s": 48.55837082907683,
+      "binary_hash_recorded": false
+    },
+    "basalt-90": {
+      "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/quiet-flash-fp16-basalt-90",
+      "result_sha256": "4f494123781d47c712971603e3803f0fbbee4b0e4da074cc6fe4a28d825870c0",
+      "prompt": {
+        "tokens": 235929,
+        "sha256": "8a9130797702db41eb08120b984bf2b00b2a2e2b614f3012587f6127f264f2fa",
+        "fixture": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/matched-qwen.ids"
+      },
+      "prefill_tok_s": 2342.2152508215113,
+      "tail_decode_tok_s": 53.21636315180525,
+      "binary_hash_recorded": false
+    }
+  }
+}

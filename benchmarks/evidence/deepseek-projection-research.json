@@ -23,7 +23,7 @@
     "deepseek_width": 5120,
     "conclusion": "Qwen hooks are not DeepSeek hooks; cannot enable by forwarding the request boolean",
     "engram_source": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/basalt-latest/src/models/deepseek41/model.cpp",
-    "engram_limitation": "Current DeepSeek loader opens Engram from the same converted pack path, so an external Engram hook is required for matched split-drive layout"
+    "engram_limitation": "Historical upstream same-pack limitation; custom split runtime now supports external Engram and was used in completed XXS/XS and ABBA tests. This does not add refusal projection."
   },
   "required_validation": [
     "Architecture-aware loader validating dsv41 40x5120 and per-stream projection semantics",
@@ -52,5 +52,14 @@
       1.0000000001169014,
       1.0000000001169014
     ]
+  },
+  "latest_local_source_audit": {
+    "strata_revision": "c77572806996349b49995e4f98d41b5294d36a21",
+    "strata_deepseek_config_result": "arch",
+    "strata_conclusion": "This Strata source explicitly retires DeepSeek execution; its Qwen control-vector flags do not provide DeepSeek projection. Older standalone DeepSeek runtime remains a separate engine.",
+    "strata_evidence": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/upstream-20261116/strata/strata_control/retired.py",
+    "strata_evidence_sha256": "d38fa6a1c4f98e91e61a3e142a82e5fe5afd3cf381b3c535dbabe322aa3b67fa",
+    "basalt_revision": "d3b75742967c7f9fd892c6894a2b9ac6e36e0cf3",
+    "basalt_conclusion": "No cvec/control-vector hooks found in src/models/deepseek41; Qwen projection kernel still documents width up to4096. No DeepSeek behavioral projection proof."
   }
 }
