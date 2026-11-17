@@ -1,11 +1,65 @@
 {
-  "at": "2026-11-16T19:00:12.005204-08:00",
+  "at": "2026-11-16T19:56:49.724814-08:00",
   "status": "passed",
-  "prepared_from_base_commit": "01ec233",
-  "manifest_sha256": "10d611e0e278e335788248d68d6ed2fbec33efc3fb9c850e86720164608defc7",
-  "source_count": 72,
+  "prepared_from_base_commit": "0b106e3",
+  "manifest_sha256": "fcf64cbfcf0f7178255cbf20843afe448e1baeb95bc9f123ad33017ca064afe6",
+  "source_count": 76,
   "scope": "Python AST local imports and existing flat literal py/mjs/txt/cpp/hpp sibling references checked against the exact source manifest. External engine/plugin clone layout remains required; dynamic references, packages, weights and fixtures excluded.",
   "checks": [
+    {
+      "source": "quick_basalt.py",
+      "dependency": "range_common.py",
+      "kind": "local import",
+      "passed": true
+    },
+    {
+      "source": "quick_basalt.py",
+      "dependency": "deepseek_storage.py",
+      "kind": "local import",
+      "passed": true
+    },
+    {
+      "source": "quick_basalt.py",
+      "dependency": "benchmark_memory_guard.py",
+      "kind": "local import",
+      "passed": true
+    },
+    {
+      "source": "retry_quick_deepseek.py",
+      "dependency": "range_common.py",
+      "kind": "local import",
+      "passed": true
+    },
+    {
+      "source": "retry_quick_deepseek.py",
+      "dependency": "deepseek_storage.py",
+      "kind": "local import",
+      "passed": true
+    },
+    {
+      "source": "quick_deepseek_short_smoke.py",
+      "dependency": "range_common.py",
+      "kind": "local import",
+      "passed": true
+    },
+    {
+      "source": "quick_deepseek_short_smoke.py",
+      "dependency": "deepseek_storage.py",
+      "kind": "local import",
+      "passed": true
+    },
+    {
+      "source": "quick_deepseek_041.py",
+      "dependency": "range_common.py",
+      "kind": "local import",
+      "passed": true
+    },
+    {
+      "source": "quick_deepseek_041.py",
+      "dependency": "deepseek_storage.py",
+      "kind": "local import",
+      "passed": true
+    },
     {
       "source": "range_percent_check.py",
       "dependency": "benchmark_environment.py",
@@ -459,6 +513,30 @@
     {
       "source": "continue_after_range_queue.py",
       "dependency": "range_deepseek_xs.py",
+      "kind": "existing literal sibling",
+      "passed": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "quick_basalt.py",
+      "kind": "existing literal sibling",
+      "passed": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "retry_quick_deepseek.py",
+      "kind": "existing literal sibling",
+      "passed": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "quick_deepseek_short_smoke.py",
+      "kind": "existing literal sibling",
+      "passed": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "quick_deepseek_041.py",
       "kind": "existing literal sibling",
       "passed": true
     },

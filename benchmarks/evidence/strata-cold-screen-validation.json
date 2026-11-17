@@ -1,11 +1,12 @@
 {
   "status": "passed",
-  "updated_unix": 1794842643.4245934,
+  "updated_unix": 1794884627.4406972,
   "scope": "Actual five-model Strata planner executed with tune replaced by capture-only spy; every base/candidate checked against installed native binary flags; all DeepSeek tune calls explicitly cold. No GPU processes launched.",
-  "source_sha256": "17c33c904bb8be5ebcd9b7e0bbb91c8880208dd812522853f1f947546df48596",
+  "source_sha256": "c59e03d0b54d4fac167eee162267c6f9809c5b3411ba1868710c2fd4a30f35b5",
   "models": [
     {
       "model": "flash",
+      "binary": "/mnt/media/scratch/dsh-inference-tuning-20261115/runtimes/strata-engine-0.1.59/strata",
       "planned_candidates": 11,
       "cold_screens": true,
       "native_flag_vocabulary": "passed",
@@ -13,6 +14,7 @@
     },
     {
       "model": "hybrid",
+      "binary": "/mnt/media/scratch/dsh-inference-tuning-20261115/runtimes/strata-engine-0.1.59/strata",
       "planned_candidates": 11,
       "cold_screens": true,
       "native_flag_vocabulary": "passed",
@@ -20,6 +22,7 @@
     },
     {
       "model": "gyro",
+      "binary": "/mnt/media/scratch/dsh-inference-tuning-20261115/runtimes/strata-engine-0.1.60/strata",
       "planned_candidates": 10,
       "cold_screens": true,
       "native_flag_vocabulary": "passed",
@@ -27,6 +30,7 @@
     },
     {
       "model": "flash_fp16",
+      "binary": "/mnt/media/scratch/dsh-inference-tuning-20261115/runtimes/strata-engine-0.1.60/strata",
       "planned_candidates": 11,
       "cold_screens": true,
       "native_flag_vocabulary": "passed",
@@ -34,6 +38,7 @@
     },
     {
       "model": "hybrid_fp16",
+      "binary": "/mnt/media/scratch/dsh-inference-tuning-20261115/runtimes/strata-engine-0.1.60/strata",
       "planned_candidates": 11,
       "cold_screens": true,
       "native_flag_vocabulary": "passed",

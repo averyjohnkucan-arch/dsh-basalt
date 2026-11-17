@@ -2,6 +2,26 @@
   "scope": "Exact harness snapshot; scratch paths and sibling clone layout retained for audit. No weights, generated answers, credentials, or token-ID fixtures included.",
   "files": [
     {
+      "path": "harness/quick_basalt.py",
+      "sha256": "e120ed4ec5ce8646e4724e7f435c998d97365bf6205f807a7a9a89897d8dd908",
+      "bytes": 3339
+    },
+    {
+      "path": "harness/retry_quick_deepseek.py",
+      "sha256": "a9e616ac9f445070fe26c41d501f59ab60a767b571e33a5e523d1596f69d93f4",
+      "bytes": 1111
+    },
+    {
+      "path": "harness/quick_deepseek_short_smoke.py",
+      "sha256": "9fc5af917ec995cca1a393c64fa71d778ad2177c2d9633e6c1179a9f2670c3dd",
+      "bytes": 982
+    },
+    {
+      "path": "harness/quick_deepseek_041.py",
+      "sha256": "9c3b3208325240c3418aaf0f1a689e2ad2b2c0089273a938aadfccc4c6c42b75",
+      "bytes": 1231
+    },
+    {
       "path": "harness/audit_27b_weight_import.py",
       "sha256": "00c28e3d3465ff6677ab416f53a4fa1ecfcf5dc85ec6438e7a00e96dc55910f2",
       "bytes": 5669
@@ -28,8 +48,8 @@
     },
     {
       "path": "harness/test_strata_cold_screens.py",
-      "sha256": "770027d815e1d052f38b785eb1d4cd0823edb33afd5dff46dd13bd3d446a8120",
-      "bytes": 3306
+      "sha256": "e0c6b4995a35ac26bc0eeb5a65eb8a0b11290e18dc19c4aa62fa8c9922430e0a",
+      "bytes": 3633
     },
     {
       "path": "harness/move_deepseek_internal.py",
@@ -208,8 +228,8 @@
     },
     {
       "path": "harness/prepare_benchmark_publication.py",
-      "sha256": "f46900aea03909ef83664d5b8ca0669b24a639124fe3571dc1f95a6448d9203e",
-      "bytes": 6547
+      "sha256": "60633b668ab09271ac2186019c9fe4de72eb09e8368b08910c15878702d2ff44",
+      "bytes": 6771
     },
     {
       "path": "harness/native_bench.py",

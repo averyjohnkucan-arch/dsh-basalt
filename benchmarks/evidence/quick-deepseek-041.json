@@ -1,0 +1,18 @@
+[
+  {
+    "quant": "XXS",
+    "status": "failed",
+    "prefill": null,
+    "decode": null,
+    "error": "engine exited: None",
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/range-perf-quick-basalt-deepseek-xxs-reserve16-041"
+  },
+  {
+    "quant": "XS",
+    "status": "failed",
+    "prefill": null,
+    "decode": null,
+    "error": "engine exited: None",
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/range-perf-quick-basalt-deepseek-xs-reserve16-041"
+  }
+]

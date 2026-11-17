@@ -1,0 +1,18 @@
+[
+  {
+    "quant": "XXS",
+    "status": "ok",
+    "prefill": 12.001200120012001,
+    "decode": 22.388959426485012,
+    "error": null,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/range-perf-quick-basalt-deepseek-xxs-serial12"
+  },
+  {
+    "quant": "XS",
+    "status": "ok",
+    "prefill": 8.969280215262724,
+    "decode": 14.220495680227344,
+    "error": null,
+    "case": "/mnt/media/scratch/dsh-inference-tuning-20261115/bench/range-perf-quick-basalt-deepseek-xs-serial12"
+  }
+]
