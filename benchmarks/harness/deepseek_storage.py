@@ -64,6 +64,8 @@ def storage_config(config,quant='XXS',basalt=False):
             path=(model_dir/line.split(' ',2)[2]).resolve();actual.append(str(path))
             if 'engram' in path.name.lower():assert path==ENGRAM
             else:assert path.stat().st_dev==DESKTOP.stat().st_dev, 'Strata tensor source escaped the system SSD'
+        expected=[row['path'] for row in evidence['expert_files']]+[evidence['shared_engram'],evidence['draft']]
+        assert actual==expected, 'Strata tensor index did not select the exact requested shards, shared Engram and DSpark draft'
         evidence['strata_tensor_files']=actual
     c['deepseek_storage_evidence']=evidence
     return c

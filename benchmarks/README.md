@@ -11,7 +11,8 @@ Tuning remains in progress until each family has a matching performance receipt,
 ## Final measurement convention
 
 - Low context: exactly 8,192 native-chat input tokens containing code.
-- High context: floor(80% of native context capacity), separately for text, conversation and original-story generation. This is 209,715 input tokens for the tested Qwen models and 838,860 for DeepSeek. This convention supersedes the earlier 10%/90% all-code diagnostics; the earlier measurements remain separate evidence.
+- High context: floor(80% of native context capacity), separately for text, conversation and original-story generation. This is 209,715 input tokens for the tested Qwen models and 838,860 for DeepSeek. These measurements choose the tuned controls. The earlier synthetic diagnostics remain separate evidence.
+- Exact context confirmation uses code at floor(10%) and conversation at floor(90%), measured across the saved and selected controls. The peak-code preset is used at 10% and the selected long-context preset at 90%. Only matched prompt hashes, fresh workers and complete generations enter the confirmation table.
 - Generate 8,192 tokens and time the final 4,096 for sustained decode. HTTP draft-batch timing boundaries can differ by up to seven tokens; actual token counts are retained.
 - Thinking off, temperature zero, seed 42 where supported. Tokenizer-native chat framing is used. Exact prompt length and token hash are recorded. Model-native tokenizers must be checked before sharing fixtures across artifacts.
 - Fresh worker and no restored prefix for qualified prefill. OS file cache is not globally dropped. Restored-prefix screens are explicitly diagnostic.

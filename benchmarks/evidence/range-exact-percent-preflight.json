@@ -1,0 +1,55 @@
+{
+  "status": "passed",
+  "scope": "No GPU launched. Exact lengths, token hashes, native chat prefix/suffix, two exact source presets per measured family and deduplicated saved baselines verified against current accepted receipts.",
+  "fixtures": [
+    {
+      "family": "qwen",
+      "workload": "code10",
+      "depth": 26214,
+      "token_sha256": "441a3bb4164bf04b7bda5d3cd3ec593bd094f56c6bc7c4fb36e6b2b37b5f744e"
+    },
+    {
+      "family": "qwen",
+      "workload": "chat90",
+      "depth": 235929,
+      "token_sha256": "63afd9312f8afcc63d393eea375a8421b53f58786f0aec2062446e151e4cace8"
+    },
+    {
+      "family": "qwen27b",
+      "workload": "code10",
+      "depth": 26214,
+      "token_sha256": "441a3bb4164bf04b7bda5d3cd3ec593bd094f56c6bc7c4fb36e6b2b37b5f744e"
+    },
+    {
+      "family": "qwen27b",
+      "workload": "chat90",
+      "depth": 235929,
+      "token_sha256": "63afd9312f8afcc63d393eea375a8421b53f58786f0aec2062446e151e4cace8"
+    },
+    {
+      "family": "deepseek",
+      "workload": "code10",
+      "depth": 104857,
+      "token_sha256": "d4a54af4288baa5e5119a73cad08353f692932607a07066ec2c4a6e417858d6a"
+    },
+    {
+      "family": "deepseek",
+      "workload": "chat90",
+      "depth": 943718,
+      "token_sha256": "79efe4649b8e112cd5eb1b062feb7f64b8636ef9a17325b4b257080148fead50"
+    }
+  ],
+  "plan": {
+    "percent-old-flash-code10": "range-perf-flash-old-code",
+    "percent-tuned-flash_basalt-code10": "range-perf-flash_basalt-peak-code-confirm-b880f20a9748-1",
+    "percent-old-flash-chat90": "range-perf-flash-old-code",
+    "percent-tuned-flash_basalt-chat90": "range-perf-flash_basalt-range-repeat-35b46ec69f83-story",
+    "percent-tuned-flash_strata-code10": "range-perf-flash_strata-peak-code-confirm-8829d2f16ee7-0",
+    "percent-tuned-flash_strata-chat90": "range-perf-flash_strata-range-check-d570e314cdb3-text",
+    "percent-old-hybrid-code10": "range-perf-hybrid-old-code",
+    "percent-tuned-hybrid_basalt-code10": "range-perf-hybrid_basalt-peak-code-confirm-9e82bc86386d-1",
+    "percent-old-hybrid-chat90": "range-perf-hybrid-old-code",
+    "percent-tuned-hybrid_basalt-chat90": "range-perf-hybrid_basalt-range-check-9e82bc86386d-story"
+  },
+  "benchmark_environment_id": "performance-powerd-20261115"
+}

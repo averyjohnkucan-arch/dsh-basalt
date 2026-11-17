@@ -1,11 +1,29 @@
 {
-  "at": "2026-11-16T18:02:05.376005-08:00",
+  "at": "2026-11-16T18:07:41.860813-08:00",
   "status": "passed",
-  "prepared_from_base_commit": "bc6db9d4ed991c65bb330ee3ee36ff493f3e41da",
-  "manifest_sha256": "35d651e8b5c108cc634105f61203a091252587522bd8eadfd6e8ee0281554c99",
-  "source_count": 69,
+  "prepared_from_base_commit": "f88cfa2",
+  "manifest_sha256": "3c40e056da0735cea23e49a7a10564017274372b98a3b8b78a4cf4dc5a583f97",
+  "source_count": 70,
   "scope": "Python AST local imports and existing flat literal py/mjs/txt/cpp/hpp sibling references checked against the exact source manifest. External engine/plugin clone layout remains required; dynamic references, packages, weights and fixtures excluded.",
   "checks": [
+    {
+      "source": "range_percent_check.py",
+      "dependency": "benchmark_environment.py",
+      "kind": "local import",
+      "passed": true
+    },
+    {
+      "source": "range_percent_check.py",
+      "dependency": "range_common.py",
+      "kind": "local import",
+      "passed": true
+    },
+    {
+      "source": "range_percent_check.py",
+      "dependency": "range_identity.py",
+      "kind": "local import",
+      "passed": true
+    },
     {
       "source": "test_ninfer_planner.py",
       "dependency": "range_tuner.py",
@@ -98,7 +116,19 @@
     },
     {
       "source": "range_deepseek_xs.py",
+      "dependency": "range_percent_check.py",
+      "kind": "existing literal sibling",
+      "passed": true
+    },
+    {
+      "source": "range_deepseek_xs.py",
       "dependency": "code_function_eval.py",
+      "kind": "existing literal sibling",
+      "passed": true
+    },
+    {
+      "source": "range_deepseek_xs.py",
+      "dependency": "range_percent_check.py",
       "kind": "existing literal sibling",
       "passed": true
     },
@@ -429,6 +459,12 @@
     {
       "source": "continue_after_range_queue.py",
       "dependency": "range_deepseek_xs.py",
+      "kind": "existing literal sibling",
+      "passed": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "range_percent_check.py",
       "kind": "existing literal sibling",
       "passed": true
     },
@@ -1099,6 +1135,12 @@
       "passed": true
     },
     {
+      "source": "range_progress_report.py",
+      "dependency": "range_percent_check.py",
+      "kind": "local import",
+      "passed": true
+    },
+    {
       "source": "range_progress_chart.py",
       "dependency": "benchmark_environment.py",
       "kind": "local import",
@@ -1126,6 +1168,18 @@
       "source": "quality_range_selected.py",
       "dependency": "benchmark_environment.py",
       "kind": "local import",
+      "passed": true
+    },
+    {
+      "source": "quality_range_selected.py",
+      "dependency": "range_percent_check.py",
+      "kind": "existing literal sibling",
+      "passed": true
+    },
+    {
+      "source": "quality_range_selected.py",
+      "dependency": "range_progress_report.py",
+      "kind": "existing literal sibling",
       "passed": true
     },
     {

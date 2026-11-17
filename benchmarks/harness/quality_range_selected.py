@@ -81,3 +81,7 @@ try:
 except BaseException as error:
  state.update(status='failed',error=str(error),failed_unix=time.time());raise
 finally:receipt.write_text(json.dumps(state,indent=2)+'\n')
+
+# Confirm the saved and tuned presets at the original exact context percentages.
+subprocess.run([sys.executable,str(W/'range_percent_check.py'),'qwen'],check=True)
+subprocess.run([sys.executable,str(W/'range_progress_report.py')],check=True)

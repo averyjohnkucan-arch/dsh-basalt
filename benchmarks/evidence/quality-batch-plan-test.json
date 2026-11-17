@@ -1,7 +1,7 @@
 {
   "status": "passed",
   "scope": "Actual quality batch --plan AST with only scratch-root literal redirected to controlled receipts; Full 14-family, distinct-peak, partial, modified controls, selected K7 and unselected K7 with wrong-width and mismatched-input decoys. GPU launches explicitly forbidden. No real model qualification is claimed.",
-  "source_sha256": "044e10d8d1a18f9ccd3430b279df2c62ce9d9440cbf8846c3a060ba33a74393b",
+  "source_sha256": "8ff20d9bf10bf5062f08a8b5a3ec97be595b5f5edf5bf0e8639056aa2d75bbf2",
   "checks": {
     "partial": {
       "exit_code": 1,

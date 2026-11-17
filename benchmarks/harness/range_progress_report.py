@@ -2,6 +2,7 @@
 from pathlib import Path
 import json,html,csv,datetime
 from benchmark_environment import current_environment
+from range_percent_check import STAGES
 environment=current_environment()
 R=Path('/mnt/media/scratch/dsh-inference-tuning-20261115');O=R/'outputs';s=json.loads((O/'range-selections.json').read_text())
 def fmt(x):return f'{x:,.1f}'
@@ -46,6 +47,22 @@ text='''<!doctype html><meta charset="utf-8"><title>Inference tuning progress</t
 text+='<h1>Inference tuning progress</h1><p class="status">Work remains in progress. '+str(count)+' preset families have passed the native performance evidence gate. Plugin-owned GPU, generated-code, packaging and publication gates are tracked separately.</p><p>Updated '+html.escape(now)+'. P = prefill tokens/s; D = sustained late decode tokens/s. Low input: 8,192 code tokens. High input: floor(80% native capacity), with text, chat and original-story tasks. All continuations: 8,192 tokens; final 4,096 timed (HTTP draft-batch boundaries can differ by up to seven tokens).</p>'
 text+='<img src="range-model-progress.png" alt="Basalt performance qualification progress across supported model families" style="max-width:100%;height:auto">'
 text+=table(headers,rows)+'<h2>Strata and NInfer, reported separately</h2>'+table(['Model / engine','Old settings','Current long preset'],other)
+def exact_speed(cases,label):
+ values=[cases.get((label,pct))for pct in (10,90)]
+ return '; '.join(f'{pct}% P{fmt(row["prefill"])}/D{fmt(row["decode"])}' if row else f'{pct}% pending' for pct,row in zip((10,90),values))
+exact=[]
+for stage,models_and_baselines in STAGES.items():
+ receipt=O/('range-exact-percent-'+stage+'.json')
+ if not receipt.exists():continue
+ data=json.loads(receipt.read_text())
+ if environment and data['benchmark_environment_id']!=environment['id']:continue
+ cases={(row['label'],row['percent']):row for row in data['cases']}
+ for preset,baseline,_ in models_and_baselines:
+  exact.append([preset,exact_speed(cases,'old-'+baseline),exact_speed(cases,'tuned-'+preset)])
+text+='<h2>Exact 10% code and 90% chat confirmation</h2><p>Paired checks use the peak-code preset at 10% and the selected long-context preset at 90%. Each saved and tuned pair sees the same native-chat token IDs.</p>'
+text+=table(['Model / engine preset','Old settings speed','Tuned settings speed'],exact) if exact else '<p>Confirmations are queued.</p>'
+with(O/'range-exact-percent-progress.csv').open('w')as f:
+ writer=csv.writer(f);writer.writerow(['Model / engine preset','Old settings speed','Tuned settings speed']);writer.writerows(exact)
 text+='<p>95 W requested/default GPU power; enforced limit varies under load; thinking off; NVMe model reads; DeepSeek expert shards use the system SSD and share Engram on the media drive; isolated worker RAM high/max96/108GiB by default; hybrid experiments use104or106GiB soft limits with the same108GiB hard limit and at least12GiB assigned outside the worker cap for the OS/apps, including their occupied RAM; no fixed unused-RAM floor. Exact policy is retained per profile. The first pre-recovery sweep is diagnostic; final profiles require fresh isolated measurements. The long preset maximizes the minimum genre-median decode, then minimum cold prefill while each genre median retains at least95% of its value in that peak-decode preset. Both absolute and relative limiting genres are repeated. Profile-name high pairs come from the slowest actual selected-settings genre/repeat. Cold process/prefix does not imply globally dropped OS file cache.</p><p>Finite measured workloads establish an observed range, not a guarantee for every possible prompt. Small generated-function checks and numerical kernel tests are separate from BF16-reference model quality. Some greedy continuations repeat paragraphs or section patterns; their rates remain in the measured range. Offline output audits separately record exact long-paragraph duplicates and repeated 16-token windows. Shared phrases can be legitimate, and these counts alone do not establish semantic quality; so higher throughput must not be treated as evidence of better conversational quality.</p>'
 text+='<p>Fixed-length NInfer HTTP requests ignore model EOS stopping; the native Flash/27B tests also bias selected end-token logits. These are engine-and-settings comparisons. Per-run output audits count native end markers and timed tokens generated after the first marker; forced output past natural termination is not useful writing throughput.</p>'
 (O/'range-progress.html').write_text(text);print('Updated progress report;',count,'performance-qualified preset families')

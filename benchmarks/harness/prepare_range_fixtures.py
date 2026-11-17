@@ -53,6 +53,24 @@ def framing(tok,metadata,workload,task=None):
  before,after=rendered.split(SENTINEL)
  return tok.encode(before,parse_special=True),tok.encode(after,parse_special=True),rendered
 
+def prepare_percent_fixtures():
+ out=W/'range-fixtures';out.mkdir(exist_ok=True)
+ cases=[]
+ for family,capacity in [('qwen',262144),('qwen27b',262144),('deepseek',1048576)]:
+  tok,metadata=tokenizer_for(family)
+  for genre,percent,body in [('code',10,CODE),('chat',90,CORPUS)]:
+   workload=genre+str(percent);depth=capacity*percent//100
+   prefix,suffix,_=framing(tok,metadata,genre)
+   reference=tok.encode(body);length=depth-len(prefix)-len(suffix)
+   assert length>0
+   repeats=(length+len(reference)-1)//len(reference)
+   ids=prefix+(reference*repeats)[:length]+suffix
+   file=out/(family+'-'+workload+'.json')
+   file.write_text(json.dumps(dict(ids=ids),separators=(',',':')))
+   cases.append(dict(family=family,workload=workload,depth=depth,capacity=capacity,percent=percent,prompt_file=str(file),token_sha256=hashlib.sha256(','.join(map(str,ids)).encode()).hexdigest(),body_repetitions=repeats))
+ receipt=dict(protocol='Exact floor(10% capacity) native-chat code and floor(90% capacity) native-chat conversation; 8192 generated; final4096 timed; thinking off; matched prompt IDs',cases=cases)
+ (O/'range-percent-workloads.json').write_text(json.dumps(receipt,indent=2)+'\n')
+
 def main():
  out=W/'range-fixtures';out.mkdir(exist_ok=True);receipt=dict(protocol='8192 short code input; floor(80% native context) long text/chat/story input; 8192 output, final4096timed; temperature0,seed42,thinkingoff; native tokenizer chat framing',sources=json.loads((O/'prose-corpus-sources.json').read_text()),cases=[])
  for family in['qwen','qwen27b','deepseek']:
@@ -68,4 +86,6 @@ def main():
    (out/(family+'-'+workload+'-framing.txt')).write_text(rendered)
  (O/'range-workloads.json').write_text(json.dumps(receipt,indent=2))
 
-if __name__=='__main__':main()
+if __name__=='__main__':
+ if '--exact-percent' in sys.argv:prepare_percent_fixtures()
+ else:main()

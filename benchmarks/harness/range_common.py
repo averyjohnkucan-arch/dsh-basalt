@@ -57,11 +57,12 @@ def completed_input_matches(value,planned):
   return argv
  return command(actual)==command(planned)
 
-def run(config,name,family,workload,n=8192,cache=None,reuse=False,role='qualified'):
+def run(config,name,family,workload,n=8192,cache=None,reuse=False,role='qualified',fixture=None):
  c=apply_user_host_budget(copy.deepcopy(config));name=case_name(name);out=R/'bench'/name
  environment=current_environment()
  if environment:c['benchmark_environment_id']=environment['id']
- fixture=next(x for x in WORKLOADS['cases']if x['family']==family and x['workload']==workload)
+ if fixture is None:fixture=next(x for x in WORKLOADS['cases']if x['family']==family and x['workload']==workload)
+ assert fixture['family']==family and fixture['workload']==workload
  c.update(output=str(out),prompt_file=fixture['prompt_file'],depth=fixture['depth'],generate=n,timed_tail=n//2,allow_reused=reuse,require_reuse_min=fixture['depth']-32 if reuse else 0,
           workload=workload,measurement_role=role,engine_binary_sha256=digest(c['command'][3]),gpu_power_limit_w=95,framing='native-tokenizer-chat-template; thinking off')
  for flag in ['--conversation-cache-dir','--conversation-cache-disk-mib','--conversation-cache-mib','--prompt-cache']:opt(c,flag,None)

@@ -20,7 +20,7 @@ def saved_profile_baseline(template):
  c['expert_profile_source']=str(owned);c['saved_dsh_profile_name']=profile['name'];c['saved_dsh_profile_sha256']=hashlib.sha256(source.read_bytes()).hexdigest();c['saved_expert_profile_sha256']=sha
  return c
 
-raw_storage_evidence('XXS')
+storage=raw_storage_evidence('XXS')
 artifact=internal_artifact('XXS')
 if not artifact.exists():
  # Rotation is irreversible for our derived copies: require completed native and
@@ -39,7 +39,9 @@ if not artifact.exists():
   native=read(O/'performance-qualified'/(key+'.json'))
   assert all(identities[kind]==native[kind+'_identity']for kind in ['long','short'])
  assert set(quality['selections'])==set(required_keys),'Every required pre-DeepSeek family must have matching generated-code evidence'
- receipt=read(O/'deepseek-pack-regeneration.json');command=receipt['command'];command[1]=str(W/'basalt-latest/tools/convert/convert.py');command[command.index('--out')+1]=str(artifact)
+ receipt=read(O/'deepseek-pack-regeneration.json');command=receipt['command'];command[1]=str(W/'basalt-latest/tools/convert/convert.py')
+ for flag,value in [('--gguf',storage['expert_files'][0]['path']),('--engram-gguf',storage['shared_engram']),('--dspark',storage['draft']),('--out',artifact)]:
+  command[command.index(flag)+1]=str(value)
  # Retain a complete reconstruction recipe before freeing any owned conversion.
  hybrid=read(O/'hybrid-pack-regeneration.json');hybrid['command'][1]=str(W/'basalt-latest/tools/convert/convert.py')
  pure=copy.deepcopy(hybrid)

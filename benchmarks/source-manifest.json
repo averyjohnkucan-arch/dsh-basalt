@@ -2,6 +2,11 @@
   "scope": "Exact harness snapshot; scratch paths and sibling clone layout retained for audit. No weights, generated answers, credentials, or token-ID fixtures included.",
   "files": [
     {
+      "path": "harness/range_percent_check.py",
+      "sha256": "0f66e87353dc8e7dc47439c06fed8f3e5632766e0c6ca6fcab59de4a53bb1bda",
+      "bytes": 4909
+    },
+    {
       "path": "harness/test_ninfer_planner.py",
       "sha256": "3e39fa0412852ddfdea82bc2fd8abb2a6fd288f58e074c726d171b182f236cdc",
       "bytes": 1888
@@ -23,13 +28,13 @@
     },
     {
       "path": "harness/deepseek_storage.py",
-      "sha256": "ddbdf4404b7896dfe45e38cc5501beb5383090534d915e628a93446370c36c76",
-      "bytes": 7421
+      "sha256": "94a654c77ec24fd568102e2f420931cb88733306e9969f0c049941dc76dcfffc",
+      "bytes": 7663
     },
     {
       "path": "harness/range_deepseek_xs.py",
-      "sha256": "062a67f56bfc64a7f3a51be0086e8475f030d53f45ea0be62f1f5e45ba941856",
-      "bytes": 7552
+      "sha256": "b0ba5603c6732efd5587b1eacbe766862377181b2d03457919da60d6e5813d1e",
+      "bytes": 7814
     },
     {
       "path": "harness/finish_split_engram_build.py",
@@ -193,8 +198,8 @@
     },
     {
       "path": "harness/prepare_benchmark_publication.py",
-      "sha256": "01ff234eca0e347994d34b832ca75ce050260d7fe8c60a2ab41be78995690256",
-      "bytes": 6118
+      "sha256": "4fb0f64f47c038bf39a99cb49097ac4bfb1929745dee62a0840d104b2a2e0097",
+      "bytes": 6315
     },
     {
       "path": "harness/native_bench.py",
@@ -218,8 +223,8 @@
     },
     {
       "path": "harness/range_common.py",
-      "sha256": "6537001785e88bf6108697ff641beb359cfe8b20962b55a0469990d86d6947c5",
-      "bytes": 9205
+      "sha256": "f11b5a0bc8792165a3a18a91519beef41eafd2a37d8170f41353435a02c9352e",
+      "bytes": 9305
     },
     {
       "path": "harness/range_identity.py",
@@ -268,8 +273,8 @@
     },
     {
       "path": "harness/range_deepseek.py",
-      "sha256": "e44d3e02b689af2490fa1bc9209eec00156f7cadade89dc59596d0fe5b8739a7",
-      "bytes": 8127
+      "sha256": "e850afe6b3c50262c33cb1f0fcd3d692fada90598ab7391878715cac38dcb089",
+      "bytes": 8291
     },
     {
       "path": "harness/mark_performance_qualified.py",
@@ -308,8 +313,8 @@
     },
     {
       "path": "harness/range_progress_report.py",
-      "sha256": "75d1580bdc62a4204b04bb81ef42a66c6f369cd06ff4ab94e7b5582d6654c464",
-      "bytes": 7993
+      "sha256": "420c963c407309c71ac23f6e97f0f0051880ff82838aa09fc685083af4bfb77d",
+      "bytes": 9272
     },
     {
       "path": "harness/range_progress_chart.py",
@@ -318,8 +323,8 @@
     },
     {
       "path": "harness/prepare_range_fixtures.py",
-      "sha256": "f1bf53adf936380cf8227b76769264a38f2bf04685e1dc9f33efc754d5d6c3ec",
-      "bytes": 7907
+      "sha256": "a556794bce3158da3325c4b5d1a284d0b8accb82f5202b61dc1ed12c28477bc0",
+      "bytes": 9158
     },
     {
       "path": "harness/audit_range_outputs.py",
@@ -328,8 +333,8 @@
     },
     {
       "path": "harness/quality_range_selected.py",
-      "sha256": "044e10d8d1a18f9ccd3430b279df2c62ce9d9440cbf8846c3a060ba33a74393b",
-      "bytes": 6478
+      "sha256": "8ff20d9bf10bf5062f08a8b5a3ec97be595b5f5edf5bf0e8639056aa2d75bbf2",
+      "bytes": 6721
     },
     {
       "path": "harness/code_function_eval.py",

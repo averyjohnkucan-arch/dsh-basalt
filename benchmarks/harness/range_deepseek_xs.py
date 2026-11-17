@@ -20,7 +20,7 @@ def guarded(command,label,cwd):
         assert status==0 and not guard.reason,label+' failed; preserved log must be inspected'
 
 if __name__=='__main__' and '--plan' in sys.argv:
-    print(json.dumps(dict(stage='final-model-IQ2_XS',requires=['original matrix and generated-code QA','original XXS DeepSeek tuning, plugin GPU and generated-code QA','SHA256-complete four-shard XS download','matched internal expert/external Engram storage'],jobs=['metadata pack','guarded Basalt conversion','Basalt XS tuning and original-engine baseline','Strata XS tuning','repeatability/low-peak/final qualification for both engines','actual generated-function execution','refresh profiles and report'],gpu_workers_started=0),indent=2))
+    print(json.dumps(dict(stage='final-model-IQ2_XS',requires=['original matrix and generated-code QA','original XXS DeepSeek tuning, plugin GPU and generated-code QA','SHA256-complete four-shard XS download','matched internal expert/external Engram storage'],jobs=['confirm original XXS at exact 10%/90%','metadata pack','guarded Basalt conversion','Basalt XS tuning and original-engine baseline','Strata XS tuning','repeatability/low-peak/final qualification for both engines','actual generated-function execution','confirm both XS engines at exact 10%/90%','refresh profiles and report'],gpu_workers_started=0),indent=2))
 
 if __name__=='__main__' and '--plan' not in sys.argv:
     stage=O/'iq2-xs-tuning-stage.json'
@@ -34,6 +34,7 @@ if __name__=='__main__' and '--plan' not in sys.argv:
         # Original DeepSeek generated-function execution must precede the final quant stage.
         qa=read(O/'code-functional-range-deepseek-selected-functional-configs.json')
         assert len(qa)==12 and all(row.get('status')=='ok' and row.get('generation_token_sha256') and row.get('functional_attempt_id') for row in qa), 'Original DeepSeek generated-function evidence incomplete'
+        subprocess.run([sys.executable,str(W/'range_percent_check.py'),'xxs'],check=True)
         while read(O/'iq2-xs-download-status.json')['status']!='complete':
             active=subprocess.run(['systemctl','--user','is-active','--quiet','dsh-iq2-xs-download-main-20261116.service'])
             assert active.returncode==0, 'XS download stopped before SHA256 completion; inspect its preserved status/log'
@@ -72,6 +73,7 @@ if __name__=='__main__' and '--plan' not in sys.argv:
         assert len(qa)==12 and all(row.get('status')=='ok' and row.get('generation_token_sha256') and row.get('functional_attempt_id') for row in qa), 'XS generated-function evidence incomplete; semantic failures are separately reported'
         for key in ['deepseek_xs_basalt','deepseek_xs_strata']:
             subprocess.run([sys.executable,str(W/'range_plugin_gpu_gate.py'),key],check=True)
+        subprocess.run([sys.executable,str(W/'range_percent_check.py'),'xs'],check=True)
         subprocess.run([sys.executable,str(W/'range_progress_report.py')],check=True)
         state.update(status='model-stage-complete-final-report-and-publication-remain',completed_unix=time.time(),quantizations_retained=True)
     except BaseException as error:
