@@ -3,6 +3,7 @@ from pathlib import Path
 import json,html,csv,datetime
 from benchmark_environment import current_environment
 from range_percent_check import STAGES
+from deepseek_comparison import comparison_rows
 environment=current_environment()
 R=Path('/mnt/media/scratch/dsh-inference-tuning-20261115');O=R/'outputs';s=json.loads((O/'range-selections.json').read_text())
 def fmt(x):return f'{x:,.1f}'
@@ -63,6 +64,12 @@ text+='<h2>Exact 10% code and 90% chat confirmation</h2><p>Paired checks use the
 text+=table(['Model / engine preset','Old settings speed','Tuned settings speed'],exact) if exact else '<p>Confirmations are queued.</p>'
 with(O/'range-exact-percent-progress.csv').open('w')as f:
  writer=csv.writer(f);writer.writerow(['Model / engine preset','Old settings speed','Tuned settings speed']);writer.writerows(exact)
+quant_rows=list(comparison_rows(R,qualified))
+quant_headers=['Tuned engine / workload','IQ2_XXS P / D','IQ2_XS P / D','IQ2_XS change']
+text+='<h2>DeepSeek IQ2_XXS versus IQ2_XS</h2><p>Per-workload medians in tokens/s after tuning each quant. Both use the same engine binary, prompt tokens and NVMe layout. Low workloads use the peak-code preset. Long workloads use the sustained-decode preset.</p>'
+text+=table(quant_headers,quant_rows)
+with(O/'deepseek-quant-comparison.csv').open('w')as f:
+ writer=csv.writer(f);writer.writerow(quant_headers);writer.writerows(quant_rows)
 text+='<p>95 W requested/default GPU power; enforced limit varies under load; thinking off; NVMe model reads; DeepSeek expert shards use the system SSD and share Engram on the media drive; isolated worker RAM high/max96/108GiB by default; hybrid experiments use104or106GiB soft limits with the same108GiB hard limit and at least12GiB assigned outside the worker cap for the OS/apps, including their occupied RAM; no fixed unused-RAM floor. Exact policy is retained per profile. The first pre-recovery sweep is diagnostic; final profiles require fresh isolated measurements. The long preset maximizes the minimum genre-median decode, then minimum cold prefill while each genre median retains at least95% of its value in that peak-decode preset. Both absolute and relative limiting genres are repeated. Profile-name high pairs come from the slowest actual selected-settings genre/repeat. Cold process/prefix does not imply globally dropped OS file cache.</p><p>Finite measured workloads establish an observed range, not a guarantee for every possible prompt. Small generated-function checks and numerical kernel tests are separate from BF16-reference model quality. Some greedy continuations repeat paragraphs or section patterns; their rates remain in the measured range. Offline output audits separately record exact long-paragraph duplicates and repeated 16-token windows. Shared phrases can be legitimate, and these counts alone do not establish semantic quality; so higher throughput must not be treated as evidence of better conversational quality.</p>'
 text+='<p>Fixed-length NInfer HTTP requests ignore model EOS stopping; the native Flash/27B tests also bias selected end-token logits. These are engine-and-settings comparisons. Per-run output audits count native end markers and timed tokens generated after the first marker; forced output past natural termination is not useful writing throughput.</p>'
 (O/'range-progress.html').write_text(text);print('Updated progress report;',count,'performance-qualified preset families')

@@ -1,9 +1,9 @@
 {
-  "at": "2026-11-16T18:11:34.594909-08:00",
+  "at": "2026-11-16T18:14:24.228690-08:00",
   "status": "passed",
-  "prepared_from_base_commit": "7778717",
-  "manifest_sha256": "97fc7dc905c9ae0e4129ce9e2f2d3b3751b1e965e95c6794df9d78b5742ca776",
-  "source_count": 70,
+  "prepared_from_base_commit": "f4d143f",
+  "manifest_sha256": "6b806e05f7d0e95a6af932e430846e7bf04ebf945fc86a04344222e30b3d8eec",
+  "source_count": 71,
   "scope": "Python AST local imports and existing flat literal py/mjs/txt/cpp/hpp sibling references checked against the exact source manifest. External engine/plugin clone layout remains required; dynamic references, packages, weights and fixtures excluded.",
   "checks": [
     {
@@ -459,6 +459,12 @@
     {
       "source": "continue_after_range_queue.py",
       "dependency": "range_deepseek_xs.py",
+      "kind": "existing literal sibling",
+      "passed": true
+    },
+    {
+      "source": "prepare_benchmark_publication.py",
+      "dependency": "deepseek_comparison.py",
       "kind": "existing literal sibling",
       "passed": true
     },
@@ -1137,6 +1143,12 @@
     {
       "source": "range_progress_report.py",
       "dependency": "range_percent_check.py",
+      "kind": "local import",
+      "passed": true
+    },
+    {
+      "source": "range_progress_report.py",
+      "dependency": "deepseek_comparison.py",
       "kind": "local import",
       "passed": true
     },
