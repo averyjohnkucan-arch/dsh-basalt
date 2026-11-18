@@ -43,6 +43,10 @@ test("real DSH adapter preserves messages, streams tools + reasoning, honors out
   await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
   t.after(() => server.close());
   const profile = {
+    samplingPresets: {
+      instruct: { top_p: 0.8, presence_penalty: 1.5 },
+      thinking: { top_p: 0.95, presence_penalty: 0 },
+    },
     id: "q",
     name: "Test Qwen",
     context: 32768,
@@ -102,6 +106,8 @@ test("real DSH adapter preserves messages, streams tools + reasoning, honors out
       chunks.push(chunk);
     const { body, auth } = captured.at(-1);
     assert.equal(auth, "Bearer test-private-key");
+    assert.equal(body.top_p, effort === "off" ? 0.8 : 0.95);
+    assert.equal(body.presence_penalty, effort === "off" ? 1.5 : 0);
     assert.equal(
       body.reasoning_effort,
       effort === "off"

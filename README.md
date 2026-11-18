@@ -83,3 +83,7 @@ The experimental NInfer v3 dense import and its NVFP4 DFlash2 drafter require `q
 Qwen Flash-Next profiles can retain an optional **Expert swaps per update** setting (`adapt-swaps`, 0–96). An empty field uses the native default; zero disables adaptive GPU expert swaps. Lower swap counts are experimental tuning candidates for mixed NVFP4/Q8 packs, not assumed to be faster. Exported winning profiles preserve the measured value exactly.
 
 DeepSeek split-drive experiments may set the absolute `deepseek-engram-gguf` engine option. This requires a custom runtime advertising `deepseek_external_engram`; the native loader validates table geometry and adjacency before reading. A profile may retain an absolute `runtimeDir` so its native controls use the exact measured engine. The shared Engram may remain on another physical drive while expert weights stream from the system SSD. CPU layout tests do not qualify GPU output parity or throughput; those require the recorded fixed-placement probe and full benchmark stage.
+
+## Local tuning profile controls
+
+Saved `samplingPresets.instruct` and `samplingPresets.thinking` supply defaults for the matching reasoning mode without adding prompt text. Explicit request sampling values take precedence. Profiles without these fields keep their native defaults. Local `cpuSet` settings preserve measured Linux CPU affinity for the server process tree. The accompanying10%/90% benchmark profiles are separate local exports; these changes do not claim a universal throughput maximum.

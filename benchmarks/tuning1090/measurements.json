@@ -1,0 +1,188 @@
+[
+  {
+    "model": "27B NVFP4 \u2014 NInfer",
+    "before10": {
+      "prefill_tok_s": 2989.9787007463165,
+      "tail_decode_tok_s": 175.26040031877778,
+      "generated": 1024,
+      "prompt_tokens": 26214,
+      "reused_tokens": 0
+    },
+    "after10": {
+      "prefill_tok_s": 2989.9787007463165,
+      "tail_decode_tok_s": 175.26040031877778,
+      "generated": 1024,
+      "prompt_tokens": 26214,
+      "reused_tokens": 0
+    },
+    "before90": {
+      "prefill_tok_s": 1389.9136855436022,
+      "tail_decode_tok_s": 41.93821491193748,
+      "generated": 1024,
+      "prompt_tokens": 235929,
+      "reused_tokens": 0
+    },
+    "after90": {
+      "prefill_tok_s": 1389.9136855436022,
+      "tail_decode_tok_s": 41.93821491193748,
+      "generated": 1024,
+      "prompt_tokens": 235929,
+      "reused_tokens": 0
+    }
+  },
+  {
+    "model": "Huihui IQ3_S \u2014 NInfer, INT8 KV",
+    "before10": {
+      "prefill_tok_s": 1206.1686345080177,
+      "tail_decode_tok_s": 141.47665059395712,
+      "generated": 1024,
+      "prompt_tokens": 26214,
+      "reused_tokens": 0
+    },
+    "after10": {
+      "prefill_tok_s": 1255.7022856774895,
+      "tail_decode_tok_s": 133.6613236538476,
+      "generated": 1024,
+      "prompt_tokens": 26214,
+      "reused_tokens": 0
+    },
+    "before90": {
+      "prefill_tok_s": 799.1341173848315,
+      "tail_decode_tok_s": 35.16385195198245,
+      "generated": 1024,
+      "prompt_tokens": 235929,
+      "reused_tokens": 0
+    },
+    "after90": {
+      "prefill_tok_s": 842.5584116819083,
+      "tail_decode_tok_s": 38.57601293692929,
+      "generated": 1024,
+      "prompt_tokens": 235929,
+      "reused_tokens": 0
+    }
+  },
+  {
+    "model": "Flash NVFP4 \u2014 Basalt, INT8 KV",
+    "before10": {
+      "prefill_tok_s": 3123.205413841993,
+      "tail_decode_tok_s": 209.60506884785002,
+      "generated": 1024,
+      "prompt_tokens": 26214,
+      "reused_tokens": 0
+    },
+    "after10": {
+      "prefill_tok_s": 3172.378739471391,
+      "tail_decode_tok_s": 217.13626207864877,
+      "generated": 1024,
+      "prompt_tokens": 26214,
+      "reused_tokens": 0
+    },
+    "before90": {
+      "prefill_tok_s": 3197.0172067547824,
+      "tail_decode_tok_s": 54.27700212922356,
+      "generated": 1024,
+      "prompt_tokens": 235929,
+      "reused_tokens": 0
+    },
+    "after90": {
+      "prefill_tok_s": 3207.5312658470502,
+      "tail_decode_tok_s": 63.28916967660095,
+      "generated": 1024,
+      "prompt_tokens": 235929,
+      "reused_tokens": 0
+    }
+  },
+  {
+    "model": "Flash NVFP4/Q8 hybrid \u2014 Basalt, INT8 KV",
+    "before10": {
+      "prefill_tok_s": 2252.700507875944,
+      "tail_decode_tok_s": 114.45144961592999,
+      "generated": 1024,
+      "prompt_tokens": 26214,
+      "reused_tokens": 0
+    },
+    "after10": {
+      "prefill_tok_s": 2252.700507875944,
+      "tail_decode_tok_s": 114.45144961592999,
+      "generated": 1024,
+      "prompt_tokens": 26214,
+      "reused_tokens": 0
+    },
+    "before90": {
+      "prefill_tok_s": 2376.491042163177,
+      "tail_decode_tok_s": 34.39160958673172,
+      "generated": 1024,
+      "prompt_tokens": 235929,
+      "reused_tokens": 0
+    },
+    "after90": {
+      "prefill_tok_s": 2376.491042163177,
+      "tail_decode_tok_s": 34.39160958673172,
+      "generated": 1024,
+      "prompt_tokens": 235929,
+      "reused_tokens": 0
+    }
+  },
+  {
+    "model": "Gyro S \u2014 Strata, FP16 KV",
+    "before10": {
+      "prefill_tok_s": 2177.549986293746,
+      "tail_decode_tok_s": 101.1933929132758,
+      "generated": 1024,
+      "prompt_tokens": 26214,
+      "reused_tokens": 0
+    },
+    "after10": {
+      "prefill_tok_s": 2177.549986293746,
+      "tail_decode_tok_s": 101.1933929132758,
+      "generated": 1024,
+      "prompt_tokens": 26214,
+      "reused_tokens": 0
+    },
+    "before90": {
+      "prefill_tok_s": 2138.8262106815755,
+      "tail_decode_tok_s": 71.97036025430118,
+      "generated": 1024,
+      "prompt_tokens": 235929,
+      "reused_tokens": 0
+    },
+    "after90": {
+      "prefill_tok_s": 2138.8262106815755,
+      "tail_decode_tok_s": 71.97036025430118,
+      "generated": 1024,
+      "prompt_tokens": 235929,
+      "reused_tokens": 0
+    }
+  },
+  {
+    "model": "DeepSeek XXS \u2014 Basalt",
+    "before10": {
+      "prefill_tok_s": 1011.8441063171139,
+      "tail_decode_tok_s": 38.92809351335202,
+      "generated": 1024,
+      "prompt_tokens": 104857,
+      "reused_tokens": 0
+    },
+    "after10": {
+      "prefill_tok_s": 1011.8441063171139,
+      "tail_decode_tok_s": 38.92809351335202,
+      "generated": 1024,
+      "prompt_tokens": 104857,
+      "reused_tokens": 0
+    },
+    "before90": {
+      "prefill_tok_s": 711.0634449082138,
+      "tail_decode_tok_s": 24.847717286171743,
+      "generated": 1024,
+      "prompt_tokens": 943718,
+      "reused_tokens": 0
+    },
+    "after90": {
+      "prefill_tok_s": 711.0634449082138,
+      "tail_decode_tok_s": 24.847717286171743,
+      "generated": 1024,
+      "prompt_tokens": 943718,
+      "reused_tokens": 0
+    }
+  }
+]

@@ -1,0 +1,331 @@
+[
+  {
+    "key": "27b-ninfer",
+    "source": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/ninfer-matched-latest-chat90.json",
+    "family": "qwen27b",
+    "sampling": {
+      "temperature": 0.7,
+      "top_p": 0.8,
+      "top_k": 20,
+      "min_p": 0,
+      "presence_penalty": 1.5,
+      "frequency_penalty": 0,
+      "seed": 42
+    },
+    "native_sampling": "temperature=0.7 top_p=0.8 top_k=20 min_p=0 penalty_present=1.5 penalty_freq=0 penalty_repeat=1 penalty_last_n=4096 seed=42",
+    "variants": [
+      {
+        "name": "prefill2048",
+        "changes": {
+          "--prefill-chunk": 2048
+        }
+      },
+      {
+        "name": "draft3",
+        "changes": {
+          "--draft-tokens": 3
+        }
+      }
+    ]
+  },
+  {
+    "key": "27b-basalt",
+    "source": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/basalt27-resident112k-chat90.json",
+    "family": "qwen27b",
+    "sampling": {
+      "temperature": 0.7,
+      "top_p": 0.8,
+      "top_k": 20,
+      "min_p": 0,
+      "presence_penalty": 1.5,
+      "frequency_penalty": 0,
+      "seed": 42
+    },
+    "native_sampling": "temperature=0.7 top_p=0.8 top_k=20 min_p=0 penalty_present=1.5 penalty_freq=0 penalty_repeat=1 penalty_last_n=4096 seed=42",
+    "variants": [
+      {
+        "name": "spec0",
+        "changes": {
+          "--spec": 0
+        }
+      }
+    ]
+  },
+  {
+    "key": "huihui-int8",
+    "source": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/quiet-ninfer-huihui-int8-old-90.json",
+    "family": "huihui",
+    "sampling": {
+      "temperature": 0.7,
+      "top_p": 0.8,
+      "top_k": 20,
+      "min_p": 0,
+      "presence_penalty": 1.5,
+      "frequency_penalty": 0,
+      "seed": 42
+    },
+    "native_sampling": "temperature=0.7 top_p=0.8 top_k=20 min_p=0 penalty_present=1.5 penalty_freq=0 penalty_repeat=1 penalty_last_n=4096 seed=42",
+    "variants": [
+      {
+        "name": "prefill2048",
+        "changes": {
+          "--prefill-chunk": 2048
+        }
+      }
+    ]
+  },
+  {
+    "key": "huihui-fp8",
+    "source": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/latest-remaining-huihui-fp8-90.json",
+    "family": "huihui",
+    "sampling": {
+      "temperature": 0.7,
+      "top_p": 0.8,
+      "top_k": 20,
+      "min_p": 0,
+      "presence_penalty": 1.5,
+      "frequency_penalty": 0,
+      "seed": 42
+    },
+    "native_sampling": "temperature=0.7 top_p=0.8 top_k=20 min_p=0 penalty_present=1.5 penalty_freq=0 penalty_repeat=1 penalty_last_n=4096 seed=42",
+    "variants": [
+      {
+        "name": "prefill2048",
+        "changes": {
+          "--prefill-chunk": 2048
+        }
+      }
+    ]
+  },
+  {
+    "key": "huihui-nvfp4",
+    "source": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/latest-remaining-huihui-nvfp4-90.json",
+    "family": "huihui",
+    "sampling": {
+      "temperature": 0.7,
+      "top_p": 0.8,
+      "top_k": 20,
+      "min_p": 0,
+      "presence_penalty": 1.5,
+      "frequency_penalty": 0,
+      "seed": 42
+    },
+    "native_sampling": "temperature=0.7 top_p=0.8 top_k=20 min_p=0 penalty_present=1.5 penalty_freq=0 penalty_repeat=1 penalty_last_n=4096 seed=42",
+    "variants": [
+      {
+        "name": "prefill2048",
+        "changes": {
+          "--prefill-chunk": 2048
+        }
+      }
+    ]
+  },
+  {
+    "key": "range-flash-basalt-long",
+    "profile_id": "scratch-range-flash-basalt-long",
+    "source": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/range-perf-flash_basalt-range-repeat-35b46ec69f83-story.json",
+    "family": "qwen",
+    "sampling": {
+      "temperature": 0.7,
+      "top_p": 0.8,
+      "top_k": 20,
+      "min_p": 0,
+      "presence_penalty": 1.5,
+      "frequency_penalty": 0,
+      "seed": 42
+    },
+    "native_sampling": "temperature=0.7 top_p=0.8 top_k=20 min_p=0 penalty_present=1.5 penalty_freq=0 penalty_repeat=1 penalty_last_n=4096 seed=42",
+    "variants": [
+      {
+        "name": "spec4",
+        "changes": {
+          "--spec": 4
+        }
+      }
+    ]
+  },
+  {
+    "key": "range-flash-basalt-short",
+    "profile_id": "scratch-range-flash-basalt-short",
+    "source": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/range-perf-flash_basalt-range-repeat-b880f20a9748-chat.json",
+    "family": "qwen",
+    "sampling": {
+      "temperature": 0.7,
+      "top_p": 0.8,
+      "top_k": 20,
+      "min_p": 0,
+      "presence_penalty": 1.5,
+      "frequency_penalty": 0,
+      "seed": 42
+    },
+    "native_sampling": "temperature=0.7 top_p=0.8 top_k=20 min_p=0 penalty_present=1.5 penalty_freq=0 penalty_repeat=1 penalty_last_n=4096 seed=42",
+    "variants": [
+      {
+        "name": "spec4",
+        "changes": {
+          "--spec": 4
+        }
+      }
+    ]
+  },
+  {
+    "key": "range-hybrid-basalt-long",
+    "profile_id": "scratch-range-hybrid-basalt-long",
+    "source": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/range-perf-hybrid_basalt-range-check-9e82bc86386d-story.json",
+    "family": "qwen",
+    "sampling": {
+      "temperature": 0.7,
+      "top_p": 0.8,
+      "top_k": 20,
+      "min_p": 0,
+      "presence_penalty": 1.5,
+      "frequency_penalty": 0,
+      "seed": 42
+    },
+    "native_sampling": "temperature=0.7 top_p=0.8 top_k=20 min_p=0 penalty_present=1.5 penalty_freq=0 penalty_repeat=1 penalty_last_n=4096 seed=42",
+    "variants": [
+      {
+        "name": "spec4",
+        "changes": {
+          "--spec": 4
+        }
+      }
+    ]
+  },
+  {
+    "key": "measured-flash-fp16",
+    "profile_id": "scratch-measured-flash-fp16",
+    "source": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/fp16-matched-flash-basalt-chat90.json",
+    "family": "qwen",
+    "sampling": {
+      "temperature": 0.7,
+      "top_p": 0.8,
+      "top_k": 20,
+      "min_p": 0,
+      "presence_penalty": 1.5,
+      "frequency_penalty": 0,
+      "seed": 42
+    },
+    "native_sampling": "temperature=0.7 top_p=0.8 top_k=20 min_p=0 penalty_present=1.5 penalty_freq=0 penalty_repeat=1 penalty_last_n=4096 seed=42",
+    "variants": [
+      {
+        "name": "spec4",
+        "changes": {
+          "--spec": 4
+        }
+      }
+    ]
+  },
+  {
+    "key": "measured-hybrid-fp16",
+    "profile_id": "scratch-measured-hybrid-fp16",
+    "source": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/fp16-matched-hybrid-basalt-chat90.json",
+    "family": "qwen",
+    "sampling": {
+      "temperature": 0.7,
+      "top_p": 0.8,
+      "top_k": 20,
+      "min_p": 0,
+      "presence_penalty": 1.5,
+      "frequency_penalty": 0,
+      "seed": 42
+    },
+    "native_sampling": "temperature=0.7 top_p=0.8 top_k=20 min_p=0 penalty_present=1.5 penalty_freq=0 penalty_repeat=1 penalty_last_n=4096 seed=42",
+    "variants": [
+      {
+        "name": "spec4",
+        "changes": {
+          "--spec": 4
+        }
+      }
+    ]
+  },
+  {
+    "key": "range-flash-strata-long",
+    "profile_id": "scratch-range-flash-strata-long",
+    "source": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/range-perf-flash_strata-range-check-d570e314cdb3-text.json",
+    "family": "qwen",
+    "sampling": {
+      "temperature": 0.7,
+      "top_p": 0.8,
+      "top_k": 20,
+      "min_p": 0,
+      "presence_penalty": 1.5,
+      "frequency_penalty": 0,
+      "seed": 42
+    },
+    "native_sampling": "temperature=0.7 top_p=0.8 top_k=20 min_p=0 penalty_present=1.5 penalty_freq=0 penalty_repeat=1 penalty_last_n=4096 seed=42",
+    "variants": [
+      {
+        "name": "spec4",
+        "changes": {
+          "--spec": 4
+        }
+      }
+    ]
+  },
+  {
+    "key": "range-flash-strata-short",
+    "profile_id": "scratch-range-flash-strata-short",
+    "source": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/range-perf-flash_strata-peak-code-profile-8829d2f16ee7-chat.json",
+    "family": "qwen",
+    "sampling": {
+      "temperature": 0.7,
+      "top_p": 0.8,
+      "top_k": 20,
+      "min_p": 0,
+      "presence_penalty": 1.5,
+      "frequency_penalty": 0,
+      "seed": 42
+    },
+    "native_sampling": "temperature=0.7 top_p=0.8 top_k=20 min_p=0 penalty_present=1.5 penalty_freq=0 penalty_repeat=1 penalty_last_n=4096 seed=42",
+    "variants": [
+      {
+        "name": "spec4",
+        "changes": {
+          "--spec": 4
+        }
+      }
+    ]
+  },
+  {
+    "key": "measured-gyro-strata",
+    "profile_id": "scratch-measured-gyro-strata",
+    "source": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/latest-remaining-gyro-90.json",
+    "family": "qwen",
+    "sampling": {
+      "temperature": 0.7,
+      "top_p": 0.8,
+      "top_k": 20,
+      "min_p": 0,
+      "presence_penalty": 1.5,
+      "frequency_penalty": 0,
+      "seed": 42
+    },
+    "native_sampling": "temperature=0.7 top_p=0.8 top_k=20 min_p=0 penalty_present=1.5 penalty_freq=0 penalty_repeat=1 penalty_last_n=4096 seed=42",
+    "variants": []
+  },
+  {
+    "key": "deepseek-xxs",
+    "source": "/mnt/media/scratch/dsh-inference-tuning-20261115/work/deepseek-final-chat90-xxs.json",
+    "family": "deepseek",
+    "sampling": {
+      "temperature": 0.7,
+      "top_p": 0.8,
+      "top_k": 20,
+      "min_p": 0,
+      "presence_penalty": 1.5,
+      "frequency_penalty": 0,
+      "seed": 42
+    },
+    "native_sampling": "temperature=0.6 top_p=0.95 top_k=0 seed=42",
+    "variants": [
+      {
+        "name": "resident104g3",
+        "changes": {
+          "--resident-budget-gib": 104.3
+        }
+      }
+    ]
+  }
+]
