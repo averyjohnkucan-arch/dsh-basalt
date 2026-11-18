@@ -1,12 +1,14 @@
 # Basalt for DeepSeek Harness
 
+**RC4 installation trial.** Start DeepSeek Harness with `npx @deepseek-ai/dsh@0.2.2-rc.4 web` (Node.js 24.9 or newer). In **Plugins → Add plugin**, paste the full path to this RC4 trial’s `.tgz` file and enable the plugin.
+
 Run [Basalt](https://github.com/jesdga95/basalt) models from DSH's model picker. Basalt targets NVIDIA Blackwell GPUs (sm_120). This is a separate provider from Strata, with separate settings, model profiles, processes and conversation caches.
 
 ## Install
 
 Install the `dsh-basalt-0.1.0.tgz` asset from this repository's releases using DSH's plugin installer. The package includes the built settings interface; installation needs no frontend build.
 
-Requires DSH **0.2.2-rc.1**, Node **24.9+**, Linux x64 with AVX2, Python **3.12+**, an NVIDIA Blackwell GPU and NVIDIA driver **580.95.05+**. Managed engine preparation installs Basalt **0.4.0**, its pinned Python dependencies, and private NVIDIA CUDA 13 runtime/cuBLAS libraries. It does not change system CUDA or another provider's environment. Allow at least 1.5 GiB free during setup, plus model storage.
+Requires DSH **0.2.2-rc.4**, Node **24.9+**, Linux x64 with AVX2, Python **3.12+**, an NVIDIA Blackwell GPU and NVIDIA driver **580.95.05+**. Managed engine preparation installs Basalt **0.4.0**, its pinned Python dependencies, and private NVIDIA CUDA 13 runtime/cuBLAS libraries. It does not change system CUDA or another provider's environment. Allow at least 1.5 GiB free during setup, plus model storage.
 
 1. Open **Settings → Models → Basalt → Engine and CPU settings**.
 2. Click **Prepare engine**. This downloads and verifies the pinned release and creates its Python environment. It starts no model and uses no GPU inference.

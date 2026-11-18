@@ -1,3 +1,4 @@
+import { EngineHeader } from "./EngineHeader.jsx";
 import React, { useEffect, useState } from "react";
 import css from "./styles.css";
 
@@ -197,17 +198,16 @@ export function BasaltCard() {
   }
   const busy = pending || state?.job?.status === "running";
   return (
-    <section className="basalt-card" aria-label="Basalt">
+    <section className="basalt-card dsh-engine-panel" aria-label="Basalt">
       <style>{css}</style>
-      <h3>
-        Basalt <small>0.1.0 · Blackwell</small>
-      </h3>
-      <p>
-        Saved local models.{" "}
-        {state?.sharedScheduler
-          ? "Shared GPU scheduler connected."
-          : "Independent queue; unload other GPU providers before loading Basalt."}
-      </p>
+      <EngineHeader
+        name="Basalt"
+        status={
+          state?.sharedScheduler
+            ? "Blackwell · Shared GPU scheduler"
+            : "Blackwell · Independent queue. Unload other GPU providers before loading Basalt."
+        }
+      />
       {error && <p role="alert">{error}</p>}
       {!state ? (
         <p>Connecting to Basalt…</p>
