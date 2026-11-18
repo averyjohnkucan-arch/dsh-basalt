@@ -1,12 +1,20 @@
 # Basalt for DeepSeek Harness
 
-**RC4 installation trial.** Start DeepSeek Harness with `npx @deepseek-ai/dsh@0.2.2-rc.4 web` (Node.js 24.9 or newer). In **Plugins → Add plugin**, paste the full path to this RC4 trial’s `.tgz` file and enable the plugin.
+Requires DeepSeek Harness 0.2.2-rc.4 and Node.js 24.9 or newer. In **Plugins → Add plugin**, paste `https://github.com/averyjohnkucan-arch/dsh-basalt` and enable it.
+
+## Move or back up a saved profile
+
+1. Save your settings, then choose **Export config** on the model. When the file check finishes, choose **Download config JSON**.
+2. On the destination computer, open **Import config**, choose the JSON and enter the folder containing your model weights. Choose **Find files and import profile**.
+3. Select the imported profile in chat. Import creates a separate saved profile and uses size and full-file MD5 to match existing weights. The JSON contains settings and file identities. Keep the weight files separately.
+
+GPU device numbers, ports, runtime paths and credentials are local to the destination.
 
 Run [Basalt](https://github.com/jesdga95/basalt) models from DSH's model picker. Basalt targets NVIDIA Blackwell GPUs (sm_120). This is a separate provider from Strata, with separate settings, model profiles, processes and conversation caches.
 
 ## Install
 
-Install the `dsh-basalt-0.1.0.tgz` asset from this repository's releases using DSH's plugin installer. The package includes the built settings interface; installation needs no frontend build.
+Install the `dsh-basalt-0.1.1.tgz` asset from this repository's releases using DSH's plugin installer. The package includes the built settings interface; installation needs no frontend build.
 
 Requires DSH **0.2.2-rc.4**, Node **24.9+**, Linux x64 with AVX2, Python **3.12+**, an NVIDIA Blackwell GPU and NVIDIA driver **580.95.05+**. Managed engine preparation installs Basalt **0.4.0**, its pinned Python dependencies, and private NVIDIA CUDA 13 runtime/cuBLAS libraries. It does not change system CUDA or another provider's environment. Allow at least 1.5 GiB free during setup, plus model storage.
 

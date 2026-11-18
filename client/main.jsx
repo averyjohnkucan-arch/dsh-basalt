@@ -1,3 +1,4 @@
+import { ImportConfig, DownloadConfig } from "./ProfileTransfer.jsx";
 import { EngineHeader } from "./EngineHeader.jsx";
 import React, { useEffect, useState } from "react";
 import css from "./styles.css";
@@ -133,6 +134,12 @@ function Profile({ profile, architectures, busy, act }) {
             <button type="submit">Save</button>
             <button
               type="button"
+              onClick={() => act("export-config", { id: p.id })}
+            >
+              Export config
+            </button>
+            <button
+              type="button"
               onClick={() =>
                 act(profile.running ? "stop" : "start", { id: p.id })
               }
@@ -213,6 +220,7 @@ export function BasaltCard() {
         <p>Connecting to Basalt…</p>
       ) : (
         <>
+          <ImportConfig run={act} busy={busy} />
           <details>
             <summary>Engine and CPU settings</summary>
             <p>
@@ -397,6 +405,10 @@ export function BasaltCard() {
                   Cancel operation
                 </button>
               )}
+              {state.job.kind === "export-config" &&
+                state.job.status === "complete" && (
+                  <DownloadConfig config={state.job.result} />
+                )}
               <pre>{state.job.log}</pre>
               {state.job.error && <p role="alert">{state.job.error}</p>}
             </div>
